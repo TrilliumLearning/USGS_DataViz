@@ -17,13 +17,18 @@ module.exports = {
         'port'    :  3306
     },
 
-    'Session_db': 'CitySmart',
-    'Login_db': 'CitySmart',
+    'Session_db': 'USGS',
+    'Login_db': 'USGS',
     'Login_table': 'UserLogin',
-    'Upload_db': 'CitySmart',
+    'Upload_db': 'USGS',
 
-    'Server_Port': 9086,
+    'Server_Port': 9085,
 
-    'Upload_Path': 'http://v2.cs.aworldbridgelabs.com/uploadfiles'
+    'Upload_Path': 'http://usgs.aworldbridgelabs.com/uploadfiles',
+    // 'Upload_Dir': '/var/www/usgs/uploadfiles',
+    'Upload_Dir': '/var/www/usgs/uploadfiles',
+
+    // 'GeoData_Dir': '/usr/share/worldwind-geoserver-0.2.1/data_dir/data/USGS'
+    'GeoData_Dir': '/usr/share/worldwind-geoserver-0.2.1/data_dir/data/USGS'
 
 };

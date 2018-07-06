@@ -14,6 +14,8 @@ const fs = require("fs");
 const rimraf = require("rimraf");
 const mkdirp = require("mkdirp");
 const multiparty = require('multiparty');
+const upload_Dir = config.Upload_Dir;
+const geoData_Dir = config.GeoData_Dir;
 
 const fileInputName = process.env.FILE_INPUT_NAME || "qqfile";
 const maxFileSize = process.env.MAX_FILE_SIZE || 0; // in bytes, 0 for unlimited
