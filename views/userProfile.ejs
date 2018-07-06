@@ -1,0 +1,348 @@
+<!-- views/profileBK.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>FAW/Locust Project - User Profile</title>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../css/style_final.css" type="text/css">
+    <link rel="stylesheet" href="../css/multi-select.css" media="screen" type="text/css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../jquery-validation-1.17.0/demo/css/screen.css">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/file-uploader/5.16.2/all.fine-uploader/all.fine-uploader.min.js"></script>
+    <script src="../src/jquery.multi-select.js"></script>
+    <script src="../jquery-validation-1.17.0/dist/jquery.validate.js"></script>
+    <style>
+        .banner{
+            position:relative;
+            width:100%;
+            text-align:center;
+            display:inline-block;
+        }
+        body { padding-top:80px; word-wrap:break-word; }
+        #cancel{
+            background-color: #31a0ba;
+            border-radius:4px;
+            font-size:14px;
+            padding:3px 10px 3px 10px;
+            -webkit-transition-duration: 0.4s;
+            transition-duration: 0.4s;
+            color:white;
+            float:right;
+            margin-right:10px;
+        }
+        #cancel:hover {
+            background-color: #ff758f;
+            color: white;
+        }
+        #submit{
+            background-color: #31a0ba;
+            border-radius:4px;
+            font-size:14px;
+            padding:3px 10px 3px 10px;
+            -webkit-transition-duration: 0.4s;
+            transition-duration: 0.4s;
+            color:white;
+            float:right;
+        }
+        #submit:hover{
+            background-color: #ff758f;
+            color:white;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div class = "container">
+    <a href="//aworldbridge.com"><img class="banner" src="../pic/NewWBBanner.jpg"/></a>
+    <!--<ul id="userMenu" class="dropdown-menu dropdown-menu-right">-->
+    <!--</ul>-->
+    <div id="container">
+        <h1 id="title">User Profile</h1>
+        <h2>Basic Form</h2>
+        <div style="display:block; width:111%;" class="generalForm">
+            <form id="basic"  class="well form-horizontal">
+                <fieldset>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">User Name</label>
+                        <div class="col-md-8 inputGroupContainer">
+                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-cloud"></i></span><input id="username" class="form-control" type="text" style="background:WhiteSmoke;" value="<%= user.username%>" readonly></div>
+                            <!--<h4 id="userrole" class="floating-Box"><strong>User Role:&nbsp;&nbsp;</strong></h4>-->
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">First Name</label>
+                        <div class="col-md-8 inputGroupContainer">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span><input id="firstName" name="firstName" placeholder="First Name" class="form-control" value="" type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Last Name</label>
+                        <div class="col-md-8 inputGroupContainer">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span><input id="lastName" name="lastName" placeholder="Last Name" class="form-control"  value="" type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Address Line 1</label>
+                        <div class="col-md-8 inputGroupContainer">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span><input id="addressLine1" name="Address_Line1" placeholder="Address Line 1" class="form-control" value="" type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Address Line 2</label>
+                        <div class="col-md-8 inputGroupContainer">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span><input id="addressLine2" name="Address_Line2" placeholder="Address Line 2" class="form-control" value="" type="text"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">City</label>
+                        <div class="col-md-8 inputGroupContainer">
+                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span><input id="city" name="City" placeholder="City" class="form-control" value="" type="text"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">State/Province/Region</label>
+                        <div class="col-md-8 inputGroupContainer">
+                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span><input id="state" name="State_Province_Region" placeholder="State/Province/Region" class="form-control" value="" type="text"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Postal Code/ZIP</label>
+                        <div class="col-md-8 inputGroupContainer">
+                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span><input id="postcode" name="PostalCode_ZIP" placeholder="Postal Code/ZIP" class="form-control" value="" type="text"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Country</label>
+                        <div class="col-md-8 inputGroupContainer">
+                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span><input id="country" name="Country" placeholder="Country" class="form-control" value="" type="text"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Email</label>
+                        <div class="col-md-8 inputGroupContainer">
+                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span><input id="email" name="Email" placeholder="Email" class="form-control" value="" type="text"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Phone Number</label>
+                        <div class="col-md-8 inputGroupContainer">
+                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span><input id="phoneNumber" name="Phone_Number" placeholder="Phone Number" class="form-control" value="" type="text"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">User Role</label>
+                        <div class="col-md-8 inputGroupContainer">
+                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span><input class="form-control" type="text" style="background:WhiteSmoke;" value="<%= user.userrole%>" readonly></div>
+                            <!--<h4 id="userrole" class="floating-Box"><strong>User Role:&nbsp;&nbsp;</strong></h4>-->
+                        </div>
+                    </div>
+                    <div class="form-group" id="dateCreated">
+                        <label class="col-md-4 control-label">Date Created</label>
+                        <div class="col-md-8 inputGroupContainer">
+                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span><input class="form-control" type="text" style="background:WhiteSmoke;" value="<%= user.dateCreated %>" readonly></div>
+                            <!--<h4 id="userrole" class="floating-Box"><strong>User Role:&nbsp;&nbsp;</strong></h4>-->
+                        </div>
+                    </div>
+                    <div class="form-group" id="lastModification">
+                        <label class="col-md-4 control-label">Last Modification</label>
+                        <div class="col-md-8 inputGroupContainer">
+                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span><input class="form-control" type="text" style="background:WhiteSmoke;" value="<%= user.dateModified %>" readonly></div>
+                            <!--<h4 id="userrole" class="floating-Box"><strong>User Role:&nbsp;&nbsp;</strong></h4>-->
+                        </div>
+                    </div>
+                    <div class="form-group" id="lastModified">
+                        <label class="col-md-4 control-label">Last Modified by</label>
+                        <div class="col-md-8 inputGroupContainer">
+                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-star"></i></span><input class="form-control" type="text" style="background:WhiteSmoke;" value="<%= user.username%>" readonly></div>
+                            <!--<h4 id="userrole" class="floating-Box"><strong>User Role:&nbsp;&nbsp;</strong></h4>-->
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        <p style="font-size:15px">
+            <label for="password" >Do you want to change your password?</label>
+            <input type="checkbox" id="password" name="password" onclick="myFunction()">
+        </p>
+        <div class="generalForm">
+            <form id="pswchange" onsubmit="return checkForm()" style="display:none; width:111%;" class="well form-horizontal">
+                <fieldset>
+                    <div>
+                        <label style="font-size:18px;">Password Change</label>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Current Password</label>
+                        <div class="col-md-8 inputGroupContainer">
+                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span><input id="currentpassword" name="CurrentPassword"  class="form-control"  value="" type="password"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">New Password</label>
+                        <div class="col-md-8 inputGroupContainer">
+                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span><input id="newpassword" name="NewPassword" class="form-control" value="" type="password"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Confirm New Password</label>
+                        <div class="col-md-8 inputGroupContainer">
+                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span><input id="Confirmpassword" name="ConfirmNewPassword" class="form-control"  value="" type="password"></div>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        <div class="row">
+            <div class="column">
+                <button id="submit" type="submit" value="Submit" form="basic" onclick="submitForm()">Submit</button>
+            </div>
+            <div class="column">
+                <button id="cancel" type="button" onclick="userHome();">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var UserName = "<%= user.username %>";
+    // console.log( UserName);
+
+    $.ajax({
+        url: "/profile",
+        dataType: 'json',
+        success: function (results) {
+            console.log(results);
+            for(var i =0; i< results.length; i++) {
+                // console.log(results[i].username);
+                if (results[i].username === UserName) {
+
+                    // document.getElementById('Request ID').value = getvalue[1];
+                    document.getElementById('username').value = results[i].username;
+                    document.getElementById('firstName').value = results[i].firstName;
+                    document.getElementById('lastName').value = results[i].lastName;
+                    document.getElementById('addressLine1').value = results[i].Address_Line1;
+                    document.getElementById('addressLine2').value = results[i].Address_Line2;
+                    document.getElementById('city').value = results[i].City;
+                    document.getElementById('state').value = results[i].State_Province_Region;
+                    document.getElementById('postcode').value = results[i].PostalCode_ZIP;
+                    document.getElementById('country').value = results[i].Country;
+                    document.getElementById('email').value = results[i].username;
+                    document.getElementById('phoneNumber').value = results[i].Phone_Number;
+                }
+            }
+        }
+    })
+
+
+    var UserRole = "<%= user.userrole %>";
+
+    $(document).ready(function(){
+        if (UserRole === "Admin") {
+            document.getElementById('dateCreated').style.display = 'block';
+            document.getElementById('lastModification').style.display = 'block';
+            document.getElementById('lastModified').style.display = 'block';
+        } else if ( UserRole === "Regular") {
+            document.getElementById('dateCreated').style.display = 'none';
+            document.getElementById('lastModification').style.display = 'none';
+            document.getElementById('lastModified').style.display = 'none';
+        }
+    });
+
+    function userHome() {
+        if (confirm("Are you sure you to leave this page? All the data will be cleared accordingly!") === true) {
+            window.location.replace('/userHome')
+        }
+    }
+
+    function checkForm() {
+        var oldP=document.getElementById("currentpassword").value;
+        var newP=document.getElementById("newpassword").value;
+        var confirmP =document.getElementById("Confirmpassword").value;
+
+        if (newP != "") {
+            if(oldP != "" && confirmP != "") {
+                if(oldP != newP) {
+                    if(newP == confirmP) {
+                        alert ("V");
+                        return true;
+                    } else {
+                        alert("New password are not matched!");
+                        return false;
+                    }
+                } else {
+                    alert("Please try your new password different from old one!");
+                    return false;
+                }
+            } else {
+                alert("All password fields are required");
+                return false;
+            }
+        } else {return true}
+    }
+
+    var password = $("#password");
+    var initial = password.is(":checked");
+    var change = $("#password_change")[initial ? "removeClass" : "addClass"]("gray");
+    var changeInputs = change.find("input").attr("disabled", !initial);
+
+    password.click(function(){
+        change[this.checked ? "removeClass" : "addClass"]("gray");
+        changeInputs.attr("disabled", !this.checked);
+    });
+
+    function myFunction(){
+        var checkbox = document.getElementById("password");
+        var text = document.getElementById("pswchange");
+        if (checkbox.checked == true){
+            text.style.display = "block";
+        } else{
+            text.style.display = "none";
+        }
+    }
+
+    $(document).ready(function(){
+        if (UserRole === "Admin") {
+            DropMenu = "<li><a href=\"/userprofile\">Profile</a></li>\n" +
+                "\t\t\t<li><a href=\"/userManagement\">User Management</a></li>\n" +
+                "\t\t\t<li><a href=\"/signout\">Sign Out</a></li>";
+            $("#userMenu").empty();
+            $("#userMenu").append(DropMenu)
+        } else if ( UserRole === "Regular") {
+            DropMenu = "<li><a href=\"/userprofile\">Profile</a></li>\n" +
+                "\t\t\t<li><a href=\"/signout\">Sign Out</a></li>";
+            $("#userMenu").empty();
+            $("#userMenu").append(DropMenu)
+        }
+    });
+
+    function submitForm () {
+        alert("Submitted!");
+        var data = $("#basic").serialize() + "&" + $("#pswchange").serialize();
+        console.log($("#basic").serialize());
+        $.ajax({
+            url  : 'http://localhost:9086/submit',
+            method : "POST",
+            data : data,
+            dataType: 'json',
+            success : function(d){
+                console.log(d);
+            }
+        });
+    }
+
+</script>
+
+</body>
+</html>
