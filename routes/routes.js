@@ -57,7 +57,9 @@ module.exports = function (app, passport) {
         res.redirect('/login');
     });
 
-
+    app.get('/USGS',function (req,res) {
+        res.render('CitySmartV2.ejs');
+    })
     // show the login form
     app.get('/login', function (req, res) {
 
@@ -428,8 +430,6 @@ module.exports = function (app, passport) {
         }
     });
 
-
-    // routes.post("/uploads", isLoggedIn, onUpload);
 
     // =====================================
     // USER MANAGEMENT =====================
@@ -864,12 +864,12 @@ module.exports = function (app, passport) {
         }
         // console.log("??0"+valueSubmit);
         let newImage = {
-            Layer_Uploader: "http://localhost:63342/NASACitySmart-V2/a/" + responseDataUuid,
+            Layer_Uploader: "http://localhost:63342/USGS_MapService/uploadfiles/" + responseDataUuid,
             Layer_Uploader_name: responseDataUuid
         };
         name += ", Layer_Uploader, Layer_Uploader_name";
         valueSubmit += ", '" + newImage.Layer_Uploader + "','" + newImage.Layer_Uploader_name + "'";
-        let filepathname = "http://localhost:63342/NASACitySmart-V2/a/" + responseDataUuid;
+        let filepathname = "http://localhost:63342/USGS_MapService/uploadfiles/" + responseDataUuid;
 
 
         let statement2 = "INSERT INTO CitySmart.Request_Form (" + name + ") VALUES (" + valueSubmit + ");";
@@ -1019,11 +1019,11 @@ module.exports = function (app, passport) {
         }
 
         let newImage = {
-            Layer_Uploader: "http://localhost:63342/USGS_MapService/a/" + responseDataUuid,
+            Layer_Uploader: "http://localhost:9085/USGS_MapService/a/" + responseDataUuid,
             Layer_Uploader_name: responseDataUuid
         };
         valueSubmit += ", '" + newImage.Layer_Uploader + "','" + newImage.Layer_Uploader_name + "'";
-        let filepathname = "http://localhost:63342/USGS_MapService/a/" + responseDataUuid;
+        let filepathname = "http://localhost:63342/USGS_MapService/uploadfiles/" + responseDataUuid;
         console.log(valueSubmit);
         let statement1 = update1+update2+update3;
         let statement2 = "UPDATE CitySmart.Request_Form SET Layer_Uploader = '" + valueSubmit[13] + "', 'Layer_Uploader_name = '" + valueSubmit[14] + "';";
@@ -1078,7 +1078,7 @@ module.exports = function (app, passport) {
         let pictureStr = req.query.pictureStr.split(',');
         for (let i = 0; i < transactionID.length; i++) {
             let statement = "UPDATE CitySmart.Request_Form SET Status = 'Delete' WHERE RID = '" + transactionID[i] + "'";
-            fs.rename("./b/" + pictureStr[i] + "" , "./a/" + pictureStr[i] + "", function (err) {
+            fs.rename("./b/" + pictureStr[i] + "" , "./uploadfiles/" + pictureStr[i] + "", function (err) {
                 if (err) {
                     console.log(err);
                 } else {
@@ -1097,12 +1097,13 @@ module.exports = function (app, passport) {
     //AddData in table
     app.get('/AddData', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*");
-        con_CS.query('SELECT Request_Form.*, UserLogin.userrole FROM UserLogin INNER JOIN Request_Form ON UserLogin.username = Request_Form.UID', function (err, results) {
+        con_CS.query('SELECT * FROM Request_Form', function (err, results) {
             if (err) throw err;
             res.json(results);
-            // console.log(results);
+            console.log(results);
         })
     });
+
 
     app.get('/editdata',function (req,res){
         // var d = new Date();
@@ -1523,7 +1524,8 @@ function QueryStat(myObj, scoutingStat, res) {
         responseDataUuid = "";
 
         let d = new Date(),
-            uuid = d.getUTCFullYear() + "-" + ('0' + (d.getUTCMonth() + 1)).slice(-2) + "-" + ('0' + d.getUTCDate()).slice(-2) + "T" + ('0' + d.getUTCHours()).slice(-2) + ":" + ('0' + d.getUTCMinutes()).slice(-2) + ":" + ('0' + d.getUTCSeconds()).slice(-2) + "Z",
+            uuid = d.getUTCFullYear() + "-" + ('0' + (d.getUTCMonth() + 1)).slice(-2) + "-" + ('0' + d.getUTCDate()).slice(-2) + "T" + ('0' + d.getUTCHours()).slice(-2) + ":" + ('0' + d.getUTCMinutes()).slice(-2) + ":" + ('0' + d.getUTCSeconds()).slice(-2) + "Z";
+            console.log(uuid);
             responseData = {
                 success: false,
                 newuuid: uuid + "_" + fields.qqfilename
@@ -1610,7 +1612,7 @@ function QueryStat(myObj, scoutingStat, res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
 
         let uuid = req.params.uuid,
-            dirToDelete = "a/" + uuid;
+            dirToDelete = "uploadfiles/" + uuid;
         console.log(uuid);
         rimraf(dirToDelete, function(error) {
             if (error) {
@@ -1657,7 +1659,7 @@ function QueryStat(myObj, scoutingStat, res) {
     function moveUploadedFile(file, uuid, success, failure) {
         console.log("this is: " + uuid);
         // let destinationDir = uploadedFilesPath + uuid + "/",
-        let destinationDir = "a/",
+        let destinationDir = "uploadfiles/",
             fileDestination = destinationDir + uuid + "_" + file.name;
 
         moveFile(destinationDir, file.path, fileDestination, success, failure);
