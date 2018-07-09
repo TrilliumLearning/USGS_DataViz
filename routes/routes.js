@@ -381,48 +381,53 @@ module.exports = function (app, passport) {
         res.render('userProfile.ejs', {user: req.user});
     });
 
-    // // Update user profile page
-    // app.post('/userProfile', isLoggedIn, function (req, res) {
-    //     res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
-    //     let user = req.user;
-    //     let newPass = {
-    //         firstname: req.body.usernameF,
-    //         lastname: req.body.usernameL,
-    //         currentpassword: req.body.currentpassword,
-    //         Newpassword: bcrypt.hashSync(req.body.newpassword, null, null),
-    //         ConfirmPassword: bcrypt.hashSync(req.body.Confirmpassword, null, null)
-    //     };
-    //
-    //     dateNtime();
-    //
-    //     myStat = "UPDATE UserProfile SET firstName =?, lastName = ? ";
-    //     mylogin = "UPDATE UserLogin SET dateModified  = ? WHERE username = ? ";
-    //     myVal = [newPass.firstname, newPass.lastname, dateTime, user.username];
-    //
-    //     con_CS.query(myStat, myVal, mylogin, function (err, rows) {
-    //         if (err) {
-    //             console.log(err);
-    //             res.json({"error": true, "message": "Fail !"});
-    //         } else {
-    //             let passComp = bcrypt.compareSync(newPass.currentpassword, user.password);
-    //             if (!!req.body.newpassword && passComp) {
-    //                 let passReset = "UPDATE UserLogin SET password = '" + newPass.Newpassword + "' WHERE username = '" + user.username + "'";
-    //
-    //                 con_CS.query(passReset, function (err, rows) {
-    //                     //console.log(result);
-    //                     if (err) {
-    //                         console.log(err);
-    //                         res.json({"error": true, "message": "Fail !"});
-    //                     } else {
-    //                         res.json({"error": false, "message": "Success !"});
-    //                     }
-    //                 });
-    //             } else {
-    //                 res.json({"error": false, "message": "Success !"});
-    //             }
-    //         }
-    //     });
-    // });
+    // Update user profile page
+    app.post('/newPass', isLoggedIn, function (req, res) {
+        res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
+        let user = req.user;
+        let newPass = {
+            // firstname: req.body.usernameF,
+            // lastname: req.body.usernameL,
+            currentpassword: req.body.CurrentPassword,
+            Newpassword: bcrypt.hashSync(req.body.newpassword, null, null),
+            ConfirmPassword: bcrypt.hashSync(req.body.ConfirmNewPassword, null, null)
+        };
+        // console.log(newPass);
+
+        // dateNtime();
+
+        // myStat = "UPDATE UserProfile SET firstName =?, lastName = ? ";
+        // mylogin = "UPDATE UserLogin SET dateModified  = ? WHERE username = ? ";
+        // myVal = [newPass.firstname, newPass.lastname, dateTime, user.username];
+        //
+        // con_CS.query(myStat, myVal, mylogin, function (err, rows) {
+        //     if (err) {
+        //         console.log(err);
+        //         res.json({"error": true, "message": "Fail !"});
+        //     } else {
+        // console.log(user.password);
+        // console.log(newPass.currentpassword);
+        let passComp = bcrypt.compareSync(newPass.currentpassword, user.password);
+        console.log
+
+        if (!!req.body.newpassword && passComp) {
+            let passReset = "UPDATE UserLogin SET password = '" + newPass.Newpassword + "' WHERE username = '" + user.username + "'";
+
+            con_CS.query(passReset, function (err, rows) {
+                //console.log(result);
+                if (err) {
+                    console.log(err);
+                    res.json({"error": true, "message": "Fail !"});
+                } else {
+                    res.json({"error": false, "message": "Success !"});
+                }
+            });
+            //         } else {
+            //             res.json({"error": false, "message": "Success !"});
+            //         }
+        }
+    });
+
 
     // routes.post("/uploads", isLoggedIn, onUpload);
 
@@ -499,14 +504,14 @@ module.exports = function (app, passport) {
         });
     });
 
-        // show the addUser form
-        app.get('/addUser', isLoggedIn, function (req, res) {
-            // render the page and pass in any flash data if it exists
-            res.render('addUser.ejs', {
-                user: req.user,
-                message: req.flash('addUserMessage')
-            });
+    // show the addUser form
+    app.get('/addUser', isLoggedIn, function (req, res) {
+        // render the page and pass in any flash data if it exists
+        res.render('addUser.ejs', {
+            user: req.user,
+            message: req.flash('addUserMessage')
         });
+    });
 
     app.post('/addUser', isLoggedIn, function (req, res) {
 
@@ -813,8 +818,9 @@ module.exports = function (app, passport) {
         // console.log (result);
         res.setHeader("Access-Control-Allow-Origin", "*");
 
-        var update1 = "UPDATE CitySmart.UserProfile SET " ;
-        var update3 = " WHERE username = '" + req.user.username + "'";
+        var update1 = "UPDATE CitySmart.UserProfile SET ";
+        var update3 = " WHERE username = '" + req.user.username + "';";
+        // var newpassword = bcrypt.hashSync(req.body.password, null, null);
         let update2 = "";
         for (let i = 0; i < result.length-3; i++) {
             if (i === result.length - 4) {
@@ -823,10 +829,11 @@ module.exports = function (app, passport) {
                 update2 += result[i][0] + " = '" + result[i][1] + "', " ;
             }
         }
-        console.log(update2);
+        // console.log(update2);
         let statement1 = update1+update2+update3;
-        console.log(statement1);
-        con_CS.query(statement1, function (err, result) {
+        // let statement2 = "UPDATE CitySmart.UserLogin SET password = '" + newpassword + "' WHERE username = '" + req.user.username + "';";
+        // console.log(statement1);
+        con_CS.query(statement1 , function (err, result) {
             if (err) {
                 throw err;
             } else {
@@ -964,7 +971,7 @@ module.exports = function (app, passport) {
 
         let statement = "UPDATE CitySmart.Request_Form SET Status = 'Active' WHERE RID = '" + approveIDStr + "'";
 
-       // mover folder
+        // mover folder
         for(let i = 0; i < approvepictureStr.length; i++) {
             fs.rename("./a/" + approvepictureStr[i] + "" , "./b/" + approvepictureStr[i] + "", function (err) {
                 if (err) {
@@ -982,11 +989,9 @@ module.exports = function (app, passport) {
     });
 
     app.post('/replace', function (req, res) {
-
         let result = Object.keys(req.body).map(function (key) {
             return [String(key), req.body[key]];
         });
-        console.log(result);
         res.setHeader("Access-Control-Allow-Origin", "*");
 
         var update1 = "UPDATE CitySmart.Request_Form SET " ;
@@ -1004,13 +1009,11 @@ module.exports = function (app, passport) {
         //
         // let name = "";
         let valueSubmit = "";
-        //
+
         for (let i = 0; i < result.length; i++) {
             if (i === result.length - 1) {
-                // name += result[i][0];
                 valueSubmit += '"' + result[i][1] + '"';
             } else {
-                // name += result[i][0] + ", ";
                 valueSubmit += '"' + result[i][1] + '"' + ", ";
             }
         }
@@ -1019,7 +1022,6 @@ module.exports = function (app, passport) {
             Layer_Uploader: "http://localhost:63342/USGS_MapService/a/" + responseDataUuid,
             Layer_Uploader_name: responseDataUuid
         };
-        // name += ", Layer_Uploader, Layer_Uploader_name";
         valueSubmit += ", '" + newImage.Layer_Uploader + "','" + newImage.Layer_Uploader_name + "'";
         let filepathname = "http://localhost:63342/USGS_MapService/a/" + responseDataUuid;
         console.log(valueSubmit);
@@ -1036,8 +1038,7 @@ module.exports = function (app, passport) {
             });
         }else{
             let statement = "INSERT INTO CitySmart.LayerMenu VALUES ('" + result[7][1] + "','" + result[0][1] + "','" + result[3][1] + "','" + result[5][1] + "','" + result[7][1] + "','" + result[10][1] + "','" + result[8][1] + "','" + result[9][1] + "', 'Active');";
-           console.log(statement1);
-            con_CS.query(statement1 + statement + statement2, function (err, result) {
+           con_CS.query(statement1 + statement + statement2, function (err, result) {
                 if (err) {
                     throw err;
                 } else {
@@ -1393,19 +1394,19 @@ module.exports = function (app, passport) {
         })
     }
 
-    function QueryStat(myObj, scoutingStat, res) {
-        // console.log(myObj);
-        let j = 0;
-        for (let i = 0; i < myObj.length; i++) {
-            //console.log("i = " + i);
-            console.log(!!myObj[i].fieldVal);
+function QueryStat(myObj, scoutingStat, res) {
+    // console.log(myObj);
+    let j = 0;
+    for (let i = 0; i < myObj.length; i++) {
+        //console.log("i = " + i);
+        // console.log(!!myObj[i].fieldVal);
 
-            if (!!myObj[i].adj) {
-                console.log(i + "   " + myObj[i].adj);
-                // if (i === 3 || i === 4 || i === 5) {
-                //     myObj[i].dbCol = myObj[i].dbCol.substring(1, myObj[i].dbCol.length);
-                //     myObj[i].table = parseInt(myObj[i].table.substring(0, 1));
-                // }
+        if (!!myObj[i].adj){
+            // console.log(i  + "   " + myObj[i].adj);
+            // if (i === 3 || i === 4 || i === 5) {
+            //     myObj[i].dbCol = myObj[i].dbCol.substring(1, myObj[i].dbCol.length);
+            //     myObj[i].table = parseInt(myObj[i].table.substring(0, 1));
+            // }
 
                 let aw;
                 if (j === 0) {
@@ -1510,7 +1511,6 @@ module.exports = function (app, passport) {
                 onChunkedUpload(fields, files[fileInputName][0], res);
             }
         });
-
     }
 
     let responseDataUuid = "",
@@ -1609,14 +1609,14 @@ module.exports = function (app, passport) {
     function onDeleteFile(req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
 
-    let uuid = req.params.uuid,
-        dirToDelete = "a/" + uuid;
-    console.log(uuid);
-    rimraf(dirToDelete, function(error) {
-        if (error) {
-            console.error("Problem deleting file! " + error);
-            res.status(500);
-        }
+        let uuid = req.params.uuid,
+            dirToDelete = "a/" + uuid;
+        console.log(uuid);
+        rimraf(dirToDelete, function(error) {
+            if (error) {
+                console.error("Problem deleting file! " + error);
+                res.status(500);
+            }
 
             res.send();
         });
@@ -1654,11 +1654,11 @@ module.exports = function (app, passport) {
         });
     }
 
-function moveUploadedFile(file, uuid, success, failure) {
-    console.log("this is: " + uuid);
-    // let destinationDir = uploadedFilesPath + uuid + "/",
-    let destinationDir = "a/",
-        fileDestination = destinationDir + uuid + "_" + file.name;
+    function moveUploadedFile(file, uuid, success, failure) {
+        console.log("this is: " + uuid);
+        // let destinationDir = uploadedFilesPath + uuid + "/",
+        let destinationDir = "a/",
+            fileDestination = destinationDir + uuid + "_" + file.name;
 
         moveFile(destinationDir, file.path, fileDestination, success, failure);
     }
