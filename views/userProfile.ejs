@@ -71,7 +71,7 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label">User Name</label>
                         <div class="col-md-8 inputGroupContainer">
-                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-cloud"></i></span><input id="username" class="form-control" type="text" style="background:WhiteSmoke;" value="<%= user.username%>" readonly></div>
+                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-cloud"></i></span><input id="username" class="form-control" type="text" value="<%= user.username%>"></div>
                             <!--<h4 id="userrole" class="floating-Box"><strong>User Role:&nbsp;&nbsp;</strong></h4>-->
                         </div>
                     </div>
@@ -131,12 +131,6 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-4 control-label">Email</label>
-                        <div class="col-md-8 inputGroupContainer">
-                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span><input id="email" name="Email" placeholder="Email" class="form-control" value="" type="text"></div>
-                        </div>
-                    </div>
-                    <div class="form-group">
                         <label class="col-md-4 control-label">Phone Number</label>
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span><input id="phoneNumber" name="Phone_Number" placeholder="Phone Number" class="form-control" value="" type="text"></div>
@@ -178,7 +172,7 @@
             <input type="checkbox" id="password" name="password" onclick="myFunction()">
         </p>
         <div class="generalForm">
-            <form id="pswchange" onsubmit="return checkForm()" style="display:none; width:111%;" class="well form-horizontal">
+            <form id="pswchange" style="display:none; width:111%;" class="well form-horizontal">
                 <fieldset>
                     <div>
                         <label style="font-size:18px;">Password Change</label>
@@ -204,10 +198,11 @@
                     </div>
                 </fieldset>
             </form>
+            <button id="checkit" style="background-color: lightgray ; color:white; display:none" onclick="check()">Check</button>
         </div>
         <div class="row">
             <div class="column">
-                <button id="submit" type="submit" value="Submit" form="basic" onclick="submitForm()">Submit</button>
+                <button id="submit" type="submit" value="Submit" onclick="submitForm()">Submit</button>
             </div>
             <div class="column">
                 <button id="cancel" type="button" onclick="userHome();">Cancel</button>
@@ -238,7 +233,6 @@
                     document.getElementById('state').value = results[i].State_Province_Region;
                     document.getElementById('postcode').value = results[i].PostalCode_ZIP;
                     document.getElementById('country').value = results[i].Country;
-                    document.getElementById('email').value = results[i].username;
                     document.getElementById('phoneNumber').value = results[i].Phone_Number;
                 }
             }
@@ -266,30 +260,30 @@
         }
     }
 
-    function checkForm() {
-        var oldP=document.getElementById("currentpassword").value;
-        var newP=document.getElementById("newpassword").value;
-        var confirmP =document.getElementById("Confirmpassword").value;
+    function check() {
+        var oldP = document.getElementById("currentpassword").value;
+        var newP = document.getElementById("newpassword").value;
+        var confirmP = document.getElementById("Confirmpassword").value;
 
         if (newP != "") {
-            if(oldP != "" && confirmP != "") {
-                if(oldP != newP) {
-                    if(newP == confirmP) {
-                        alert ("V");
-                        return true;
+            if (oldP != "" && confirmP != "") {
+                if (oldP != newP) {
+                    if (newP == confirmP) {
+                        alert("You can submit now!");
+                        return false
                     } else {
                         alert("New password are not matched!");
-                        return false;
+                        return false
                     }
                 } else {
                     alert("Please try your new password different from old one!");
-                    return false;
+                    return false
                 }
             } else {
                 alert("All password fields are required");
-                return false;
+                return false
             }
-        } else {return true}
+        }
     }
 
     var password = $("#password");
@@ -307,37 +301,41 @@
         var text = document.getElementById("pswchange");
         if (checkbox.checked == true){
             text.style.display = "block";
+            document.getElementById("checkit").style.display = "block"
+            document.getElementById("checkit").style.backgroundColor =  "#4183c4";
         } else{
             text.style.display = "none";
+            document.getElementById("checkit").style.display = "none"
+            document.getElementById("checkit").style.backgroundColor =  "lightgray";
         }
     }
 
-    $(document).ready(function(){
-        if (UserRole === "Admin") {
-            DropMenu = "<li><a href=\"/userprofile\">Profile</a></li>\n" +
-                "\t\t\t<li><a href=\"/userManagement\">User Management</a></li>\n" +
-                "\t\t\t<li><a href=\"/signout\">Sign Out</a></li>";
-            $("#userMenu").empty();
-            $("#userMenu").append(DropMenu)
-        } else if ( UserRole === "Regular") {
-            DropMenu = "<li><a href=\"/userprofile\">Profile</a></li>\n" +
-                "\t\t\t<li><a href=\"/signout\">Sign Out</a></li>";
-            $("#userMenu").empty();
-            $("#userMenu").append(DropMenu)
-        }
-    });
+    // $(document).ready(function(){
+    //     if (UserRole === "Admin") {
+    //         DropMenu = "<li><a href=\"/userprofile\">Profile</a></li>\n" +
+    //             "\t\t\t<li><a href=\"/userManagement\">User Management</a></li>\n" +
+    //             "\t\t\t<li><a href=\"/signout\">Sign Out</a></li>";
+    //         $("#userMenu").empty();
+    //         $("#userMenu").append(DropMenu)
+    //     } else if ( UserRole === "Regular") {
+    //         DropMenu = "<li><a href=\"/userprofile\">Profile</a></li>\n" +
+    //             "\t\t\t<li><a href=\"/signout\">Sign Out</a></li>";
+    //         $("#userMenu").empty();
+    //         $("#userMenu").append(DropMenu)
+    //     }
+    // });
 
     function submitForm () {
         alert("Submitted!");
         var data = $("#basic").serialize() + "&" + $("#pswchange").serialize();
-        console.log($("#basic").serialize());
+        // console.log($("#basic").serialize());
         $.ajax({
-            url  : 'http://localhost:9086/submit',
+            url  : 'http://localhost:9085/submit',
             method : "POST",
             data : data,
             dataType: 'json',
             success : function(d){
-                console.log(d);
+                // console.log(d);
             }
         });
     }

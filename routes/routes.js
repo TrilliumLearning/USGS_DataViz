@@ -463,48 +463,48 @@ module.exports = function (app, passport) {
         res.render('userProfile.ejs', {user: req.user});
     });
 
-    // Update user profile page
-    app.post('/userProfile', isLoggedIn, function (req, res) {
-        res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
-        let user = req.user;
-        let newPass = {
-            firstname: req.body.usernameF,
-            lastname: req.body.usernameL,
-            currentpassword: req.body.currentpassword,
-            Newpassword: bcrypt.hashSync(req.body.newpassword, null, null),
-            ConfirmPassword: bcrypt.hashSync(req.body.Confirmpassword, null, null)
-        };
-
-        dateNtime();
-
-        myStat = "UPDATE UserProfile SET firstName =?, lastName = ? ";
-        mylogin = "UPDATE UserLogin SET dateModified  = ? WHERE username = ? ";
-        myVal = [newPass.firstname, newPass.lastname, dateTime, user.username];
-
-        con_CS.query(myStat, myVal, mylogin, function (err, rows) {
-            if (err) {
-                console.log(err);
-                res.json({"error": true, "message": "Fail !"});
-            } else {
-                let passComp = bcrypt.compareSync(newPass.currentpassword, user.password);
-                if (!!req.body.newpassword && passComp) {
-                    let passReset = "UPDATE UserLogin SET password = '" + newPass.Newpassword + "' WHERE username = '" + user.username + "'";
-
-                    con_CS.query(passReset, function (err, rows) {
-                        //console.log(result);
-                        if (err) {
-                            console.log(err);
-                            res.json({"error": true, "message": "Fail !"});
-                        } else {
-                            res.json({"error": false, "message": "Success !"});
-                        }
-                    });
-                } else {
-                    res.json({"error": false, "message": "Success !"});
-                }
-            }
-        });
-    });
+    // // Update user profile page
+    // app.post('/userProfile', isLoggedIn, function (req, res) {
+    //     res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
+    //     let user = req.user;
+    //     let newPass = {
+    //         firstname: req.body.usernameF,
+    //         lastname: req.body.usernameL,
+    //         currentpassword: req.body.currentpassword,
+    //         Newpassword: bcrypt.hashSync(req.body.newpassword, null, null),
+    //         ConfirmPassword: bcrypt.hashSync(req.body.Confirmpassword, null, null)
+    //     };
+    //
+    //     dateNtime();
+    //
+    //     myStat = "UPDATE UserProfile SET firstName =?, lastName = ? ";
+    //     mylogin = "UPDATE UserLogin SET dateModified  = ? WHERE username = ? ";
+    //     myVal = [newPass.firstname, newPass.lastname, dateTime, user.username];
+    //
+    //     con_CS.query(myStat, myVal, mylogin, function (err, rows) {
+    //         if (err) {
+    //             console.log(err);
+    //             res.json({"error": true, "message": "Fail !"});
+    //         } else {
+    //             let passComp = bcrypt.compareSync(newPass.currentpassword, user.password);
+    //             if (!!req.body.newpassword && passComp) {
+    //                 let passReset = "UPDATE UserLogin SET password = '" + newPass.Newpassword + "' WHERE username = '" + user.username + "'";
+    //
+    //                 con_CS.query(passReset, function (err, rows) {
+    //                     //console.log(result);
+    //                     if (err) {
+    //                         console.log(err);
+    //                         res.json({"error": true, "message": "Fail !"});
+    //                     } else {
+    //                         res.json({"error": false, "message": "Success !"});
+    //                     }
+    //                 });
+    //             } else {
+    //                 res.json({"error": false, "message": "Success !"});
+    //             }
+    //         }
+    //     });
+    // });
 
     // routes.post("/uploads", isLoggedIn, onUpload);
 
@@ -895,33 +895,19 @@ module.exports = function (app, passport) {
         // console.log (result);
         res.setHeader("Access-Control-Allow-Origin", "*");
 
-        let name = "";
-        let valueSubmit = "";
-
-        for (let i = 0; i < result.length; i++) {
-            if (i === result.length - 1) {
-                name += result[i][0];
-                valueSubmit += '"' + result[i][1] + '"';
+        var update1 = "UPDATE CitySmart.UserProfile SET " ;
+        var update3 = " WHERE username = '" + req.user.username + "'";
+        let update2 = "";
+        for (let i = 0; i < result.length-3; i++) {
+            if (i === result.length - 4) {
+                update2 += result[i][0] + " = '" + result[i][1]+ "'";
             } else {
-                name += result[i][0] + ", ";
-                valueSubmit += '"' + result[i][1] + '"' + ", ";
+                update2 += result[i][0] + " = '" + result[i][1] + "', " ;
             }
-
         }
-        // let newImage = {
-        //     Layer_Uploader: "http://localhost:9086/uploadfiles/" + responseDataUuid,
-        //     Layer_Uploader_name: responseDataUuid
-        // };
-        // name += ", Layer_Uploader, Layer_Uploader_name";
-        // value += ", '" + newImage.Layer_Uploader + "','" +newImage.Layer_Uploader_name + "'";
-        // "UPDATE UserLogin SET password = '" + newPass.Newpassword + "' WHERE username = '" + req.body.username + "'";
-        //
-        //
-        // let statement1 = "INSERT INTO CitySmart.New_Users (" + name + ") VALUES (" + value + ");";
-        // // console.log(statement1);
-        // let statement1 = "UPDATE CitySmart.UserProfile SET '" + name + " = (" + value + ");"
-        // console.log(statement1);
-
+        console.log(update2);
+        let statement1 = update1+update2+update3;
+        console.log(statement1);
         con_CS.query(statement1, function (err, result) {
             if (err) {
                 throw err;
@@ -1078,38 +1064,52 @@ module.exports = function (app, passport) {
     });
 
     app.post('/replace', function (req, res) {
+
         let result = Object.keys(req.body).map(function (key) {
             return [String(key), req.body[key]];
         });
+        console.log(result);
         res.setHeader("Access-Control-Allow-Origin", "*");
 
-        let name = "";
-        let valueSubmit = "";
+        var update1 = "UPDATE CitySmart.Request_Form SET " ;
+        var update3 = " WHERE RID = '" + result[1][1] + "';";
+        let update2 = "";
 
+        for (let i = 0; i < result.length-3; i++) {
+            if (i === result.length - 4) {
+                update2 += result[i][0] + " = '" + result[i][1]+ "'";
+            } else {
+                update2 += result[i][0] + " = '" + result[i][1] + "', " ;
+            }
+        }
+
+        //
+        // let name = "";
+        let valueSubmit = "";
+        //
         for (let i = 0; i < result.length; i++) {
             if (i === result.length - 1) {
-                name += result[i][0];
+                // name += result[i][0];
                 valueSubmit += '"' + result[i][1] + '"';
             } else {
-                name += result[i][0] + ", ";
+                // name += result[i][0] + ", ";
                 valueSubmit += '"' + result[i][1] + '"' + ", ";
             }
         }
 
         let newImage = {
-            Layer_Uploader: "http://localhost:63342/NASACitySmart-V2/a/" + responseDataUuid,
+            Layer_Uploader: "http://localhost:63342/USGS_MapService/a/" + responseDataUuid,
             Layer_Uploader_name: responseDataUuid
         };
-        name += ", Layer_Uploader, Layer_Uploader_name";
+        // name += ", Layer_Uploader, Layer_Uploader_name";
         valueSubmit += ", '" + newImage.Layer_Uploader + "','" + newImage.Layer_Uploader_name + "'";
-        let filepathname = "http://localhost:63342/NASACitySmart-V2/a/" + responseDataUuid;
-        var valuearray = valueSubmit.split(",");
-        console.log(valuearray[3]);
-        let statement2 = 'UPDATE CitySmart.Request_Form SET Date = ' + valuearray[0] + ', RID = ' + valuearray[1] + ', UID = ' + valuearray[2] + ', FirstLayer = ' + valuearray[3] + ', FirstOther = ' + valuearray[4] + ', SecondLayer = ' + valuearray[5] + ', SecondOther = ' + valuearray[6] + ', LayerName = ' + valuearray[7] + ', CityName = ' +valuearray[8] + ', StateName = ' + valuearray[9] +  ', CountryName = ' +valuearray[10] + ', Layer_Description = ' + valuearray[11] + ', LayerFormat = ' + valuearray[12] +  ' WHERE RID =' + valuearray[1] + ';' ;
-        if(valuearray[3] === '"other"'){
-            console.log("work?");
-            let statement = "INSERT INTO CitySmart.LayerMenu VALUES (" + valuearray[7] + "," + valuearray[0] + "," + valuearray[4] + "," + valuearray[6] + "," + valuearray[7] + "," + valuearray[10] + "," + valuearray[8] + "," + valuearray[9] + ", 'Active');";
-            con_CS.query(statement2 + statement, function (err, result) {
+        let filepathname = "http://localhost:63342/USGS_MapService/a/" + responseDataUuid;
+        console.log(valueSubmit);
+        let statement1 = update1+update2+update3;
+        let statement2 = "UPDATE CitySmart.Request_Form SET Layer_Uploader = '" + valueSubmit[13] + "', 'Layer_Uploader_name = '" + valueSubmit[14] + "';";
+        if(result[4][2] === "other"){
+            let statement = "INSERT INTO CitySmart.LayerMenu VALUES (" + result[7][1] + "," + result[0][0] + "," + result[4][1] + "," + result[6][1] + "," + result[7][1] + "," + result[10][1] + "," + result[8][1] + "," + result[9][1] + ", 'Active');";
+            con_CS.query(statement1 + statement + statement2, function (err, result) {
                 if (err) {
                     throw err;
                 } else {
@@ -1117,9 +1117,9 @@ module.exports = function (app, passport) {
                 }
             });
         }else{
-            console.log("now?");
-            let statement = "INSERT INTO CitySmart.LayerMenu VALUES (" + valuearray[7] + "," + valuearray[0] + "," + valuearray[3] + "," + valuearray[5] + "," + valuearray[7] + "," + valuearray[10] + "," + valuearray[8] + "," + valuearray[9] + ", 'Active');";
-            con_CS.query(statement2 + statement, function (err, result) {
+            let statement = "INSERT INTO CitySmart.LayerMenu VALUES ('" + result[7][1] + "','" + result[0][1] + "','" + result[3][1] + "','" + result[5][1] + "','" + result[7][1] + "','" + result[10][1] + "','" + result[8][1] + "','" + result[9][1] + "', 'Active');";
+           console.log(statement1);
+            con_CS.query(statement1 + statement + statement2, function (err, result) {
                 if (err) {
                     throw err;
                 } else {
@@ -1952,19 +1952,19 @@ module.exports = function (app, passport) {
         })
     }
 
-function QueryStat(myObj, scoutingStat, res) {
-    // console.log(myObj);
-    let j = 0;
-    for (let i = 0; i < myObj.length; i++) {
-        //console.log("i = " + i);
-        // console.log(!!myObj[i].fieldVal);
+    function QueryStat(myObj, scoutingStat, res) {
+        // console.log(myObj);
+        let j = 0;
+        for (let i = 0; i < myObj.length; i++) {
+            //console.log("i = " + i);
+            console.log(!!myObj[i].fieldVal);
 
-        if (!!myObj[i].adj){
-            // console.log(i  + "   " + myObj[i].adj);
-            // if (i === 3 || i === 4 || i === 5) {
-            //     myObj[i].dbCol = myObj[i].dbCol.substring(1, myObj[i].dbCol.length);
-            //     myObj[i].table = parseInt(myObj[i].table.substring(0, 1));
-            // }
+            if (!!myObj[i].adj) {
+                console.log(i + "   " + myObj[i].adj);
+                // if (i === 3 || i === 4 || i === 5) {
+                //     myObj[i].dbCol = myObj[i].dbCol.substring(1, myObj[i].dbCol.length);
+                //     myObj[i].table = parseInt(myObj[i].table.substring(0, 1));
+                // }
 
                 let aw;
                 if (j === 0) {
