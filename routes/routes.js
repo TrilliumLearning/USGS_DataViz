@@ -309,7 +309,7 @@ module.exports = function (app, passport) {
         let pictureStr = req.query.pictureStr.split(',');
         // mover folder
         for(let i = 0; i < pictureStr.length; i++) {
-            fs.rename("./a/" + pictureStr[i] + "" , "./b/" + pictureStr[i] + "", function (err) {
+            fs.rename(''+ upload_Dir + pictureStr[i] + '' , '' + geoData_Dir + pictureStr[i] + '', function (err) {
                 if (err) {
                     console.log(err);
                 } else {
@@ -1048,7 +1048,7 @@ module.exports = function (app, passport) {
 
        // mover folder
         for(let i = 0; i < approvepictureStr.length; i++) {
-            fs.rename("./a/" + approvepictureStr[i] + "" , "./b/" + approvepictureStr[i] + "", function (err) {
+            fs.rename(''+ upload_Dir + pictureStr[i] + '' , '' + geoData_Dir + pictureStr[i] + '',  function (err) {
                 if (err) {
                     console.log(err);
                 } else {
@@ -1159,7 +1159,7 @@ module.exports = function (app, passport) {
         let pictureStr = req.query.pictureStr.split(',');
         for (let i = 0; i < transactionID.length; i++) {
             let statement = "UPDATE CitySmart.Request_Form SET Status = 'Delete' WHERE RID = '" + transactionID[i] + "'";
-            fs.rename("./b/" + pictureStr[i] + "" , "./a/" + pictureStr[i] + "", function (err) {
+            fs.rename(''+ geoData_Dir + pictureStr[i] + '' , '' + upload_Dir + pictureStr[i] + '',  function (err) {
                 if (err) {
                     console.log(err);
                 } else {
