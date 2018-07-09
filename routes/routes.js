@@ -463,48 +463,53 @@ module.exports = function (app, passport) {
         res.render('userProfile.ejs', {user: req.user});
     });
 
-    // // Update user profile page
-    // app.post('/userProfile', isLoggedIn, function (req, res) {
-    //     res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
-    //     let user = req.user;
-    //     let newPass = {
-    //         firstname: req.body.usernameF,
-    //         lastname: req.body.usernameL,
-    //         currentpassword: req.body.currentpassword,
-    //         Newpassword: bcrypt.hashSync(req.body.newpassword, null, null),
-    //         ConfirmPassword: bcrypt.hashSync(req.body.Confirmpassword, null, null)
-    //     };
-    //
-    //     dateNtime();
-    //
-    //     myStat = "UPDATE UserProfile SET firstName =?, lastName = ? ";
-    //     mylogin = "UPDATE UserLogin SET dateModified  = ? WHERE username = ? ";
-    //     myVal = [newPass.firstname, newPass.lastname, dateTime, user.username];
-    //
-    //     con_CS.query(myStat, myVal, mylogin, function (err, rows) {
-    //         if (err) {
-    //             console.log(err);
-    //             res.json({"error": true, "message": "Fail !"});
-    //         } else {
-    //             let passComp = bcrypt.compareSync(newPass.currentpassword, user.password);
-    //             if (!!req.body.newpassword && passComp) {
-    //                 let passReset = "UPDATE UserLogin SET password = '" + newPass.Newpassword + "' WHERE username = '" + user.username + "'";
-    //
-    //                 con_CS.query(passReset, function (err, rows) {
-    //                     //console.log(result);
-    //                     if (err) {
-    //                         console.log(err);
-    //                         res.json({"error": true, "message": "Fail !"});
-    //                     } else {
-    //                         res.json({"error": false, "message": "Success !"});
-    //                     }
-    //                 });
-    //             } else {
-    //                 res.json({"error": false, "message": "Success !"});
-    //             }
-    //         }
-    //     });
-    // });
+    // Update user profile page
+    app.post('/newPass', isLoggedIn, function (req, res) {
+        res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
+        let user = req.user;
+        let newPass = {
+            // firstname: req.body.usernameF,
+            // lastname: req.body.usernameL,
+            currentpassword: req.body.CurrentPassword,
+            Newpassword: bcrypt.hashSync(req.body.newpassword, null, null),
+            ConfirmPassword: bcrypt.hashSync(req.body.ConfirmNewPassword, null, null)
+        };
+        // console.log(newPass);
+
+        // dateNtime();
+
+        // myStat = "UPDATE UserProfile SET firstName =?, lastName = ? ";
+        // mylogin = "UPDATE UserLogin SET dateModified  = ? WHERE username = ? ";
+        // myVal = [newPass.firstname, newPass.lastname, dateTime, user.username];
+        //
+        // con_CS.query(myStat, myVal, mylogin, function (err, rows) {
+        //     if (err) {
+        //         console.log(err);
+        //         res.json({"error": true, "message": "Fail !"});
+        //     } else {
+        // console.log(user.password);
+        // console.log(newPass.currentpassword);
+        let passComp = bcrypt.compareSync(newPass.currentpassword, user.password);
+        console.log
+
+        if (!!req.body.newpassword && passComp) {
+            let passReset = "UPDATE UserLogin SET password = '" + newPass.Newpassword + "' WHERE username = '" + user.username + "'";
+
+            con_CS.query(passReset, function (err, rows) {
+                //console.log(result);
+                if (err) {
+                    console.log(err);
+                    res.json({"error": true, "message": "Fail !"});
+                } else {
+                    res.json({"error": false, "message": "Success !"});
+                }
+            });
+            //         } else {
+            //             res.json({"error": false, "message": "Success !"});
+            //         }
+        }
+    });
+
 
     // routes.post("/uploads", isLoggedIn, onUpload);
 
@@ -581,14 +586,14 @@ module.exports = function (app, passport) {
         });
     });
 
-        // show the addUser form
-        app.get('/addUser', isLoggedIn, function (req, res) {
-            // render the page and pass in any flash data if it exists
-            res.render('addUser.ejs', {
-                user: req.user,
-                message: req.flash('addUserMessage')
-            });
+    // show the addUser form
+    app.get('/addUser', isLoggedIn, function (req, res) {
+        // render the page and pass in any flash data if it exists
+        res.render('addUser.ejs', {
+            user: req.user,
+            message: req.flash('addUserMessage')
         });
+    });
 
     app.post('/addUser', isLoggedIn, function (req, res) {
 
@@ -909,6 +914,11 @@ module.exports = function (app, passport) {
         let statement1 = update1+update2+update3;
         console.log(statement1);
         con_CS.query(statement1, function (err, result) {
+        // console.log(update2);
+        let statement1 = update1+update2+update3;
+        // let statement2 = "UPDATE CitySmart.UserLogin SET password = '" + newpassword + "' WHERE username = '" + req.user.username + "';";
+        // console.log(statement1);
+        con_CS.query(statement1 , function (err, result) {
             if (err) {
                 throw err;
             } else {
@@ -1046,7 +1056,7 @@ module.exports = function (app, passport) {
 
         let statement = "UPDATE CitySmart.Request_Form SET Status = 'Active' WHERE RID = '" + approveIDStr + "'";
 
-       // mover folder
+        // mover folder
         for(let i = 0; i < approvepictureStr.length; i++) {
             fs.rename(''+ upload_Dir + pictureStr[i] + '' , '' + geoData_Dir + pictureStr[i] + '',  function (err) {
                 if (err) {
@@ -1068,7 +1078,7 @@ module.exports = function (app, passport) {
         let result = Object.keys(req.body).map(function (key) {
             return [String(key), req.body[key]];
         });
-        console.log(result);
+        // console.log(result);
         res.setHeader("Access-Control-Allow-Origin", "*");
 
         var update1 = "UPDATE CitySmart.Request_Form SET " ;
@@ -1086,7 +1096,7 @@ module.exports = function (app, passport) {
         //
         // let name = "";
         let valueSubmit = "";
-        //
+
         for (let i = 0; i < result.length; i++) {
             if (i === result.length - 1) {
                 // name += result[i][0];
@@ -2172,14 +2182,14 @@ module.exports = function (app, passport) {
     function onDeleteFile(req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
 
-    let uuid = req.params.uuid,
-        dirToDelete = "a/" + uuid;
-    console.log(uuid);
-    rimraf(dirToDelete, function(error) {
-        if (error) {
-            console.error("Problem deleting file! " + error);
-            res.status(500);
-        }
+        let uuid = req.params.uuid,
+            dirToDelete = "a/" + uuid;
+        console.log(uuid);
+        rimraf(dirToDelete, function(error) {
+            if (error) {
+                console.error("Problem deleting file! " + error);
+                res.status(500);
+            }
 
             res.send();
         });
@@ -2217,11 +2227,11 @@ module.exports = function (app, passport) {
         });
     }
 
-function moveUploadedFile(file, uuid, success, failure) {
-    console.log("this is: " + uuid);
-    // let destinationDir = uploadedFilesPath + uuid + "/",
-    let destinationDir = "a/",
-        fileDestination = destinationDir + uuid + "_" + file.name;
+    function moveUploadedFile(file, uuid, success, failure) {
+        console.log("this is: " + uuid);
+        // let destinationDir = uploadedFilesPath + uuid + "/",
+        let destinationDir = "a/",
+            fileDestination = destinationDir + uuid + "_" + file.name;
 
         moveFile(destinationDir, file.path, fileDestination, success, failure);
     }

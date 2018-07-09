@@ -369,7 +369,7 @@
         element: document.getElementById("uploader"),
         // debug: true,
         request: {
-            endpoint: 'http://localhost:9086/upload'
+            endpoint: 'http://localhost:9085/upload'
         },
         cors: {
             //all requests are expected to be cross-domain requests
@@ -380,7 +380,7 @@
         },
         deleteFile: {
             enabled: true, // defaults to false
-            endpoint: 'http://localhost:9086/deleteFiles'
+            endpoint: 'http://localhost:9085/deleteFiles'
         },
         callbacks: {
             onComplete: function (id, name, responseJSON) {
@@ -413,7 +413,7 @@
         var data =$("#layer").serialize();
         console.log(data);
         $.ajax({
-            url  : 'http://localhost:9086/submitL',
+            url  : 'http://localhost:9085/submitL',
             method : "post",
             data : data,
             dataType: 'json',
@@ -486,7 +486,7 @@
 
     function SearchLayerName(value){
         $.ajax({
-            url: "http://localhost:9086/SearchLayerName",
+            url: "http://localhost:9085/SearchLayerName",
             dataType:"json",
             success: function (results) {
                 for(var i = 0; i < results.length; i++) {

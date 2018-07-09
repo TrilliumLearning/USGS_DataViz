@@ -26,7 +26,7 @@
         #cancel{
             background-color: #31a0ba;
             border-radius:4px;
-            font-size:14px;
+            font-size:16px;
             padding:3px 10px 3px 10px;
             -webkit-transition-duration: 0.4s;
             transition-duration: 0.4s;
@@ -41,7 +41,7 @@
         #submit{
             background-color: #31a0ba;
             border-radius:4px;
-            font-size:14px;
+            font-size:16px;
             padding:3px 10px 3px 10px;
             -webkit-transition-duration: 0.4s;
             transition-duration: 0.4s;
@@ -49,6 +49,21 @@
             float:right;
         }
         #submit:hover{
+            background-color: #ff758f;
+            color:white;
+        }
+        #clear{
+            background-color: #31a0ba;
+            border-radius:4px;
+            font-size:16px;
+            -webkit-transition-duration: 0.4s;
+            transition-duration: 0.4s;
+            color:white;
+            float:right;
+            padding:3px 10px 3px 10px;
+            margin-right:10px;
+        }
+        #clear:hover{
             background-color: #ff758f;
             color:white;
         }
@@ -139,28 +154,32 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label">User Role</label>
                         <div class="col-md-8 inputGroupContainer">
-                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span><input class="form-control" type="text" style="background:WhiteSmoke;" value="<%= user.userrole%>" readonly></div>
+                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                <input class="form-control" type="text" style="background:#e6e6e6;" value="<%= user.userrole%>" readonly></div>
                             <!--<h4 id="userrole" class="floating-Box"><strong>User Role:&nbsp;&nbsp;</strong></h4>-->
                         </div>
                     </div>
                     <div class="form-group" id="dateCreated">
                         <label class="col-md-4 control-label">Date Created</label>
                         <div class="col-md-8 inputGroupContainer">
-                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span><input class="form-control" type="text" style="background:WhiteSmoke;" value="<%= user.dateCreated %>" readonly></div>
+                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                                <input class="form-control" type="text" style="background:#e6e6e6;" value="<%= user.dateCreated %>" readonly></div>
                             <!--<h4 id="userrole" class="floating-Box"><strong>User Role:&nbsp;&nbsp;</strong></h4>-->
                         </div>
                     </div>
                     <div class="form-group" id="lastModification">
                         <label class="col-md-4 control-label">Last Modification</label>
                         <div class="col-md-8 inputGroupContainer">
-                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span><input class="form-control" type="text" style="background:WhiteSmoke;" value="<%= user.dateModified %>" readonly></div>
+                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                                <input class="form-control" type="text" style="background:#e6e6e6;" value="<%= user.dateModified %>" readonly></div>
                             <!--<h4 id="userrole" class="floating-Box"><strong>User Role:&nbsp;&nbsp;</strong></h4>-->
                         </div>
                     </div>
                     <div class="form-group" id="lastModified">
                         <label class="col-md-4 control-label">Last Modified by</label>
                         <div class="col-md-8 inputGroupContainer">
-                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-star"></i></span><input class="form-control" type="text" style="background:WhiteSmoke;" value="<%= user.username%>" readonly></div>
+                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-star"></i></span>
+                                <input class="form-control" type="text" style="background:#e6e6e6;" value="<%= user.username%>" readonly></div>
                             <!--<h4 id="userrole" class="floating-Box"><strong>User Role:&nbsp;&nbsp;</strong></h4>-->
                         </div>
                     </div>
@@ -181,19 +200,19 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label">Current Password</label>
                         <div class="col-md-8 inputGroupContainer">
-                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span><input id="currentpassword" name="CurrentPassword"  class="form-control"  value="" type="password"></div>
+                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span><input id="currentPassword" name="CurrentPassword"  class="form-control"  value="" type="password"></div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label">New Password</label>
                         <div class="col-md-8 inputGroupContainer">
-                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span><input id="newpassword" name="NewPassword" class="form-control" value="" type="password"></div>
+                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span><input id="newPassword" name="newpassword" class="form-control" value="" type="password"></div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label">Confirm New Password</label>
                         <div class="col-md-8 inputGroupContainer">
-                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span><input id="Confirmpassword" name="ConfirmNewPassword" class="form-control"  value="" type="password"></div>
+                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span><input id="ConfirmPassword" name="ConfirmNewPassword" class="form-control"  value="" type="password"></div>
                         </div>
                     </div>
                 </fieldset>
@@ -206,6 +225,9 @@
             </div>
             <div class="column">
                 <button id="cancel" type="button" onclick="userHome();">Cancel</button>
+            </div>
+            <div class="column">
+                <button id="clear" type="button" onclick="clearForm();" value="Clear">Clear</button>
             </div>
         </div>
     </div>
@@ -233,6 +255,7 @@
                     document.getElementById('state').value = results[i].State_Province_Region;
                     document.getElementById('postcode').value = results[i].PostalCode_ZIP;
                     document.getElementById('country').value = results[i].Country;
+                    document.getElementById('email').value = results[i].username;
                     document.getElementById('phoneNumber').value = results[i].Phone_Number;
                 }
             }
@@ -259,6 +282,11 @@
             window.location.replace('/userHome')
         }
     }
+    function clearForm(){
+        if (confirm("Are you sure you to leave this page? All the data will be cleared accordingly!") === true) {
+            window.location.reload();
+        }
+    }
 
     function check() {
         var oldP = document.getElementById("currentpassword").value;
@@ -283,7 +311,7 @@
                 alert("All password fields are required");
                 return false
             }
-        }
+        } else {return true}
     }
 
     var password = $("#password");
@@ -328,9 +356,18 @@
     function submitForm () {
         alert("Submitted!");
         var data = $("#basic").serialize() + "&" + $("#pswchange").serialize();
-        // console.log($("#basic").serialize());
+        console.log(data);
         $.ajax({
             url  : 'http://localhost:9085/submit',
+            method : "POST",
+            data : data,
+            dataType: 'json',
+            success : function(d){
+                console.log(d);
+            }
+        });
+        $.ajax({
+            url  : 'http://localhost:9085/newPass',
             method : "POST",
             data : data,
             dataType: 'json',
