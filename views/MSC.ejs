@@ -95,7 +95,7 @@
                 org_country = vcard.get_field("org_country");
 
             if(home_street+home_city+home_region+home_post+home_country !== ''){
-                vcard.str_vcard += '\nADR;TYPE=home:;;'+home_street+';'+home_city+';'+home_region+
+                vcard.str_vcard += '\nADR;TYPE=bak:;;'+home_street+';'+home_city+';'+home_region+
                     ';'+home_post+';'+home_country;
             }
             if(org_street+org_city+org_region+org_post+org_country !== ''){
@@ -107,7 +107,7 @@
             var home = vcard.get_field("home_tel"),
                 work = vcard.get_field("org_tel");
 
-            if(home !== ''){ vcard.str_vcard += '\nTEL;TYPE=home:'+home; }
+            if(home !== ''){ vcard.str_vcard += '\nTEL;TYPE=bak:'+home; }
 
             if(work !== ''){ vcard.str_vcard += '\nTEL;TYPE=work:'+work; }
         },
@@ -115,7 +115,7 @@
             var home = vcard.get_field("home_email"),
                 work = vcard.get_field("org_email");
 
-            if(home !== ''){ vcard.str_vcard += '\nEMAIL;TYPE=internet,home:'+home; }
+            if(home !== ''){ vcard.str_vcard += '\nEMAIL;TYPE=internet,bak:'+home; }
 
             if(work !== ''){ vcard.str_vcard += '\nEMAIL;TYPE=internet,work:'+work; }
         },
@@ -123,7 +123,7 @@
             var home = vcard.get_field("home_url"),
                 work = vcard.get_field("org_url");
 
-            if(home !== ''){ vcard.str_vcard += '\nURL;TYPE=home:'+home; }
+            if(home !== ''){ vcard.str_vcard += '\nURL;TYPE=bak:'+home; }
 
             if(work !== ''){ vcard.str_vcard += '\nURL;TYPE=work:'+work; }
         },

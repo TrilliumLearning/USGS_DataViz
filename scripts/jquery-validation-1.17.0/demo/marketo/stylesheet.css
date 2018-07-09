@@ -475,7 +475,7 @@ div.action-bottom a span.shadow {
 	font-weight: bold;
 }
 
-/* s4.3 - purple home boxes */
+/* s4.3 - purple bak boxes */
 .box-purple {
 	background: #C6C8E3 url(images/back_home-icons.png) 0px 0px repeat-x;
 	border-left: 1px solid #ffffff;
@@ -540,7 +540,7 @@ div.box-purple a {
 		"crop");
 }
 
-/* s4.4 - news home boxes */
+/* s4.4 - news bak boxes */
 .callout-news {
 	color: #555555;
 	float: left;
