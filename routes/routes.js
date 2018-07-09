@@ -309,7 +309,7 @@ module.exports = function (app, passport) {
         let pictureStr = req.query.pictureStr.split(',');
         // mover folder
         for(let i = 0; i < pictureStr.length; i++) {
-            fs.rename(''+ upload_Dir + pictureStr[i] + '' , '' + geoData_Dir + pictureStr[i] + '', function (err) {
+            fs.rename('./'+ upload_Dir + pictureStr[i] + '' , './' + geoData_Dir + pictureStr[i] + '', function (err) {
                 if (err) {
                     console.log(err);
                 } else {
@@ -900,32 +900,25 @@ module.exports = function (app, passport) {
         // console.log (result);
         res.setHeader("Access-Control-Allow-Origin", "*");
 
-        var update1 = "UPDATE CitySmart.UserProfile SET " ;
+        var update1 = "UPDATE CitySmart.UserProfile SET ";
         var update3 = " WHERE username = '" + req.user.username + "'";
         let update2 = "";
-        for (let i = 0; i < result.length-3; i++) {
+        for (let i = 0; i < result.length - 3; i++) {
             if (i === result.length - 4) {
-                update2 += result[i][0] + " = '" + result[i][1]+ "'";
+                update2 += result[i][0] + " = '" + result[i][1] + "'";
             } else {
-                update2 += result[i][0] + " = '" + result[i][1] + "', " ;
+                update2 += result[i][0] + " = '" + result[i][1] + "', ";
             }
         }
-        console.log(update2);
-        let statement1 = update1+update2+update3;
-        console.log(statement1);
+        let statement1 = update1 + update2 + update3;
+
         con_CS.query(statement1, function (err, result) {
-        // console.log(update2);
-        let statement1 = update1+update2+update3;
-        // let statement2 = "UPDATE CitySmart.UserLogin SET password = '" + newpassword + "' WHERE username = '" + req.user.username + "';";
-        // console.log(statement1);
-        con_CS.query(statement1 , function (err, result) {
             if (err) {
                 throw err;
             } else {
                 res.json("Connected!")
             }
         });
-
     });
 
     //Submit Request form//
@@ -1058,7 +1051,7 @@ module.exports = function (app, passport) {
 
         // mover folder
         for(let i = 0; i < approvepictureStr.length; i++) {
-            fs.rename(''+ upload_Dir + pictureStr[i] + '' , '' + geoData_Dir + pictureStr[i] + '',  function (err) {
+            fs.rename('./'+ upload_Dir + pictureStr[i] + '' , './' + geoData_Dir + pictureStr[i] + '',  function (err) {
                 if (err) {
                     console.log(err);
                 } else {
@@ -1169,7 +1162,7 @@ module.exports = function (app, passport) {
         let pictureStr = req.query.pictureStr.split(',');
         for (let i = 0; i < transactionID.length; i++) {
             let statement = "UPDATE CitySmart.Request_Form SET Status = 'Delete' WHERE RID = '" + transactionID[i] + "'";
-            fs.rename(''+ geoData_Dir + pictureStr[i] + '' , '' + upload_Dir + pictureStr[i] + '',  function (err) {
+            fs.rename('./'+ geoData_Dir + pictureStr[i] + '' , './' + upload_Dir + pictureStr[i] + '',  function (err) {
                 if (err) {
                     console.log(err);
                 } else {
