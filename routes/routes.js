@@ -45,26 +45,21 @@ module.exports = function (app, passport) {
     // =====================================
     // CS APP Home Section =================
     // =====================================
+    app.get('/',function (req,res) {
+        res.render('homepage.ejs');
+    });
+
     app.get('/app', function (req, res) {
         res.render('USGS.ejs');
+    });
+
+    app.get('/request',function (req,res) {
+        res.render('login.ejs');
     });
 
     // =====================================
     // LOGIN Section =======================
     // =====================================
-
-    app.get('/USGS',function (req,res) {
-        res.render('USGS.ejs');
-    });
-
-    app.get('/page?',function (req,res) {
-        res.render('Page??.ejs');
-    });
-
-    app.get('/request', function (req, res) {
-        res.redirect('/login');
-    });
-
     // show the login form
     app.get('/login', function (req, res) {
 
