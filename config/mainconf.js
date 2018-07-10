@@ -26,9 +26,9 @@ module.exports = {
 
     'Upload_Path': 'http://usgs.aworldbridgelabs.com/uploadfiles',
     // 'Upload_Dir': '/var/www/usgs/uploadfiles',
-    'Upload_Dir': '/var/www/usgs/uploadfiles',
+    'Upload_Dir': 'uploadfiles',
 
     // 'GeoData_Dir': '/usr/share/worldwind-geoserver-0.2.1/data_dir/data/USGS'
-    'GeoData_Dir': '/usr/share/worldwind-geoserver-0.2.1/data_dir/data/USGS'
+    'GeoData_Dir':'b',
 
 };

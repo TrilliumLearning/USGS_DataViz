@@ -2,7 +2,7 @@ $(document).ready(function () {
     var x = document.getElementById("myListCountry");
     var option = document.createElement("option");
     $.ajax({
-        url: "http://localhost:9090/CountryList",
+        url: "http://localhost:9085/CountryList",
         dataType: 'json',
         success: function (results) {
             console.log(results);
@@ -69,7 +69,7 @@ function ChangeSelectList(countrylevel) {
         stateList.remove(0);
     }
     $.ajax({
-        url: "http://localhost:9090/StateList",
+        url: "http://localhost:9085/StateList",
         dataType: 'json',
         success: function (results) {
             console.log(results);
@@ -101,7 +101,7 @@ function ChangeStateList(statelevel) {
         cityList.remove(0);
     }
     $.ajax({
-        url: "http://localhost:9090/ChangeCityName",
+        url: "http://localhost:9085/ChangeCityName",
         dataType: 'json',
         success: function (results) {
             // console.log(results);
