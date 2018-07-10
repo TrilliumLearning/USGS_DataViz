@@ -393,7 +393,7 @@ module.exports = function (app, passport) {
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
 
-    // Show user management home page
+    // Show user management bak page
     app.get('/userManagement', isLoggedIn, function (req, res) {
         myStat = "SELECT userrole FROM Users WHERE username = '" + req.user.username + "';";
 
@@ -1871,7 +1871,7 @@ function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
         return next();
 
-    // if they aren't redirect them to the home page
+    // if they aren't redirect them to the bak page
     res.redirect('/');
 }
 

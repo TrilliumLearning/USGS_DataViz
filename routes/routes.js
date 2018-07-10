@@ -45,21 +45,21 @@ module.exports = function (app, passport) {
     // =====================================
     // CS APP Home Section =================
     // =====================================
+    app.get('/',function (req,res) {
+        res.render('homepage.ejs');
+    });
+
     app.get('/app', function (req, res) {
-        res.render('CitySmartV2.ejs');
+        res.render('USGS.ejs');
+    });
+
+    app.get('/request',function (req,res) {
+        res.render('login.ejs');
     });
 
     // =====================================
     // LOGIN Section =======================
     // =====================================
-
-    app.get('/request', function (req, res) {
-        res.redirect('/login');
-    });
-
-    app.get('/USGS',function (req,res) {
-        res.render('CitySmartV2.ejs');
-    })
     // show the login form
     app.get('/login', function (req, res) {
 
@@ -229,7 +229,7 @@ module.exports = function (app, passport) {
         let pictureStr = req.query.pictureStr.split(',');
         // mover folder
         for(let i = 0; i < pictureStr.length; i++) {
-            fs.rename("./a/" + pictureStr[i] + "" , "./b/" + pictureStr[i] + "", function (err) {
+            fs.rename(''+ upload_Dir + '/' + pictureStr[i] + '' , '' + geoData_Dir + '/' + pictureStr[i] + '', function (err) {
                 if (err) {
                     console.log(err);
                 } else {
@@ -410,7 +410,6 @@ module.exports = function (app, passport) {
         // console.log(user.password);
         // console.log(newPass.currentpassword);
         let passComp = bcrypt.compareSync(newPass.currentpassword, user.password);
-        console.log
 
         if (!!req.body.newpassword && passComp) {
             let passReset = "UPDATE UserLogin SET password = '" + newPass.Newpassword + "' WHERE username = '" + user.username + "'";
@@ -437,7 +436,7 @@ module.exports = function (app, passport) {
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
 
-    // Show user management home page
+    // Show user management bak page
     app.get('/userManagement', isLoggedIn, function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*");
 
@@ -486,8 +485,8 @@ module.exports = function (app, passport) {
             status: req.body.status
         };
         // console.log(newUser);
-        myStat = "INSERT INTO CitySmart.UserLogin ( username, password, userrole, dateCreated, dateModified, createdUser, status) VALUES ( '" + newUser.username + "','" + newUser.password+ "','" + newUser.userrole+ "','" + newUser.dateCreated+ "','" + newUser.dateModified+ "','" + newUser.createdUser + "','" + newUser.status + "');";
-        mylogin = "INSERT INTO CitySmart.UserProfile ( username, firstName, lastName) VALUES ('"+ newUser.username + "','" + newUser.firstName+ "','" + newUser.lastName + "');";
+        myStat = "INSERT INTO USGS.UserLogin ( username, password, userrole, dateCreated, dateModified, createdUser, status) VALUES ( '" + newUser.username + "','" + newUser.password+ "','" + newUser.userrole+ "','" + newUser.dateCreated+ "','" + newUser.dateModified+ "','" + newUser.createdUser + "','" + newUser.status + "');";
+        mylogin = "INSERT INTO USGS.UserProfile ( username, firstName, lastName) VALUES ('"+ newUser.username + "','" + newUser.firstName+ "','" + newUser.lastName + "');";
         con_CS.query(myStat + mylogin, function (err, rows) {
             //newUser.id = rows.insertId;
             if (err) {
@@ -530,8 +529,8 @@ module.exports = function (app, passport) {
             status: req.body.status
         };
 
-        myStat = "INSERT INTO CitySmart.UserLogin ( username, password, userrole, dateCreated, dateModified, createdUser, status) VALUES ( '" + newUser.username + "','" + newUser.password+ "','" + newUser.userrole+ "','" + newUser.dateCreated+ "','" + newUser.dateModified+ "','" + newUser.createdUser + "','" + newUser.status + "');";
-        mylogin = "INSERT INTO CitySmart.UserProfile ( username, firstName, lastName) VALUES ('"+ newUser.username + "','" + newUser.firstName+ "','" + newUser.lastName + "');";
+        myStat = "INSERT INTO USGS.UserLogin ( username, password, userrole, dateCreated, dateModified, createdUser, status) VALUES ( '" + newUser.username + "','" + newUser.password+ "','" + newUser.userrole+ "','" + newUser.dateCreated+ "','" + newUser.dateModified+ "','" + newUser.createdUser + "','" + newUser.status + "');";
+        mylogin = "INSERT INTO USGS.UserProfile ( username, firstName, lastName) VALUES ('"+ newUser.username + "','" + newUser.firstName+ "','" + newUser.lastName + "');";
         con_CS.query(myStat + mylogin, function (err, rows) {
             //newUser.id = rows.insertId;
             if (err) {
@@ -818,29 +817,25 @@ module.exports = function (app, passport) {
         // console.log (result);
         res.setHeader("Access-Control-Allow-Origin", "*");
 
-        var update1 = "UPDATE CitySmart.UserProfile SET ";
-        var update3 = " WHERE username = '" + req.user.username + "';";
-        // var newpassword = bcrypt.hashSync(req.body.password, null, null);
+        var update1 = "UPDATE USGS.UserProfile SET ";
+        var update3 = " WHERE username = '" + req.user.username + "'";
         let update2 = "";
-        for (let i = 0; i < result.length-3; i++) {
+        for (let i = 0; i < result.length - 3; i++) {
             if (i === result.length - 4) {
-                update2 += result[i][0] + " = '" + result[i][1]+ "'";
+                update2 += result[i][0] + " = '" + result[i][1] + "'";
             } else {
-                update2 += result[i][0] + " = '" + result[i][1] + "', " ;
+                update2 += result[i][0] + " = '" + result[i][1] + "', ";
             }
         }
-        // console.log(update2);
-        let statement1 = update1+update2+update3;
-        // let statement2 = "UPDATE CitySmart.UserLogin SET password = '" + newpassword + "' WHERE username = '" + req.user.username + "';";
-        // console.log(statement1);
-        con_CS.query(statement1 , function (err, result) {
+        let statement1 = update1 + update2 + update3;
+
+        con_CS.query(statement1, function (err, result) {
             if (err) {
                 throw err;
             } else {
                 res.json("Connected!")
             }
         });
-
     });
 
     //Submit Request form//
@@ -872,7 +867,7 @@ module.exports = function (app, passport) {
         let filepathname = "http://localhost:63342/USGS_MapService/uploadfiles/" + responseDataUuid;
 
 
-        let statement2 = "INSERT INTO CitySmart.Request_Form (" + name + ") VALUES (" + valueSubmit + ");";
+        let statement2 = "INSERT INTO USGS.Request_Form (" + name + ") VALUES (" + valueSubmit + ");";
         // console.log(statement2);
 
         con_CS.query(statement2, function (err, result) {
@@ -969,11 +964,11 @@ module.exports = function (app, passport) {
         let approveIDStr = req.query.tID;
         let approvepictureStr = req.query.LUN.split(',');
 
-        let statement = "UPDATE CitySmart.Request_Form SET Status = 'Active' WHERE RID = '" + approveIDStr + "'";
+        let statement = "UPDATE USGS.Request_Form SET Status = 'Active' WHERE RID = '" + approveIDStr + "'";
 
         // mover folder
         for(let i = 0; i < approvepictureStr.length; i++) {
-            fs.rename("./a/" + approvepictureStr[i] + "" , "./b/" + approvepictureStr[i] + "", function (err) {
+            fs.rename(''+ upload_Dir +'/' + approvepictureStr[i] + '' , '' + geoData_Dir + '/' + approvepictureStr[i] + '',  function (err) {
                 if (err) {
                     console.log(err);
                 } else {
@@ -994,7 +989,7 @@ module.exports = function (app, passport) {
         });
         res.setHeader("Access-Control-Allow-Origin", "*");
 
-        var update1 = "UPDATE CitySmart.Request_Form SET " ;
+        var update1 = "UPDATE USGS.Request_Form SET " ;
         var update3 = " WHERE RID = '" + result[1][1] + "';";
         let update2 = "";
 
@@ -1019,16 +1014,16 @@ module.exports = function (app, passport) {
         }
 
         let newImage = {
-            Layer_Uploader: "http://localhost:9085/USGS_MapService/a/" + responseDataUuid,
+            Layer_Uploader: "http://localhost:63342/USGS_MapService/a/" + responseDataUuid,
             Layer_Uploader_name: responseDataUuid
         };
         valueSubmit += ", '" + newImage.Layer_Uploader + "','" + newImage.Layer_Uploader_name + "'";
         let filepathname = "http://localhost:63342/USGS_MapService/uploadfiles/" + responseDataUuid;
         console.log(valueSubmit);
         let statement1 = update1+update2+update3;
-        let statement2 = "UPDATE CitySmart.Request_Form SET Layer_Uploader = '" + valueSubmit[13] + "', 'Layer_Uploader_name = '" + valueSubmit[14] + "';";
+        let statement2 = "UPDATE USGS.Request_Form SET Layer_Uploader = '" + valueSubmit[13] + "', 'Layer_Uploader_name = '" + valueSubmit[14] + "';";
         if(result[4][2] === "other"){
-            let statement = "INSERT INTO CitySmart.LayerMenu VALUES (" + result[7][1] + "," + result[0][0] + "," + result[4][1] + "," + result[6][1] + "," + result[7][1] + "," + result[10][1] + "," + result[8][1] + "," + result[9][1] + ", 'Active');";
+            let statement = "INSERT INTO USGS.LayerMenu VALUES (" + result[7][1] + "," + result[0][0] + "," + result[4][1] + "," + result[6][1] + "," + result[7][1] + "," + result[10][1] + "," + result[8][1] + "," + result[9][1] + ", 'Active');";
             con_CS.query(statement1 + statement + statement2, function (err, result) {
                 if (err) {
                     throw err;
@@ -1037,7 +1032,7 @@ module.exports = function (app, passport) {
                 }
             });
         }else{
-            let statement = "INSERT INTO CitySmart.LayerMenu VALUES ('" + result[7][1] + "','" + result[0][1] + "','" + result[3][1] + "','" + result[5][1] + "','" + result[7][1] + "','" + result[10][1] + "','" + result[8][1] + "','" + result[9][1] + "', 'Active');";
+            let statement = "INSERT INTO USGS.LayerMenu VALUES ('" + result[7][1] + "','" + result[0][1] + "','" + result[3][1] + "','" + result[5][1] + "','" + result[7][1] + "','" + result[10][1] + "','" + result[8][1] + "','" + result[9][1] + "', 'Active');";
            con_CS.query(statement1 + statement + statement2, function (err, result) {
                 if (err) {
                     throw err;
@@ -1077,8 +1072,8 @@ module.exports = function (app, passport) {
         let transactionID = req.query.transactionIDStr.split(',');
         let pictureStr = req.query.pictureStr.split(',');
         for (let i = 0; i < transactionID.length; i++) {
-            let statement = "UPDATE CitySmart.Request_Form SET Status = 'Delete' WHERE RID = '" + transactionID[i] + "'";
-            fs.rename("./b/" + pictureStr[i] + "" , "./uploadfiles/" + pictureStr[i] + "", function (err) {
+            let statement = "UPDATE USGS.Request_Form SET Status = 'Delete' WHERE RID = '" + transactionID[i] + "'";
+            fs.rename(''+ geoData_Dir + '/' + pictureStr[i] + '' , '' + upload_Dir + '/' + pictureStr[i] + '',  function (err) {
                 if (err) {
                     console.log(err);
                 } else {
@@ -1151,22 +1146,6 @@ module.exports = function (app, passport) {
             res.json(results);
             console.log(results);
         });
-    });
-
-//Delete button
-    app.get('/deleteData', function (req, res) {
-        res.setHeader("Access-Control-Allow-Origin", "*");
-        let transactionID = req.query.transactionIDStr.split(',');
-        console.log(transactionID);
-        for (let i = 0; i < transactionID.length; i++) {
-            let statement = "UPDATE CitySmart.GeneralFormDatatable SET Status = 'Delete' WHERE ID = '" + transactionID[i] + "'";
-            // console.log(statement);
-            con_CS.query(statement, function (err, results) {
-                if (err) throw err;
-                res.json(results[i]);
-            });
-        }
-
     });
 
 //AddData in table
@@ -1279,7 +1258,7 @@ module.exports = function (app, passport) {
     app.get('/createlayer', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*");
 
-        con_CS.query("SELECT * From CitySmart.LayerMenu", function (err, result) {
+        con_CS.query("SELECT * From USGS.LayerMenu", function (err, result) {
             console.log("recive and processing");
 
             let JSONresult = JSON.stringify(result, null, "\t");
@@ -1311,7 +1290,7 @@ module.exports = function (app, passport) {
         if (req.isAuthenticated())
             return next();
 
-        // if they aren't redirect them to the home page
+        // if they aren't redirect them to the bak page
         res.redirect('/');
     }
 
@@ -1524,8 +1503,7 @@ function QueryStat(myObj, scoutingStat, res) {
         responseDataUuid = "";
 
         let d = new Date(),
-            uuid = d.getUTCFullYear() + "-" + ('0' + (d.getUTCMonth() + 1)).slice(-2) + "-" + ('0' + d.getUTCDate()).slice(-2) + "T" + ('0' + d.getUTCHours()).slice(-2) + ":" + ('0' + d.getUTCMinutes()).slice(-2) + ":" + ('0' + d.getUTCSeconds()).slice(-2) + "Z";
-            console.log(uuid);
+            uuid = d.getUTCFullYear() + "-" + ('0' + (d.getUTCMonth() + 1)).slice(-2) + "-" + ('0' + d.getUTCDate()).slice(-2) + "T" + ('0' + d.getUTCHours()).slice(-2) + ":" + ('0' + d.getUTCMinutes()).slice(-2) + ":" + ('0' + d.getUTCSeconds()).slice(-2) + "Z",
             responseData = {
                 success: false,
                 newuuid: uuid + "_" + fields.qqfilename

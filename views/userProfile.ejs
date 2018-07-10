@@ -74,7 +74,7 @@
 <body>
 
 <div class = "container">
-    <a href="//aworldbridge.com"><img class="banner" src="../pic/NewWBBanner.jpg"/></a>
+    <a href="//aworldbridge.com"><img class="banner" src="../images/NewWBBanner.jpg"/></a>
     <!--<ul id="userMenu" class="dropdown-menu dropdown-menu-right">-->
     <!--</ul>-->
     <div id="container">
@@ -297,7 +297,7 @@
                 if (oldP != newP) {
                     if (newP == confirmP) {
                         alert("You can submit now!");
-                        return false
+                        return true
                     } else {
                         alert("New password are not matched!");
                         return false
@@ -337,25 +337,9 @@
         }
     }
 
-    // $(document).ready(function(){
-    //     if (UserRole === "Admin") {
-    //         DropMenu = "<li><a href=\"/userprofile\">Profile</a></li>\n" +
-    //             "\t\t\t<li><a href=\"/userManagement\">User Management</a></li>\n" +
-    //             "\t\t\t<li><a href=\"/signout\">Sign Out</a></li>";
-    //         $("#userMenu").empty();
-    //         $("#userMenu").append(DropMenu)
-    //     } else if ( UserRole === "Regular") {
-    //         DropMenu = "<li><a href=\"/userprofile\">Profile</a></li>\n" +
-    //             "\t\t\t<li><a href=\"/signout\">Sign Out</a></li>";
-    //         $("#userMenu").empty();
-    //         $("#userMenu").append(DropMenu)
-    //     }
-    // });
-
     function submitForm () {
         alert("Submitted!");
         var data = $("#basic").serialize() + "&" + $("#pswchange").serialize();
-        // console.log($("#basic").serialize());
         console.log(data);
         $.ajax({
             url  : 'http://localhost:9085/submit',
