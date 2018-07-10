@@ -26,7 +26,7 @@ let today, date2, date3, time2, time3, dateTime, tokenExpire;
 const smtpTrans = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
-        user: 'aaaa.zhao@g.feitianacademy.org',
+        user: 'azhao@northernacademy.org',
         pass: "12344321"
     }
 });
@@ -171,7 +171,7 @@ module.exports = function (app, passport) {
             }, function (user, done, err) {
 
                 let message = {
-                    from: 'FTAA <aaaa.zhao@g.feitianacademy.org>',
+                    from: 'FTAA <azhao@northernacademy.org>',
                     to: req.body.username,
                     subject: 'Your password has been changed',
                     text: 'Hello,\n\n' +
@@ -506,7 +506,7 @@ module.exports = function (app, passport) {
     // show the addUser form
     app.get('/addUser', isLoggedIn, function (req, res) {
         // render the page and pass in any flash data if it exists
-        res.render('addUser.ejs', {
+        res.render('signup.ejs', {
             user: req.user,
             message: req.flash('addUserMessage')
         });
@@ -1713,7 +1713,7 @@ function sendToken(username, subject, text, url, res) {
         function(done) {
             crypto.randomBytes(20, function(err, buf) {
                 token = buf.toString('hex');
-                tokenExpTime();
+                // tokenExpTime();
                 done(err, token, tokenExpire);
             });
         },
@@ -1738,7 +1738,7 @@ function sendToken(username, subject, text, url, res) {
         function(token, done, err) {
             // Message object
             var message = {
-                from: 'FTAA <aaaa.zhao@g.feitianacademy.org>', // sender info
+                from: 'FTAA <azhao@northernacademy.org>', // sender info
                 to: username, // Comma separated list of recipients
                 subject: subject, // Subject of the message
 
@@ -1771,7 +1771,7 @@ function sendToken(username, subject, text, url, res) {
 
 function successMail(username, subject, text, res) {
     var message = {
-        from: 'FTAA <aaaa.zhao@g.feitianacademy.org>',
+        from: 'FTAA <azhao@northernacademy.org>',
         to: username,
         subject: subject,
         text: text
