@@ -251,24 +251,24 @@
                     </div>
                     <p id="LayerName1" style="color: palevioletred; margin-left:270px;">Please Enter the Layer Name, the Layer Name must be at least 6 characters</p>
                     <div class="form-group">
-                        <label class="col-md-4 control-label">Layer City</label>
-                        <div class="col-md-8 inputGroupContainer">
-                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
-                                <input id="LayerCityInput" name="CityName" placeholder="Layer City" class="form-control" required value="" type="text"></div>
-                        </div>
-                    </div>
-                    <div class="form-group">
                         <label class="col-md-4 control-label">Layer State</label>
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
-                                <input id="LayerStateInput" name="StateName" placeholder="Layer State" class="form-control" required value="" type="text"></div>
+                                <input id="LayerStateInput" name="CityName" placeholder="Layer City" class="form-control" required value="" type="text"></div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label">Layer Country</label>
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
-                                <input id="LayerCountryInput" name="CountryName" placeholder="Layer Country" class="form-control" required value="" type="text"></div>
+                                <input id="LayerCountryInput" name="StateName" placeholder="Layer State" class="form-control" required value="" type="text"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Layer Continent</label>
+                        <div class="col-md-8 inputGroupContainer">
+                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
+                                <input id="LayerContinentInput" name="CountryName" placeholder="Layer Country" class="form-control" required value="" type="text"></div>
                         </div>
                     </div>
 
@@ -319,9 +319,9 @@
         document.getElementById('User ID').value = getvalue[1];
         document.getElementById('RID').value = getvalue[2];
         document.getElementById('LayerNameInput').value = getvalue[11];
-        document.getElementById('LayerCityInput').value = getvalue[5];
         document.getElementById('LayerStateInput').value = getvalue[6];
-        document.getElementById('LayerCountryInput').value = getvalue[4];
+        document.getElementById('LayerCountryInput').value = getvalue[5];
+        document.getElementById('LayerContinentInput').value = getvalue[4];
         document.getElementById('LayerFormat').value = getvalue[13];
         document.getElementById('message').value = getvalue[12];
         document.getElementById('sub').disabled = true;

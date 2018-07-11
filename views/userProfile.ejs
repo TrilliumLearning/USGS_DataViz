@@ -283,7 +283,7 @@
     }
     function clearForm(){
         if (confirm("Are you sure you to leave this page? All the data will be cleared accordingly!") === true) {
-            window.location.reload();
+            document.getElementById("basic").reset();
         }
     }
 

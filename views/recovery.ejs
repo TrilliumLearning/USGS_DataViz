@@ -215,9 +215,9 @@
                     <th>UID</th>
                     <th>RID</th>
                     <th>Layer Type</th>
-                    <th>Layer City</th>
                     <th>Layer State</th>
                     <th>Layer Country</th>
+                    <th>Layer Continent</th>
                     <th>Main Category</th>
                     <th>Sub Category</th>
                     <th>Layer Name</th>
@@ -235,9 +235,9 @@
                     <th>UID</th>
                     <th>RID</th>
                     <th>Layer Type</th>
-                    <th>Layer City</th>
                     <th>Layer State</th>
                     <th>Layer Country</th>
+                    <th>Layer Continent</th>
                     <th>Main Category</th>
                     <th>Sub Category</th>
                     <th>Layer Name</th>
@@ -350,27 +350,6 @@
             }
         });
     });
-    //
-    // function query() {
-    //     var firstName = document.getElementById("firstName").value;
-    //     var lastName = document.getElementById("lastName").value;
-    //     var startDate = document.getElementsByClassName("date")[0].value;
-    //     var endDate = document.getElementsByClassName("date")[1].value;
-    //     var filter1 = document.getElementsByClassName("filter")[0].value;
-    //     var filter2 = document.getElementsByClassName("filter")[1].value;
-    //     var filter3 = document.getElementsByClassName("filter")[2].value;
-    //     var content1 = document.getElementsByClassName("content")[0].value;
-    //     var content2 = document.getElementsByClassName("content")[1].value;
-    //     var content3 = document.getElementsByClassName("content")[2].value;
-    //
-    //     var queryStr = "statusDel=" + "Deleted" + "&firstName=" + firstName + "&lastName=" + lastName + "&startDate=" + startDate + "&endDate=" + endDate + "&filter1=" + filter1 + "&filter2=" + filter2 + "&filter3=" + filter3 + "&content1=" + content1 + "&content2=" + content2 + "&content3=" + content3;
-    //     //alert(queryStr);
-    //     table.clear();
-    //     table.draw();
-    //     trapTable.clear();
-    //     trapTable.draw();
-    //     queryAndDisplay(queryStr);
-    // }
 
     var queryAndDisplay = function (querystr) {
         $.ajax({
@@ -386,9 +365,9 @@
                                     results[i].UID,
                                     results[i].RID,
                                     results[i].LayerCategory,
-                                    results[i].CountryName,
-                                    results[i].CityName,
                                     results[i].StateName,
+                                    results[i].CountryName,
+                                    results[i].ContinentName,
                                     results[i].FirstLayer,
                                     results[i].SecondLayer,
                                     results[i].ThirdLayer,
@@ -403,9 +382,9 @@
                                 results[i].UID,
                                 results[i].RID,
                                 results[i].LayerCategory,
-                                results[i].CountryName,
-                                results[i].CityName,
                                 results[i].StateName,
+                                results[i].CountryName,
+                                results[i].ContinentName,
                                 results[i].FirstLayer,
                                 results[i].SecondLayer,
                                 results[i].ThirdLayer,
