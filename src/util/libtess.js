@@ -638,7 +638,7 @@ libtess.mesh.meshSplice = function(eOrg, eDst) {
  * would create isolated vertices, those are deleted as well.
  *
  * This function could be implemented as two calls to __gl_meshSplice
- * plus a few calls to memFree, but this would allocate and delete
+ * plus a few calls to memFree, but this would allocate and trash
  * unnecessary vertices and faces.
  *
  * @param {libtess.GluHalfEdge} eDel [description].
@@ -820,7 +820,7 @@ libtess.mesh.zapFace = function(fZap) {
 
     e.lFace = null;
     if (e.rFace() === null) {
-      // delete the edge -- see mesh.deleteEdge above
+      // trash the edge -- see mesh.deleteEdge above
       if (e.oNext === e) {
         libtess.mesh.killVertex_(e.org, null);
 
@@ -844,7 +844,7 @@ libtess.mesh.zapFace = function(fZap) {
     }
   } while (e !== eStart);
 
-  // delete from circular doubly-linked list
+  // trash from circular doubly-linked list
   var fPrev = fZap.prev;
   var fNext = fZap.next;
   fNext.prev = fPrev;
@@ -1059,7 +1059,7 @@ libtess.mesh.killEdge_ = function(eDel) {
   // Half-edges are allocated in pairs, see EdgePair above
   // if (eDel->Sym < eDel ) { eDel = eDel->Sym; }
 
-  // delete from circular doubly-linked list
+  // trash from circular doubly-linked list
   var eNext = eDel.next;
   var ePrev = eDel.sym.next;
   eNext.sym.next = ePrev;
@@ -1088,7 +1088,7 @@ libtess.mesh.killVertex_ = function(vDel, newOrg) {
     e = e.oNext;
   } while (e !== eStart);
 
-  // delete from circular doubly-linked list
+  // trash from circular doubly-linked list
   var vPrev = vDel.prev;
   var vNext = vDel.next;
   vNext.prev = vPrev;
@@ -1117,7 +1117,7 @@ libtess.mesh.killFace_ = function(fDel, newLFace) {
     e = e.lNext;
   } while (e !== eStart);
 
-  // delete from circular doubly-linked list
+  // trash from circular doubly-linked list
   var fPrev = fDel.prev;
   var fNext = fDel.next;
   fNext.prev = fPrev;
@@ -2453,7 +2453,7 @@ libtess.sweep.walkDirtyRegions_ = function(tess, regUp) {
     }
 
     if (eUp.org === eLo.org && eUp.dst() === eLo.dst()) {
-      // A degenerate loop consisting of only two edges -- delete it.
+      // A degenerate loop consisting of only two edges -- trash it.
       libtess.sweep.addWinding_(eLo, eUp);
       libtess.sweep.deleteRegion_(tess, regUp);
       libtess.mesh.deleteEdge(eUp);
@@ -2489,7 +2489,7 @@ libtess.sweep.walkDirtyRegions_ = function(tess, regUp) {
  * new vertices which may be created by edge intersections, we don't
  * know where that leftmost unprocessed vertex is. In the meantime, we
  * connect vEvent to the closest vertex of either chain, and mark the region
- * as "fixUpperEdge". This flag says to delete and reconnect this edge
+ * as "fixUpperEdge". This flag says to trash and reconnect this edge
  * to the next processed vertex on the boundary of the combined region.
  * Quite possibly the vertex we connected to will turn out to be the
  * closest one, in which case we won't need to make any changes.
@@ -2579,7 +2579,7 @@ libtess.sweep.connectLeftDegenerate_ = function(tess, regUp, vEvent) {
     libtess.mesh.splitEdge(e.sym);
 
     if (regUp.fixUpperEdge) {
-      // This edge was fixable -- delete unused portion of original edge
+      // This edge was fixable -- trash unused portion of original edge
       libtess.mesh.deleteEdge(e.oNext);
       regUp.fixUpperEdge = false;
     }
@@ -2609,7 +2609,7 @@ libtess.sweep.connectLeftDegenerate_ = function(tess, regUp, vEvent) {
 
     if (reg.fixUpperEdge) {
       // Here e.dst() has only a single fixable edge going right.
-      // We can delete it since now we have some real right-going edges.
+      // We can trash it since now we have some real right-going edges.
 
       // there are some left edges too
       libtess.sweep.deleteRegion_(tess, reg); // TODO(bckenny): something to null?
@@ -2727,7 +2727,7 @@ libtess.sweep.sweepEvent_ = function(tess, vEvent) {
    * active regions where both the upper and lower edges terminate
    * at vEvent (ie. vEvent is closing off these regions).
    * We mark these faces "inside" or "outside" the polygon according
-   * to their winding number, and delete the edges from the dictionary.
+   * to their winding number, and trash the edges from the dictionary.
    * This takes care of all the left-going edges from vEvent.
    */
   var regUp = libtess.sweep.topLeftRegion_(e.activeRegion);
@@ -2814,7 +2814,7 @@ libtess.sweep.doneEdgeDict_ = function(tess) {
     libtess.sweep.deleteRegion_(tess, reg);
   }
 
-  // NOTE(bckenny): see tess.dict.deleteDict_() for old delete dict function
+  // NOTE(bckenny): see tess.dict.deleteDict_() for old trash dict function
   tess.dict = null;
 };
 
@@ -2902,7 +2902,7 @@ libtess.sweep.donePriorityQ_ = function(tess) {
  * edges to ensure that our dictionary invariants are not violated
  * by numerical errors.
  *
- * In both these cases it is *very* dangerous to delete the offending
+ * In both these cases it is *very* dangerous to trash the offending
  * edge at the time, since one of the routines further up the stack
  * will sometimes be keeping a pointer to that edge.
  *
@@ -3111,7 +3111,7 @@ libtess.Dict = function(frame, leq) {
 
 /* istanbul ignore next */
 /**
- * Formerly used to delete the dict.
+ * Formerly used to trash the dict.
  * NOTE(bckenny): No longer called but left for memFree documentation. Nulled at
  * former callsite instead (sweep.doneEdgeDict_)
  * @private

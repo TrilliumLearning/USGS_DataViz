@@ -174,7 +174,7 @@ $.fn.extend({
 					begin,
 					end;
 
-				//backspace, delete, and escape get special treatment
+				//backspace, trash, and escape get special treatment
 				if (k === 8 || k === 46 || (iPhone && k === 127)) {
 					pos = input.caret();
 					begin = pos.begin;

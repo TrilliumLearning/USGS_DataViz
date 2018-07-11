@@ -1254,7 +1254,7 @@
         UPLOAD_RETRYING: "retrying upload",
         UPLOAD_SUCCESSFUL: "upload successful",
         UPLOAD_FAILED: "upload failed",
-        DELETE_FAILED: "delete failed",
+        DELETE_FAILED: "trash failed",
         DELETING: "deleting",
         DELETED: "deleted"
     };
@@ -2362,7 +2362,7 @@
                     });
                     return true;
                 } else {
-                    this.log("Delete request ignored for ID " + id + ", delete feature is disabled or request not possible " + "due to CORS on a user agent that does not support pre-flighting.", "warn");
+                    this.log("Delete request ignored for ID " + id + ", trash feature is disabled or request not possible " + "due to CORS on a user agent that does not support pre-flighting.", "warn");
                     return false;
                 }
             },
@@ -4143,7 +4143,7 @@
         qq.extend(this, {
             sendDelete: function(id, uuid, additionalMandatedParams) {
                 var additionalOptions = additionalMandatedParams || {};
-                options.log("Submitting delete file request for " + id);
+                options.log("Submitting trash file request for " + id);
                 if (options.method === "DELETE") {
                     requester.initTransport(id).withPath(uuid).withParams(additionalOptions).send();
                 } else {
@@ -6719,7 +6719,7 @@
             },
             deleteFile: {
                 forceConfirm: false,
-                confirmMessage: "Are you sure you want to delete {filename}?",
+                confirmMessage: "Are you sure you want to trash {filename}?",
                 deletingStatusText: "Deleting...",
                 deletingFailedText: "Delete failed"
             },
@@ -6873,7 +6873,7 @@
             cancel: "qq-upload-cancel-selector",
             pause: "qq-upload-pause-selector",
             continueButton: "qq-upload-continue-selector",
-            deleteButton: "qq-upload-delete-selector",
+            deleteButton: "qq-upload-trash-selector",
             retry: "qq-upload-retry-selector",
             statusText: "qq-upload-status-text-selector",
             editFilenameInput: "qq-edit-filename-selector",
