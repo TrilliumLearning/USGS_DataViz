@@ -459,16 +459,15 @@ module.exports = function (app, passport) {
     });
 
     // show the signup form
-    app.get('/signup', isLoggedIn, function (req, res) {
+    app.get('/signup', function (req, res) {
         // render the page and pass in any flash data if it exists
         res.render('signup.ejs', {
-            user: req.user,
             message: req.flash('signupMessage')
         });
     });
 
-    app.post('/signup', isLoggedIn, function (req, res) {
-
+    app.post('/signup', function (req, res) {
+        console.log("A");
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
         // con_CS.query('USE ' + config.Login_db); // Locate Login DB
 
@@ -505,7 +504,7 @@ module.exports = function (app, passport) {
     // show the addUser form
     app.get('/addUser', isLoggedIn, function (req, res) {
         // render the page and pass in any flash data if it exists
-        res.render('signup.ejs', {
+        res.render('adduser.ejs', {
             user: req.user,
             message: req.flash('addUserMessage')
         });
@@ -548,7 +547,7 @@ module.exports = function (app, passport) {
         async.waterfall([
             function(done) {
                 myStat = "SELECT * FROM UserLogin WHERE resetPasswordToken = '" + req.params.token + "'";
-                connection.query(myStat, function(err, results) {
+                con_CS.query(myStat, function(err, results) {
                     dateNtime();
 
                     if (results.length === 0 || dateTime > results[0].expires) {
@@ -560,7 +559,7 @@ module.exports = function (app, passport) {
             }, function(username, done) {
                 myStat = "UPDATE UserLogin SET status = 'Never Logged In' WHERE username = '" + username + "';";
 
-                connection.query(myStat, function(err, user) {
+                con_CS.query(myStat, function(err, user) {
                     if (err) {
                         console.log(err);
                         res.send("An unexpected error occurred !");
@@ -1692,82 +1691,83 @@ function QueryStat(myObj, scoutingStat, res) {
 
         return (zeros + index).slice(-digits);
     }
-}
 
-function sendToken(username, subject, text, url, res) {
-    async.waterfall([
-        function(done) {
-            crypto.randomBytes(20, function(err, buf) {
-                token = buf.toString('hex');
-                tokenExpTime();
-                done(err, token, tokenExpire);
-            });
-        },
-        function (token, tokenExpire, done) {
-            // connection.query( "INSERT INTO Users ( resetPasswordExpires, resetPasswordToken ) VALUES (?,?) WHERE username = '" + req.body,username + "'; ")
-            myStat = "UPDATE UserLogin SET resetPasswordToken = ?, resetPasswordExpires = ? WHERE username = '" + username + "' ";
-            myVal = [token, tokenExpire];
-            con_CS.query(myStat, myVal, function (err, rows) {
+    function sendToken(username, subject, text, url, res) {
+        async.waterfall([
+            function(done) {
+                crypto.randomBytes(20, function(err, buf) {
+                    token = buf.toString('hex');
+                    tokenExpTime();
+                    console.log("B");
+                    done(err, token, tokenExpire);
+                });
+            },
+            function (token, tokenExpire, done) {
+                // connection.query( "INSERT INTO Users ( resetPasswordExpires, resetPasswordToken ) VALUES (?,?) WHERE username = '" + req.body,username + "'; ")
+                myStat = "UPDATE UserLogin SET resetPasswordToken = ?, resetPasswordExpires = ? WHERE username = '" + username + "' ";
+                myVal = [token, tokenExpire];
+                con_CS.query(myStat, myVal, function (err, rows) {
 
-                //newUser.id = rows.insertId;
+                    //newUser.id = rows.insertId;
 
-                if (err) {
-                    console.log(err);
-                    // res.send("Token Insert Fail!");
-                    // res.end();
-                    res.json({"error": true, "message": "Token Insert Fail !"});
-                } else {
-                    done(err, token);
-                }
-            });
-        },
-        function(token, done, err) {
-            // Message object
-            var message = {
-                from: 'FTAA <aaaa.zhao@g.feitianacademy.org>', // sender info
-                to: username, // Comma separated list of recipients
-                subject: subject, // Subject of the message
+                    if (err) {
+                        console.log(err);
+                        // res.send("Token Insert Fail!");
+                        // res.end();
+                        res.json({"error": true, "message": "Token Insert Fail !"});
+                    } else {
+                        done(err, token);
+                    }
+                });
+            },
+            function(token, done, err) {
+                // Message object
+                var message = {
+                    from: 'FTAA <aaaa.zhao@g.feitianacademy.org>', // sender info
+                    to: username, // Comma separated list of recipients
+                    subject: subject, // Subject of the message
 
-                // plaintext body
-                text: 'You are receiving this because you (or someone else) have requested ' + text + '\n\n' +
-                'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-                url + token + '\n\n' +
-                'If you did not request this, please ignore this email.\n'
-            };
+                    // plaintext body
+                    text: 'You are receiving this because you (or someone else) have requested ' + text + '\n\n' +
+                    'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+                    url + token + '\n\n' +
+                    'If you did not request this, please ignore this email.\n'
+                };
 
-            smtpTrans.sendMail(message, function(error){
-                if(error){
-                    console.log(error.message);
-                    res.json({"error": true, "message": "An unexpected error occurred !"});
-                } else {
-                    // res.send('Message sent successfully! Please check your email inbox.');
-                    console.log('Message sent successfully!');
-                    // res.redirect('/login');
-                    res.json({"error": false, "message": "Message sent successfully !"});
-                    // alert('An e-mail has been sent to ' + req.body.username + ' with further instructions.');
-                }
-            });
-        }
-    ], function(err) {
-        if (err) return next(err);
-        // res.redirect('/forgot');
-        res.json({"error": true, "message": "An unexpected error occurred !"});
-    });
-}
+                smtpTrans.sendMail(message, function(error){
+                    if(error){
+                        console.log(error.message);
+                        res.json({"error": true, "message": "An unexpected error occurred !"});
+                    } else {
+                        // res.send('Message sent successfully! Please check your email inbox.');
+                        console.log('Message sent successfully!');
+                        // res.redirect('/login');
+                        res.json({"error": false, "message": "Message sent successfully !"});
+                        // alert('An e-mail has been sent to ' + req.body.username + ' with further instructions.');
+                    }
+                });
+            }
+        ], function(err) {
+            if (err) return next(err);
+            // res.redirect('/forgot');
+            res.json({"error": true, "message": "An unexpected error occurred !"});
+        });
+    }
 
-function successMail(username, subject, text, res) {
-    var message = {
-        from: 'FTAA <aaaa.zhao@g.feitianacademy.org>',
-        to: username,
-        subject: subject,
-        text: text
-    };
+    function successMail(username, subject, text, res) {
+        var message = {
+            from: 'FTAA <aaaa.zhao@g.feitianacademy.org>',
+            to: username,
+            subject: subject,
+            text: text
+        };
 
-    smtpTrans.sendMail(message, function (error) {
-        if(error){
-            console.log(error.message);
-        } else {
-            res.render('success.ejs', {});
-        }
-    });
-}
+        smtpTrans.sendMail(message, function (error) {
+            if(error){
+                console.log(error.message);
+            } else {
+                res.render('success.ejs', {});
+            }
+        });
+    }
+};

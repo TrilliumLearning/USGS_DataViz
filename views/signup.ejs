@@ -69,7 +69,7 @@
 	<% } %>
 
 	<!-- LOGIN FORM -->
-	<form onsubmit="return checkForm()" action="/signup" method="post">
+	<form action="/signup" method="post" id="signup">
 		<div class="form-group">
 			<label>Username</label>
 			<input type="email" class="form-control" name="username">
@@ -97,14 +97,14 @@
 		</div>
 		<div class="form-group" hidden>
 			<label>Created By User</label>
-			<input type="text" id="createdUser" class="form-control" name="createdUser" value="<%= user.username %>" readonly >
+			<input type="text" id="createdUser" class="form-control" name="createdUser" value="Anonymous" readonly >
 		</div>
 		<div class="form-group" hidden>
 			<label>Status</label>
 			<input type="text" id="status" class="form-control" name="status" value="Never Logged In" readonly >
 		</div>
 
-			<button type="submit" class="btn btn-warning btn-mg"> Add User </button>
+			<button type="submit" class="btn btn-warning btn-mg"> submit </button>
 			<a href="/userManagement" class="btn btn-warning btn-mg">Cancel</a>
 		</form>
 
@@ -121,6 +121,24 @@
                 dateFormat: "Y-m-d H:i:S",
                 time_24hr: true
             });*/
+
+            $('#signup').submit(function(e) {
+                e.preventDefault();
+                $.ajax({
+                    type: "post",
+                    url: "/signup",
+                    dataType: 'json',
+                    data: $("#signup").serialize(),
+                    success: function (result) {
+                        if (!result.error) {
+                            alert(result.message);
+                            window.location.replace('/login');
+                        } else {
+                            alert(result.message);
+                        }
+                    }
+                })
+            });
         });
         var today = new Date();
         var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
