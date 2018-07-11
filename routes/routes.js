@@ -469,7 +469,6 @@ module.exports = function (app, passport) {
     });
 
     app.post('/signup', isLoggedIn, function (req, res) {
-
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
         // con_CS.query('USE ' + config.Login_db); // Locate Login DB
 
@@ -503,10 +502,14 @@ module.exports = function (app, passport) {
         });
     });
 
+    app.get('/signupreturn', isLoggedIn, function (req, res) {
+        // render the page and pass in any flash data if it exists
+        res.render('login.ejs');
+    });
     // show the addUser form
     app.get('/addUser', isLoggedIn, function (req, res) {
         // render the page and pass in any flash data if it exists
-        res.render('signup.ejs', {
+        res.render('adduser.ejs', {
             user: req.user,
             message: req.flash('addUserMessage')
         });
