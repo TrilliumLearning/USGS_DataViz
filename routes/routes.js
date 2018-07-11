@@ -982,65 +982,65 @@ module.exports = function (app, passport) {
         }
     });
 
-    // app.post('/replace', function (req, res) {
-    //     let result = Object.keys(req.body).map(function (key) {
-    //         return [String(key), req.body[key]];
-    //     });
-    //     res.setHeader("Access-Control-Allow-Origin", "*");
-    //
-    //     var update1 = "UPDATE USGS.Request_Form SET " ;
-    //     var update3 = " WHERE RID = '" + result[1][1] + "';";
-    //     let update2 = "";
-    //
-    //     for (let i = 0; i < result.length-3; i++) {
-    //         if (i === result.length - 4) {
-    //             update2 += result[i][0] + " = '" + result[i][1]+ "'";
-    //         } else {
-    //             update2 += result[i][0] + " = '" + result[i][1] + "', " ;
-    //         }
-    //     }
-    //
-    //     //
-    //     // let name = "";
-    //     let valueSubmit = "";
-    //
-    //     for (let i = 0; i < result.length; i++) {
-    //         if (i === result.length - 1) {
-    //             valueSubmit += '"' + result[i][1] + '"';
-    //         } else {
-    //             valueSubmit += '"' + result[i][1] + '"' + ", ";
-    //         }
-    //     }
-    //
-    //     let newImage = {
-    //         Layer_Uploader: "http://localhost:63342/USGS_MapService/a/" + responseDataUuid,
-    //         Layer_Uploader_name: responseDataUuid
-    //     };
-    //     valueSubmit += ", '" + newImage.Layer_Uploader + "','" + newImage.Layer_Uploader_name + "'";
-    //     let filepathname = "http://localhost:63342/USGS_MapService/uploadfiles/" + responseDataUuid;
-    //     console.log(valueSubmit);
-    //     let statement1 = update1+update2+update3;
-    //     let statement2 = "UPDATE USGS.Request_Form SET Layer_Uploader = '" + valueSubmit[13] + "', 'Layer_Uploader_name = '" + valueSubmit[14] + "';";
-    //     if(result[4][2] === "other"){
-    //         let statement = "INSERT INTO USGS.LayerMenu VALUES (" + result[7][1] + "," + result[0][0] + "," + result[4][1] + "," + result[6][1] + "," + result[7][1] + "," + result[10][1] + "," + result[8][1] + "," + result[9][1] + ", 'Active');";
-    //         con_CS.query(statement1 + statement + statement2, function (err, result) {
-    //             if (err) {
-    //                 throw err;
-    //             } else {
-    //                 res.json("Connected!")
-    //             }
-    //         });
-    //     }else{
-    //         let statement = "INSERT INTO USGS.LayerMenu VALUES ('" + result[7][1] + "','" + result[0][1] + "','" + result[3][1] + "','" + result[5][1] + "','" + result[7][1] + "','" + result[10][1] + "','" + result[8][1] + "','" + result[9][1] + "', 'Active');";
-    //        con_CS.query(statement1 + statement + statement2, function (err, result) {
-    //             if (err) {
-    //                 throw err;
-    //             } else {
-    //                 res.json("Connected!")
-    //             }
-    //         });
-    //     }
-    // });
+    app.post('/replace', function (req, res) {
+        let result = Object.keys(req.body).map(function (key) {
+            return [String(key), req.body[key]];
+        });
+        res.setHeader("Access-Control-Allow-Origin", "*");
+
+        var update1 = "UPDATE USGS.Request_Form SET " ;
+        var update3 = " WHERE RID = '" + result[1][1] + "';";
+        let update2 = "";
+
+        for (let i = 0; i < result.length-3; i++) {
+            if (i === result.length - 4) {
+                update2 += result[i][0] + " = '" + result[i][1]+ "'";
+            } else {
+                update2 += result[i][0] + " = '" + result[i][1] + "', " ;
+            }
+        }
+
+        //
+        // let name = "";
+        let valueSubmit = "";
+
+        for (let i = 0; i < result.length; i++) {
+            if (i === result.length - 1) {
+                valueSubmit += '"' + result[i][1] + '"';
+            } else {
+                valueSubmit += '"' + result[i][1] + '"' + ", ";
+            }
+        }
+
+        let newImage = {
+            Layer_Uploader: "http://localhost:63342/USGS_MapService/a/" + responseDataUuid,
+            Layer_Uploader_name: responseDataUuid
+        };
+        valueSubmit += ", '" + newImage.Layer_Uploader + "','" + newImage.Layer_Uploader_name + "'";
+        let filepathname = "http://localhost:63342/USGS_MapService/uploadfiles/" + responseDataUuid;
+        console.log(valueSubmit);
+        let statement1 = update1+update2+update3;
+        let statement2 = "UPDATE USGS.Request_Form SET Layer_Uploader = '" + valueSubmit[13] + "', 'Layer_Uploader_name = '" + valueSubmit[14] + "';";
+        if(result[4][2] === "other"){
+            let statement = "INSERT INTO USGS.MapLayerMenu VALUES (" + result[7][1] + "," + result[0][0] + "," + result[4][1] + "," + result[6][1] + "," + result[7][1] + "," + result[10][1] + "," + result[8][1] + "," + result[9][1] + ", 'Active');";
+            con_CS.query(statement1 + statement + statement2, function (err, result) {
+                if (err) {
+                    throw err;
+                } else {
+                    res.json("Connected!")
+                }
+            });
+        }else{
+            let statement = "INSERT INTO USGS.MapLayerMenu VALUES ('" + result[7][1] + "','" + result[0][1] + "','" + result[3][1] + "','" + result[5][1] + "','" + result[7][1] + "','" + result[10][1] + "','" + result[8][1] + "','" + result[9][1] + "', 'Active');";
+           con_CS.query(statement1 + statement + statement2, function (err, result) {
+                if (err) {
+                    throw err;
+                } else {
+                    res.json("Connected!")
+                }
+            });
+        }
+    });
 
     //
     //Put back the photo in the form
