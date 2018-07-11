@@ -224,7 +224,7 @@
         <h1><span class="fa fa-anchor"></span>User Home </h1><h4><span class="fa fa-user"></span>&nbsp;<strong>Account Name</strong>: <%= user.username %></h4><br>
         <a href="/newRequest" id= "Request" class="btn btn-default btn-lg">New Request</a>&nbsp;&nbsp;
         <a href="/recovery" id ="Restore" class="btn btn-default btn-lg">Restore</a>&nbsp;&nbsp;
-        <a href="/dataHistory"class="btn btn-default btn-lg">Search History</a>&nbsp;&nbsp;
+        <a href="/dataHistory"class="btn btn-default btn-lg">Approved Request</a>&nbsp;&nbsp;
         <div class="dropdown floating-Box">
             <button class="btn btn-primary btn-lg" data-toggle="dropdown" id="Username"><%= firstName %>
                 <span class="caret"></span>
@@ -309,8 +309,6 @@
             <!-- formal table //approve //recovery-->
             <button id="editButton" class="btn btn-primary btn-sm" type="button">Edit</button>
             <button id="deleteButton" class="btn btn-primary btn-sm" type="button">Delete</button>
-            <!--<button id="approve" class="btn btn-primary btn-sm" value=" Approve ">Approve</button>-->
-            <!--<button id="recover" class="btn btn-primary btn-sm" value=" Recover ">Recover</button>-->
         </div>
     </div>
 </div>
@@ -403,7 +401,7 @@
         });
 
         $("#deleteButton").on("click", function () {
-            if (confirm("Are you sure you would like to delete this row(s)?") === true) {
+            if (confirm("Are you sure you would like to trash this row(s)?") === true) {
                 var transactionIDStr = "transactionIDStr=" + scoutingTransactionID.concat(trapTransactionID).toString();
                 var pictureStr = "pictureStr=" + transactionpicturename.toString();
 
@@ -426,7 +424,7 @@
                 success: function (results) {
                     console.log(results);
                     for (var i = 0; i < results.length; i++) {
-                        if(results[i].Status === "Active" || results[i].Status === "Pending") {
+                        if(results[i].Status === "Pending") {
                             if (UserRole === "Regular") {
                                 if (results[i].UID === username) {
                                     table.row.add([

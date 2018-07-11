@@ -257,7 +257,7 @@
     <a href="//aworldbridge.com"><img class="banner" src="/images/NewWBBanner.jpg" /></a>
     <br><br>
     <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span> Search History </h1>
+        <h1><span class="fa fa-anchor"></span> Approved Request </h1>
         <h4><span class="fa fa-user"></span>&nbsp;<strong>Account Name</strong>: <%= user.username %></h4>
         <br>
         <a href="/userhome" class="btn btn-default btn-lg">User Home</a>&nbsp;&nbsp;
@@ -353,15 +353,6 @@
         <h5 class="floatingBox3">Content:&nbsp;&nbsp;<input type="text" class="content"></h5>
     </div>
     <div class="center">
-        <h4 class="floatingBox"><strong>Status:&nbsp;</strong></h4>
-        <select id="status">
-            <option value="">Select the status</option>
-            <option value="Active">Active</option>
-            <option value="Delete">Delete</option>
-            <option value="Pending">Pending</option>
-        </select>
-    </div><br>
-    <div class="center">
         <button class="btn btn-primary btn-sm button" type="button" onclick="query()">Filter</button>
         <!--<button id="button" class="btn btn-primary btn-sm" type="button">Edit</button>-->
         <!--<button class="btn btn-primary btn-sm button" type="button">Delete</button>-->
@@ -413,11 +404,9 @@
                 </tfoot>
             </table>
 
-            <button id="deleteButton" class="btn btn-primary btn-sm button" type="button" style="margin-left:15px;">Delete</button><br>
+            <button id="deleteButton" class="btn btn-primary btn-sm button" type="button" style="margin-left:15px;">Disapprove</button><br>
+            <button onclick="exportTableToCSV('Scouting_<%= user.username %>.csv')">Export above rows to .CSV File</button>
 
-            <div class='btn'>
-                <button onclick="exportTableToCSV('Scouting_<%= user.username %>.csv')">Export above rows to .CSV File</button>
-            </div>
 
         </div>
     </div>
@@ -428,7 +417,6 @@
     // var trapTable = $("#trapDisplay").DataTable();
     var UserRole = "<%= user.userrole %>";
     var DropMenu;
-    var theArray;
     var rowSelected = [];
     var transactionID = [];
 
@@ -453,6 +441,7 @@
                 $("#userMenu").empty();
                 $("#userMenu").append(DropMenu)
             } else if ( UserRole === "Regular") {
+                document.getElementById("deleteButton").style.display = "none";
                 DropMenu = "<li><a href=\"/userprofile\">Profile</a></li>\n" +
                     "\t\t\t<li><a href=\"/signout\">Sign Out</a></li>";
                 $("#userMenu").empty();
@@ -481,28 +470,9 @@
             }
         });
 
-//         $('#trapDisplay tbody').on('click', 'tr', function () {
-//             thArray = [];
-//             transactionID = [];
-//
-//             $(this).toggleClass('selected');    //toggle class for the rows selected
-//             $(this).toggleClass('change');    //toggle class change color
-//             changeColor();
-//
-//             rowSelected = table.rows('.selected').data();    //Store all the data for selected rows'
-//
-//             $('#trapDisplay > thead > tr > th').each(function () {
-//                 thArray.push($(this).text())
-//             })
-//
-//             for (var i = 0; i < rowSelected.length; i ++) {
-// //                console.log("rowSelected[" + i + "][0]: " + rowSelected[i][0]);
-//                 transactionID.push(rowSelected[i][0]);
-//             }
-//         });
 
         $("#deleteButton").on("click", function () {
-            if (confirm("Are you sure you would like to delete this row(s)?") === true) {
+            if (confirm("Are you sure you would like to trash this row(s)?") === true) {
                 var transactionIDStr = "transactionIDStr=" + transactionID.toString();
                 console.log ("transactionIDStr: " + transactionIDStr);
 
@@ -513,7 +483,7 @@
                     async: false,
                     data: transactionIDStr,
                     success: function (result) {
-                        // window.location.replace('/dataHistory')
+                        window.location.replace('/dataHistory')
                     }
                 })
             } else { return false;}
@@ -523,7 +493,6 @@
     function query() {
         var firstName = document.getElementById("firstName").value;
         var lastName = document.getElementById("lastName").value;
-        var status = document.getElementById("status").value;
         var startDate = document.getElementsByClassName("date")[0].value;
         var endDate = document.getElementsByClassName("date")[1].value;
         var filter1 = document.getElementsByClassName("filter")[0].value;
@@ -535,7 +504,7 @@
 
         // console.log(filter1);
 
-        var queryStr = "&firstName=" + firstName + "&lastName=" + lastName + "&startDate=" + startDate + "&endDate=" + endDate + "&filter1=" + filter1 + "&filter2=" + filter2 + "&filter3=" + filter3 + "&content1=" + content1 + "&content2=" + content2 + "&content3=" + content3 + "&status=" +status;
+        var queryStr = "&firstName=" + firstName + "&lastName=" + lastName + "&startDate=" + startDate + "&endDate=" + endDate + "&filter1=" + filter1 + "&filter2=" + filter2 + "&filter3=" + filter3 + "&content1=" + content1 + "&content2=" + content2 + "&content3=" + content3;
 
         table.clear();
         table.draw();
@@ -556,53 +525,23 @@
                 // console.log(resp);
                 if (!resp[0].errMsg) {
                     for (var i = 0; i < resp.length; i++) {
-                             table.row.add([
-                                 resp[i].UID,
-                                 resp[i].RID,
-                                 resp[i].LayerCategory,
-                                 resp[i].StateName,
-                                 resp[i].CountryName,
-                                 resp[i].ContinentName,
-                                 resp[i].FirstLayer,
-                                 resp[i].SecondLayer,
-                                 resp[i].ThirdLayer,
-                                 resp[i].Layer_Description,
-                                 resp[i].Layer_Uploader,
-                                 resp[i].Layer_Uploader_name,
-                                 resp[i].Status
+                        if (resp[i].Status === "Active") {
+                            table.row.add([
+                                resp[i].UID,
+                                resp[i].RID,
+                                resp[i].LayerCategory,
+                                resp[i].StateName,
+                                resp[i].CountryName,
+                                resp[i].ContinentName,
+                                resp[i].FirstLayer,
+                                resp[i].SecondLayer,
+                                resp[i].ThirdLayer,
+                                resp[i].Layer_Description,
+                                resp[i].Layer_Uploader,
+                                resp[i].Layer_Uploader_name,
+                                resp[i].Status
                             ]).draw(false);
-
-
-                        // array
-                        // var latiDMS = resp[i].Latitude.split(" ");
-                        // var longDMS = resp[i].Longitude.split(" ");
-                        // // convert latitude & longitude from Degrees Minutes Seconds to Decimal Degree
-                        // var latiDD = parseFloat(latiDMS[1].substring(0,latiDMS[1].length - 1)) + (parseFloat(latiDMS[2].substring(0,latiDMS[2].length - 1)) / 60) + (parseFloat(latiDMS[3].substring(0,latiDMS[3].length - 1)) / 3600);
-                        // var longDD = parseFloat(longDMS[1].substring(0,longDMS[1].length - 1)) + (parseFloat(longDMS[2].substring(0,longDMS[2].length - 1)) / 60) + (parseFloat(longDMS[3].substring(0,longDMS[3].length - 1)) / 3600);
-                        // // change to negative if S or W
-                        // if (latiDMS[0] === "S") {
-                        //     latiDD = latiDD * -1;
-                        // }
-                        // if (longDMS[0] === "W") {
-                        //     longDD = longDD * -1;
-                        // }
-                        //
-                        // var center = {lat: 0, lng: 0};
-                        // map = new google.maps.Map(document.getElementById('map'), {
-                        //     zoom: 2,
-                        //     center: center,
-                        //     mapTypeId: 'hybrid'
-                        // });
-                        //
-                        // var position = {lat: latiDD, lng: longDD};
-                        // var marker = new google.maps.Marker({
-                        //     position: position,
-                        //     map: map
-                        // });
-                        //
-                        // marker.DMS = resp[i].Latitude + "; " + resp[i].Longitude;
-                        // markers.push(marker);
-                        // markers[i].setMap(null);
+                        }
                     }
                 } else {
                     alert(resp[0].errMsg);

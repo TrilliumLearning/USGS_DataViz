@@ -13913,7 +13913,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        for (k = k0; k < k1; k++) {
 	          // row
 	          i = matrix._index[k];
-	          // check we need to delete value and matrix._index
+	          // check we need to trash value and matrix._index
 	          if (i > rows - 1) {
 	            // remove value
 	            matrix._values.splice(k, 1);
@@ -38911,7 +38911,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	              W[nv + j] = 0;
 	              // node j is dead
 	              W[elen + j] = -1;
-	              // delete j from hash bucket
+	              // trash j from hash bucket
 	              j = W[next + j];
 	              W[next + jlast] = j;
 	            }

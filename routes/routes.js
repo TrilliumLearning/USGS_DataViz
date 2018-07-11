@@ -15,6 +15,7 @@ const mkdirp = require("mkdirp");
 const multiparty = require('multiparty');
 const upload_Dir = config.Upload_Dir;
 const geoData_Dir = config.GeoData_Dir;
+const Delete_Dir = config.Delete_Dir;
 
 const fileInputName = process.env.FILE_INPUT_NAME || "qqfile";
 const maxFileSize = process.env.MAX_FILE_SIZE || 0; // in bytes, 0 for unlimited
@@ -224,11 +225,11 @@ module.exports = function (app, passport) {
 
     app.get('/recoverRow', isLoggedIn, function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*");
-        del_recov("Active", "Recovery failed!", "/userHome", req, res);
+        del_recov("Pending", "Recovery failed!", "/userHome", req, res);
         let pictureStr = req.query.pictureStr.split(',');
         // mover folder
         for(let i = 0; i < pictureStr.length; i++) {
-            fs.rename(''+ upload_Dir + '/' + pictureStr[i] + '' , '' + geoData_Dir + '/' + pictureStr[i] + '', function (err) {
+            fs.rename(''+ Delete_Dir + '/' + pictureStr[i] + '' , '' + upload_Dir + '/' + pictureStr[i] + '', function (err) {
                 if (err) {
                     console.log(err);
                 } else {
@@ -242,7 +243,7 @@ module.exports = function (app, passport) {
     // REQUEST QUERY   =====================
     // =====================================
     app.get('/deleteRow2', isLoggedIn, function (req, res) {
-        del_recov("Delete", "Deletion failed!", "/dataHistory", req, res);
+        del_recov("Pending", "Deletion failed!", "/dataHistory", req, res);
     });
 
     app.get('/recoverRow2', isLoggedIn, function (req, res) {
@@ -281,27 +282,6 @@ module.exports = function (app, passport) {
         // var trapStat = "SELECT UserProfile.username, UserProfile.firstName, UserProfile.lastName, General_Form.*, Detailed_Trap.* FROM Transaction INNER JOIN Users ON UserProfile.username = Transaction.Cr_UN INNER JOIN General_Form ON General_Form.transactionID = Transaction.transactionID INNER JOIN Detailed_Trap ON Detailed_Trap.transactionID = Transaction.transactionID";
         // console.log(req.query);
         var myQueryObj = [
-            // {
-            //     fieldVal: req.query.statusDel,
-            //     dbCol: "General_Form.Status_del",
-            //     op: " = '",
-            //     adj: req.query.statusDel,
-            //     table: 1
-            // },
-            // {
-            //     fieldVal: req.query.statusDel,
-            //     dbCol: "Detailed_Scouting.Status_del",
-            //     op: " = '",
-            //     adj: req.query.statusDel,
-            //     table: 2
-            // },
-            // {
-            //     fieldVal: req.query.statusDel,
-            //     dbCol: "Detailed_Trap.Status_del",
-            //     op: " = '",
-            //     adj: req.query.statusDel,
-            //     table: 3
-            // },
             {
                 fieldVal: req.query.firstName,
                 dbCol: "firstName",
@@ -350,13 +330,6 @@ module.exports = function (app, passport) {
                 op: " = '",
                 adj: req.query.filter3,
                 table: req.query.filter3
-            },
-            {
-                fieldVal: req.query.status,
-                dbCol: "Status",
-                op: " = '",
-                adj: req.query.status,
-                table: 1
             }
         ];
         QueryStat(myQueryObj, scoutingStat, res)
@@ -841,6 +814,7 @@ module.exports = function (app, passport) {
         let result = Object.keys(req.body).map(function (key) {
             return [String(key), req.body[key]];
         });
+        console.log(result);
         res.setHeader("Access-Control-Allow-Origin", "*");
 
         let name = "";
@@ -875,14 +849,13 @@ module.exports = function (app, passport) {
                 res.json("Connected!")
             }
         });
-
     });
+
     app.get('/RID', isLoggedIn, function (req, res) {
-
     });
-    //Request ID//
-    app.get('/newRequest', isLoggedIn, function (req, res) {
 
+    //Request ID
+    app.get('/newRequest', isLoggedIn, function (req, res) {
         var d = new Date();
         var utcDateTime = d.getUTCFullYear() + "-" + ('0' + (d.getUTCMonth() + 1)).slice(-2) + "-" + ('0' + d.getUTCDate()).slice(-2);
         var queryRID = "SELECT COUNT(RID) AS number FROM Special_ID WHERE RID LIKE '" + utcDateTime + "%';";
@@ -899,7 +872,6 @@ module.exports = function (app, passport) {
                     if (err) {
                         console.log(err);
                     } else {
-                        console.log(req.user);
                         res.render('Layer Request Form.ejs', {
                             user: req.user, // get the user out of session and pass to template
                             RID: RID
@@ -911,7 +883,6 @@ module.exports = function (app, passport) {
         });
     });
 
-
     //Request form layer category//
     app.get('/MainCategory', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*");
@@ -922,15 +893,52 @@ module.exports = function (app, passport) {
         });
     });
 
-    // app.get('/Subcategory',function (req,res) {
-    //     res.setHeader("Access-Control-Allow-Origin", "*");
-    //     con_CS.query('SELECT FirstLayer, SecondLayer COUNT (*) AS count FROM Request_Form GROUP BY FirstLayer, SecondLayer',function (err,results,fields) {
-    //         if (err) throw err;
-    //         res.json(results);
-    //         console.log(results);
-    //
-    //     });
-    // });
+    //thr submit function for regular users
+    app.post('/rsubmit',function (req,res) {
+        let result = Object.keys(req.body).map(function (key) {
+            return [String(key), req.body[key]];
+        });
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        console.log(result);
+
+        let update1 = "UPDATE USGS.Request_Form SET " ;
+        let update3 = " WHERE RID = '" + result[1][1] + "';";
+        let update2 = "";
+
+        for (let i = 0; i < result.length-3; i++) {
+            if (i === result.length - 4) {
+                update2 += result[i][0] + " = '" + result[i][1]+ "'";
+            } else {
+                update2 += result[i][0] + " = '" + result[i][1] + "', " ;
+            }
+        }
+
+        let valueSubmit = "";
+
+        for (let i = 0; i < result.length; i++) {
+            if (i === result.length - 1) {
+                valueSubmit += '"' + result[i][1] + '"';
+            } else {
+                valueSubmit += '"' + result[i][1] + '"' + ", ";
+            }
+        }
+
+        let newImage = {
+            Layer_Uploader: uploadPath + "/" + responseDataUuid,
+            Layer_Uploader_name: responseDataUuid
+        };
+        valueSubmit += ", '" + newImage.Layer_Uploader + "','" + newImage.Layer_Uploader_name + "'";
+        let filepathname = uploadPath + "/" + responseDataUuid;
+        let statement1 = update1 + update2 + update3;
+        let statement2 = "UPDATE USGS.Request_Form SET Layer_Uploader = '" + valueSubmit[13] + "', 'Layer_Uploader_name = '" + valueSubmit[14] + "';";
+        con_CS.query(statement1 + statement2, function (err, result) {
+            if (err) {
+                throw err;
+            } else {
+                res.json("Connected!")
+            }
+        });
+    });
 
     //check if the layer name is available
     app.get('/SearchLayerName', function (req, res) {
@@ -972,6 +980,7 @@ module.exports = function (app, passport) {
         let result = Object.keys(req.body).map(function (key) {
             return [String(key), req.body[key]];
         });
+        console.log(result);
         res.setHeader("Access-Control-Allow-Origin", "*");
 
         var update1 = "UPDATE USGS.Request_Form SET " ;
@@ -999,12 +1008,11 @@ module.exports = function (app, passport) {
         }
 
         let newImage = {
-            Layer_Uploader: "http://localhost:63342/USGS_MapService/a/" + responseDataUuid,
+            Layer_Uploader: uploadPath + "/" + responseDataUuid,
             Layer_Uploader_name: responseDataUuid
         };
         valueSubmit += ", '" + newImage.Layer_Uploader + "','" + newImage.Layer_Uploader_name + "'";
-        let filepathname = "http://localhost:63342/USGS_MapService/uploadfiles/" + responseDataUuid;
-        console.log(valueSubmit);
+        let filepathname = uploadPath + "/" + responseDataUuid;
         let statement1 = update1+update2+update3;
         let statement2 = "UPDATE USGS.Request_Form SET Layer_Uploader = '" + valueSubmit[13] + "', 'Layer_Uploader_name = '" + valueSubmit[14] + "';";
         if(result[4][2] === "other"){
@@ -1058,7 +1066,7 @@ module.exports = function (app, passport) {
         let pictureStr = req.query.pictureStr.split(',');
         for (let i = 0; i < transactionID.length; i++) {
             let statement = "UPDATE USGS.Request_Form SET Status = 'Delete' WHERE RID = '" + transactionID[i] + "'";
-            fs.rename(''+ geoData_Dir + '/' + pictureStr[i] + '' , '' + upload_Dir + '/' + pictureStr[i] + '',  function (err) {
+            fs.rename(''+ Delete_Dir + '/' + pictureStr[i] + '' , '' + upload_Dir + '/' + pictureStr[i] + '',  function (err) {
                 if (err) {
                     console.log(err);
                 } else {
@@ -1367,11 +1375,6 @@ function QueryStat(myObj, scoutingStat, res) {
         // console.log(!!myObj[i].fieldVal);
 
         if (!!myObj[i].adj){
-            // console.log(i  + "   " + myObj[i].adj);
-            // if (i === 3 || i === 4 || i === 5) {
-            //     myObj[i].dbCol = myObj[i].dbCol.substring(1, myObj[i].dbCol.length);
-            //     myObj[i].table = parseInt(myObj[i].table.substring(0, 1));
-            // }
 
                 let aw;
                 if (j === 0) {
@@ -1380,14 +1383,6 @@ function QueryStat(myObj, scoutingStat, res) {
                 } else {
                     aw = " AND ";
                 }
-
-                // if (myObj[i].table === 1) {
-                //     scoutingStat = editStat(scoutingStat, aw, myObj[i].dbCol, myObj[i].op, myObj[i].fieldVal);
-                //     console.log(scoutingStat);
-                //     // trapStat = editStat(trapStat, aw, myObj[i].dbCol, myObj[i].op, myObj[i].fieldVal);
-                // } else if (myObj[i].table === 2) {
-                //     scoutingStat = editStat(scoutingStat, aw, myObj[i].dbCol, myObj[i].op, myObj[i].fieldVal);
-                // }
 
                 scoutingStat = editStat(scoutingStat, aw, myObj[i].dbCol, myObj[i].op, myObj[i].fieldVal);
 

@@ -1463,7 +1463,7 @@ jQuery.support = (function() {
 	select.disabled = true;
 	support.optDisabled = !opt.disabled;
 
-	// Test to see if it's possible to delete an expando from an element
+	// Test to see if it's possible to trash an expando from an element
 	// Fails in Internet Explorer
 	try {
 		delete div.test;
@@ -1862,7 +1862,7 @@ jQuery.extend({
 			}
 		}
 
-		// Browsers that fail expando deletion also refuse to delete expandos on
+		// Browsers that fail expando deletion also refuse to trash expandos on
 		// the window, but it will allow it on all other JS objects; other browsers
 		// don't care
 		// Ensure that `cache` is not a window object #10080
@@ -1875,7 +1875,7 @@ jQuery.extend({
 		// We destroyed the cache and need to eliminate the expando on the node to avoid
 		// false lookups in the cache for entries that no longer exist
 		if ( isNode ) {
-			// IE does not allow us to delete expando properties from nodes,
+			// IE does not allow us to trash expando properties from nodes,
 			// nor does it have a removeAttribute function on Document nodes;
 			// we must handle all of these cases
 			if ( jQuery.support.deleteExpando ) {
@@ -3088,7 +3088,7 @@ jQuery.event = {
 			}
 
 			// removeData also checks for emptiness and clears the expando if empty
-			// so use it instead of delete
+			// so use it instead of trash
 			jQuery.removeData( elem, [ "events", "handle" ], true );
 		}
 	},

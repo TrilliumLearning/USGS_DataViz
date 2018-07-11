@@ -3845,7 +3845,7 @@ function internalRemoveData( elem, name, pvt ) {
 	if ( isNode ) {
 		jQuery.cleanData( [ elem ], true );
 
-	// Use delete when supported for expandos or `cache` is not a window per isWindow (#10080)
+	// Use trash when supported for expandos or `cache` is not a window per isWindow (#10080)
 	/* jshint eqeqeq: false */
 	} else if ( support.deleteExpando || cache != cache.window ) {
 		/* jshint eqeqeq: true */
@@ -4456,7 +4456,7 @@ jQuery.event = {
 			delete elemData.handle;
 
 			// removeData also checks for emptiness and clears the expando if empty
-			// so use it instead of delete
+			// so use it instead of trash
 			jQuery._removeData( elem, "events" );
 		}
 	},
@@ -5695,7 +5695,7 @@ jQuery.extend({
 
 						delete cache[ id ];
 
-						// IE does not allow us to delete expando properties from nodes,
+						// IE does not allow us to trash expando properties from nodes,
 						// nor does it have a removeAttribute function on Document nodes;
 						// we must handle all of these cases
 						if ( deleteExpando ) {
