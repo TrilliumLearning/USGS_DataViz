@@ -119,7 +119,7 @@ function ChangeStateList(statelevel) {
     });
 
     $.ajax({
-        url: "http://localhost:9090/CityList",
+        url: "http://localhost:9085/CityList",
         success: function (res) {
             var returnCityObj1 = getObjects(res, 'StateName', statelevel);
             console.log(returnCityObj1);

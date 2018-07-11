@@ -302,7 +302,7 @@
                 <button id="submit" type="submit" value="Submit" form="layer"  >Submit</button>
             </div>
             <div class="column">
-                <button id="clear" type="reset" onclick="window.location.reload()" value="  Clear  ">Clear</button>
+                <button id="clear" type="reset" onclick="clearForm()" value="  Clear  ">Clear</button>
             </div>
             <div class="column">
                 <button id="cancel" type="button" onclick="userHome();">Cancel</button>
@@ -336,6 +336,12 @@
         document.getElementById("date").value=today;
 
     });
+
+    function clearForm(){
+        if (confirm("Are you sure you to leave this page? All the data will be cleared accordingly!") === true) {
+            window.location.reload();
+        }
+    }
 
     function Check(that){
         console.log(that);

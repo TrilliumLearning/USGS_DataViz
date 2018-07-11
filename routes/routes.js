@@ -814,7 +814,6 @@ module.exports = function (app, passport) {
         let result = Object.keys(req.body).map(function (key) {
             return [String(key), req.body[key]];
         });
-        console.log(result);
         res.setHeader("Access-Control-Allow-Origin", "*");
 
         let name = "";
@@ -980,7 +979,6 @@ module.exports = function (app, passport) {
         let result = Object.keys(req.body).map(function (key) {
             return [String(key), req.body[key]];
         });
-        console.log(result);
         res.setHeader("Access-Control-Allow-Origin", "*");
 
         var update1 = "UPDATE USGS.Request_Form SET " ;
@@ -1693,7 +1691,6 @@ function QueryStat(myObj, scoutingStat, res) {
                 crypto.randomBytes(20, function(err, buf) {
                     token = buf.toString('hex');
                     tokenExpTime();
-                    console.log("B");
                     done(err, token, tokenExpire);
                 });
             },
