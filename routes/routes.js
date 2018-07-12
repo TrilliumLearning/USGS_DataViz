@@ -814,6 +814,7 @@ module.exports = function (app, passport) {
         let result = Object.keys(req.body).map(function (key) {
             return [String(key), req.body[key]];
         });
+        // console.log(result);
         res.setHeader("Access-Control-Allow-Origin", "*");
 
         let name = "";
@@ -1012,7 +1013,7 @@ module.exports = function (app, passport) {
         valueSubmit += ", '" + newImage.Layer_Uploader + "','" + newImage.Layer_Uploader_name + "'";
         let filepathname = uploadPath + "/" + responseDataUuid;
         let statement1 = update1+update2+update3;
-        let statement2 = "UPDATE USGS.Request_Form SET Layer_Uploader = '" + valueSubmit[13] + "', 'Layer_Uploader_name = '" + valueSubmit[14] + "';";
+        let statement2 = "UPDATE USGS.Request_Form SET Layer_Uploader = " + valueSubmit[13] + ", Layer_Uploader_name = " + valueSubmit[14] + ";";
         if(result[4][2] === "other"){
             let statement = "INSERT INTO USGS.MapLayerMenu VALUES (" + result[7][1] + "," + result[0][0] + "," + result[4][1] + "," + result[6][1] + "," + result[7][1] + "," + result[10][1] + "," + result[8][1] + "," + result[9][1] + ", 'Active');";
             con_CS.query(statement1 + statement + statement2, function (err, result) {
