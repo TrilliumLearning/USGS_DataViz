@@ -99,17 +99,16 @@ module.exports = function (app, passport) {
     app.post('/email', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
         let statement = "SELECT * FROM UserLogin WHERE username = '" + req.body.username + "';";
-        //console.log(statement);
 
         con_CS.query(statement, function (err, results, fields) {
             if (err) {
-                // console.log(err);
+                console.log(err);
                 res.json({"error": true, "message": "An unexpected error occurred !"});
             } else if (results.length === 0) {
                 res.json({"error": true, "message": "Please verify your email address !"});
             } else {
                 var username = req.body.username;
-                var subject = "Passwprd Reset";
+                var subject = "Password Reset";
                 var text = 'the reset of the password for your account.';
                 var url = "http://" + req.headers.host + "/reset/";
                 sendToken(username, subject, text, url, res);
@@ -440,7 +439,7 @@ module.exports = function (app, passport) {
     });
 
     app.post('/signup', function (req, res) {
-        console.log("A");
+        // console.log("A");
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
         // con_CS.query('USE ' + config.Login_db); // Locate Login DB
 
@@ -781,16 +780,14 @@ module.exports = function (app, passport) {
     app.post('/upload', onUpload);
 
     app.post('/submit', function (req, res) {
-        // console.log(req.body);
         let result = Object.keys(req.body).map(function (key) {
             return [String(key), req.body[key]];
         });
-        // console.log (result);
         res.setHeader("Access-Control-Allow-Origin", "*");
 
         var update1 = "UPDATE USGS.UserProfile SET ";
-        var update3 = " WHERE username = '" + req.user.username + "'";
         let update2 = "";
+        var update3 = " WHERE username = '" + req.user.username + "'";
         for (let i = 0; i < result.length - 3; i++) {
             if (i === result.length - 4) {
                 update2 += result[i][0] + " = '" + result[i][1] + "'";
@@ -807,6 +804,16 @@ module.exports = function (app, passport) {
                 res.json("Connected!")
             }
         });
+    });
+
+    app.post('/UsernameV',function (req,res) {
+       // let username = req.query.usernameStr;
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        let username = {
+            username: req.user.username,
+        };
+        console.log(username);
+
     });
 
     //Submit Request form//
@@ -1732,7 +1739,7 @@ function QueryStat(myObj, scoutingStat, res) {
                         res.json({"error": true, "message": "An unexpected error occurred !"});
                     } else {
                         // res.send('Message sent successfully! Please check your email inbox.');
-                        console.log('Message sent successfully!');
+                        // console.log('Message sent successfully!');
                         // res.redirect('/login');
                         res.json({"error": false, "message": "Message sent successfully !"});
                         // alert('An e-mail has been sent to ' + req.body.username + ' with further instructions.');

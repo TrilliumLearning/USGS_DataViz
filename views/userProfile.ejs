@@ -8,13 +8,13 @@
     <link rel="stylesheet" href="../css/multi-select.css" media="screen" type="text/css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../jquery-validation-1.17.0/demo/css/screen.css">
+    <link rel="stylesheet" href="../scripts/jquery-validation-1.17.0/demo/css/screen.css">
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/file-uploader/5.16.2/all.fine-uploader/all.fine-uploader.min.js"></script>
     <script src="../src/jquery.multi-select.js"></script>
-    <script src="../jquery-validation-1.17.0/dist/jquery.validate.js"></script>
+    <script src="../scripts/jquery-validation-1.17.0/dist/jquery.validate.js"></script>
     <style>
         .banner{
             position:relative;
@@ -75,8 +75,6 @@
 
 <div class = "container">
     <a href="//aworldbridge.com"><img class="banner" src="../images/NewWBBanner.jpg"/></a>
-    <!--<ul id="userMenu" class="dropdown-menu dropdown-menu-right">-->
-    <!--</ul>-->
     <div id="container">
         <h1 id="title">User Profile</h1>
         <h2>Basic Form</h2>
@@ -84,10 +82,12 @@
             <form id="basic"  class="well form-horizontal">
                 <fieldset>
                     <div class="form-group">
-                        <label class="col-md-4 control-label">User Name</label>
+                        <label class="col-md-4 control-label">User Name(Email)</label>
                         <div class="col-md-8 inputGroupContainer">
-                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-cloud"></i></span><input id="username" class="form-control" type="text" value="<%= user.username%>"></div>
-                            <!--<h4 id="userrole" class="floating-Box"><strong>User Role:&nbsp;&nbsp;</strong></h4>-->
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span><input id="username" class="form-control" value="<%= user.username %>" type="text">
+                            </div>
+                            <h5 style="color:coral">It will not change until you verify your email address</h5>
                         </div>
                     </div>
                     <div class="form-group">
@@ -221,7 +221,8 @@
         </div>
         <div class="row">
             <div class="column">
-                <button id="submit" type="submit" value="Submit" onclick="submitForm()">Submit</button>
+                <button id="submit" type="submit" value="Submit" onclick="submitForm(); ">Submit</button>
+                <!--window.location.reload()-->
             </div>
             <div class="column">
                 <button id="cancel" type="button" onclick="userHome();">Cancel</button>
@@ -244,9 +245,6 @@
             for(var i =0; i< results.length; i++) {
                 // console.log(results[i].username);
                 if (results[i].username === UserName) {
-
-                    // document.getElementById('Request ID').value = getvalue[1];
-                    document.getElementById('username').value = results[i].username;
                     document.getElementById('firstName').value = results[i].firstName;
                     document.getElementById('lastName').value = results[i].lastName;
                     document.getElementById('addressLine1').value = results[i].Address_Line1;
@@ -341,7 +339,8 @@
     function submitForm () {
         alert("Submitted!");
         var data = $("#basic").serialize() + "&" + $("#pswchange").serialize();
-        console.log(data);
+        var usernameStr = "usernameStr= " + document.getElementById('username').value;
+        console.log(usernameStr);
         $.ajax({
             url  : 'http://localhost:9085/submit',
             method : "POST",
@@ -351,6 +350,17 @@
                 console.log(d);
             }
         });
+
+        $.ajax({
+            url  : 'http://localhost:9085/UsernameV',
+            method : "POST",
+            dataType: 'json',
+            data : usernameStr,
+            success : function(d){
+                console.log(d);
+            }
+        });
+
         $.ajax({
             url  : 'http://localhost:9085/newPass',
             method : "POST",
@@ -363,6 +373,5 @@
     }
 
 </script>
-
 </body>
 </html>

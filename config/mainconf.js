@@ -25,7 +25,8 @@ module.exports = {
     'Server_Port': 9085,
 
     //upload file--pending
-    'Upload_Path': 'http://usgs.aworldbridgelabs.com/uploadfiles',
+    // 'Upload_Path': 'http://usgs.aworldbridgelabs.com/uploadfiles',
+    'Upload_Path':'uploadfiles',
     // 'Upload_Dir': '/var/www/usgs/uploadfiles',
     'Upload_Dir': 'uploadfiles',
 
@@ -34,6 +35,6 @@ module.exports = {
     'GeoData_Dir':'b',
 
     //trash file--trash
-    'Delete_Dir':'trash',
+    'Delete_Dir':'trash'
 
 };
