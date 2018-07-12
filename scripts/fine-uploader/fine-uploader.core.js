@@ -997,7 +997,7 @@
         UPLOAD_RETRYING: "retrying upload",
         UPLOAD_SUCCESSFUL: "upload successful",
         UPLOAD_FAILED: "upload failed",
-        DELETE_FAILED: "trash failed",
+        DELETE_FAILED: "trashfolder failed",
         DELETING: "deleting",
         DELETED: "deleted"
     };
@@ -2105,7 +2105,7 @@
                     });
                     return true;
                 } else {
-                    this.log("Delete request ignored for ID " + id + ", trash feature is disabled or request not possible " + "due to CORS on a user agent that does not support pre-flighting.", "warn");
+                    this.log("Delete request ignored for ID " + id + ", trashfolder feature is disabled or request not possible " + "due to CORS on a user agent that does not support pre-flighting.", "warn");
                     return false;
                 }
             },
@@ -3886,7 +3886,7 @@
         qq.extend(this, {
             sendDelete: function(id, uuid, additionalMandatedParams) {
                 var additionalOptions = additionalMandatedParams || {};
-                options.log("Submitting trash file request for " + id);
+                options.log("Submitting trashfolder file request for " + id);
                 if (options.method === "DELETE") {
                     requester.initTransport(id).withPath(uuid).withParams(additionalOptions).send();
                 } else {
