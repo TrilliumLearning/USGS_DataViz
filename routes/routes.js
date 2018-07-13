@@ -440,7 +440,7 @@ module.exports = function (app, passport) {
     });
 
     app.post('/signup', function (req, res) {
-        console.log("A");
+        console.log(req.body.userrole);
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
         // con_CS.query('USE ' + config.Login_db); // Locate Login DB
 

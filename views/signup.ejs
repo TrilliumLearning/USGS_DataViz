@@ -2,10 +2,10 @@
 <!doctype html>
 <html>
 <head>
-	<title>FAW/Locust -  User Management - Add User</title>
-    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+	<title>FAW/Locust -  Sign Up</title>
+	<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 	<!--<link rel="stylesheet" href="//unpkg.com/flatpickr/dist/flatpickr.min.css">-->
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -59,50 +59,53 @@
 <body>
 <div class="container">
 
-<div class="col-sm-6 col-sm-offset-3">
-	<a href="//aworldbridge.com"><img class="banner" src="/images/NewWBBanner.jpg" style="height: 97px; width: 120%" /></a>
-	<h1><span class="fa fa-sign-in"></span> Signup </h1>
+	<div class="col-sm-6 col-sm-offset-3">
+		<a href="//aworldbridge.com"><img class="banner" src="/images/NewWBBanner.jpg" style="height: 97px; width: 120%" /></a>
+		<h1><span class="fa fa-sign-in"></span> Signup </h1>
 
-	<!-- show any messages that come back with authentication -->
-	<% if (message.length > 0) { %>
+		<!-- show any messages that come back with authentication -->
+		<% if (message.length > 0) { %>
 		<div class="alert alert-danger"><%= message %></div>
-	<% } %>
+		<% } %>
 
-	<!-- LOGIN FORM -->
-	<form action="/signup" method="post" id="signup">
-		<div class="form-group">
-			<label>Username</label>
-			<input type="email" class="form-control" name="username">
-		</div>
-		<div class="form-group">
-			<label>First Name</label>
-			<input type="text" class="form-control" name="firstName">
-		</div>
-		<div class="form-group">
-			<label>Last Name</label>
-			<input type="text" class="form-control" name="lastName">
-		</div>
-		<div class="form-group">
-			<label>Password</label>
-			<input type="password" class="form-control" name="password">
-		</div>
-		<div class="form-group">
-			<label>User Role</label><br>
-			<input type="radio" name="userrole" value="Admin"><h5 class="floatingBox">&nbsp;&nbsp;&nbsp;Admin</h5>&nbsp;&nbsp;&nbsp;&nbsp;
-			<input type="radio" name="userrole" value="Regular"><h5 class="floatingBox">&nbsp;&nbsp;&nbsp;Regular</h5>
-		</div>
-		<div class="form-group">
-			<label>Date Created</label>
-			<input id="DATE" class="form-control date" name="dateCreated" readonly hidden>
-		</div>
-		<div class="form-group" hidden>
-			<label>Created By User</label>
-			<input type="text" id="createdUser" class="form-control" name="createdUser" value="Anonymous" readonly >
-		</div>
-		<div class="form-group" hidden>
-			<label>Status</label>
-			<input type="text" id="status" class="form-control" name="status" value="Never Logged In" readonly >
-		</div>
+		<!-- LOGIN FORM -->
+		<form action="/signup" method="post" id="signup">
+			<div class="form-group">
+				<label>Username</label>
+				<input type="email" class="form-control" name="username">
+			</div>
+			<div class="form-group">
+				<label>First Name</label>
+				<input type="text" class="form-control" name="firstName">
+			</div>
+			<div class="form-group">
+				<label>Last Name</label>
+				<input type="text" class="form-control" name="lastName">
+			</div>
+			<div class="form-group">
+				<label>Password</label>
+				<input type="password" class="form-control" name="password">
+			</div>
+			<div class="form-group" hidden>
+				<label>User Role</label><br>
+				<select name="userrole" >
+					<option>Admin</option>
+					<option selected>Regular</option>
+				</select>
+
+			</div>
+			<div class="form-group">
+				<label>Date Created</label>
+				<input id="DATE" class="form-control date" name="dateCreated" readonly hidden>
+			</div>
+			<div class="form-group" hidden>
+				<label>Created By User</label>
+				<input type="text" id="createdUser" class="form-control" name="createdUser" value="Anonymous" readonly >
+			</div>
+			<div class="form-group" hidden>
+				<label>Status</label>
+				<input type="text" id="status" class="form-control" name="status" value="Never Logged In" readonly >
+			</div>
 
 			<button type="submit" class="btn btn-warning btn-mg"> submit </button>
 			<a href="/login" class="btn btn-warning btn-mg">Cancel</a>
@@ -123,6 +126,7 @@
             });*/
 
             $('#signup').submit(function(e) {
+                console.log($("#signup").serialize());
                 e.preventDefault();
                 $.ajax({
                     type: "post",
@@ -132,7 +136,7 @@
                     success: function (result) {
                         if (!result.error) {
                             alert(result.message);
-                            window.location.replace('/login');
+                            alert("We are sending you the email verification. Please check it before login to your account.");
                         } else {
                             alert(result.message);
                         }
