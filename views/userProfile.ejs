@@ -340,8 +340,8 @@
     function submitForm () {
         alert("Submitted!");
         var data = $("#basic").serialize() + "&" + $("#pswchange").serialize();
-        var usernameStr = "usernameStr= " + document.getElementById('username').value;
-        console.log(usernameStr);
+        var UNS = "UNS=" + document.getElementById('username').value;
+        console.log(UNS);
         $.ajax({
             url  : 'submit',
             method : "POST",
@@ -354,9 +354,9 @@
 
         $.ajax({
             url  : 'UsernameV',
-            method : "POST",
+            method : "GET",
             dataType: 'json',
-            data : usernameStr,
+            data : UNS,
             success : function(d){
                 console.log(d);
             }
