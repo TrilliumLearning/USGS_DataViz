@@ -318,8 +318,8 @@
         </div>
         <div class="row">
             <button id="clear" type="reset" onclick="clearForm()" value="  Clear  ">Clear</button>
-            <button id="approve" type="submit" form="layer" onclick="submitForm()" disabled  title="this is only for Admin Users">Approve</button>
-            <button id="submit" onclick="regularsubmit()" disabled title="this is only for Regular Users">Submit</button>
+            <button id="approve" type="submit" form="layer" disabled  title="this is only for Admin Users">Approve</button>
+            <button id="submit" form="layer" disabled title="this is only for Regular Users">Submit</button>
             <button id="cancel" onclick="userHome();">Cancel</button>
         </div>
     </div>
@@ -364,6 +364,15 @@
 
         });
 
+        $("#main").change(function () {
+            var val = $(this).val();
+            if (val == "Category") {
+                $("#sub").html("<option value='Category'>SELECT SUBCATEGORY</option>");
+            }else if(val =="other") {
+                $("#sub").html("<option value='other'>Other(Please specify)</option>");
+            }
+        })
+
     });
 
     function Check(that) {
@@ -380,18 +389,14 @@
     var photoDiv = $("#photo");
     photoDiv.empty();
     var editIDSr = "editIDSr=" + getvalue[2];
-    console.log(editIDSr);
     $.ajax({
         url: 'edit',
         type: 'GET',
         dataType: 'json',
         data: editIDSr,
         success: function (results) {
-            console.log(results);
             if (!results.error) {
                 globalResults = results;
-                console.log("results: " + globalResults[0].Layer_Uploader);
-
                 var list = [];
                 for (var i = 0; i < globalResults.length; i++) {
                     var first = {
@@ -429,6 +434,9 @@
         callbacks: {
             onComplete: function (id, name, responseJSON) {
                 uploader.setUuid(id, responseJSON.newuuid);
+            },
+            onDelete: function(id) {
+                this.setDeleteFileParams({filename: this.getName(id)}, id);
             }
         },
         validation:{
@@ -437,6 +445,7 @@
     });
 
     function submitForm () {
+        if (UserRole === "Admin") {
             if (confirm("Are you sure you would like to approve this data?") === true) {
                 var tID = "tID=" + document.getElementById('RID').value;
                 var LUN = "LUN=" + getvalue[15];
@@ -460,9 +469,7 @@
             } else {
                 return false;
             }
-    }
-
-    function regularsubmit(){
+        }else if (UserRole === "Regular") {
             if (confirm("Are you sure you would like to submit this data?") === true) {
                 var regulardata = $("#layer").serialize();
                 $.ajax({
@@ -477,6 +484,7 @@
             } else {
                 return false;
             }
+        }
     }
 
     function ChangeMainCategory(Category){
@@ -499,18 +507,6 @@
             }
         })
     }
-
-    $(document).ready(function () {
-        $("#main").change(function () {
-            var val = $(this).val();
-            // console.log(val);
-            if (val == "Category") {
-                $("#sub").html("<option value='Category'>SELECT SUBCATEGORY</option>");
-            }else if(val =="other") {
-                $("#sub").html("<option value='other'>Other(Please specify)</option>");
-            }
-        });
-    });
 
     function userHome() {
         if (confirm("Are you sure you to leave this page? All the data will be cleared accordingly!") === true) {
@@ -559,7 +555,6 @@
         // in the "action" attribute of the form when valid
         submitHandler: function (form) {
             submitForm();
-            regularsubmit();
         }
     });
 

@@ -955,18 +955,17 @@ module.exports = function (app, passport) {
         let update3 = " WHERE RID = '" + result[1][1] + "';";
         let update2 = "";
 
-        for (let i = 0; i < result.length-3; i++) {
-            if (i === result.length - 4) {
+        for (let i = 0; i < result.length; i++) {
+            if (i === result.length - 1) {
                 update2 += result[i][0] + " = '" + result[i][1]+ "'";
             } else {
                 update2 += result[i][0] + " = '" + result[i][1] + "', " ;
             }
         }
-
         let Layer_Uploader = uploadPath + "/" + responseDataUuid;
         let Layer_Uploader_name = responseDataUuid;
         let filepathname = uploadPath + "/" + responseDataUuid;
-        let statement1 = update1 + update2 + update3;
+        let statement1 = update1+update2+update3;
         let statement2 = "UPDATE USGS.Request_Form SET Layer_Uploader = '" + Layer_Uploader + "', Layer_Uploader_name = '" + Layer_Uploader_name + "';";
         con_CS.query(statement1 + statement2, function (err, result) {
             if (err) {
@@ -987,7 +986,8 @@ module.exports = function (app, passport) {
         });
     });
 
-    app.delete("/deleteFiles/:uuid", onDeleteFile);
+    // app.delete("/deleteFiles/:uuid", onDeleteFile1);
+    // app.delete("/deleteFiles",onDeleteFile2);
 
     app.get('/approve', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*");
@@ -1024,8 +1024,8 @@ module.exports = function (app, passport) {
         var update3 = " WHERE RID = '" + result[1][1] + "';";
         let update2 = "";
 
-        for (let i = 0; i < result.length-2; i++) {
-            if (i === result.length - 3) {
+        for (let i = 0; i < result.length; i++) {
+            if (i === result.length - 1) {
                 update2 += result[i][0] + " = '" + result[i][1]+ "'";
             } else {
                 update2 += result[i][0] + " = '" + result[i][1] + "', " ;
@@ -1037,9 +1037,8 @@ module.exports = function (app, passport) {
         let filepathname = uploadPath + "/" + responseDataUuid;
         let statement1 = update1+update2+update3;
         let statement2 = "UPDATE USGS.Request_Form SET Layer_Uploader = '" + Layer_Uploader + "', Layer_Uploader_name = '" + Layer_Uploader_name + "';";
-        if(result[4][2] === "other"){
-            console.log("1");
-            let statement = "INSERT INTO USGS.MapLayerMenu VALUES (" + result[7][1] + "," + result[0][0] + "," + result[4][1] + "," + result[6][1] + "," + result[7][1] + "," + result[10][1] + "," + result[8][1] + "," + result[9][1] + ", 'Active');";
+        if(result[3][1] === "other"){
+            let statement = "INSERT INTO USGS.MapLayerMenu VALUES ('" + result[7][1] + "','" + result[0][0] + "','" + result[4][1] + "','" + result[6][1] + "','" + result[7][1] + "','" + result[10][1] + "','" + result[8][1] + "','" + result[9][1] + "', 'Active');";
             con_CS.query(statement1 + statement + statement2, function (err, result) {
                 if (err) {
                     throw err;
@@ -1048,7 +1047,6 @@ module.exports = function (app, passport) {
                 }
             });
         }else{
-            console.log("3");
             let statement = "INSERT INTO USGS.MapLayerMenu VALUES ('" + result[7][1] + "','" + result[0][1] + "','" + result[3][1] + "','" + result[5][1] + "','" + result[7][1] + "','" + result[10][1] + "','" + result[8][1] + "','" + result[9][1] + "', 'Active');";
            con_CS.query(statement1 + statement + statement2, function (err, result) {
                 if (err) {
@@ -1078,7 +1076,6 @@ module.exports = function (app, passport) {
                 filePath0 = results[0];
                 let JSONresult = JSON.stringify(results, null, "\t");
                 res.send(JSONresult);
-                res.end()
             }
         });
     });
@@ -1202,8 +1199,6 @@ module.exports = function (app, passport) {
 
         });
     });
-
-    app.delete("/deleteFiles/:uuid", onDeleteFile);
 
     // =====================================
     // CitySmart Dynamic Menu SECTION ======
@@ -1592,16 +1587,14 @@ function QueryStat(myObj, scoutingStat, res) {
 
     function onDeleteFile(req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
-
+        console.log("result=" + req.params.uuid);
         let uuid = req.params.uuid,
             dirToDelete = "uploadfiles/" + uuid;
-        console.log(uuid);
         rimraf(dirToDelete, function(error) {
             if (error) {
                 console.error("Problem deleting file! " + error);
                 res.status(500);
             }
-
             res.send();
         });
     }
@@ -1639,8 +1632,6 @@ function QueryStat(myObj, scoutingStat, res) {
     }
 
     function moveUploadedFile(file, uuid, success, failure) {
-        console.log("this is: " + uuid);
-        // let destinationDir = uploadedFilesPath + uuid + "/",
         let destinationDir = "uploadfiles/",
             fileDestination = destinationDir + uuid + "_" + file.name;
 
