@@ -434,9 +434,6 @@
         callbacks: {
             onComplete: function (id, name, responseJSON) {
                 uploader.setUuid(id, responseJSON.newuuid);
-            },
-            onDelete: function(id) {
-                this.setDeleteFileParams({filename: this.getName(id)}, id);
             }
         },
         validation:{

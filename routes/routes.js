@@ -986,8 +986,8 @@ module.exports = function (app, passport) {
         });
     });
 
-    // app.delete("/deleteFiles/:uuid", onDeleteFile1);
-    // app.delete("/deleteFiles",onDeleteFile2);
+    app.delete("/deleteFiles/:uuid", onDeleteFile1);
+    app.delete("/deleteFiles",onDeleteFile2);
 
     app.get('/approve', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*");
@@ -1058,7 +1058,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    //
+    let olduuid;
     //Put back the photo in the form
     app.get('/edit', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
@@ -1075,6 +1075,7 @@ module.exports = function (app, passport) {
             } else {
                 filePath0 = results[0];
                 let JSONresult = JSON.stringify(results, null, "\t");
+                olduuid = results;
                 res.send(JSONresult);
             }
         });
@@ -1585,11 +1586,23 @@ function QueryStat(myObj, scoutingStat, res) {
         res.send(responseData);
     }
 
-    function onDeleteFile(req, res) {
+    function onDeleteFile1(req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
         console.log("result=" + req.params.uuid);
         let uuid = req.params.uuid,
             dirToDelete = "uploadfiles/" + uuid;
+        rimraf(dirToDelete, function(error) {
+            if (error) {
+                console.error("Problem deleting file! " + error);
+                res.status(500);
+            }
+            res.send();
+        });
+    }
+    //cannot get the uuid
+    function onDeleteFile2(req, res) {
+        res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
+        let dirToDelete = "uploadfiles/" + olduuid[0].Layer_Uploader_name;
         rimraf(dirToDelete, function(error) {
             if (error) {
                 console.error("Problem deleting file! " + error);
