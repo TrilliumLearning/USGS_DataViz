@@ -442,7 +442,7 @@ console.log(getvalue);
             var data =$("#layer").serialize();
             console.log(data);
             $.ajax({
-              url:'approve',
+                 url:'approve',
                 type:"GET",
                 dataType:'json',
                 data:tID + '&' + LUN,
@@ -462,22 +462,22 @@ console.log(getvalue);
         }
     }
 
-    function regularsubmit(){
-        if (confirm("Are you sure you would like to submit this data?") === true) {
-            var regulardata =$("#layer").serialize();
-            $.ajax({
-                url  : 'rsubmit',
-                method : "post",
-                data : regulardata,
-                dataType: 'json',
-                success : function(d){
-                }
-            });
-            // window.location.replace('/userHome');
-        } else {
-            return false;
-        }
-    }
+    // function regularsubmit(){
+    //     if (confirm("Are you sure you would like to submit this data?") === true) {
+    //         var regulardata =$("#layer").serialize();
+    //         $.ajax({
+    //             url  : 'rsubmit',
+    //             method : "post",
+    //             data : regulardata,
+    //             dataType: 'json',
+    //             success : function(d){
+    //             }
+    //         });
+    //         // window.location.replace('/userHome');
+    //     } else {
+    //         return false;
+    //     }
+    // }
 
     function ChangeMainCategory(Category){
         var subList = document.getElementById("sub");
