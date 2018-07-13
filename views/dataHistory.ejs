@@ -300,9 +300,9 @@
                 <option value="UID">UID</option>
                 <option value="RID">RID</option>
                 <option value="LayerCategory">Layer Type</option>
-                <option value="CityName">Layer City</option>
                 <option value="StateName">Layer State</option>
                 <option value="CountryName">Layer Country</option>
+                <option value="ContinentName">Layer Continent</option>
                 <option value="FirstLayer">Main Category</option>
                 <option value="SecondLayer">Sub Category</option>
                 <option value="ThirdLayer">Layer Name</option>
@@ -319,9 +319,9 @@
                 <option value="UID">UID</option>
                 <option value="RID">RID</option>
                 <option value="LayerCategory">Layer Type</option>
-                <option value="CityName">Layer City</option>
                 <option value="StateName">Layer State</option>
                 <option value="CountryName">Layer Country</option>
+                <option value="ContinentName">Layer Continent</option>
                 <option value="FirstLayer">Main Category</option>
                 <option value="SecondLayer">Sub Category</option>
                 <option value="ThirdLayer">Layer Name</option>
@@ -472,7 +472,7 @@
 
 
         $("#deleteButton").on("click", function () {
-            if (confirm("Are you sure you would like to trash this row(s)?") === true) {
+            if (confirm("Are you sure you would like to trashfolder this row(s)?") === true) {
                 var transactionIDStr = "transactionIDStr=" + transactionID.toString();
                 console.log ("transactionIDStr: " + transactionIDStr);
 

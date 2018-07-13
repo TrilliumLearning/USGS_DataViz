@@ -1349,7 +1349,7 @@ var out = {
 
     /**
      * Delete a file, or a directory and all sub-files, from the zip
-     * @param {string} name the name of the file to trash
+     * @param {string} name the name of the file to trashfolder
      * @return {JSZip} this JSZip object
      */
     remove: function(name) {
@@ -1367,7 +1367,7 @@ var out = {
             // file
             delete this.files[name];
         } else {
-            // maybe a folder, trash recursively
+            // maybe a folder, trashfolder recursively
             var kids = this.filter(function(relativePath, file) {
                 return file.name.slice(0, name.length) === name;
             });

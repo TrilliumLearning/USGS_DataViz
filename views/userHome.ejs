@@ -393,12 +393,12 @@
         });
 
         $("#deleteButton").on("click", function () {
-            if (confirm("Are you sure you would like to trash this row(s)?") === true) {
+            if (confirm("Are you sure you would like to trashfolder this row(s)?") === true) {
                 var transactionIDStr = "transactionIDStr=" + scoutingTransactionID.concat(trapTransactionID).toString();
                 var pictureStr = "pictureStr=" + transactionpicturename.toString();
 
                 $.ajax({
-                    url: 'http://localhost:9085/deleteData',
+                    url: 'deleteData',
                     type: "GET",
                     dataType: 'json',
                     data: transactionIDStr + '&' + pictureStr
@@ -411,7 +411,7 @@
 
         var queryAndDisplay = function (querystr) {
             $.ajax({
-                url: 'http://localhost:9085/AddData',
+                url: 'AddData',
                 dataType: 'json',
                 success: function (results) {
                     console.log(results);
@@ -431,7 +431,7 @@
                                         results[i].FirstOther,
                                         results[i].SecondLayer,
                                         results[i].SecondOther,
-                                        results[i].ThirdLayer,
+                                        results[i].LayerName,
                                         results[i].Layer_Description,
                                         results[i].LayerFormat,
                                         results[i].Layer_Uploader,
@@ -452,7 +452,7 @@
                                     results[i].FirstOther,
                                     results[i].SecondLayer,
                                     results[i].SecondOther,
-                                    results[i].ThirdLayer,
+                                    results[i].LayerName,
                                     results[i].Layer_Description,
                                     results[i].LayerFormat,
                                     results[i].Layer_Uploader,
