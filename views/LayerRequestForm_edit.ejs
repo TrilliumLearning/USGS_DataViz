@@ -318,8 +318,8 @@
         </div>
         <div class="row">
             <button id="clear" type="reset" onclick="clearForm()" value="  Clear  ">Clear</button>
-            <button id="approve" type="submit" form="layer" onclick="submitForm()">Approve</button>
-            <button id="submit" onclick="regularsubmit()">Submit</button>
+            <button id="approve" type="submit" form="layer" onclick="submitForm()" disabled  title="this is only for Admin Users">Approve</button>
+            <button id="submit" onclick="regularsubmit()" disabled title="this is only for Regular Users">Submit</button>
             <button id="cancel" onclick="userHome();">Cancel</button>
         </div>
     </div>
@@ -328,7 +328,7 @@
 <script>
     var UserRole = "<%= user.userrole %>";
     var getvalue = JSON.parse(localStorage.getItem("getvalue"));
-console.log(getvalue);
+
     $(document).ready(function() {
         document.getElementById('date').value = getvalue[0];
         document.getElementById('User ID').value = getvalue[1];
@@ -345,8 +345,7 @@ console.log(getvalue);
             document.getElementById('main').value = getvalue[7];
             document.getElementById("other1").style.display = "block";
             document.getElementById("inputone").value = getvalue[8];
-            document.getElementById("fclear").style.display = "none";
-            document.getElementById('fclear').value = getvalue[9];
+            document.getElementById('idname').innerText = getvalue[9];
             document.getElementById("other2").style.display = "block";
             document.getElementById("inputtwo").value = getvalue[10];
         }else{
@@ -356,9 +355,11 @@ console.log(getvalue);
 
         $(function () {
             if (UserRole === "Admin") {
-                document.getElementById("submit").style.display = "none"
+                document.getElementById("approve").disabled = false;
+                document.getElementById("submit").style.backgroundColor = "lightgray";
             } else if (UserRole === "Regular") {
-                document.getElementById("approve").style.display = "none"
+                document.getElementById("submit").disabled = false;
+                document.getElementById("approve").style.backgroundColor = "lightgray";
             }
 
         });
@@ -375,7 +376,7 @@ console.log(getvalue);
             document.getElementById("other2").style.display = "none";
         }
     }
-
+    //resubmit the photo
     var photoDiv = $("#photo");
     photoDiv.empty();
     var editIDSr = "editIDSr=" + getvalue[2];
@@ -436,47 +437,46 @@ console.log(getvalue);
     });
 
     function submitForm () {
-        if (confirm("Are you sure you would like to approve this data?") === true) {
-            var tID = "tID=" + document.getElementById('RID').value;
-            var LUN = "LUN=" + getvalue[15];
-            var data =$("#layer").serialize();
-            console.log(data);
-            $.ajax({
-              url:'approve',
-                type:"GET",
-                dataType:'json',
-                data:tID + '&' + LUN,
-            });
-            $.ajax({
-                url  : 'replace',
-                method : "post",
-                data : data,
-                dataType: 'json',
-                success : function(d){
-                    console.log(d);
-                }
-            });
-          window.location.replace('/userHome');
-         } else {
-            return false;
-        }
+            if (confirm("Are you sure you would like to approve this data?") === true) {
+                var tID = "tID=" + document.getElementById('RID').value;
+                var LUN = "LUN=" + getvalue[15];
+                var data = $("#layer").serialize();
+                $.ajax({
+                    url: 'approve',
+                    type: "GET",
+                    dataType: 'json',
+                    data: tID + '&' + LUN,
+                });
+                $.ajax({
+                    url: 'replace',
+                    method: "post",
+                    data: data,
+                    dataType: 'json',
+                    success: function (d) {
+                        console.log(d);
+                    }
+                });
+                window.location.replace('/userHome');
+            } else {
+                return false;
+            }
     }
 
     function regularsubmit(){
-        if (confirm("Are you sure you would like to submit this data?") === true) {
-            var regulardata =$("#layer").serialize();
-            $.ajax({
-                url  : 'rsubmit',
-                method : "post",
-                data : regulardata,
-                dataType: 'json',
-                success : function(d){
-                }
-            });
-            // window.location.replace('/userHome');
-        } else {
-            return false;
-        }
+            if (confirm("Are you sure you would like to submit this data?") === true) {
+                var regulardata = $("#layer").serialize();
+                $.ajax({
+                    url: 'rsubmit',
+                    method: "post",
+                    data: regulardata,
+                    dataType: 'json',
+                    success: function (d) {
+                    }
+                });
+                window.location.replace('/userHome');
+            } else {
+                return false;
+            }
     }
 
     function ChangeMainCategory(Category){
@@ -498,7 +498,6 @@ console.log(getvalue);
                 }
             }
         })
-
     }
 
     $(document).ready(function () {
