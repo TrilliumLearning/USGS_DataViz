@@ -99,17 +99,16 @@ module.exports = function (app, passport) {
     app.post('/email', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
         let statement = "SELECT * FROM UserLogin WHERE username = '" + req.body.username + "';";
-        //console.log(statement);
 
         con_CS.query(statement, function (err, results, fields) {
             if (err) {
-                // console.log(err);
+                console.log(err);
                 res.json({"error": true, "message": "An unexpected error occurred !"});
             } else if (results.length === 0) {
                 res.json({"error": true, "message": "Please verify your email address !"});
             } else {
                 var username = req.body.username;
-                var subject = "Passwprd Reset";
+                var subject = "Password Reset";
                 var text = 'the reset of the password for your account.';
                 var url = "http://" + req.headers.host + "/reset/";
                 sendToken(username, subject, text, url, res);
@@ -440,7 +439,7 @@ module.exports = function (app, passport) {
     });
 
     app.post('/signup', function (req, res) {
-        console.log(req.body.userrole);
+        // console.log("A");
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
         // con_CS.query('USE ' + config.Login_db); // Locate Login DB
 
@@ -516,7 +515,6 @@ module.exports = function (app, passport) {
 
     app.get('/verify/:token', function(req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
-
         async.waterfall([
             function(done) {
                 myStat = "SELECT * FROM UserLogin WHERE resetPasswordToken = '" + req.params.token + "'";
@@ -540,6 +538,41 @@ module.exports = function (app, passport) {
                         var subject = "Account Activated";
                         var text = 'Hello,\n\n' + 'This is a confirmation for your account, ' + changeMail(username) + ' has just been activated.\n';
                         done(err, username, subject, text);
+                    }
+
+                });
+            }, function(username, subject, text) {
+                successMail(username, subject, text, res);
+            }
+        ]);
+    });
+
+    app.get('/verifyemail/:token', function(req, res) {
+        res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
+        async.waterfall([
+            function(done) {
+                myStat = "SELECT * FROM UserLogin WHERE resetPasswordToken = '" + req.params.token + "'";
+                con_CS.query(myStat, function(err, results) {
+                    dateNtime();
+                    console.log("results=" + results[0].PendingUsername);
+                    if (results.length === 0 || dateTime > results[0].expires) {
+                        res.send('Password reset token is invalid or has expired. Please contact Administrator.');
+                    } else {
+                        done(err, results[0].PendingUsername);
+                    }
+                });
+            }, function(PendingUsername, done) {
+            console.log("why?" + PendingUsername);
+                myStat = "UPDATE UserLogin SET username = '" + PendingUsername  + "' WHERE PendingUsername = '" + PendingUsername + "';";
+                mylogin = ""
+                con_CS.query(myStat, function(err, user) {
+                    if (err) {
+                        console.log(err);
+                        res.send("An unexpected error occurred !");
+                    } else {
+                        var subject = "Account Activated";
+                        var text = 'Hello,\n\n' + 'This is a confirmation for your account, ' + changeMail(PendingUsername) + ' has just been activated.\n';
+                        done(err, PendingUsername, subject, text);
                     }
 
                 });
@@ -781,16 +814,14 @@ module.exports = function (app, passport) {
     app.post('/upload', onUpload);
 
     app.post('/submit', function (req, res) {
-        // console.log(req.body);
         let result = Object.keys(req.body).map(function (key) {
             return [String(key), req.body[key]];
         });
-        // console.log (result);
         res.setHeader("Access-Control-Allow-Origin", "*");
 
         var update1 = "UPDATE USGS.UserProfile SET ";
-        var update3 = " WHERE username = '" + req.user.username + "'";
         let update2 = "";
+        var update3 = " WHERE username = '" + req.user.username + "'";
         for (let i = 0; i < result.length - 3; i++) {
             if (i === result.length - 4) {
                 update2 += result[i][0] + " = '" + result[i][1] + "'";
@@ -807,6 +838,28 @@ module.exports = function (app, passport) {
                 res.json("Connected!")
             }
         });
+    });
+
+    app.get('/UsernameV',function (req,res) {
+        res.setHeader("Access-Control-Allow-Origin", "*");//
+        let oldname = req.user.username;
+        let newname = req.query.UNS;
+        let statement = "UPDATE USGS.UserLogin SET PendingUsername = '"+ newname + "' WHERE username = '" + oldname + "';";
+        con_CS.query(statement, function (err,result) {
+            if (err) {
+                console.log(err);
+                res.json({"error": true, "message": "An unexpected error occurred !"});
+            } else if (result.length === 0) {
+                res.json({"error": true, "message": "Please verify your email address !"});
+            } else {
+                var username = newname;
+                var subject = "Email verify";
+                var text = 'to verify the new username(email).';
+                var url = "http://" + req.headers.host + "/verifyemail/";
+                sendname(username, subject, text, url, res);
+            }
+        })
+
     });
 
     //Submit Request form//
@@ -1696,17 +1749,12 @@ function QueryStat(myObj, scoutingStat, res) {
                 });
             },
             function (token, tokenExpire, done) {
-                // connection.query( "INSERT INTO Users ( resetPasswordExpires, resetPasswordToken ) VALUES (?,?) WHERE username = '" + req.body,username + "'; ")
                 myStat = "UPDATE UserLogin SET resetPasswordToken = ?, resetPasswordExpires = ? WHERE username = '" + username + "' ";
                 myVal = [token, tokenExpire];
                 con_CS.query(myStat, myVal, function (err, rows) {
 
-                    //newUser.id = rows.insertId;
-
                     if (err) {
                         console.log(err);
-                        // res.send("Token Insert Fail!");
-                        // res.end();
                         res.json({"error": true, "message": "Token Insert Fail !"});
                     } else {
                         done(err, token);
@@ -1733,7 +1781,7 @@ function QueryStat(myObj, scoutingStat, res) {
                         res.json({"error": true, "message": "An unexpected error occurred !"});
                     } else {
                         // res.send('Message sent successfully! Please check your email inbox.');
-                        console.log('Message sent successfully!');
+                        // console.log('Message sent successfully!');
                         // res.redirect('/login');
                         res.json({"error": false, "message": "Message sent successfully !"});
                         // alert('An e-mail has been sent to ' + req.body.username + ' with further instructions.');
@@ -1747,6 +1795,63 @@ function QueryStat(myObj, scoutingStat, res) {
         });
     }
 
+    function sendname(username, subject, text, url, res){
+        async.waterfall([
+            function(done) {
+                crypto.randomBytes(20, function(err, buf) {
+                    token = buf.toString('hex');
+                    tokenExpTime();
+                    done(err, token, tokenExpire);
+                });
+            },
+            function (token, tokenExpire, done) {
+                myStat = "UPDATE UserLogin SET resetPasswordToken = ?, resetPasswordExpires = ? WHERE PendingUsername = '" + username + "' ";
+                myVal = [token, tokenExpire];
+                con_CS.query(myStat, myVal, function (err, rows) {
+
+                    if (err) {
+                        console.log(err);
+                        res.json({"error": true, "message": "Token Insert Fail !"});
+                    } else {
+                        done(err, token);
+                    }
+                });
+            },
+            function(token, done, err) {
+                // Message object
+                var message = {
+                    from: 'FTAA <aaaa.zhao@g.feitianacademy.org>', // sender info
+                    to: username, // Comma separated list of recipients
+                    subject: subject, // Subject of the message
+                    // plaintext body
+                    text: 'You are receiving this because you (or someone else) have requested ' + text + '\n\n' +
+                    'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+                    url + token + '\n\n' +
+                    'If you did not request this, please ignore this email.\n'
+                };
+                console.log("username=" + username);
+                // console.log(message);
+
+                smtpTrans.sendMail(message, function(error){
+                    if(error){
+                        console.log(error.message);
+                        res.json({"error": true, "message": "An unexpected error occurred !"});
+                    } else {
+                        // res.send('Message sent successfully! Please check your email inbox.');
+                        // console.log('Message sent successfully!');
+                        // res.redirect('/login');
+                        res.json({"error": false, "message": "Message sent successfully !"});
+                        // alert('An e-mail has been sent to ' + req.body.username + ' with further instructions.');
+                    }
+                });
+            }
+            ], function(err) {
+            if (err) return next(err);
+            // res.redirect('/forgot');
+            res.json({"error": true, "message": "An unexpected error occurred !"});
+        });
+    }
+
     function successMail(username, subject, text, res) {
         var message = {
             from: 'FTAA <aaaa.zhao@g.feitianacademy.org>',
@@ -1754,6 +1859,7 @@ function QueryStat(myObj, scoutingStat, res) {
             subject: subject,
             text: text
         };
+        console.log(username);
 
         smtpTrans.sendMail(message, function (error) {
             if(error){
