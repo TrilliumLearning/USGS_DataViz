@@ -1,41 +1,38 @@
-$(document).ready(function () {
-    var x = document.getElementById("myListCountry");
+ var x = document.getElementById("myListContinent");
     var option = document.createElement("option");
     $.ajax({
-        url: "CountryList",
+        url: "ContinentList",
         dataType: 'json',
         success: function (results) {
-            console.log(results);
             for (i = 0; i < results.length; i++) {
-                option.text = results[i].CountryName;
+                option.text = results[i].ContinentName;
                 x.add(option);
             }
         }
     });
-});
 
 $(document).ready(function () {
-    $("#myListCountry").change(function () {
+    $("#myListContinent").change(function () {
         var val = $(this).val();
         // console.log(val);
         if (val == "AL"){
-            $("#myListState").html("<option value='AL'> All Layer </option>");
-            $("#myListCity").html("<option value= 'AL'> All Layer </option>");
+            $("#myListCountry").html("<option value='AL'> All Layer </option>");
+            $("#myListState").html("<option value= 'AL'> All Layer </option>");
         }else{
-            $("#myListState").html("<option value = 'SAS'> -Select a State- </option>");
-            $("#myListCity").html("<option> -Select a City- </option>");
+            $("#myListCountry").html("<option value = 'SAS'> -Select a Country- </option>");
+            $("#myListState").html("<option> -Select a State- </option>");
         }
     });
-    $("#myListState").change(function () {
+    $("#myListCountry").change(function () {
         var value = $(this).val();
         console.log(value);
         if (value == "SAS"){
-            $("#myListCity").html("<option> -Select a City-</option>");
-            document.getElementById("myListCity").disabled = true;
-            document.getElementById("myListCity").style.backgroundColor = "lightgray";
+            $("#myListState").html("<option> -Select a State-</option>");
+            document.getElementById("myListState").disabled = true;
+            document.getElementById("myListState").style.backgroundColor = "lightgray";
             $('.Menu').show();
         }else{
-            $("#myListCity").html("<option> -Select a City- </option>");
+            $("#myListState").html("<option> -Select a State- </option>");
         }
     });
 });
@@ -62,85 +59,85 @@ function getObjects(obj, key, val) {
     return objects;
 }
 
-function ChangeSelectList(countrylevel) {
-    // console.log(countrylevel);
-    var stateList = document.getElementById("myListState");
-    while (stateList.options.length) {
-        stateList.remove(0);
+function ChangeSelectList(continentlevel) {
+    console.log(continentlevel);
+    var countryList = document.getElementById("myListCountry");
+    while (countryList.options.length) {
+        countryList.remove(0);
     }
     $.ajax({
-        url: "StateList",
+        url: "CountryList",
         dataType: 'json',
         success: function (results) {
             console.log(results);
             var option;
             for (var i = 0; i < results.length; i++) {
-                if (countrylevel === results[i]. CountryName) {
-                        option = new Option(results[i].StateName, results[i].StateName);
-                        stateList.add(option);
+                if (continentlevel === results[i]. ContinentName) {
+                        option = new Option(results[i].CountryName, results[i].CountryName);
+                        countryList.add(option);
                         $('.Menu').hide();
-                        document.getElementById("myListState").disabled = false;
-                        document.getElementById("myListState").style.backgroundColor = "white";
+                        document.getElementById("myListCountry").disabled = false;
+                        document.getElementById("myListCountry").style.backgroundColor = "white";
                 }
             }
         }
     });
-    if (countrylevel === "AL") {
+    if (continentlevel === "AL") {
         $('.Menu').show();
+        document.getElementById("myListCountry").disabled = true;
+        document.getElementById("myListCountry").style.backgroundColor = "lightgray";
         document.getElementById("myListState").disabled = true;
         document.getElementById("myListState").style.backgroundColor = "lightgray";
-        document.getElementById("myListCity").disabled = true;
-        document.getElementById("myListCity").style.backgroundColor = "lightgray";
     }
 }
 
-function ChangeStateList(statelevel) {
-    console.log(statelevel);
-    var cityList = document.getElementById("myListCity");
-    while (cityList.options.length) {
-        cityList.remove(0);
+function ChangeStateList(countrylevel) {
+    console.log(countrylevel);
+    var stateList = document.getElementById("myListState");
+    while (stateList.options.length) {
+        stateList.remove(0);
     }
     $.ajax({
-        url: "ChangeCityName",
+        url: "ChangeStateName",
         dataType: 'json',
         success: function (results) {
             // console.log(results);
             var option;
             for (var i = 0; i < results.length; i++) {
-                if (statelevel === results[i].StateName) {
-                    option = new Option(results[i].CityName, results[i].CityName);
-                    cityList.add(option);
+                if (countrylevel === results[i].CountryName) {
+                    option = new Option(results[i].StateName, results[i].StateName);
+                    stateList.add(option);
                     $('.Menu').hide();
-                    document.getElementById("myListCity").disabled = false;
-                    document.getElementById("myListCity").style.backgroundColor = "white";
+                    document.getElementById("myListState").disabled = false;
+                    document.getElementById("myListState").style.backgroundColor = "white";
                 }
             }
         }
     });
 
     $.ajax({
-        url: "CityList",
+        url: "StateList",
         success: function (res) {
-            var returnCityObj1 = getObjects(res, 'StateName', statelevel);
-            console.log(returnCityObj1);
-                localStorage.setItem("returnvalue",JSON.stringify(returnCityObj1));
+            var returnStateObj1 = getObjects(res, 'CountryName', countrylevel);
+            console.log(returnStateObj1);
+                localStorage.setItem("returnvalue",JSON.stringify(returnStateObj1));
         }
     });
 }
 
-function ChangeLayerList(citylevel) {
+function ChangeLayerList(statelevel) {
     // console.log(citylevel);
     var returnvalue = JSON.parse(localStorage.getItem("returnvalue"));
     // console.log(returnvalue);
     $('.Menu').hide();
     $('.State').hide();
     for(var i =0; i< returnvalue.length; i++) {
-        if (citylevel === returnvalue[i].CityName) {
-            console.log(returnvalue[i].CityName);
+        if (statelevel === returnvalue[i].StateName) {
+            console.log(returnvalue[i].StateName);
             // console.log("work2");
             var obj1 = returnvalue[i].FirstLayer;
             var obj2 = returnvalue[i].SecondLayer;
-            var obj3 = returnvalue[i].CityName + returnvalue[i].StateName;
+            var obj3 = returnvalue[i].StateName + returnvalue[i].CountryName;
             console.log(obj3);
             // console.log(i);
             var className1 = '.' + obj1;

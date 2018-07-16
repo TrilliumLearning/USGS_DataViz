@@ -1017,7 +1017,6 @@ module.exports = function (app, passport) {
         let result = Object.keys(req.body).map(function (key) {
             return [String(key), req.body[key]];
         });
-        console.log(result);
         res.setHeader("Access-Control-Allow-Origin", "*");
 
         var update1 = "UPDATE USGS.Request_Form SET " ;
@@ -1128,36 +1127,36 @@ module.exports = function (app, passport) {
     // CitySmart Menu Filter SECTION =======
     // =====================================
 
-    app.get('/CountryList', function (req, res) {
+    app.get('/ContinentList', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*");
-        con_CS.query("SELECT CountryName FROM MapLayerMenu GROUP BY CountryName", function (err, results) {
+        con_CS.query("SELECT ContinentName FROM MapLayerMenu GROUP BY ContinentName", function (err, results) {
             if (err) throw err;
             res.json(results);
             console.log(results);
+        });
+    });
+
+    app.get('/CountryList', function (req, res) {
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        con_CS.query('SELECT CountryName, ContinentName, COUNT (*) AS count FROM MapLayerMenu GROUP BY CountryName, ContinentName', function (err, results, fields) {
+            if (err) throw err;
+            res.json(results);
+            console.log(results);
+
         });
     });
 
     app.get('/StateList', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*");
-        con_CS.query('SELECT CountryName, StateName, COUNT (*) AS count FROM MapLayerMenu GROUP BY CountryName, StateName', function (err, results, fields) {
-            if (err) throw err;
-            res.json(results);
-            console.log(results);
-
-        });
-    });
-
-    app.get('/CityList', function (req, res) {
-        res.setHeader("Access-Control-Allow-Origin", "*");
-        con_CS.query('SELECT StateName, FirstLayer, SecondLayer, CityName FROM Request_Form', function (err, results) {
+        con_CS.query('SELECT CountryName, FirstLayer, SecondLayer, StateName FROM MapLayerMenu', function (err, results) {
             res.json(results);
             console.log(results);
         });
     });
 
-    app.get('/ChangeCityName', function (req, res) {
+    app.get('/ChangeStateName', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*");
-        con_CS.query('SELECT CityName, StateName, COUNT (*) AS count FROM MapLayerMenu GROUP BY CityName, StateName', function (err, results, fields) {
+        con_CS.query('SELECT StateName, CountryName, COUNT (*) AS count FROM MapLayerMenu GROUP BY StateName, CountryName', function (err, results, fields) {
             res.json(results);
             console.log(results);
         });
