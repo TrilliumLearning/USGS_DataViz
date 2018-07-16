@@ -1146,9 +1146,9 @@ module.exports = function (app, passport) {
         });
     });
 
-    app.get('/StateList', function (req, res) {
+    app.get('/ClassName', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*");
-        con_CS.query('SELECT CountryName, FirstLayer, SecondLayer, StateName FROM MapLayerMenu', function (err, results) {
+        con_CS.query('SELECT CountryName, FirstLayer, SecondLayer, StateName, ContinentName FROM MapLayerMenu', function (err, results) {
             res.json(results);
             console.log(results);
         });
