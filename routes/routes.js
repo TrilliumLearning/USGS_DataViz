@@ -554,7 +554,6 @@ module.exports = function (app, passport) {
                 myStat = "SELECT * FROM UserLogin WHERE resetPasswordToken = '" + req.params.token + "'";
                 con_CS.query(myStat, function(err, results) {
                     dateNtime();
-                    console.log("results=" + results[0].PendingUsername);
                     if (results.length === 0 || dateTime > results[0].expires) {
                         res.send('Password reset token is invalid or has expired. Please contact Administrator.');
                     } else {
@@ -562,10 +561,9 @@ module.exports = function (app, passport) {
                     }
                 });
             }, function(PendingUsername, done) {
-            console.log("why?" + PendingUsername);
                 myStat = "UPDATE UserLogin SET username = '" + PendingUsername  + "' WHERE PendingUsername = '" + PendingUsername + "';";
-                mylogin = ""
-                con_CS.query(myStat, function(err, user) {
+                mylogin = "UPDATE UserLogin SET PendingUsername = '' WHERE PendingUsername = username";
+                con_CS.query(myStat + mylogin, function(err, user) {
                     if (err) {
                         console.log(err);
                         res.send("An unexpected error occurred !");
@@ -952,40 +950,24 @@ module.exports = function (app, passport) {
             return [String(key), req.body[key]];
         });
         res.setHeader("Access-Control-Allow-Origin", "*");
-        console.log(result);
 
         let update1 = "UPDATE USGS.Request_Form SET " ;
         let update3 = " WHERE RID = '" + result[1][1] + "';";
         let update2 = "";
 
-        for (let i = 0; i < result.length-3; i++) {
-            if (i === result.length - 4) {
+        for (let i = 0; i < result.length; i++) {
+            if (i === result.length - 1) {
                 update2 += result[i][0] + " = '" + result[i][1]+ "'";
             } else {
                 update2 += result[i][0] + " = '" + result[i][1] + "', " ;
             }
         }
-
-        let valueSubmit = "";
-
-        for (let i = 0; i < result.length; i++) {
-            if (i === result.length - 1) {
-                valueSubmit += '"' + result[i][1] + '"';
-            } else {
-                valueSubmit += '"' + result[i][1] + '"' + ", ";
-            }
-        }
-
-        let newImage = {
-            Layer_Uploader: uploadPath + "/" + responseDataUuid,
-            Layer_Uploader_name: responseDataUuid
-        };
-        valueSubmit += ", '" + newImage.Layer_Uploader + "','" + newImage.Layer_Uploader_name + "'";
+        let Layer_Uploader = uploadPath + "/" + responseDataUuid;
+        let Layer_Uploader_name = responseDataUuid;
         let filepathname = uploadPath + "/" + responseDataUuid;
-        let statement1 = update1 + update2 + update3;
-        let statement2 = "UPDATE USGS.Request_Form SET Layer_Uploader = '" + valueSubmit[13] + "', Layer_Uploader_name = '" + valueSubmit[14] + "';";
-
-        con_CS.query(statement1, function (err, result) {
+        let statement1 = update1+update2+update3;
+        let statement2 = "UPDATE USGS.Request_Form SET Layer_Uploader = '" + Layer_Uploader + "', Layer_Uploader_name = '" + Layer_Uploader_name + "';";
+        con_CS.query(statement1 + statement2, function (err, result) {
             if (err) {
                 throw err;
             } else {
@@ -1004,7 +986,8 @@ module.exports = function (app, passport) {
         });
     });
 
-    app.delete("/deleteFiles/:uuid", onDeleteFile);
+    app.delete("/deleteFiles/:uuid", onDeleteFile1);
+    app.delete("/deleteFiles",onDeleteFile2);
 
     app.get('/approve', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*");
@@ -1034,42 +1017,28 @@ module.exports = function (app, passport) {
         let result = Object.keys(req.body).map(function (key) {
             return [String(key), req.body[key]];
         });
+        console.log(result);
         res.setHeader("Access-Control-Allow-Origin", "*");
 
         var update1 = "UPDATE USGS.Request_Form SET " ;
         var update3 = " WHERE RID = '" + result[1][1] + "';";
         let update2 = "";
 
-        for (let i = 0; i < result.length-3; i++) {
-            if (i === result.length - 4) {
+        for (let i = 0; i < result.length; i++) {
+            if (i === result.length - 1) {
                 update2 += result[i][0] + " = '" + result[i][1]+ "'";
             } else {
                 update2 += result[i][0] + " = '" + result[i][1] + "', " ;
             }
         }
 
-        //
-        // let name = "";
-        let valueSubmit = "";
-
-        for (let i = 0; i < result.length; i++) {
-            if (i === result.length - 1) {
-                valueSubmit += '"' + result[i][1] + '"';
-            } else {
-                valueSubmit += '"' + result[i][1] + '"' + ", ";
-            }
-        }
-
-        let newImage = {
-            Layer_Uploader: uploadPath + "/" + responseDataUuid,
-            Layer_Uploader_name: responseDataUuid
-        };
-        valueSubmit += ", '" + newImage.Layer_Uploader + "','" + newImage.Layer_Uploader_name + "'";
+        let Layer_Uploader = uploadPath + "/" + responseDataUuid;
+        let Layer_Uploader_name = responseDataUuid;
         let filepathname = uploadPath + "/" + responseDataUuid;
         let statement1 = update1+update2+update3;
-        let statement2 = "UPDATE USGS.Request_Form SET Layer_Uploader = '" + valueSubmit[13] + "', Layer_Uploader_name = '" + valueSubmit[14] + "';";
-        if(result[4][2] === "other"){
-            let statement = "INSERT INTO USGS.MapLayerMenu VALUES (" + result[7][1] + "," + result[0][0] + "," + result[4][1] + "," + result[6][1] + "," + result[7][1] + "," + result[10][1] + "," + result[8][1] + "," + result[9][1] + ", 'Active');";
+        let statement2 = "UPDATE USGS.Request_Form SET Layer_Uploader = '" + Layer_Uploader + "', Layer_Uploader_name = '" + Layer_Uploader_name + "';";
+        if(result[3][1] === "other"){
+            let statement = "INSERT INTO USGS.MapLayerMenu VALUES ('" + result[7][1] + "','" + result[0][0] + "','" + result[4][1] + "','" + result[6][1] + "','" + result[7][1] + "','" + result[10][1] + "','" + result[8][1] + "','" + result[9][1] + "', 'Active');";
             con_CS.query(statement1 + statement + statement2, function (err, result) {
                 if (err) {
                     throw err;
@@ -1089,7 +1058,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    //
+    let olduuid;
     //Put back the photo in the form
     app.get('/edit', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
@@ -1106,8 +1075,8 @@ module.exports = function (app, passport) {
             } else {
                 filePath0 = results[0];
                 let JSONresult = JSON.stringify(results, null, "\t");
+                olduuid = results;
                 res.send(JSONresult);
-                res.end()
             }
         });
     });
@@ -1150,7 +1119,7 @@ module.exports = function (app, passport) {
         // var d = new Date();
         // var utcDateTime = d.getUTCFullYear() + "-" + ('0' + (d.getUTCMonth() + 1)).slice(-2) + "-" + ('0' + d.getUTCDate()).slice(-2);
         // var queryRID = "SELECT COUNT(RID) AS number FROM Special_ID WHERE RID LIKE '" + utcDateTime + "%';";
-        res.render('Layer Request Form edit.ejs', {
+        res.render('LayerRequestForm_edit.ejs', {
             user: req.user
         });
     });
@@ -1231,8 +1200,6 @@ module.exports = function (app, passport) {
 
         });
     });
-
-    app.delete("/deleteFiles/:uuid", onDeleteFile);
 
     // =====================================
     // CitySmart Dynamic Menu SECTION ======
@@ -1619,18 +1586,28 @@ function QueryStat(myObj, scoutingStat, res) {
         res.send(responseData);
     }
 
-    function onDeleteFile(req, res) {
+    function onDeleteFile1(req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
-
+        console.log("result=" + req.params.uuid);
         let uuid = req.params.uuid,
             dirToDelete = "uploadfiles/" + uuid;
-        console.log(uuid);
         rimraf(dirToDelete, function(error) {
             if (error) {
                 console.error("Problem deleting file! " + error);
                 res.status(500);
             }
-
+            res.send();
+        });
+    }
+    //cannot get the uuid
+    function onDeleteFile2(req, res) {
+        res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
+        let dirToDelete = "uploadfiles/" + olduuid[0].Layer_Uploader_name;
+        rimraf(dirToDelete, function(error) {
+            if (error) {
+                console.error("Problem deleting file! " + error);
+                res.status(500);
+            }
             res.send();
         });
     }
@@ -1668,8 +1645,6 @@ function QueryStat(myObj, scoutingStat, res) {
     }
 
     function moveUploadedFile(file, uuid, success, failure) {
-        console.log("this is: " + uuid);
-        // let destinationDir = uploadedFilesPath + uuid + "/",
         let destinationDir = "uploadfiles/",
             fileDestination = destinationDir + uuid + "_" + file.name;
 
@@ -1830,7 +1805,6 @@ function QueryStat(myObj, scoutingStat, res) {
                     url + token + '\n\n' +
                     'If you did not request this, please ignore this email.\n'
                 };
-                console.log("username=" + username);
                 // console.log(message);
 
                 smtpTrans.sendMail(message, function(error){

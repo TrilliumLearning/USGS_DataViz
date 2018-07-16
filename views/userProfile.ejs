@@ -87,7 +87,7 @@
                         <label class="col-md-4 control-label">User Name(Email)</label>
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span><input id="username" class="form-control" value="<%= user.username %>" type="text">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span><input id="username" name="username" class="form-control" value="<%= user.username %>" type="text">
                             </div>
                         </div>
                     </div>
@@ -223,7 +223,7 @@
         </div>
         <div class="row">
             <div class="column">
-                <button id="submit" type="submit" value="Submit" onclick="submitForm(); ">Submit</button>
+                <button id="submit" type="submit" value="Submit" onclick="submitForm();" onchange="verifyemail()">Submit</button>
                 <!--window.location.reload()-->
             </div>
             <div class="column">
@@ -341,23 +341,11 @@
     function submitForm () {
         alert("Submitted!");
         var data = $("#basic").serialize() + "&" + $("#pswchange").serialize();
-        var UNS = "UNS=" + document.getElementById('username').value;
-        console.log(UNS);
         $.ajax({
             url  : 'submit',
             method : "POST",
             data : data,
             dataType: 'json',
-            success : function(d){
-                console.log(d);
-            }
-        });
-
-        $.ajax({
-            url  : 'UsernameV',
-            method : "GET",
-            dataType: 'json',
-            data : UNS,
             success : function(d){
                 console.log(d);
             }
@@ -370,6 +358,19 @@
             dataType: 'json',
             success : function(d){
                 // console.log(d);
+            }
+        });
+    }
+
+    function verifyemail(){
+        var UNS = "UNS= " + document.getElementById('username').value;
+        $.ajax({
+            url  : 'UsernameV',
+            method : "GET",
+            dataType: 'json',
+            data : UNS,
+            success : function(d){
+                console.log(d);
             }
         });
     }
