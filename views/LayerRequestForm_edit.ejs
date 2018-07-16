@@ -185,7 +185,7 @@
 <body>
 
 <div class="container">
-    <a href="//aworldbridge.com"><img class="banner" src="../images/NewWBBanner.jpg"/></a>
+    <a href="http://aworldbridge.com"><img class="banner" src="../images/NewWBBanner.jpg"/></a>
     <div id="container">
         <h1 id="title">Layer Request Form</h1>
         <h2 id="Linfo">Layer Info</h2>
@@ -268,21 +268,21 @@
                         <label class="col-md-4 control-label">Layer State</label>
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
-                                <input id="LayerStateInput" name="StateName" placeholder="Layer City" class="form-control" required value="" type="text"></div>
+                                <input id="LayerStateInput" name="StateName" placeholder="Layer State" class="form-control" required value="" type="text"></div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label">Layer Country</label>
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
-                                <input id="LayerCountryInput" name="CountryName" placeholder="Layer State" class="form-control" required value="" type="text"></div>
+                                <input id="LayerCountryInput" name="CountryName" placeholder="Layer Country" class="form-control" required value="" type="text"></div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label">Layer Continent</label>
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
-                                <input id="LayerContinentInput" name="ContinentName" placeholder="Layer Country" class="form-control" required value="" type="text"></div>
+                                <input id="LayerContinentInput" name="ContinentName" placeholder="Layer Continent" class="form-control" required value="" type="text"></div>
                         </div>
                     </div>
 
@@ -318,8 +318,8 @@
         </div>
         <div class="row">
             <button id="clear" type="reset" onclick="clearForm()" value="  Clear  ">Clear</button>
-            <button id="approve" type="submit" form="layer" onclick="submitForm()">Approve</button>
-            <button id="submit" onclick="regularsubmit()">Submit</button>
+            <button id="approve" type="submit" form="layer" disabled  title="this is only for Admin Users">Approve</button>
+            <button id="submit" form="layer" disabled title="this is only for Regular Users">Submit</button>
             <button id="cancel" onclick="userHome();">Cancel</button>
         </div>
     </div>
@@ -345,8 +345,7 @@
             document.getElementById('main').value = getvalue[7];
             document.getElementById("other1").style.display = "block";
             document.getElementById("inputone").value = getvalue[8];
-            document.getElementById("fclear").style.display = "none";
-            document.getElementById('fclear').value = getvalue[9];
+            document.getElementById('idname').innerText = getvalue[9];
             document.getElementById("other2").style.display = "block";
             document.getElementById("inputtwo").value = getvalue[10];
         }else{
@@ -356,12 +355,23 @@
 
         $(function () {
             if (UserRole === "Admin") {
-                document.getElementById("submit").style.display = "none"
+                document.getElementById("approve").disabled = false;
+                document.getElementById("submit").style.backgroundColor = "lightgray";
             } else if (UserRole === "Regular") {
-                document.getElementById("approve").style.display = "none"
+                document.getElementById("submit").disabled = false;
+                document.getElementById("approve").style.backgroundColor = "lightgray";
             }
 
         });
+
+        $("#main").change(function () {
+            var val = $(this).val();
+            if (val == "Category") {
+                $("#sub").html("<option value='Category'>SELECT SUBCATEGORY</option>");
+            }else if(val =="other") {
+                $("#sub").html("<option value='other'>Other(Please specify)</option>");
+            }
+        })
 
     });
 
@@ -375,22 +385,18 @@
             document.getElementById("other2").style.display = "none";
         }
     }
-
+    //resubmit the photo
     var photoDiv = $("#photo");
     photoDiv.empty();
     var editIDSr = "editIDSr=" + getvalue[2];
-    console.log(editIDSr);
     $.ajax({
         url: 'edit',
         type: 'GET',
         dataType: 'json',
         data: editIDSr,
         success: function (results) {
-            console.log(results);
             if (!results.error) {
                 globalResults = results;
-                console.log("results: " + globalResults[0].Layer_Uploader);
-
                 var list = [];
                 for (var i = 0; i < globalResults.length; i++) {
                     var first = {
@@ -433,46 +439,45 @@
     });
 
     function submitForm () {
-        if (confirm("Are you sure you would like to approve this data?") === true) {
-            var tID = "tID=" + document.getElementById('RID').value;
-            var LUN = "LUN=" + getvalue[15];
-            var data =$("#layer").serialize();
-            console.log(data);
-            $.ajax({
-              url:'approve',
-                type:"GET",
-                dataType:'json',
-                data:tID + '&' + LUN,
-            });
-            $.ajax({
-                url  : 'replace',
-                method : "post",
-                data : data,
-                dataType: 'json',
-                success : function(d){
-                    console.log(d);
-                }
-            });
-          window.location.replace('/userHome');
-         } else {
-            return false;
-        }
-    }
-
-    function regularsubmit(){
-        if (confirm("Are you sure you would like to submit this data?") === true) {
-            var regulardata =$("#layer").serialize();
-            $.ajax({
-                url  : 'rsubmit',
-                method : "post",
-                data : regulardata,
-                dataType: 'json',
-                success : function(d){
-                }
-            });
-            // window.location.replace('/userHome');
-        } else {
-            return false;
+        if (UserRole === "Admin") {
+            if (confirm("Are you sure you would like to approve this data?") === true) {
+                var tID = "tID=" + document.getElementById('RID').value;
+                var LUN = "LUN=" + getvalue[15];
+                var data = $("#layer").serialize();
+                $.ajax({
+                    url: 'approve',
+                    type: "GET",
+                    dataType: 'json',
+                    data: tID + '&' + LUN,
+                });
+                $.ajax({
+                    url: 'replace',
+                    method: "post",
+                    data: data,
+                    dataType: 'json',
+                    success: function (d) {
+                        console.log(d);
+                    }
+                });
+                window.location.replace('/userHome');
+            } else {
+                return false;
+            }
+        }else if (UserRole === "Regular") {
+            if (confirm("Are you sure you would like to submit this data?") === true) {
+                var regulardata = $("#layer").serialize();
+                $.ajax({
+                    url: 'rsubmit',
+                    method: "post",
+                    data: regulardata,
+                    dataType: 'json',
+                    success: function (d) {
+                    }
+                });
+                window.location.replace('/userHome');
+            } else {
+                return false;
+            }
         }
     }
 
@@ -495,20 +500,7 @@
                 }
             }
         })
-
     }
-
-    $(document).ready(function () {
-        $("#main").change(function () {
-            var val = $(this).val();
-            // console.log(val);
-            if (val == "Category") {
-                $("#sub").html("<option value='Category'>SELECT SUBCATEGORY</option>");
-            }else if(val =="other") {
-                $("#sub").html("<option value='other'>Other(Please specify)</option>");
-            }
-        });
-    });
 
     function userHome() {
         if (confirm("Are you sure you to leave this page? All the data will be cleared accordingly!") === true) {
@@ -532,9 +524,9 @@
             // of an input field. Validation rules are defined
             // on the right side
             Layer_Name: "required",
-            CityName:"required",
             StateName:"required",
             CountryName:"required",
+            ContinentName:"required",
             FirstLayer:"required",
             SecondLayer:"required",
             Layer_Description: "required",
@@ -544,9 +536,9 @@
         // Specify validation error messages
         messages: {
             Layer_Name: "Please enter the layer name",
-            CityName:"Please enter the layer city",
             StateName:"Please enter the layer state",
             CountryName:"Please enter the layer country",
+            ContinentName:"Please enter the layer continent",
             FirstLayer: "Please select the main category",
             SecondLayer:"Please select the subcategory",
             Layer_Description: "Please write the description of the layer",
@@ -556,9 +548,7 @@
         // Make sure the form is submitted to the destination defined
         // in the "action" attribute of the form when valid
         submitHandler: function (form) {
-            console.log("456");
             submitForm();
-            regularsubmit();
         }
     });
 

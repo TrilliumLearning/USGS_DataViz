@@ -167,7 +167,7 @@
 <body>
 
 <div class="container">
-    <a href="//aworldbridge.com"><img class="banner" src="../images/NewWBBanner.jpg"/></a>
+    <a href="http://aworldbridge.com"><img class="banner" src="../images/NewWBBanner.jpg"/></a>
     <div id="container">
         <h1 id="title">Layer Request Form</h1>
         <h2 id="Linfo">Layer Info</h2>
@@ -249,21 +249,21 @@
                         <label class="col-md-4 control-label">Layer State</label>
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
-                                <input id="LayerCityInput" name="StateName" placeholder="Layer City" class="form-control" required value="" type="text"></div>
+                                <input id="LayerStateInput" name="StateName" placeholder="Layer State" class="form-control" required value="" type="text"></div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label">Layer Country</label>
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
-                                <input id="LayerStateInput" name="CountryName" placeholder="Layer State" class="form-control" required value="" type="text"></div>
+                                <input id="LayerCountryInput" name="CountryName" placeholder="Layer Country" class="form-control" required value="" type="text"></div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label">Layer Continent</label>
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
-                                <input id="LayerCountryInput" name="ContinentName" placeholder="Layer Country" class="form-control" required value="" type="text"></div>
+                                <input id="LayerContinentInput" name="ContinentName" placeholder="Layer Continent" class="form-control" required value="" type="text"></div>
                         </div>
                     </div>
 
@@ -433,10 +433,10 @@
             // The key name on the left side is the name attribute
             // of an input field. Validation rules are defined
             // on the right side
-            Layer_Name: "required",
-            CityName:"required",
+            LayerName: "required",
             StateName:"required",
             CountryName:"required",
+            ContinentName:"required",
             FirstLayer:"required",
             Layer_Description: "required",
             LayerFormat:"required"
@@ -444,10 +444,10 @@
         },
         // Specify validation error messages
         messages: {
-            Layer_Name: "Please enter the layer name",
-            CityName:"Please enter the layer city",
+            LayerName: "Please enter the layer name",
             StateName:"Please enter the layer state",
             CountryName:"Please enter the layer country",
+            ContinentName:"Please enter the layer continent",
             FirstLayer: "Please select the main category",
             Layer_Description: "Please write the description of the layer",
             LayerFormat:"Please choose your layer format"
@@ -462,21 +462,6 @@
         // in the "action" attribute of the form when valid
         submitHandler: function (form) {
             submitForm()
-            // form.ajaxSubmit(function(e){
-            //     console.log("456");
-            //     //
-            //     // var data = $("#basic").formSerialize() + "&" + $("#layer").formSerialize();
-            //     // console.log($("#basic").formSerialize());
-            //     // $.ajax({
-            //     //     url  : 'http://localhost:9086/submit',
-            //     //     method : "post",
-            //     //     data : data,
-            //     //     dataType: 'json',
-            //     //     success : function(d){
-            //     //         console.log(d);
-            //     //     }
-            //     // });
-            // })
         }
     });
 

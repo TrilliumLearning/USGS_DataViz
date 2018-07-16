@@ -214,7 +214,7 @@
 <body>
     <div class="container">
         <div class="col-sm-6 col-sm-offset-3 ">
-            <a href="//aworldbridge.com"><img class="banner" src="/images/NewWBBanner.jpg"  /></a>
+            <a href="http://aworldbridge.com"><img class="banner" src="../images/NewWBBanner.jpg"  /></a>
             <h1><span class="fa fa-sign-in"></span> Login</h1>
 
             <!-- LOGIN FORM -->
@@ -229,7 +229,7 @@
                 </div>
                 <div class="flex-sb-m w-full p-b-48">
                     <div class="contact100-form-checkbox">
-                        <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
+                        <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me" value="yes">
                         <label class="label-checkbox100" for="ckb1">
                             Remember me
                         </label>
@@ -260,8 +260,7 @@
             </div>
             <div id="back" class="container-login100-form-btn">
                 <a href="/app" id="layerpreview">
-                    <i class="fa fa-long-arrow-left m-l-5" aria-hidden="true"></i>&nbsp;
-                     Back to Layer viewer</a>
+                    &#10094; Back to Layer viewer</a>
             </div>
         </div>
     </div>
@@ -278,6 +277,12 @@
             var dateTime = date + ' ' + time2;
             document.getElementById("date").value = dateTime;
 
+            if (status === "Never Logged In") {
+
+            } else if (status === "Regular") {
+
+
+            }
 </script>
 </body>
 </html>

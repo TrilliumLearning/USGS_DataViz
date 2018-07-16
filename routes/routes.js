@@ -99,17 +99,16 @@ module.exports = function (app, passport) {
     app.post('/email', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
         let statement = "SELECT * FROM UserLogin WHERE username = '" + req.body.username + "';";
-        //console.log(statement);
 
         con_CS.query(statement, function (err, results, fields) {
             if (err) {
-                // console.log(err);
+                console.log(err);
                 res.json({"error": true, "message": "An unexpected error occurred !"});
             } else if (results.length === 0) {
                 res.json({"error": true, "message": "Please verify your email address !"});
             } else {
                 var username = req.body.username;
-                var subject = "Passwprd Reset";
+                var subject = "Password Reset";
                 var text = 'the reset of the password for your account.';
                 var url = "http://" + req.headers.host + "/reset/";
                 sendToken(username, subject, text, url, res);
@@ -440,7 +439,7 @@ module.exports = function (app, passport) {
     });
 
     app.post('/signup', function (req, res) {
-        console.log("A");
+        // console.log("A");
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
         // con_CS.query('USE ' + config.Login_db); // Locate Login DB
 
@@ -516,7 +515,6 @@ module.exports = function (app, passport) {
 
     app.get('/verify/:token', function(req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
-
         async.waterfall([
             function(done) {
                 myStat = "SELECT * FROM UserLogin WHERE resetPasswordToken = '" + req.params.token + "'";
@@ -540,6 +538,39 @@ module.exports = function (app, passport) {
                         var subject = "Account Activated";
                         var text = 'Hello,\n\n' + 'This is a confirmation for your account, ' + changeMail(username) + ' has just been activated.\n';
                         done(err, username, subject, text);
+                    }
+
+                });
+            }, function(username, subject, text) {
+                successMail(username, subject, text, res);
+            }
+        ]);
+    });
+
+    app.get('/verifyemail/:token', function(req, res) {
+        res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
+        async.waterfall([
+            function(done) {
+                myStat = "SELECT * FROM UserLogin WHERE resetPasswordToken = '" + req.params.token + "'";
+                con_CS.query(myStat, function(err, results) {
+                    dateNtime();
+                    if (results.length === 0 || dateTime > results[0].expires) {
+                        res.send('Password reset token is invalid or has expired. Please contact Administrator.');
+                    } else {
+                        done(err, results[0].PendingUsername);
+                    }
+                });
+            }, function(PendingUsername, done) {
+                myStat = "UPDATE UserLogin SET username = '" + PendingUsername  + "' WHERE PendingUsername = '" + PendingUsername + "';";
+                mylogin = "UPDATE UserLogin SET PendingUsername = '' WHERE PendingUsername = username";
+                con_CS.query(myStat + mylogin, function(err, user) {
+                    if (err) {
+                        console.log(err);
+                        res.send("An unexpected error occurred !");
+                    } else {
+                        var subject = "Account Activated";
+                        var text = 'Hello,\n\n' + 'This is a confirmation for your account, ' + changeMail(PendingUsername) + ' has just been activated.\n';
+                        done(err, PendingUsername, subject, text);
                     }
 
                 });
@@ -781,16 +812,14 @@ module.exports = function (app, passport) {
     app.post('/upload', onUpload);
 
     app.post('/submit', function (req, res) {
-        // console.log(req.body);
         let result = Object.keys(req.body).map(function (key) {
             return [String(key), req.body[key]];
         });
-        // console.log (result);
         res.setHeader("Access-Control-Allow-Origin", "*");
 
         var update1 = "UPDATE USGS.UserProfile SET ";
-        var update3 = " WHERE username = '" + req.user.username + "'";
         let update2 = "";
+        var update3 = " WHERE username = '" + req.user.username + "'";
         for (let i = 0; i < result.length - 3; i++) {
             if (i === result.length - 4) {
                 update2 += result[i][0] + " = '" + result[i][1] + "'";
@@ -809,11 +838,34 @@ module.exports = function (app, passport) {
         });
     });
 
+    app.get('/UsernameV',function (req,res) {
+        res.setHeader("Access-Control-Allow-Origin", "*");//
+        let oldname = req.user.username;
+        let newname = req.query.UNS;
+        let statement = "UPDATE USGS.UserLogin SET PendingUsername = '"+ newname + "' WHERE username = '" + oldname + "';";
+        con_CS.query(statement, function (err,result) {
+            if (err) {
+                console.log(err);
+                res.json({"error": true, "message": "An unexpected error occurred !"});
+            } else if (result.length === 0) {
+                res.json({"error": true, "message": "Please verify your email address !"});
+            } else {
+                var username = newname;
+                var subject = "Email verify";
+                var text = 'to verify the new username(email).';
+                var url = "http://" + req.headers.host + "/verifyemail/";
+                sendname(username, subject, text, url, res);
+            }
+        })
+
+    });
+
     //Submit Request form//
     app.post('/submitL', function (req, res) {
         let result = Object.keys(req.body).map(function (key) {
             return [String(key), req.body[key]];
         });
+        // console.log(result);
         res.setHeader("Access-Control-Allow-Origin", "*");
 
         let name = "";
@@ -898,38 +950,23 @@ module.exports = function (app, passport) {
             return [String(key), req.body[key]];
         });
         res.setHeader("Access-Control-Allow-Origin", "*");
-        console.log(result);
 
         let update1 = "UPDATE USGS.Request_Form SET " ;
         let update3 = " WHERE RID = '" + result[1][1] + "';";
         let update2 = "";
 
-        for (let i = 0; i < result.length-3; i++) {
-            if (i === result.length - 4) {
+        for (let i = 0; i < result.length; i++) {
+            if (i === result.length - 1) {
                 update2 += result[i][0] + " = '" + result[i][1]+ "'";
             } else {
                 update2 += result[i][0] + " = '" + result[i][1] + "', " ;
             }
         }
-
-        let valueSubmit = "";
-
-        for (let i = 0; i < result.length; i++) {
-            if (i === result.length - 1) {
-                valueSubmit += '"' + result[i][1] + '"';
-            } else {
-                valueSubmit += '"' + result[i][1] + '"' + ", ";
-            }
-        }
-
-        let newImage = {
-            Layer_Uploader: uploadPath + "/" + responseDataUuid,
-            Layer_Uploader_name: responseDataUuid
-        };
-        valueSubmit += ", '" + newImage.Layer_Uploader + "','" + newImage.Layer_Uploader_name + "'";
+        let Layer_Uploader = uploadPath + "/" + responseDataUuid;
+        let Layer_Uploader_name = responseDataUuid;
         let filepathname = uploadPath + "/" + responseDataUuid;
-        let statement1 = update1 + update2 + update3;
-        let statement2 = "UPDATE USGS.Request_Form SET Layer_Uploader = '" + valueSubmit[13] + "', 'Layer_Uploader_name = '" + valueSubmit[14] + "';";
+        let statement1 = update1+update2+update3;
+        let statement2 = "UPDATE USGS.Request_Form SET Layer_Uploader = '" + Layer_Uploader + "', Layer_Uploader_name = '" + Layer_Uploader_name + "';";
         con_CS.query(statement1 + statement2, function (err, result) {
             if (err) {
                 throw err;
@@ -949,7 +986,8 @@ module.exports = function (app, passport) {
         });
     });
 
-    app.delete("/deleteFiles/:uuid", onDeleteFile);
+    app.delete("/deleteFiles/:uuid", onDeleteFile1);
+    app.delete("/deleteFiles",onDeleteFile2);
 
     app.get('/approve', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*");
@@ -985,36 +1023,21 @@ module.exports = function (app, passport) {
         var update3 = " WHERE RID = '" + result[1][1] + "';";
         let update2 = "";
 
-        for (let i = 0; i < result.length-3; i++) {
-            if (i === result.length - 4) {
+        for (let i = 0; i < result.length; i++) {
+            if (i === result.length - 1) {
                 update2 += result[i][0] + " = '" + result[i][1]+ "'";
             } else {
                 update2 += result[i][0] + " = '" + result[i][1] + "', " ;
             }
         }
 
-        //
-        // let name = "";
-        let valueSubmit = "";
-
-        for (let i = 0; i < result.length; i++) {
-            if (i === result.length - 1) {
-                valueSubmit += '"' + result[i][1] + '"';
-            } else {
-                valueSubmit += '"' + result[i][1] + '"' + ", ";
-            }
-        }
-
-        let newImage = {
-            Layer_Uploader: uploadPath + "/" + responseDataUuid,
-            Layer_Uploader_name: responseDataUuid
-        };
-        valueSubmit += ", '" + newImage.Layer_Uploader + "','" + newImage.Layer_Uploader_name + "'";
+        let Layer_Uploader = uploadPath + "/" + responseDataUuid;
+        let Layer_Uploader_name = responseDataUuid;
         let filepathname = uploadPath + "/" + responseDataUuid;
         let statement1 = update1+update2+update3;
-        let statement2 = "UPDATE USGS.Request_Form SET Layer_Uploader = '" + valueSubmit[13] + "', 'Layer_Uploader_name = '" + valueSubmit[14] + "';";
-        if(result[4][2] === "other"){
-            let statement = "INSERT INTO USGS.MapLayerMenu VALUES (" + result[7][1] + "," + result[0][0] + "," + result[4][1] + "," + result[6][1] + "," + result[7][1] + "," + result[10][1] + "," + result[8][1] + "," + result[9][1] + ", 'Active');";
+        let statement2 = "UPDATE USGS.Request_Form SET Layer_Uploader = '" + Layer_Uploader + "', Layer_Uploader_name = '" + Layer_Uploader_name + "';";
+        if(result[3][1] === "other"){
+            let statement = "INSERT INTO USGS.MapLayerMenu VALUES ('" + result[7][1] + "','" + result[0][0] + "','" + result[4][1] + "','" + result[6][1] + "','" + result[7][1] + "','" + result[10][1] + "','" + result[8][1] + "','" + result[9][1] + "', 'Active');";
             con_CS.query(statement1 + statement + statement2, function (err, result) {
                 if (err) {
                     throw err;
@@ -1034,7 +1057,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    //
+    let olduuid;
     //Put back the photo in the form
     app.get('/edit', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
@@ -1051,8 +1074,8 @@ module.exports = function (app, passport) {
             } else {
                 filePath0 = results[0];
                 let JSONresult = JSON.stringify(results, null, "\t");
+                olduuid = results;
                 res.send(JSONresult);
-                res.end()
             }
         });
     });
@@ -1095,7 +1118,7 @@ module.exports = function (app, passport) {
         // var d = new Date();
         // var utcDateTime = d.getUTCFullYear() + "-" + ('0' + (d.getUTCMonth() + 1)).slice(-2) + "-" + ('0' + d.getUTCDate()).slice(-2);
         // var queryRID = "SELECT COUNT(RID) AS number FROM Special_ID WHERE RID LIKE '" + utcDateTime + "%';";
-        res.render('Layer Request Form edit.ejs', {
+        res.render('LayerRequestForm_edit.ejs', {
             user: req.user
         });
     });
@@ -1104,38 +1127,39 @@ module.exports = function (app, passport) {
     // CitySmart Menu Filter SECTION =======
     // =====================================
 
+    //Continent level
+    app.get('/ContinentList', function (req, res) {
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        con_CS.query("SELECT ContinentName FROM MapLayerMenu GROUP BY ContinentName", function (err, results) {
+            if (err) throw err;
+            res.json(results);
+            // console.log(results);
+        });
+    });
+    //Country level
     app.get('/CountryList', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*");
-        con_CS.query("SELECT CountryName FROM MapLayerMenu GROUP BY CountryName", function (err, results) {
+        con_CS.query('SELECT CountryName, ContinentName, COUNT (*) AS count FROM MapLayerMenu GROUP BY CountryName, ContinentName', function (err, results, fields) {
             if (err) throw err;
             res.json(results);
-            console.log(results);
+            // console.log(results);
+
         });
     });
-
+    //Depend on continent value to get the country and state value
+    app.get('/ClassName', function (req, res) {
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        con_CS.query('SELECT CountryName, FirstLayer, SecondLayer, StateName, ContinentName FROM MapLayerMenu', function (err, results) {
+            res.json(results);
+            // console.log(results);
+        });
+    });
+    //state level
     app.get('/StateList', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*");
-        con_CS.query('SELECT CountryName, StateName, COUNT (*) AS count FROM MapLayerMenu GROUP BY CountryName, StateName', function (err, results, fields) {
-            if (err) throw err;
+        con_CS.query('SELECT StateName, CountryName, COUNT (*) AS count FROM MapLayerMenu GROUP BY StateName, CountryName', function (err, results, fields) {
             res.json(results);
-            console.log(results);
-
-        });
-    });
-
-    app.get('/CityList', function (req, res) {
-        res.setHeader("Access-Control-Allow-Origin", "*");
-        con_CS.query('SELECT StateName, FirstLayer, SecondLayer, CityName FROM Request_Form', function (err, results) {
-            res.json(results);
-            console.log(results);
-        });
-    });
-
-    app.get('/ChangeCityName', function (req, res) {
-        res.setHeader("Access-Control-Allow-Origin", "*");
-        con_CS.query('SELECT CityName, StateName, COUNT (*) AS count FROM MapLayerMenu GROUP BY CityName, StateName', function (err, results, fields) {
-            res.json(results);
-            console.log(results);
+            // console.log(results);
         });
     });
 
@@ -1176,8 +1200,6 @@ module.exports = function (app, passport) {
 
         });
     });
-
-    app.delete("/deleteFiles/:uuid", onDeleteFile);
 
     // =====================================
     // CitySmart Dynamic Menu SECTION ======
@@ -1563,19 +1585,29 @@ function QueryStat(myObj, scoutingStat, res) {
         responseData.preventRetry = true;
         res.send(responseData);
     }
-
-    function onDeleteFile(req, res) {
+//delete new photo
+    function onDeleteFile1(req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
-
+        console.log("result=" + req.params.uuid);
         let uuid = req.params.uuid,
             dirToDelete = "uploadfiles/" + uuid;
-        console.log(uuid);
         rimraf(dirToDelete, function(error) {
             if (error) {
                 console.error("Problem deleting file! " + error);
                 res.status(500);
             }
-
+            res.send();
+        });
+    }
+    //delete old photo
+    function onDeleteFile2(req, res) {
+        res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
+        let dirToDelete = "uploadfiles/" + olduuid[0].Layer_Uploader_name;
+        rimraf(dirToDelete, function(error) {
+            if (error) {
+                console.error("Problem deleting file! " + error);
+                res.status(500);
+            }
             res.send();
         });
     }
@@ -1613,8 +1645,6 @@ function QueryStat(myObj, scoutingStat, res) {
     }
 
     function moveUploadedFile(file, uuid, success, failure) {
-        console.log("this is: " + uuid);
-        // let destinationDir = uploadedFilesPath + uuid + "/",
         let destinationDir = "uploadfiles/",
             fileDestination = destinationDir + uuid + "_" + file.name;
 
@@ -1695,17 +1725,12 @@ function QueryStat(myObj, scoutingStat, res) {
                 });
             },
             function (token, tokenExpire, done) {
-                // connection.query( "INSERT INTO Users ( resetPasswordExpires, resetPasswordToken ) VALUES (?,?) WHERE username = '" + req.body,username + "'; ")
                 myStat = "UPDATE UserLogin SET resetPasswordToken = ?, resetPasswordExpires = ? WHERE username = '" + username + "' ";
                 myVal = [token, tokenExpire];
                 con_CS.query(myStat, myVal, function (err, rows) {
 
-                    //newUser.id = rows.insertId;
-
                     if (err) {
                         console.log(err);
-                        // res.send("Token Insert Fail!");
-                        // res.end();
                         res.json({"error": true, "message": "Token Insert Fail !"});
                     } else {
                         done(err, token);
@@ -1732,7 +1757,7 @@ function QueryStat(myObj, scoutingStat, res) {
                         res.json({"error": true, "message": "An unexpected error occurred !"});
                     } else {
                         // res.send('Message sent successfully! Please check your email inbox.');
-                        console.log('Message sent successfully!');
+                        // console.log('Message sent successfully!');
                         // res.redirect('/login');
                         res.json({"error": false, "message": "Message sent successfully !"});
                         // alert('An e-mail has been sent to ' + req.body.username + ' with further instructions.');
@@ -1746,6 +1771,62 @@ function QueryStat(myObj, scoutingStat, res) {
         });
     }
 
+    function sendname(username, subject, text, url, res){
+        async.waterfall([
+            function(done) {
+                crypto.randomBytes(20, function(err, buf) {
+                    token = buf.toString('hex');
+                    tokenExpTime();
+                    done(err, token, tokenExpire);
+                });
+            },
+            function (token, tokenExpire, done) {
+                myStat = "UPDATE UserLogin SET resetPasswordToken = ?, resetPasswordExpires = ? WHERE PendingUsername = '" + username + "' ";
+                myVal = [token, tokenExpire];
+                con_CS.query(myStat, myVal, function (err, rows) {
+
+                    if (err) {
+                        console.log(err);
+                        res.json({"error": true, "message": "Token Insert Fail !"});
+                    } else {
+                        done(err, token);
+                    }
+                });
+            },
+            function(token, done, err) {
+                // Message object
+                var message = {
+                    from: 'FTAA <aaaa.zhao@g.feitianacademy.org>', // sender info
+                    to: username, // Comma separated list of recipients
+                    subject: subject, // Subject of the message
+                    // plaintext body
+                    text: 'You are receiving this because you (or someone else) have requested ' + text + '\n\n' +
+                    'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+                    url + token + '\n\n' +
+                    'If you did not request this, please ignore this email.\n'
+                };
+                // console.log(message);
+
+                smtpTrans.sendMail(message, function(error){
+                    if(error){
+                        console.log(error.message);
+                        res.json({"error": true, "message": "An unexpected error occurred !"});
+                    } else {
+                        // res.send('Message sent successfully! Please check your email inbox.');
+                        // console.log('Message sent successfully!');
+                        // res.redirect('/login');
+                        res.json({"error": false, "message": "Message sent successfully !"});
+                        // alert('An e-mail has been sent to ' + req.body.username + ' with further instructions.');
+                    }
+                });
+            }
+            ], function(err) {
+            if (err) return next(err);
+            // res.redirect('/forgot');
+            res.json({"error": true, "message": "An unexpected error occurred !"});
+        });
+    }
+
     function successMail(username, subject, text, res) {
         var message = {
             from: 'FTAA <aaaa.zhao@g.feitianacademy.org>',
@@ -1753,6 +1834,7 @@ function QueryStat(myObj, scoutingStat, res) {
             subject: subject,
             text: text
         };
+        console.log(username);
 
         smtpTrans.sendMail(message, function (error) {
             if(error){

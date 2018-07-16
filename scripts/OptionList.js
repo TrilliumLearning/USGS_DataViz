@@ -1,46 +1,41 @@
-$(document).ready(function () {
-    var x = document.getElementById("myListCountry");
-    var option = document.createElement("option");
+let Continentlevel, Countrylevel;
+
+$(document).ready(function() {
+    let x = document.getElementById("myListContinent");
     $.ajax({
-        url: "CountryList",
+        url: "ContinentList",
         dataType: 'json',
         success: function (results) {
-            console.log(results);
-            for (i = 0; i < results.length; i++) {
-                option.text = results[i].CountryName;
+            let option;
+            for (let i = 0; i < results.length; i++) {
+                option = new Option(results[i].ContinentName, results[i].ContinentName);
                 x.add(option);
             }
         }
     });
-});
-
-$(document).ready(function () {
-    $("#myListCountry").change(function () {
-        var val = $(this).val();
-        // console.log(val);
+    $("#myListContinent").change(function () {
+        let val = $(this).val();
         if (val == "AL"){
-            $("#myListState").html("<option value='AL'> All Layer </option>");
-            $("#myListCity").html("<option value= 'AL'> All Layer </option>");
+            $("#myListCountry").html("<option value='AL'> All Layer </option>");
+            $("#myListState").html("<option value= 'AL'> All Layer </option>");
+            $('.State').show();
         }else{
-            $("#myListState").html("<option value = 'SAS'> -Select a State- </option>");
-            $("#myListCity").html("<option> -Select a City- </option>");
+            $("#myListCountry").html("<option value = 'SAS'> -Select a Country- </option>");
+            $("#myListState").html("<option> -Select a State- </option>");
         }
     });
-    $("#myListState").change(function () {
+    $("#myListCountry").change(function () {
         var value = $(this).val();
-        console.log(value);
         if (value == "SAS"){
-            $("#myListCity").html("<option> -Select a City-</option>");
-            document.getElementById("myListCity").disabled = true;
-            document.getElementById("myListCity").style.backgroundColor = "lightgray";
+            $("#myListState").html("<option> -Select a State-</option>");
+            document.getElementById("myListState").disabled = true;
+            document.getElementById("myListState").style.backgroundColor = "lightgray";
             $('.Menu').show();
         }else{
-            $("#myListCity").html("<option> -Select a City- </option>");
+            $("#myListState").html("<option> -Select a State- </option>");
         }
     });
 });
-
-
 
 function getObjects(obj, key, val) {
     var objects = [];
@@ -62,8 +57,47 @@ function getObjects(obj, key, val) {
     return objects;
 }
 
-function ChangeSelectList(countrylevel) {
-    // console.log(countrylevel);
+function ChangeSelectList(continentlevel) {
+    Continentlevel = continentlevel;
+    var countryList = document.getElementById("myListCountry");
+    while (countryList.options.length) {
+        countryList.remove(0);
+    }
+    $.ajax({
+        url: "CountryList",
+        dataType: 'json',
+        success: function (results) {
+            var option;
+            for (var i = 0; i < results.length; i++) {
+                if (continentlevel === results[i]. ContinentName) {
+                        option = new Option(results[i].CountryName, results[i].CountryName);
+                        countryList.add(option);
+                        $('.Menu').hide();
+                        document.getElementById("myListCountry").disabled = false;
+                        document.getElementById("myListCountry").style.backgroundColor = "white";
+                }
+            }
+        }
+    });
+    if (continentlevel === "AL") {
+        $('.Menu').show();
+        document.getElementById("myListCountry").disabled = true;
+        document.getElementById("myListCountry").style.backgroundColor = "lightgray";
+        document.getElementById("myListState").disabled = true;
+        document.getElementById("myListState").style.backgroundColor = "lightgray";
+    }
+    $.ajax({
+        url: "ClassName",
+        success: function (res) {
+            var continentObj = getObjects(res, 'ContinentName', continentlevel);
+            // console.log(returnStateObj1);
+            localStorage.setItem("returnvalue",JSON.stringify(continentObj));
+        }
+    });
+}
+
+function ChangeStateList(countrylevel) {
+    Countrylevel = countrylevel;
     var stateList = document.getElementById("myListState");
     while (stateList.options.length) {
         stateList.remove(0);
@@ -72,87 +106,42 @@ function ChangeSelectList(countrylevel) {
         url: "StateList",
         dataType: 'json',
         success: function (results) {
-            console.log(results);
             var option;
             for (var i = 0; i < results.length; i++) {
-                if (countrylevel === results[i]. CountryName) {
-                        option = new Option(results[i].StateName, results[i].StateName);
-                        stateList.add(option);
-                        $('.Menu').hide();
-                        document.getElementById("myListState").disabled = false;
-                        document.getElementById("myListState").style.backgroundColor = "white";
-                }
-            }
-        }
-    });
-    if (countrylevel === "AL") {
-        $('.Menu').show();
-        document.getElementById("myListState").disabled = true;
-        document.getElementById("myListState").style.backgroundColor = "lightgray";
-        document.getElementById("myListCity").disabled = true;
-        document.getElementById("myListCity").style.backgroundColor = "lightgray";
-    }
-}
-
-function ChangeStateList(statelevel) {
-    console.log(statelevel);
-    var cityList = document.getElementById("myListCity");
-    while (cityList.options.length) {
-        cityList.remove(0);
-    }
-    $.ajax({
-        url: "ChangeCityName",
-        dataType: 'json',
-        success: function (results) {
-            // console.log(results);
-            var option;
-            for (var i = 0; i < results.length; i++) {
-                if (statelevel === results[i].StateName) {
-                    option = new Option(results[i].CityName, results[i].CityName);
-                    cityList.add(option);
+                if (countrylevel === results[i].CountryName) {
+                    option = new Option(results[i].StateName, results[i].StateName);
+                    stateList.add(option);
                     $('.Menu').hide();
-                    document.getElementById("myListCity").disabled = false;
-                    document.getElementById("myListCity").style.backgroundColor = "white";
+                    document.getElementById("myListState").disabled = false;
+                    document.getElementById("myListState").style.backgroundColor = "white";
                 }
             }
         }
     });
-
-    $.ajax({
-        url: "CityList",
-        success: function (res) {
-            var returnCityObj1 = getObjects(res, 'StateName', statelevel);
-            console.log(returnCityObj1);
-                localStorage.setItem("returnvalue",JSON.stringify(returnCityObj1));
-        }
-    });
 }
 
-function ChangeLayerList(citylevel) {
-    // console.log(citylevel);
-    var returnvalue = JSON.parse(localStorage.getItem("returnvalue"));
-    // console.log(returnvalue);
-    $('.Menu').hide();
+function ChangeLayerList(statelevel) {
     $('.State').hide();
+    var returnvalue = JSON.parse(localStorage.getItem("returnvalue"));
     for(var i =0; i< returnvalue.length; i++) {
-        if (citylevel === returnvalue[i].CityName) {
-            console.log(returnvalue[i].CityName);
-            // console.log("work2");
-            var obj1 = returnvalue[i].FirstLayer;
-            var obj2 = returnvalue[i].SecondLayer;
-            var obj3 = returnvalue[i].CityName + returnvalue[i].StateName;
-            console.log(obj3);
-            // console.log(i);
-            var className1 = '.' + obj1;
-            var className2 = '.' + obj2;
-            var className4 = '.' + obj3;
-            console.log(className4);
-            $(className1).show();
-            $(className2).show();
-            $(className4).show();
+        if(Continentlevel === returnvalue[i].ContinentName) {
+            if(Countrylevel === returnvalue[i].CountryName) {
+                if (statelevel === returnvalue[i].StateName) {
+                    let continentnamestr = returnvalue[i].ContinentName.replace(/\s+/g, '');
+                    let countrynamestr = returnvalue[i].CountryName.replace(/\s+/g, '');
+                    let statenamestr = returnvalue[i].StateName.replace(/\s+/g, '');
+                    var obj1 = returnvalue[i].FirstLayer;
+                    var obj2 = returnvalue[i].SecondLayer;
+                    var obj3 = statenamestr + countrynamestr + continentnamestr;
+                    var className1 = '.' + obj1;
+                    var className2 = '.' + obj2;
+                    var className3 = '.' + obj3;
+                    $(className1).show();
+                    $(className2).show();
+                    $(className3).show();
+                }
+            }
         }
     }
 }
-
-
 

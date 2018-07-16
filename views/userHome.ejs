@@ -21,11 +21,6 @@
             padding-top:80px;
             word-wrap:break-word;
         }
-
-        .floatingBox3{
-            display: inline-table;
-            width:450px;
-        }
         .banner{
             position:relative;
             width: 100%;
@@ -36,9 +31,6 @@
         .floatingBox {
             display: inline-block;
             /*width:350px;*/
-        }
-        .button{
-            width:8%;
         }
         .date{
             width:20%;
@@ -218,7 +210,7 @@
 </head>
 <body>
 <div class="container center">
-    <a href="//aworldbridge.com"><img class="banner" src="/images/NewWBBanner.jpg" /></a>
+    <a href="http://aworldbridge.com"><img class="banner" src="/images/NewWBBanner.jpg" /></a>
     <br><br>
     <div class="page-header text-center header">
         <h1><span class="fa fa-anchor"></span>User Home </h1><h4><span class="fa fa-user"></span>&nbsp;<strong>Account Name</strong>: <%= user.username %></h4><br>
@@ -439,7 +431,7 @@
                                         results[i].FirstOther,
                                         results[i].SecondLayer,
                                         results[i].SecondOther,
-                                        results[i].ThirdLayer,
+                                        results[i].LayerName,
                                         results[i].Layer_Description,
                                         results[i].LayerFormat,
                                         results[i].Layer_Uploader,
@@ -460,7 +452,7 @@
                                     results[i].FirstOther,
                                     results[i].SecondLayer,
                                     results[i].SecondOther,
-                                    results[i].ThirdLayer,
+                                    results[i].LayerName,
                                     results[i].Layer_Description,
                                     results[i].LayerFormat,
                                     results[i].Layer_Uploader,

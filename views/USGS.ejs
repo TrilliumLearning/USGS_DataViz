@@ -66,7 +66,7 @@
         }
         #back{
             text-align:center;
-            margin-top:20px;
+            margin-top:50px;
         }
         .container-login100-form-btn {
             width: 100%;
@@ -78,32 +78,40 @@
             flex-wrap: wrap;
             justify-content: center;
         }
+        .banner{
+            position:relative;
+            width:100%;
+            text-align:center;
+            display:inline-block;
+        }
 
     </style>
 
 </head>
 <body>
 <div class="container">
-    <div>
-        <img src="../images/TL_WB_Banner.jpg" align="middle" alt="Placeholder Image" />
-    </div>
-<div>
-    <br>
-    <!--<a href="/login" class="btn btn-warning btn-lg" style="font-size:16px;margin-top:20px;">Submit Layer Request</a>-->
-    <div id="back" class="container-login100-form-btn">
-        <a href="/login" id="layerrequest">
-            Submit Layer Request
-            <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i></a>
-    </div>
+    <div >
+        <a href="http://aworldbridge.com"><img class="banner" src="../images/NewWBBanner.jpg"/></a>
 
-    <div class="row">
+        <!--<div id="back" class="container-login100-form-btn">-->
+            <!--<a href="/login" id="layerrequest">-->
+                <!--<i class="fa fa-long-arrow-left m-l-5" aria-hidden="true"></i>-->
+                <!--</a>-->
+        <!--</div>-->
+        <div id="back" class="container-login100-form-btn">
+            <a href="/login" id="layerrequest">
+                Submit Layer Request &#10095;
+            </a>
+        </div>
+        <div>
+        <div class="row">
         <div class="col-sm-3">
             <div class="container">
                 <br>
                 <h4>Please Select Here First</h4>
                 <div>
                     <p>
-                        <select id="myListCountry"  style="width:180px; height:21px; background:white" onchange="ChangeSelectList(this.value)">
+                        <select id="myListContinent"  style="width:180px; height:21px; background:white" onchange="ChangeSelectList(this.value)">
                             <option selected="selected" value="AL">All Layer</option>
                             <!--<option>United States of America</option>-->
                             <!--<option value="AL" selected="selected" class="a">All Layer</option>-->
@@ -112,7 +120,7 @@
                 </div>
                 <div>
                     <p>
-                        <select id="myListState"  style="width:180px; height:21px; background:lightgray" onchange="ChangeStateList(this.value)">
+                        <select id="myListCountry"  style="width:180px; height:21px; background:lightgray" onchange="ChangeStateList(this.value)" disabled>
                             <option selected="selected" value="AL">All Layer</option>
                             <!--<option>-Select a State-</option>-->
                         </select>
@@ -120,7 +128,7 @@
                 </div>
                 <div>
                     <p>
-                        <select id="myListCity"  style="width:180px; height:21px; background:lightgray" onchange="ChangeLayerList(this.value)">
+                        <select id="myListState"  style="width:180px; height:21px; background:lightgray" onchange="ChangeLayerList(this.value)" disabled>
                             <option selected="selected" value="AL">All Layer</option>
                         </select>
                     </p>
@@ -142,8 +150,8 @@
         </div>
 
     </div>
-
-</div>
+        </div>
+    </div>
 </div>
 </body>
 <script>
@@ -173,7 +181,6 @@
                 var removesecondlayer = unpack(res, 'SecondLayer');
                 var removethirdlayer = unpack(res,"ThirdLayer");
                 var Layerinfo = unpack(res,"LayerName");
-                // console.log(removethirdlayer);
 
                 $.each(removefirstlayer, function (index, value) {
                     if($.inArray(value, firstlayer) === -1) firstlayer.push(value);
@@ -183,18 +190,11 @@
                 });
                 $.each(removethirdlayer, function (index, value) {
                     if($.inArray(value, thirdlayer) === -1) thirdlayer.push(value);
-                    // console.log(thirdlayer);
                 });
                 $.each(Layerinfo, function (index, value) {
                     layervalue.push(value);
                 });
 
-                // console.log(res);
-                // console.log(firstlayer);
-                // console.log(secondlayer);
-                // console.log(thirdlayer);
-                // console.log(layervalue);
-                // console.log(Layerinfo);
                 if(comparing.length === 0){
                     comparing.push(["firstlayer","secondlayer"]);
                 }
@@ -204,6 +204,7 @@
                 if(classname.length === 0){
                     classname.push("classname");
                 }
+
                 var createfirstlayer = function() {
 
 
@@ -239,7 +240,6 @@
                         paneldefault1.appendChild(panelheading1);
                         parentmenu.appendChild(paneldefault1);
                         paneldefault1.appendChild(collapseone);
-                        // console.log(paneldefault1);
                         // firstlayer ending
                     });
 
@@ -249,7 +249,6 @@
                         for (var v = 0; v < comparing.length; v++) {
                             //secondlayer beginning
                             if (comparing[v][1] !== res[i].SecondLayer) {
-                                // console.log("v" + v);
 
                                 if(v === comparing.length - 1) {
                                     var paneldefault2 = document.createElement("div");
@@ -281,7 +280,6 @@
 
                                     document.getElementsByClassName("panel-group " + res[i].FirstLayer)[0].appendChild(paneldefault2);
                                     comparing.push([res[i].FirstLayer, res[i].SecondLayer]);
-                                    // console.log(comparing);
                                 }
                             } else {
                                 break;
@@ -290,6 +288,9 @@
                         }// secondlayer ending
 
                         if (res[i].LayerType === "Wmslayer") {
+                            let continentnamestr = res[i].ContinentName.replace(/\s+/g, '');
+                            let countrynamestr = res[i].CountryName.replace(/\s+/g, '');
+                            let statenamestr = res[i].StateName.replace(/\s+/g, '');
 
                             for (var c = 0; c < comparing3.length; c++) {
 
@@ -297,8 +298,7 @@
 
                                     if (c === comparing3.length - 1) {
                                         var checkboxdivG = document.createElement("div");
-                                        checkboxdivG.className = "State " + res[i].ThirdLayer + " " + res[i].StateName + " " + res[i].CityName;
-                                        // console.log(checkboxdivG.className);
+                                        checkboxdivG.className = "State " + res[i].ThirdLayer + " " + statenamestr + countrynamestr + continentnamestr;
                                         var checkboxh5G = document.createElement("h5");
                                         var checkboxaG = document.createElement("a");
                                         var checkaboxatG = document.createTextNode(res[i].ThirdLayer);
@@ -320,26 +320,25 @@
                                         checkboxlabelG.appendChild(checkboxspanG);
                                         document.getElementsByClassName("panel-body " + res[i].SecondLayer)[0].appendChild(checkboxdivG);
                                         comparing3.push([res[i].ThirdLayer, res[i].LayerName]);
-                                        classname.push([res[i].ThirdLayer +" " + res[i].CityName + res[i].StateName, res[i].CityName]);
+                                        classname.push([res[i].ThirdLayer +" " + statenamestr + countrynamestr + continentnamestr, statenamestr]);
+
                                     }
 
                                 } else {
-
                                     if (comparing3[c][1] !== res[i].LayerName) {
                                         document.getElementsByClassName("input" + res[i].ThirdLayer)[0].removeAttribute("value");
                                         comparing3[c][1] += "," + res[i].LayerName;
                                         document.getElementsByClassName("input" + res[i].ThirdLayer)[0].setAttribute("value", comparing3[c][1]);
-                                        // console.log(document.getElementsByClassName(res[i].ThirdLayer)[0]);
 
                                     }
-                                    if (classname[c][0] !== res[i].ThirdLayer +" "+ res[i].CityName  + " " + res[i].StateName) {
-                                        classname[c][0] += " " + res[i].CityName + res[i].StateName;
+                                    if (classname[c][0] !== res[i].ThirdLayer +" "+ statenamestr + countrynamestr + continentnamestr) {
+                                        classname[c][0] += " " + statenamestr + countrynamestr + continentnamestr;
                                         // classname[c][1] += res[i].CityName;
                                         document.getElementsByClassName("State " + res[i].ThirdLayer)[0].className = "State " + classname[c][0];
 
-                                        if (classname[c][1] !== res[i].CityName) {
+                                        if (classname[c][1] !== statenamestr) {
 
-                                            document.getElementsByClassName(classname[c][0])[0].className += " " + res[i].CityName;
+                                            document.getElementsByClassName(classname[c][0])[0].className += " " + statenamestr;
                                         }
 
                                     }
@@ -349,14 +348,16 @@
                         }
 
                         if (res[i].LayerType === "Placemark") {
-
+                            let continentnamestr = res[i].ContinentName.replace(/\s+/g, '');
+                            let countrynamestr = res[i].CountryName.replace(/\s+/g, '');
+                            let statenamestr = res[i].StateName.replace(/\s+/g, '');
                             for (var a = 0; a < comparing3.length; a++) {
 
                                 if (comparing3[a][0] !== res[i].ThirdLayer) {
 
                                     if (a === comparing3.length - 1) {
                                         var checkboxdiv = document.createElement("div");
-                                        checkboxdiv.className = "State " + res[i].ThirdLayer + " " + res[i].StateName + " " + res[i].CityName;
+                                        checkboxdiv.className = "State " + res[i].ThirdLayer + " " + countrynamestr + statenamestr + continentnamestr;
                                         var checkboxh5 = document.createElement("h5");
                                         var checkboxa = document.createElement("a");
                                         var checkaboxat = document.createTextNode(res[i].ThirdLayer);
@@ -377,18 +378,18 @@
                                         checkboxlabel.appendChild(checkboxspan);
                                         document.getElementsByClassName("panel-body " + res[i].SecondLayer)[0].appendChild(checkboxdiv);
                                         comparing3.push([res[i].ThirdLayer, res[i].LayerName]);
-                                        classname.push([res[i].ThirdLayer +" "+ res[i].CityName + res[i].StateName,  res[i].CityName]);
+                                        classname.push([res[i].ThirdLayer +" " + statenamestr + countrynamestr + continentnamestr, statenamestr]);
 
                                     }
                                 }
                                 else {
                                     document.getElementsByClassName("input" + res[i].ThirdLayer)[0].setAttribute("value", res[i].LayerName);
-                                    if (classname[a][0] !== res[i].ThirdLayer +" "+ res[i].CityName + " " + res[i].StateName) {
-                                        classname[a][0] += " " + res[i].CityName + res[i].StateName;
+                                    if (classname[a][0] !== res[i].ThirdLayer +" "+ statenamestr + " " + countrynamestr) {
+                                        classname[a][0] += " " + statenamestr + countrynamestr + continentnamestr;
                                         document.getElementsByClassName("State " + res[i].ThirdLayer)[0].className ="State "+ classname[a][0];
 
-                                        if (classname[a][1] !== res[i].CityName) {
-                                            document.getElementsByClassName(classname[a][0])[0].className += " " + res[i].CityName;
+                                        if (classname[a][1] !== statenamestr) {
+                                            document.getElementsByClassName(classname[a][0])[0].className += " " + statenamestr;
 
                                         }
 
@@ -402,33 +403,8 @@
                     });
 
                 };
-
                 createotherlayer(createfirstlayer());
-                // console.log(classname);
-                // console.log(parentmenu);
-                // console.log(document.getElementsByClassName("State "));
-            },
-            error: function (jqXHR, exception) {
-                var msg = '';
-                if (jqXHR.status === 0) {
-                    msg = 'Not connect.\n Verify Network.';
-                } else if (jqXHR.status == 404) {
-                    msg = 'Requested page not found. [404]';
-                } else if (jqXHR.status == 500) {
-                    msg = 'Internal Server Error [500].';
-                } else if (exception === 'parsererror') {
-                    msg = 'Requested JSON parse failed.';
-                } else if (exception === 'timeout') {
-                    msg = 'Time out error.';
-                } else if (exception === 'abort') {
-                    msg = 'Ajax request aborted.';
-                } else {
-                    msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                }
-                console.log(msg);
-
             }
-
         });
     });
 </script>

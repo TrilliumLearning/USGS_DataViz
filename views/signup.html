@@ -2,7 +2,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>FAW/Locust -  User Management - Add User</title>
+    <title>FAW/Locust -  Sign Up</title>
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
@@ -60,7 +60,7 @@
 <div class="container">
 
     <div class="col-sm-6 col-sm-offset-3">
-        <a href="http://aworldbridge.com"><img class="banner" src="/images/NewWBBanner.jpg" style="height: 97px; width: 120%" /></a>
+        <a href="//aworldbridge.com"><img class="banner" src="/images/NewWBBanner.jpg" style="height: 97px; width: 120%" /></a>
         <h1><span class="fa fa-sign-in"></span> Signup </h1>
 
         <!-- show any messages that come back with authentication -->
@@ -69,7 +69,7 @@
         <% } %>
 
         <!-- LOGIN FORM -->
-        <form onsubmit="return checkForm()" action="/signup" method="post">
+        <form action="/signup" method="post" id="signup">
             <div class="form-group">
                 <label>Username</label>
                 <input type="email" class="form-control" name="username">
@@ -93,19 +93,19 @@
             </div>
             <div class="form-group">
                 <label>Date Created</label>
-                <input id="DATE" class="form-control date" name="dateCreated" readonly>
+                <input id="DATE" class="form-control date" name="dateCreated" readonly hidden>
             </div>
             <div class="form-group" hidden>
                 <label>Created By User</label>
-                <input type="text" id="createdUser" class="form-control" name="createdUser" value="<%= user.username %>" readonly >
+                <input type="text" id="createdUser" class="form-control" name="createdUser" value="Anonymous" readonly >
             </div>
             <div class="form-group" hidden>
                 <label>Status</label>
                 <input type="text" id="status" class="form-control" name="status" value="Never Logged In" readonly >
             </div>
 
-            <button type="submit" class="btn btn-warning btn-mg"> Add User </button>
-            <a href="/userManagement" class="btn btn-warning btn-mg">Cancel</a>
+            <button type="submit" class="btn btn-warning btn-mg"> submit </button>
+            <a href="/login" class="btn btn-warning btn-mg">Cancel</a>
         </form>
 
         <hr>
@@ -121,6 +121,24 @@
                 dateFormat: "Y-m-d H:i:S",
                 time_24hr: true
             });*/
+
+            $('#signup').submit(function(e) {
+                e.preventDefault();
+                $.ajax({
+                    type: "post",
+                    url: "/signup",
+                    dataType: 'json',
+                    data: $("#signup").serialize(),
+                    success: function (result) {
+                        if (!result.error) {
+                            alert(result.message);
+                            window.location.replace('/login');
+                        } else {
+                            alert(result.message);
+                        }
+                    }
+                })
+            });
         });
         var today = new Date();
         var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
