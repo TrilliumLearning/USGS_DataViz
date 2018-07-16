@@ -343,7 +343,7 @@
         var data = $("#basic").serialize() + "&" + $("#pswchange").serialize();
         console.log(data);
         $.ajax({
-            url  : 'http://localhost:9085/submit',
+            url  : 'submit',
             method : "POST",
             data : data,
             dataType: 'json',
@@ -352,7 +352,7 @@
             }
         });
         $.ajax({
-            url  : 'http://localhost:9085/newPass',
+            url  : 'newPass',
             method : "POST",
             data : data,
             dataType: 'json',

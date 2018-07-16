@@ -406,7 +406,7 @@
                 var pictureStr = "pictureStr=" + transactionpicturename.toString();
 
                 $.ajax({
-                    url: 'http://localhost:9085/deleteData',
+                    url: 'deleteData',
                     type: "GET",
                     dataType: 'json',
                     data: transactionIDStr + '&' + pictureStr
@@ -419,7 +419,7 @@
 
         var queryAndDisplay = function (querystr) {
             $.ajax({
-                url: 'http://localhost:9085/AddData',
+                url: 'AddData',
                 dataType: 'json',
                 success: function (results) {
                     console.log(results);

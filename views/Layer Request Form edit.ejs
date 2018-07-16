@@ -268,21 +268,21 @@
                         <label class="col-md-4 control-label">Layer State</label>
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
-                                <input id="LayerStateInput" name="CityName" placeholder="Layer City" class="form-control" required value="" type="text"></div>
+                                <input id="LayerStateInput" name="StateName" placeholder="Layer City" class="form-control" required value="" type="text"></div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label">Layer Country</label>
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
-                                <input id="LayerCountryInput" name="StateName" placeholder="Layer State" class="form-control" required value="" type="text"></div>
+                                <input id="LayerCountryInput" name="CountryName" placeholder="Layer State" class="form-control" required value="" type="text"></div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label">Layer Continent</label>
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
-                                <input id="LayerContinentInput" name="CountryName" placeholder="Layer Country" class="form-control" required value="" type="text"></div>
+                                <input id="LayerContinentInput" name="ContinentName" placeholder="Layer Country" class="form-control" required value="" type="text"></div>
                         </div>
                     </div>
 
@@ -381,7 +381,7 @@
     var editIDSr = "editIDSr=" + getvalue[2];
     console.log(editIDSr);
     $.ajax({
-        url: 'http://localhost:9085/edit',
+        url: 'edit',
         type: 'GET',
         dataType: 'json',
         data: editIDSr,
@@ -412,7 +412,7 @@
         element: document.getElementById("uploader"),
         // debug: true,
         request: {
-            endpoint: 'http://localhost:9085/upload'
+            endpoint: 'upload'
         },
         cors: {
             //all requests are expected to be cross-domain requests
@@ -420,7 +420,7 @@
         },
         deleteFile: {
             enabled: true, // defaults to false
-            endpoint: 'http://localhost:9085/deleteFiles'
+            endpoint: 'deleteFiles'
         },
         callbacks: {
             onComplete: function (id, name, responseJSON) {
@@ -439,13 +439,13 @@
             var data =$("#layer").serialize();
             console.log(data);
             $.ajax({
-              url:'http://localhost:9085/approve',
+              url:'approve',
                 type:"GET",
                 dataType:'json',
                 data:tID + '&' + LUN,
             });
             $.ajax({
-                url  : 'http://localhost:9085/replace',
+                url  : 'replace',
                 method : "post",
                 data : data,
                 dataType: 'json',
@@ -463,7 +463,7 @@
         if (confirm("Are you sure you would like to submit this data?") === true) {
             var regulardata =$("#layer").serialize();
             $.ajax({
-                url  : 'http://localhost:9085/rsubmit',
+                url  : 'rsubmit',
                 method : "post",
                 data : regulardata,
                 dataType: 'json',
@@ -482,7 +482,7 @@
             subList.remove(0);
         }
         $.ajax({
-            url: "http://localhost:9085/MainCategory",
+            url: "MainCategory",
             dataType: 'json',
             success:function (results) {
                 var option;
@@ -564,7 +564,7 @@
 
     function SearchLayerName(value){
         $.ajax({
-            url: "http://localhost:9085/SearchLayerName",
+            url: "SearchLayerName",
             dataType:"json",
             success: function (results) {
                 for(var i = 0; i < results.length; i++) {
