@@ -1017,7 +1017,6 @@ module.exports = function (app, passport) {
         let result = Object.keys(req.body).map(function (key) {
             return [String(key), req.body[key]];
         });
-        console.log(result);
         res.setHeader("Access-Control-Allow-Origin", "*");
 
         var update1 = "UPDATE USGS.Request_Form SET " ;
@@ -1128,38 +1127,39 @@ module.exports = function (app, passport) {
     // CitySmart Menu Filter SECTION =======
     // =====================================
 
+    //Continent level
     app.get('/ContinentList', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*");
         con_CS.query("SELECT ContinentName FROM MapLayerMenu GROUP BY ContinentName", function (err, results) {
             if (err) throw err;
             res.json(results);
-            console.log(results);
+            // console.log(results);
         });
     });
-
+    //Country level
     app.get('/CountryList', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*");
         con_CS.query('SELECT CountryName, ContinentName, COUNT (*) AS count FROM MapLayerMenu GROUP BY CountryName, ContinentName', function (err, results, fields) {
             if (err) throw err;
             res.json(results);
-            console.log(results);
+            // console.log(results);
 
         });
     });
-
-    app.get('/StateList', function (req, res) {
+    //Depend on continent value to get the country and state value
+    app.get('/ClassName', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*");
-        con_CS.query('SELECT CountryName, FirstLayer, SecondLayer, StateName FROM MapLayerMenu', function (err, results) {
+        con_CS.query('SELECT CountryName, FirstLayer, SecondLayer, StateName, ContinentName FROM MapLayerMenu', function (err, results) {
             res.json(results);
-            console.log(results);
+            // console.log(results);
         });
     });
-
-    app.get('/ChangeStateName', function (req, res) {
+    //state level
+    app.get('/StateList', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*");
         con_CS.query('SELECT StateName, CountryName, COUNT (*) AS count FROM MapLayerMenu GROUP BY StateName, CountryName', function (err, results, fields) {
             res.json(results);
-            console.log(results);
+            // console.log(results);
         });
     });
 
@@ -1585,7 +1585,7 @@ function QueryStat(myObj, scoutingStat, res) {
         responseData.preventRetry = true;
         res.send(responseData);
     }
-
+//delete new photo
     function onDeleteFile1(req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
         console.log("result=" + req.params.uuid);
@@ -1599,7 +1599,7 @@ function QueryStat(myObj, scoutingStat, res) {
             res.send();
         });
     }
-    //cannot get the uuid
+    //delete old photo
     function onDeleteFile2(req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
         let dirToDelete = "uploadfiles/" + olduuid[0].Layer_Uploader_name;
