@@ -219,7 +219,7 @@
                         collapsed1.setAttribute("data-toggle", "collapse");
                         collapsed1.setAttribute("data-parent", "#accordion");
                         collapsed1.href = "#collapse" + i;
-                        var firstlayername = document.createTextNode(firstlayer[i]);
+                        var firstlayername = document.createTextNode(firstlayer[i] + "  ");
                         firstlayername.className = "menuwords";
                         var collapseone = document.createElement("div");
                         collapseone.className = "panel-collapse collapse";
@@ -261,7 +261,7 @@
                                     collapsed2.setAttribute("data-toggle", "collapse");
                                     collapsed2.setAttribute("data-parent", "#nested");
                                     collapsed2.href = "#" + res[i].FirstLayer + "-" + res[i].SecondLayer;
-                                    var secondlayername = document.createTextNode(res[i].SecondLayer);
+                                    var secondlayername = document.createTextNode(res[i].SecondLayer + "  ");
                                     secondlayername.className = "menuwords";
                                     var nested1c1 = document.createElement("div");
                                     nested1c1.id = res[i].FirstLayer + "-" + res[i].SecondLayer;
@@ -299,13 +299,13 @@
                                         checkboxdivG.className = "State " + res[i].ThirdLayer + " " + statenamestr + countrynamestr + continentnamestr;
                                         var checkboxh5G = document.createElement("h5");
                                         var checkboxaG = document.createElement("a");
-                                        var checkaboxatG = document.createTextNode(res[i].ThirdLayer);
+                                        var checkaboxatG = document.createTextNode(res[i].ThirdLayer + "   ");
                                         checkaboxatG.className = "menuwords";
                                         var checkboxlabelG = document.createElement("label");
                                         checkboxlabelG.className = "switch right";
                                         var checkboxinputG = document.createElement("input");
                                         checkboxinputG.type = "checkbox";
-                                        checkboxinputG.className = "input" + res[i].ThirdLayer;
+                                        checkboxinputG.className = "wmsLayer input" + res[i].ThirdLayer;
                                         checkboxinputG.id = res[i].LayerType;
                                         checkboxinputG.setAttribute("value", res[i].LayerName);
                                         var checkboxspanG = document.createElement("span");
@@ -388,7 +388,6 @@
 
                                         if (classname[a][1] !== statenamestr) {
                                             document.getElementsByClassName(classname[a][0])[0].className += " " + statenamestr;
-
                                         }
 
                                     }
