@@ -15,7 +15,8 @@
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/file-uploader/5.16.2/all.fine-uploader/all.fine-uploader.min.js"></script>
-    <script src="../country/dist/crs.min.js"></script>
+    <!--<script src="../country/dist/crs.min.js"></script>-->
+    <script src="../country/dist/country.js"></script>
     <!--<script type = "text/javascript" src="LayerNameSearch.js"></script>-->
     <script src="../src/jquery.multi-select.js"></script>
     <script src="../scripts/Subcategory.js"></script>
@@ -253,15 +254,15 @@
                             <div class="input-group">
                                 <span class="input-group-addon" style="max-width: 100%;"><i class="glyphicon glyphicon-globe"></i></span>
                                 <!--<input id="LayerContinentInput" name="ContinentName" placeholder="Layer Continent" class="form-control" required value="" type="text"></div>-->
-                                <select name="ContinentName" class="form-control selectpicker" onclick="ContinentName();" >
-                                    <option selected>Please select a continent</option>
-                                    <option>Africa</option>
-                                    <option>Antarctica</option>
-                                    <option>Asia</option>
-                                    <option>Australia</option>
-                                    <option>Europe</option>
-                                    <option>North America</option>
-                                    <option>South America</option>
+                                <select name="ContinentName" class="form-control selectpicker" onclick="ContinentName();" id="continent" >
+                                    <option selected>SELECT CONTINENT</option>
+                                    <!--<option>Africa</option>-->
+                                    <!--<option>Antarctica</option>-->
+                                    <!--<option>Asia</option>-->
+                                    <!--<option>Australia</option>-->
+                                    <!--<option>Europe</option>-->
+                                    <!--<option>North America</option>-->
+                                    <!--<option>South America</option>-->
                                 </select>
                         </div>
                     </div>
@@ -271,7 +272,7 @@
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
-                                <select name="CountryName" class="crs-country form-control" data-region-id="two" data-default-option="Please select a country">
+                                <select name="CountryName" class="crs-country form-control" data-region-id="two" data-default-option="SELECT COUNTRY" id="country">
                                     <!--<option value="">Please select a country</option>-->
                                 </select>
                             </div>
@@ -282,9 +283,9 @@
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
-                                <select name="StateName" id="two" class="crs-region form-control" data-default-option="Please select a state" data-blank-option="No state selected">
+                                <!--<select name="StateName" id="two" class="crs-region form-control" data-default-option="SELECT STATE" data-blank-option="NO STATE SELECTED">-->
                                     <!--<option>Please select a state</option>-->
-                                </select>
+                                <input name="StateName" value="" placeholder="State Name" class="form-control" required  type="text">
                             </div>
                         </div>
                     </div>
@@ -534,10 +535,17 @@
         //use if to check
         //false replace the <p> to the Layer Name is duplicated
         //ture --> nothing
-
-
-
     }
+
+    $(function() {
+        new dgContinentsCountries({
+            continentVal: document.getElementById("continent").val,
+            countryVal: document.getElementById("country").val,
+            continent: document.getElementById("continent"),
+            country: document.getElementById("country"),
+            change: true
+        });
+    });
 
 
 </script>
