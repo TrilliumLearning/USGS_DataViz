@@ -241,7 +241,6 @@ define([
             var capability = {
                 capsDoc: this
             };
-
             var children = element.children || element.childNodes;
             for (var c = 0; c < children.length; c++) {
                 var child = children[c];
@@ -251,6 +250,7 @@ define([
                 } else if (child.localName === "Exception") {
                     capability.exception = this.assembleException(child);
                 } else if (child.localName === "Layer") {
+                    console.log("work");
                     capability.layers = capability.layers || [];
                     capability.layers.push(new WmsLayerCapabilities(child, capability));
                 }

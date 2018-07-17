@@ -21,7 +21,7 @@ requirejs(['./WorldWindShim',
         '../src/heatmap/Globe',
         '../src/heatmap/Controls',
         '../src/heatmap/HeatmapPanel',
-        '../src/WorldWindow_Ori'],
+        '../src/ogc/wms/WmsLayerCapabilities'],
     function (WorldWind,
               LayerManager,
               OptionList,
@@ -46,6 +46,7 @@ requirejs(['./WorldWindShim',
         var serviceAddress = "http://cs.aworldbridgelabs.com:8080/geoserver/ows?service=wms&version=1.3.0&request=GetCapabilities";
 
         var layerName = [];
+        var optionlist = [];
         var preloadLayer = [];
 
         var layers = globe.layers;
@@ -84,7 +85,6 @@ requirejs(['./WorldWindShim',
             // Create a WmsCapabilities object from the XML DOM
             var wms = new WorldWind.WmsCapabilities(xmlDom);
             // Retrieve a WmsLayerCapabilities object by the desired layer name
-
             for (var n = 0; n < layerName.length; n++) {
                 var wmsLayerCapabilities = wms.getNamedLayer(layerName[n]);
                 // wmsLayerCapabilities.title = layerName[n];
@@ -101,15 +101,20 @@ requirejs(['./WorldWindShim',
             }
         };
 
+        var getboundingbox = function (xmlDom) {
+            //create a WmsLayerCapabilities object from the XML DOM
+            var wmsCapabilities = new WorldWind.WmsCapabilities(xmlDom);
+            // for(var i = 0; i < optionlist.length; i++){
+              var assembleCapability = wmsCapabilities.assembleCapability(capability);
+
+            // }
+        };
+
         // Called if an error occurs during WMS Capabilities document retrieval
         var logError = function (jqXhr, text, exception) {
             console.log("There was a failure retrieving the capabilities document: " + text + " exception: " + exception);
         };
 
-        $.get(serviceAddress).done(createWMSLayer).fail(logError);
+        $.get(serviceAddress).done(createWMSLayer,getboundingbox).fail(logError);
 
-        var getboundingbox = function (xmlDom) {
-            // //create a WmsLayerCapabilities object from the XML DOM
-            // var boundingbox = new
-        }
     });
