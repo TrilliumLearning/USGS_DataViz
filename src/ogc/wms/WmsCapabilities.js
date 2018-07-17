@@ -238,6 +238,7 @@ define([
         };
 
         WmsCapabilities.prototype.assembleCapability = function (element) {
+            console.log(element);
             var capability = {
                 capsDoc: this
             };
@@ -250,12 +251,10 @@ define([
                 } else if (child.localName === "Exception") {
                     capability.exception = this.assembleException(child);
                 } else if (child.localName === "Layer") {
-                    console.log("work");
                     capability.layers = capability.layers || [];
                     capability.layers.push(new WmsLayerCapabilities(child, capability));
                 }
             }
-
             return capability;
         };
 

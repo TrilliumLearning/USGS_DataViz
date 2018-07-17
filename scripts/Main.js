@@ -46,9 +46,8 @@ requirejs(['./WorldWindShim',
         var serviceAddress = "http://cs.aworldbridgelabs.com:8080/geoserver/ows?service=wms&version=1.3.0&request=GetCapabilities";
 
         var layerName = [];
-        var optionlist = [];
         var preloadLayer = [];
-
+        var westBoundLongitude, eastBoundLongitude, southBoundLatitude, northBoundLatitude;
         var layers = globe.layers;
 
         $(document).ready(function () {
@@ -84,30 +83,30 @@ requirejs(['./WorldWindShim',
         var createWMSLayer = function (xmlDom) {
             // Create a WmsCapabilities object from the XML DOM
             var wms = new WorldWind.WmsCapabilities(xmlDom);
+
             // Retrieve a WmsLayerCapabilities object by the desired layer name
             for (var n = 0; n < layerName.length; n++) {
-                var wmsLayerCapabilities = wms.getNamedLayer(layerName[n]);
-                // wmsLayerCapabilities.title = layerName[n];
+                var wmsLayerCapabilities = wms.getNamedLayers();
+
+                //get all the bound value
+                westBoundLongitude = wmsLayerCapabilities[n].geographicBoundingBox.westBoundLongitude;
+                eastBoundLongitude = wmsLayerCapabilities[n].geographicBoundingBox.eastBoundLongitude;
+                southBoundLatitude = wmsLayerCapabilities[n].geographicBoundingBox.southBoundLatitude;
+                northBoundLatitude = wmsLayerCapabilities[n].geographicBoundingBox.northBoundLatitude;
+
                 // Form a configuration object from the WmsLayerCapability object
-                var wmsConfig = WorldWind.WmsLayer.formLayerConfiguration(wmsLayerCapabilities);
-                // // Modify the configuration objects title property to a more user friendly title
+                var wmsConfig = WorldWind.WmsLayer.formLayerConfiguration(wmsLayerCapabilities[n]);
+
+                // Modify the configuration objects title property to a more user friendly title
                 wmsConfig.title = layerName[n];
-                // console.log(wmsConfig.length);
-                // // Create the WMS Layer from the configuration object
+
+                // Create the WMS Layer from the configuration object
                 var wmsLayer = new WorldWind.WmsLayer(wmsConfig);
+
                 // // Add the layers to WorldWind and update the layer manager
                 globe.addLayer(wmsLayer);
                 layerManager.synchronizeLayerList();
             }
-        };
-
-        var getboundingbox = function (xmlDom) {
-            //create a WmsLayerCapabilities object from the XML DOM
-            var wmsCapabilities = new WorldWind.WmsCapabilities(xmlDom);
-            // for(var i = 0; i < optionlist.length; i++){
-              var assembleCapability = wmsCapabilities.assembleCapability(capability);
-
-            // }
         };
 
         // Called if an error occurs during WMS Capabilities document retrieval
@@ -115,6 +114,6 @@ requirejs(['./WorldWindShim',
             console.log("There was a failure retrieving the capabilities document: " + text + " exception: " + exception);
         };
 
-        $.get(serviceAddress).done(createWMSLayer,getboundingbox).fail(logError);
+        $.get(serviceAddress).done(createWMSLayer).fail(logError);
 
     });
