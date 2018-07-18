@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/USGS_MapService.iml" filepath="$PROJECT_DIR$/.idea/USGS_MapService.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/USGS_DataViz.iml" filepath="$PROJECT_DIR$/.idea/USGS_DataViz.iml" />
     </modules>
   </component>
 </project>
