@@ -49,10 +49,13 @@ module.exports = function (app, passport) {
         res.render('homepage.ejs');
     });
 
-    app.get('/app', function (req, res) {
-        res.render('USGS.ejs');
-    });
+    // app.get('/app', function (req, res) {
+    //     res.render('usgs_mapsvc.ejs');
+    // });
 
+    app.get('/mapsvcviewer', function (req, res) {
+        res.render('usgs_mapsvc.ejs');
+    });
     app.get('/request',function (req,res) {
         res.render('login.ejs');
     });
