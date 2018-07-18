@@ -47,6 +47,7 @@ module.exports = function (app, passport) {
     // CS APP Home Section =================
     // =====================================
     app.get('/',function (req,res) {
+        res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
         res.render('homepage.ejs');
     });
 
@@ -55,9 +56,11 @@ module.exports = function (app, passport) {
     // });
 
     app.get('/mapsvcviewer', function (req, res) {
+        res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
         res.render('usgs_mapsvc.ejs');
     });
     app.get('/request',function (req,res) {
+        res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
         res.render('login.ejs');
     });
 

@@ -8,13 +8,22 @@ var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var config = require('./config/mainconf');
 var app      = express();
-var port     = process.env.PORT || config.Server_Port;
+var CORS_host = process.env.HOST || config.CORS_host;
+var CORS_port = process.env.PORT || config.CORS_port;
+var port = process.env.PORT || config.Server_Port;
 var path    = require('path');
 var passport = require('passport');
 var flash    = require('connect-flash');
 
-// configuration ===============================================================
-// connect to our database
+var cors_proxy = require('cors-anywhere');
+cors_proxy.createServer({
+    originWhitelist: [], // Allow all origins
+    // requireHeader: ['origin', 'x-requested-with'],
+    requireHeader: [],
+    removeHeaders: ['cookie', 'cookie2']
+}).listen(CORS_port, CORS_host, function() {
+    console.log('Running CORS Anywhere on ' + CORS_host + ':' + CORS_port);
+});
 
 require('./scripts/passport')(passport); // pass passport for configuration
 

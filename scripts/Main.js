@@ -42,7 +42,7 @@ requirejs(['./WorldWindShim',
 
         // Web Map Service information from NASA's Near Earth Observations WMS
         // var serviceAddress = "http://cs.aworldbridgelabs.com:8080/geoserver/ows?service=WMS&request=GetCapabilities&version=1.1.1";
-        var serviceAddress = "http://cs.aworldbridgelabs.com:8080/geoserver/ows?service=wms&version=1.3.0&request=GetCapabilities";
+        var serviceAddress = "http://localhost:9084/http://cs.aworldbridgelabs.com:8080/geoserver/ows?service=wms&version=1.3.0&request=GetCapabilities";
 
         var layerName = [];
         var preloadLayer = [];
