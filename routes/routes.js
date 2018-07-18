@@ -944,7 +944,7 @@ module.exports = function (app, passport) {
     //Request form layer category//
     app.get('/MainCategory', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*");
-        con_CS.query("SELECT FirstLayer, SecondLayer FROM Request_Form GROUP BY FirstLayer, SecondLayer", function (err, results) {
+        con_CS.query("SELECT FirstLayer, SecondLayer FROM LayerMenu GROUP BY FirstLayer, SecondLayer", function (err, results) {
             if (err) throw err;
             res.json(results);
             // console.log(results);
