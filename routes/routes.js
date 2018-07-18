@@ -16,6 +16,7 @@ const multiparty = require('multiparty');
 const upload_Dir = config.Upload_Dir;
 const geoData_Dir = config.GeoData_Dir;
 const Delete_Dir = config.Delete_Dir;
+const local_URL = config.local_URL;
 
 const fileInputName = process.env.FILE_INPUT_NAME || "qqfile";
 const maxFileSize = process.env.MAX_FILE_SIZE || 0; // in bytes, 0 for unlimited
@@ -46,7 +47,7 @@ module.exports = function (app, passport) {
     // CS APP Home Section =================
     // =====================================
     app.get('/',function (req,res) {
-        res.render('homepage.ejs');
+        res.render('homepage.ejs', {url: local_URL});
     });
 
     // app.get('/app', function (req, res) {
