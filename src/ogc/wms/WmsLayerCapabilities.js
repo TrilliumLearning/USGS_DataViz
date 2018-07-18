@@ -447,7 +447,7 @@ define([
                     return style;
                 }
             }
-        }
+        };
 
         WmsLayerCapabilities.accumulate = function (layer, propertyName, accumulation) {
             // Accumulate all of the named properties in the specified layer and its ancestors.

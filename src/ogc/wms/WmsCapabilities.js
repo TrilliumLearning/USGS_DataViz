@@ -238,10 +238,10 @@ define([
         };
 
         WmsCapabilities.prototype.assembleCapability = function (element) {
+            console.log(element);
             var capability = {
                 capsDoc: this
             };
-
             var children = element.children || element.childNodes;
             for (var c = 0; c < children.length; c++) {
                 var child = children[c];
@@ -255,7 +255,6 @@ define([
                     capability.layers.push(new WmsLayerCapabilities(child, capability));
                 }
             }
-
             return capability;
         };
 

@@ -923,7 +923,7 @@ module.exports = function (app, passport) {
                     if (err) {
                         console.log(err);
                     } else {
-                        res.render('Layer Request Form.ejs', {
+                        res.render('LayerRequestForm.ejs', {
                             user: req.user, // get the user out of session and pass to template
                             RID: RID
                         });
@@ -1037,7 +1037,7 @@ module.exports = function (app, passport) {
         let statement1 = update1+update2+update3;
         let statement2 = "UPDATE USGS.Request_Form SET Layer_Uploader = '" + Layer_Uploader + "', Layer_Uploader_name = '" + Layer_Uploader_name + "';";
         if(result[3][1] === "other"){
-            let statement = "INSERT INTO USGS.MapLayerMenu VALUES ('" + result[7][1] + "','" + result[0][0] + "','" + result[4][1] + "','" + result[6][1] + "','" + result[7][1] + "','" + result[10][1] + "','" + result[8][1] + "','" + result[9][1] + "', 'Active');";
+            let statement = "INSERT INTO USGS.MapLayerMenu VALUES ('" + result[7][1] + "', 'Wmslayer', '" + result[4][1] + "','" + result[6][1] + "','" + result[7][1] + "','" + result[10][1] + "','" + result[8][1] + "','" + result[9][1] + "', 'Active');";
             con_CS.query(statement1 + statement + statement2, function (err, result) {
                 if (err) {
                     throw err;
@@ -1046,7 +1046,7 @@ module.exports = function (app, passport) {
                 }
             });
         }else{
-            let statement = "INSERT INTO USGS.MapLayerMenu VALUES ('" + result[7][1] + "','" + result[0][1] + "','" + result[3][1] + "','" + result[5][1] + "','" + result[7][1] + "','" + result[10][1] + "','" + result[8][1] + "','" + result[9][1] + "', 'Active');";
+            let statement = "INSERT INTO USGS.MapLayerMenu VALUES ('" + result[7][1] + "', 'Wmslayer', '" + result[3][1] + "','" + result[5][1] + "','" + result[7][1] + "','" + result[10][1] + "','" + result[8][1] + "','" + result[9][1] + "', 'Active');";
            con_CS.query(statement1 + statement + statement2, function (err, result) {
                 if (err) {
                     throw err;

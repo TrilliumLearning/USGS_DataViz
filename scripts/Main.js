@@ -20,7 +20,8 @@ requirejs(['./WorldWindShim',
         '../src/heatmap/GlobeInterface',
         '../src/heatmap/Globe',
         '../src/heatmap/Controls',
-        '../src/heatmap/HeatmapPanel'],
+        '../src/heatmap/HeatmapPanel',
+        '../src/ogc/wms/WmsLayerCapabilities'],
     function (WorldWind,
               LayerManager,
               OptionList,
@@ -41,11 +42,12 @@ requirejs(['./WorldWindShim',
         WorldWind.Logger.setLoggingLevel(WorldWind.Logger.LEVEL_WARNING);
 
         // Web Map Service information from NASA's Near Earth Observations WMS
-        var serviceAddress = "http://cs.aworldbridgelabs.com:8080/geoserver/ows?service=WMS&request=GetCapabilities&version=1.1.1";
+        // var serviceAddress = "http://cs.aworldbridgelabs.com:8080/geoserver/ows?service=WMS&request=GetCapabilities&version=1.1.1";
+        var serviceAddress = "http://cs.aworldbridgelabs.com:8080/geoserver/ows?service=wms&version=1.3.0&request=GetCapabilities";
 
         var layerName = [];
         var preloadLayer = [];
-
+        var westBoundLongitude, eastBoundLongitude, southBoundLatitude, northBoundLatitude;
         var layers = globe.layers;
 
         $(document).ready(function () {
@@ -58,7 +60,6 @@ requirejs(['./WorldWindShim',
             layerName = strs.split(",");
 
             $('.wmsLayer').click(function(){
-                console.log (layers);
                 for (var a = 0; a < layers.length; a++) {
                     if ($('.wmsLayer').is(":checkbox:checked")) {
                         $(':checkbox:checked').each(function () {
@@ -71,7 +72,7 @@ requirejs(['./WorldWindShim',
                     if($('.wmsLayer').is(":not(:checked)")) {
                         $(":checkbox:not(:checked)").each(function (i) {
                             if (layers[a].displayName === $(this).val()) {
-                                    layers[a].enabled = false;
+                                layers[a].enabled = false;
                             }
                         })
                     }
@@ -80,21 +81,28 @@ requirejs(['./WorldWindShim',
         });
 
         var createWMSLayer = function (xmlDom) {
-            console.log (layerName);
-
             // Create a WmsCapabilities object from the XML DOM
             var wms = new WorldWind.WmsCapabilities(xmlDom);
+
             // Retrieve a WmsLayerCapabilities object by the desired layer name
             for (var n = 0; n < layerName.length; n++) {
-                var wmsLayerCapabilities = wms.getNamedLayer(layerName[n]);
-                // wmsLayerCapabilities.title = layerName[n];
+                var wmsLayerCapabilities = wms.getNamedLayers();
+
+                //get all the bound value
+                westBoundLongitude = wmsLayerCapabilities[n].geographicBoundingBox.westBoundLongitude;
+                eastBoundLongitude = wmsLayerCapabilities[n].geographicBoundingBox.eastBoundLongitude;
+                southBoundLatitude = wmsLayerCapabilities[n].geographicBoundingBox.southBoundLatitude;
+                northBoundLatitude = wmsLayerCapabilities[n].geographicBoundingBox.northBoundLatitude;
+
                 // Form a configuration object from the WmsLayerCapability object
-                var wmsConfig = WorldWind.WmsLayer.formLayerConfiguration(wmsLayerCapabilities);
-                console.log(n + "Layer: " + layerName[n]);
-                // // Modify the configuration objects title property to a more user friendly title
-                // // wmsConfig.title = layerName[n];
-                // // Create the WMS Layer from the configuration object
+                var wmsConfig = WorldWind.WmsLayer.formLayerConfiguration(wmsLayerCapabilities[n]);
+
+                // Modify the configuration objects title property to a more user friendly title
+                wmsConfig.title = layerName[n];
+
+                // Create the WMS Layer from the configuration object
                 var wmsLayer = new WorldWind.WmsLayer(wmsConfig);
+
                 // // Add the layers to WorldWind and update the layer manager
                 globe.addLayer(wmsLayer);
                 layerManager.synchronizeLayerList();
@@ -107,4 +115,5 @@ requirejs(['./WorldWindShim',
         };
 
         $.get(serviceAddress).done(createWMSLayer).fail(logError);
+
     });
