@@ -49,8 +49,10 @@ requirejs(['./WorldWindShim',
 
         var layerName = [];
         var preloadLayer = [];
-        var westBoundLongitude, eastBoundLongitude, southBoundLatitude, northBoundLatitude;
-        var Longitude, Latitude;
+        var GoToLayer;
+        var Longitude = [];
+        var Latitude = [];
+        var GoToLayerarray = [];
         var layers = globe.layers;
 
         $(document).ready(function () {
@@ -67,9 +69,12 @@ requirejs(['./WorldWindShim',
                     if ($('.wmsLayer').is(":checkbox:checked")) {
                         $(':checkbox:checked').each(function () {
                             if (layers[a].displayName === $(this).val()) {
-                                console.log(layers[a].displayName);
-                                console.log($(this).val());
                                 layers[a].enabled = true;
+                                for(var i = 0; i < layers.length; i++) {
+                                    if (GoToLayerarray[a][0] === $(this).val()) {
+                                        globe.goTo(new WorldWind.Location(GoToLayerarray[a][1], GoToLayerarray[a][2]));
+                                    }
+                                }
                             }
                         });
 
@@ -87,19 +92,15 @@ requirejs(['./WorldWindShim',
             });
         });
 
+        var wmsLayerCapabilities;
         var createWMSLayer = function (xmlDom) {
             // Create a WmsCapabilities object from the XML DOM
             var wms = new WorldWind.WmsCapabilities(xmlDom);
 
             // Retrieve a WmsLayerCapabilities object by the desired layer name
             for (var n = 0; n < layerName.length; n++) {
-                var wmsLayerCapabilities = wms.getNamedLayers();
 
-                //get all the bound value
-                westBoundLongitude = wmsLayerCapabilities[n].geographicBoundingBox.westBoundLongitude;
-                eastBoundLongitude = wmsLayerCapabilities[n].geographicBoundingBox.eastBoundLongitude;
-                southBoundLatitude = wmsLayerCapabilities[n].geographicBoundingBox.southBoundLatitude;
-                northBoundLatitude = wmsLayerCapabilities[n].geographicBoundingBox.northBoundLatitude;
+                wmsLayerCapabilities = wms.getNamedLayers();
 
                 // Form a configuration object from the WmsLayerCapability object
                 var wmsConfig = WorldWind.WmsLayer.formLayerConfiguration(wmsLayerCapabilities[n]);
@@ -114,45 +115,30 @@ requirejs(['./WorldWindShim',
                 globe.addLayer(wmsLayer);
                 layerManager.synchronizeLayerList();
             }
-            console.log(northBoundLatitude);
-            console.log(southBoundLatitude);
-            Longitude = (northBoundLatitude - southBoundLatitude) / 2;
-            console.log(Longitude);
-            Latitude = (westBoundLongitude - eastBoundLongitude) / 2;
         };
 
         // The common gesture-handling function.
-        var handleClick = function (recognizer) {
-            // Obtain the event location.
-            var x = recognizer.Longitude,
-                y = recognizer.Latitude;
-        };
-            // Perform the pick. Must first convert from window coordinates to canvas coordinates, which are
-            // relative to the upper left corner of the canvas rather than the upper left corner of the page.
-            // var pickList = wwd.pick(wwd.canvasCoordinates(x, y));
+        var handleClick = function () {
+            for(var i = 0; i < layerName.length; i++) {
 
-        //     // If only one thing is picked and it is the terrain, tell the WorldWindow to go to the picked location.
-        //     if (pickList.objects.length === 1 && pickList.objects[0].isTerrain) {
-        //         var position = pickList.objects[0].position;
-        //         wwd.goTo(new WorldWind.Location(position.latitude, position.longitude));
-        //     }
-        // };
-        //
-        // // Listen for mouse clicks.
-        // var clickRecognizer = new WorldWind.ClickRecognizer(wwd, handleClick);
-        //
-        // // Listen for taps on mobile devices.
-        // var tapRecognizer = new WorldWind.TapRecognizer(wwd, handleClick);
-        //
-        // // Create a layer manager for controlling layer visibility.
-        // var layerManager = new LayerManager(wwd);
+                var westBoundLongitude = wmsLayerCapabilities[i].geographicBoundingBox.westBoundLongitude;
+                var eastBoundLongitude = wmsLayerCapabilities[i].geographicBoundingBox.eastBoundLongitude;
+                var southBoundLatitude = wmsLayerCapabilities[i].geographicBoundingBox.southBoundLatitude;
+                var northBoundLatitude = wmsLayerCapabilities[i].geographicBoundingBox.northBoundLatitude;
+                Longitude = (northBoundLatitude - southBoundLatitude) / 2;
+                Latitude = (westBoundLongitude - eastBoundLongitude) / 2;
+                var str = wmsLayerCapabilities[i].name + ',' + Longitude + ',' + Latitude + '';
+
+                GoToLayer = str.split(",");
+                GoToLayerarray.push(GoToLayer);
+            }
+        };
 
         // Called if an error occurs during WMS Capabilities document retrieval
         var logError = function (jqXhr, text, exception) {
             console.log("There was a failure retrieving the capabilities document: " + text + " exception: " + exception);
         };
 
-
-        $.get(serviceAddress).done(createWMSLayer).fail(logError);
+        $.get(serviceAddress).done(createWMSLayer,handleClick).fail(logError);
 
     });
