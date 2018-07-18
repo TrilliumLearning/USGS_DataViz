@@ -14,7 +14,7 @@ function ChangeMainCategory(Category){
         subList.remove(0);
     }
     $.ajax({
-        url: "MainCategory",
+        url: "/MainCategory",
         dataType: 'json',
         success:function (results) {
                 var option;
