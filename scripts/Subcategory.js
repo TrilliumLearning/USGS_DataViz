@@ -44,6 +44,3 @@ $(document).ready(function () {
     });
 });
 
-function ContinentName(){
-
-}

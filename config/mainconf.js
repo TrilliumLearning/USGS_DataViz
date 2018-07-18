@@ -25,7 +25,7 @@ module.exports = {
     'Server_Port': 9085,
 
     // 'local_URL' : "",
-    'local_URL' : "http://viewer.usgs.aworldbridgelabs.com",
+    // 'local_URL' : "http://viewer.usgs.aworldbridgelabs.com",
 
     //upload file--pending
     // 'Upload_Path': 'http://usgs.aworldbridgelabs.com/uploadfiles',
