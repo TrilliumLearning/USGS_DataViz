@@ -5,6 +5,9 @@
 .panel-group .panel-heading a.collapsed:after {
   content: '+';
 }
+.panel{
+  font-size:15px;
+}
 .medium-3{
   width:22%;
 }
