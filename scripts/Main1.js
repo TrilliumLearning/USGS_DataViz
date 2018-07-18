@@ -49,10 +49,7 @@ requirejs(['./WorldWindShim',
 
         var layerName = [];
         var preloadLayer = [];
-        var GoToLayer;
-        var Longitude = [];
-        var Latitude = [];
-        var GoToLayerarray = [];
+        var Position = [];
         var layers = globe.layers;
 
         $(document).ready(function () {
@@ -68,17 +65,11 @@ requirejs(['./WorldWindShim',
                 for (var a = 0; a < layers.length; a++) {
                     if ($('.wmsLayer').is(":checkbox:checked")) {
                         $(':checkbox:checked').each(function () {
+                            console.log(layers);
                             if (layers[a].displayName === $(this).val()) {
                                 layers[a].enabled = true;
-                                for(var i = 0; i < layers.length; i++) {
-                                    if (GoToLayerarray[a][0] === $(this).val()) {
-                                        globe.goTo(new WorldWind.Location(GoToLayerarray[a][1], GoToLayerarray[a][2]));
-                                    }
-                                }
                             }
                         });
-
-
                     }
 
                     if($('.wmsLayer').is(":not(:checked)")) {
@@ -89,6 +80,71 @@ requirejs(['./WorldWindShim',
                         })
                     }
                 }
+
+                for(var c = 0; c < layerName.length; c ++) {
+                    if ($('.wmsLayer').is(":checkbox:checked")) {
+                        $(':checkbox:checked').each(function () {
+                            if (Position[c][0] === $(this).val()) {
+                                if (Position[c][1].westBoundLongitude < 0 && Position[c][1].eastBoundLongitude < 0 && Position[c][1].northBoundLatitude < 0 && Position[c][1].southBoundLatitude < 0) {
+                                    var Getlatitude = (Position[c][1].northBoundLatitude + Position[c][1].southBoundLatitude) / 2;
+                                    var GetLongitude = (Position[c][1].westBoundLongitude + Position[c][1].eastBoundLongitude) / 2;
+
+                                    globe.goTo(new WorldWind.Location(Getlatitude, GetLongitude));
+                                    console.log("1")
+                                } else if(Position[c][1].westBoundLongitude > 0 && Position[c][1].eastBoundLongitude > 0 && Position[c][1].northBoundLatitude > 0 && Position[c][1].southBoundLatitude > 0){
+                                    Getlatitude = (Position[c][1].northBoundLatitude + Position[c][1].southBoundLatitude) / 2;
+                                    GetLongitude = (Position[c][1].westBoundLongitude + Position[c][1].eastBoundLongitude) / 2;
+
+                                    globe.goTo(new WorldWind.Location(Getlatitude, GetLongitude));
+                                    console.log("2")
+                                }else if (Position[c][1].eastBoundLongitude > 0 && Position[c][1].westBoundLongitude < 0 && Position[c][1].northBoundLatitude > 0 && Position[c][1].southBoundLatitude < 0){
+                                    Getlatitude = (Position[c][1].eastBoundLongitude - Position[c][1].westBoundLongitude) / 2;
+                                    GetLongitude = (Position[c][1].northBoundLatitude - Position[c][1].southBoundLatitude) / 2;
+
+                                    globe.goTo(new WorldWind.Location(Getlatitude, GetLongitude));
+                                    console.log("3")
+                                }else if(Position[c][1].westBoundLongitude < 0 && Position[c][1].eastBoundLongitude < 0 && Position[c][1].northBoundLatitude > 0 && Position[c][1].southBoundLatitude > 0){
+                                    Getlatitude = (Position[c][1].northBoundLatitude + Position[c][1].southBoundLatitude) / 2;
+                                    GetLongitude = (Position[c][1].westBoundLongitude + Position[c][1].eastBoundLongitude) / 2;
+
+                                    globe.goTo(new WorldWind.Location(Getlatitude, GetLongitude));
+                                    console.log("4")
+                                }else if (Position[c][1].westBoundLongitude < 0 && Position[c][1].eastBoundLongitude < 0 && Position[c][1].northBoundLatitude > 0 && Position[c][1].southBoundLatitude < 0){
+                                    Getlatitude = (Position[c][1].northBoundLatitude - Position[c][1].southBoundLatitude) / 2;
+                                    GetLongitude = (Position[c][1].westBoundLongitude + Position[c][1].eastBoundLongitude) / 2;
+
+                                    globe.goTo(new WorldWind.Location(Getlatitude, GetLongitude));
+                                    console.log("5")
+                                }else if(Position[c][1].westBoundLongitude > 0 && Position[c][1].eastBoundLongitude > 0 && Position[c][1].northBoundLatitude < 0 && Position[c][1].southBoundLatitude < 0){
+                                    Getlatitude = (Position[c][1].northBoundLatitude + Position[c][1].southBoundLatitude) / 2;
+                                    GetLongitude = (Position[c][1].westBoundLongitude + Position[c][1].eastBoundLongitude) / 2;
+
+                                    globe.goTo(new WorldWind.Location(Getlatitude, GetLongitude));
+                                    console.log("6")
+                                }else if(Position[c][1].westBoundLongitude > 0 && Position[c][1].eastBoundLongitude > 0 && Position[c][1].northBoundLatitude > 0 && Position[c][1].southBoundLatitude < 0){
+                                    Getlatitude = (Position[c][1].northBoundLatitude - Position[c][1].southBoundLatitude) / 2;
+                                    GetLongitude = (Position[c][1].westBoundLongitude + Position[c][1].eastBoundLongitude) / 2;
+
+                                    globe.goTo(new WorldWind.Location(Getlatitude, GetLongitude));
+                                    console.log("7")
+                                }else if(Position[c][1].eastBoundLongitude > 0 && Position[c][1].westBoundLongitude < 0 && Position[c][1].northBoundLatitude > 0 && Position[c][1].southBoundLatitude > 0){
+                                    Getlatitude = (Position[c][1].northBoundLatitude + Position[c][1].southBoundLatitude) / 2;
+                                    GetLongitude = (Position[c][1].westBoundLongitude - Position[c][1].eastBoundLongitude) / 2;
+
+                                    globe.goTo(new WorldWind.Location(Getlatitude, GetLongitude));
+                                    console.log("8")
+                                }else if(Position[c][1].eastBoundLongitude > 0 && Position[c][1].westBoundLongitude < 0 && Position[c][1].northBoundLatitude < 0 && Position[c][1].southBoundLatitude < 0){
+                                    Getlatitude = (Position[c][1].northBoundLatitude + Position[c][1].southBoundLatitude) / 2;
+                                    GetLongitude = (Position[c][1].westBoundLongitude - Position[c][1].eastBoundLongitude) / 2;
+
+                                    globe.goTo(new WorldWind.Location(Getlatitude, GetLongitude));
+                                    console.log("9")
+                                }
+                            }
+                        });
+                    }
+                }
+
             });
         });
 
@@ -120,17 +176,11 @@ requirejs(['./WorldWindShim',
         // The common gesture-handling function.
         var handleClick = function () {
             for(var i = 0; i < layerName.length; i++) {
-
-                var westBoundLongitude = wmsLayerCapabilities[i].geographicBoundingBox.westBoundLongitude;
-                var eastBoundLongitude = wmsLayerCapabilities[i].geographicBoundingBox.eastBoundLongitude;
-                var southBoundLatitude = wmsLayerCapabilities[i].geographicBoundingBox.southBoundLatitude;
-                var northBoundLatitude = wmsLayerCapabilities[i].geographicBoundingBox.northBoundLatitude;
-                Longitude = (northBoundLatitude - southBoundLatitude) / 2;
-                Latitude = (westBoundLongitude - eastBoundLongitude) / 2;
-                var str = wmsLayerCapabilities[i].name + ',' + Longitude + ',' + Latitude + '';
-
-                GoToLayer = str.split(",");
-                GoToLayerarray.push(GoToLayer);
+                var geographicBoundingBox = wmsLayerCapabilities[i].geographicBoundingBox;
+                var LayerName = wmsLayerCapabilities[i].name;
+                var GOTOLayerName = LayerName.split(",");
+                GOTOLayerName.push(geographicBoundingBox);
+                Position.push(GOTOLayerName);
             }
         };
 
