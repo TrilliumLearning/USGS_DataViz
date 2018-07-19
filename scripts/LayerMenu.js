@@ -66,8 +66,6 @@ requirejs(['./WorldWindShim',
                     if ($('.wmsLayer').is(":checkbox:checked")) {
                         $(':checkbox:checked').each(function () {
                             if (layers[a].displayName === $(this).val()) {
-                                // console.log(layers[a].displayName);
-                                // console.log($(this).val());
                                 layers[a].enabled = true;
                             }
                         });
@@ -91,55 +89,46 @@ requirejs(['./WorldWindShim',
                                     var GetLongitude = (Position[c][1].westBoundLongitude + Position[c][1].eastBoundLongitude) / 2;
 
                                     globe.goTo(new WorldWind.Location(Getlatitude, GetLongitude));
-                                    console.log("1")
                                 } else if(Position[c][1].westBoundLongitude > 0 && Position[c][1].eastBoundLongitude > 0 && Position[c][1].northBoundLatitude > 0 && Position[c][1].southBoundLatitude > 0){
                                     Getlatitude = (Position[c][1].northBoundLatitude + Position[c][1].southBoundLatitude) / 2;
                                     GetLongitude = (Position[c][1].westBoundLongitude + Position[c][1].eastBoundLongitude) / 2;
 
                                     globe.goTo(new WorldWind.Location(Getlatitude, GetLongitude));
-                                    console.log("2")
                                 }else if (Position[c][1].eastBoundLongitude > 0 && Position[c][1].westBoundLongitude < 0 && Position[c][1].northBoundLatitude > 0 && Position[c][1].southBoundLatitude < 0){
-                                    Getlatitude = (Position[c][1].eastBoundLongitude - Position[c][1].westBoundLongitude) / 2;
-                                    GetLongitude = (Position[c][1].northBoundLatitude - Position[c][1].southBoundLatitude) / 2;
+                                        Getlatitude = (Position[c][1].eastBoundLongitude - Position[c][1].westBoundLongitude) / 2;
+                                        GetLongitude = (Position[c][1].northBoundLatitude - Position[c][1].southBoundLatitude) / 2;
 
-                                    globe.goTo(new WorldWind.Location(Getlatitude, GetLongitude));
-                                    console.log("3")
+                                        globe.goTo(new WorldWind.Location(Getlatitude, GetLongitude));
                                 }else if(Position[c][1].westBoundLongitude < 0 && Position[c][1].eastBoundLongitude < 0 && Position[c][1].northBoundLatitude > 0 && Position[c][1].southBoundLatitude > 0){
                                     Getlatitude = (Position[c][1].northBoundLatitude + Position[c][1].southBoundLatitude) / 2;
                                     GetLongitude = (Position[c][1].westBoundLongitude + Position[c][1].eastBoundLongitude) / 2;
 
                                     globe.goTo(new WorldWind.Location(Getlatitude, GetLongitude));
-                                    console.log("4")
                                 }else if (Position[c][1].westBoundLongitude < 0 && Position[c][1].eastBoundLongitude < 0 && Position[c][1].northBoundLatitude > 0 && Position[c][1].southBoundLatitude < 0){
                                     Getlatitude = (Position[c][1].northBoundLatitude - Position[c][1].southBoundLatitude) / 2;
                                     GetLongitude = (Position[c][1].westBoundLongitude + Position[c][1].eastBoundLongitude) / 2;
 
                                     globe.goTo(new WorldWind.Location(Getlatitude, GetLongitude));
-                                    console.log("5")
                                 }else if(Position[c][1].westBoundLongitude > 0 && Position[c][1].eastBoundLongitude > 0 && Position[c][1].northBoundLatitude < 0 && Position[c][1].southBoundLatitude < 0){
                                     Getlatitude = (Position[c][1].northBoundLatitude + Position[c][1].southBoundLatitude) / 2;
                                     GetLongitude = (Position[c][1].westBoundLongitude + Position[c][1].eastBoundLongitude) / 2;
 
                                     globe.goTo(new WorldWind.Location(Getlatitude, GetLongitude));
-                                    console.log("6")
                                 }else if(Position[c][1].westBoundLongitude > 0 && Position[c][1].eastBoundLongitude > 0 && Position[c][1].northBoundLatitude > 0 && Position[c][1].southBoundLatitude < 0){
                                     Getlatitude = (Position[c][1].northBoundLatitude - Position[c][1].southBoundLatitude) / 2;
                                     GetLongitude = (Position[c][1].westBoundLongitude + Position[c][1].eastBoundLongitude) / 2;
 
                                     globe.goTo(new WorldWind.Location(Getlatitude, GetLongitude));
-                                    console.log("7")
                                 }else if(Position[c][1].eastBoundLongitude > 0 && Position[c][1].westBoundLongitude < 0 && Position[c][1].northBoundLatitude > 0 && Position[c][1].southBoundLatitude > 0){
                                     Getlatitude = (Position[c][1].northBoundLatitude + Position[c][1].southBoundLatitude) / 2;
                                     GetLongitude = (Position[c][1].westBoundLongitude - Position[c][1].eastBoundLongitude) / 2;
 
                                     globe.goTo(new WorldWind.Location(Getlatitude, GetLongitude));
-                                    console.log("8")
                                 }else if(Position[c][1].eastBoundLongitude > 0 && Position[c][1].westBoundLongitude < 0 && Position[c][1].northBoundLatitude < 0 && Position[c][1].southBoundLatitude < 0){
                                     Getlatitude = (Position[c][1].northBoundLatitude + Position[c][1].southBoundLatitude) / 2;
                                     GetLongitude = (Position[c][1].westBoundLongitude - Position[c][1].eastBoundLongitude) / 2;
 
                                     globe.goTo(new WorldWind.Location(Getlatitude, GetLongitude));
-                                    console.log("9")
                                 }
                             }
                         });
