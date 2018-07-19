@@ -8,13 +8,12 @@ var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var config = require('./config/mainconf');
 var app      = express();
-var CORS_host = process.env.HOST || config.CORS_host;
-var CORS_port = process.env.PORT || config.CORS_port;
+// var CORS_host = process.env.HOST || config.CORS_host;
+// var CORS_port = process.env.PORT || config.CORS_port;
 var port = process.env.PORT || config.Server_Port;
 var path    = require('path');
 var passport = require('passport');
 var flash    = require('connect-flash');
-
 
 
 require('./scripts/passport')(passport); // pass passport for configuration
