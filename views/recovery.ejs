@@ -18,7 +18,7 @@
     <!--<script src="//unpkg.com/flatpickr"></script>-->
 
     <style>
-        body 		{ padding-top:80px; word-wrap:break-word; }
+        body 		{ word-wrap:break-word; }
 
         .banner{
             position:relative;
@@ -29,9 +29,7 @@
         .center {
             margin:auto;
         }
-        .randomText {
-            font-size: 100%;
-        }
+
         .floating-Box{
             display: inline;
         }
@@ -63,142 +61,59 @@
             padding: 10px;
             margin-left: 10px;
         }
-        /*#dvData {*/
-        /*overflow-x: auto;*/
-        /*width: 100%;*/
-        /*margin-left:10px;*/
-        /*}*/
-        /* for1024px or less */
-        @media screen and (max-width:1024px) {
-            .btn-mg{
-                font-size: 20px;
-                height:25px;
-                line-height:0;
-            }
+        .navul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            /*overflow: hidden;*/
         }
-        /* for 768px or less */
-        @media screen and (max-width:768px) {
-            .btn-mg {
-                font-size: 15px;
-                height: 22px;
-                line-height: 0;
-            }
+        .navbutton1 {
+            width: 150px;
+            font-size: 15px;
+            height:40px;
+            margin: 0;
+            border-radius: 0px 0 0;
+            background-color: #000000;
+            border: 0 solid;
+            color: #ffffff;
+            -webkit-transition-duration: 0.4s;
+            transition-duration: 0.4s;
         }
-            /* for 414px or less */
-            @media screen and (max-width:414px) {
-                .btn-mg {
-                    font-size: 12px;
-                    height: 20px;
-                    line-height: 0;
-                }
 
-                #Username {
-                    font-size: 15px;
-                    padding: 5px 2px;
-                    margin: 10px;
-                }
+        .navbutton1:hover {
+            background-color: #333;
+            color: white;
+        }
 
-                h1 {
-                    font-size: 30px;
-                }
 
-                .btn {
-                    padding: 8px;
-                }
-            }
-                /* for 375px or less */
-                @media screen and (max-width:375px) {
-
-                    select{
-                        width:35%;
-                    }
-                    input{
-                        width:35%;
-                    }
-                    .date{
-                        width:20%;
-                        font-size:12px;
-                    }
-                    .randomText{
-                        font-size:15px;
-                        padding:5px 6px;
-                    }
-                    #Username{
-                        font-size:10px;
-                        padding:5px 2px;
-                        margin:10px;
-                    }
-                    .btn-mg{
-                        font-size:12px;
-                        height:20px;
-                        line-height:0;
-                    }
-                    h1{
-                        font-size:30px;
-                    }
-                    .btn{
-                        padding:5px;
-                    }
-                }
-                /* for 320px or less */
-                @media screen and (max-width:320px) {
-                    select {
-                        width: 35%;
-                    }
-
-                    input {
-                        width: 35%;
-                    }
-
-                    .randomText {
-                        font-size: 15px;
-                        padding: 2px 2px;
-                    }
-
-                    #Username {
-                        font-size: 10px;
-                        padding: 5px 2px;
-                        margin: 10px;
-                    }
-
-                    .btn-mg {
-                        font-size: 12px;
-                        height: 20px;
-                        line-height: 0;
-                    }
-
-                    .btn {
-                        padding: 5px;
-                    }
-
-                    #subtitles {
-                        font-size: 19px;
-                    }
-
-                    h1 {
-                        font-size: 25px;
-                    }
-                }
     </style>
 </head>
-<body>
-<div class="container center">
-    <a href="http://aworldbridge.com"><img class="banner" src="/images/NewWBBanner.jpg" /></a>
-
-</div><br><br>
-<div id="pageHeader" class="page-header text-center">
-    <h1><span class="fa fa-anchor"></span> Restore </h1><h4><span class="fa fa-user"></span>&nbsp;<strong>Account Name</strong>: <%= user.username %></h4><br>
-    <a href="/userhome" class="btn btn-default btn-lg"><span class="randomText">User Home</span></a>&nbsp;&nbsp;&nbsp;
-    <a href="/newRequest" class="btn btn-default btn-lg"><span class="randomText">New Request</span></a>&nbsp;&nbsp;&nbsp;
-    <a href="/dataHistory" class="btn btn-default btn-lg"><span class="randomText"> Approved Request</span></a>&nbsp;&nbsp;&nbsp;
+<ul class="navul" style="height:60px;background:#000000;">
+    <a class="navul" style="background:#000000;" href="http://aworldbridge.com">
+        <img class="banner" src="/images/NewWBBanner.jpg" style="width:400px;height:60px;"/>
+    </a>
+    <a href="/userhome" id ="Restore" style="width:110px;">
+        <button class="navbutton1"> User Home </button>
+    </a>
+    <a href="/newRequest" id= "Request" style="width:110px;">
+        <button class="navbutton1"> New Request </button>
+    </a>
+    <a href="/dataHistory" style="width:110px;">
+        <button class="navbutton1"> Approved Request </button>
+    </a>
     <div class="dropdown floating-Box">
-        <button class="btn btn-primary btn-lg" type="button" data-toggle="dropdown" id="Username"><%= firstName%>
+        <button class="btn btn-primary btn-lg navbutton1" type="button" data-toggle="dropdown" id="Username"><%= firstName%>
             <span class="caret"></span></button>
-        <ul id="userMenu" class="dropdown-menu">
+        <ul id="userMenu" class="dropdown-menu" >
         </ul>
     </div>
-</div>
-<br>
+</ul>
+<body>
+    <div class="container center">
+        <div id="pageHeader" class="page-header text-center">
+            <h1><span class="fa fa-anchor"></span> Restore </h1><h4><span class="fa fa-user"></span>&nbsp;<strong>Account Name</strong>: <%= user.username %></h4><br>
+        </div>
+    </div>
 <div class="container">
     <br>
     <div class="center">

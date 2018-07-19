@@ -51,75 +51,6 @@
             padding: 10px;
             text-align: left;
         }
-        /**, *:before, *:after{*/
-            /*-webkit-box-sizing: border-box;*/
-            /*-moz-box-sizing: border-box;*/
-            /*box-sizing: border-box;*/
-            /*padding: 0;*/
-            /*margin: 0;*/
-            /*font-family: 'Lato', sans-serif;*/
-        /*}*/
-
-        /*| Navigation |*/
-
-        /*nav{*/
-            /*position: fixed;*/
-            /*top: 0;*/
-            /*left: 0;*/
-            /*width: 100%;*/
-            /*background: #fff;*/
-            /*box-shadow: 0 3px 10px -2px rgba(0,0,0,.1);*/
-            /*border: 1px solid rgba(0,0,0,.1);*/
-        /*}*/
-        /*nav ul{*/
-            /*list-style: none;*/
-            /*position: relative;*/
-            /*float: right;*/
-            /*margin-right: 100px;*/
-            /*display: inline-table;*/
-        /*}*/
-        /*nav ul li{*/
-            /*float: left;*/
-            /*-webkit-transition: all .2s ease-in-out;*/
-            /*-moz-transition: all .2s ease-in-out;*/
-            /*transition: all .2s ease-in-out;*/
-        /*}*/
-
-        /*nav ul li:hover{background: rgba(0,0,0,.15);}*/
-        /*nav ul li:hover > ul{display: block;}*/
-        /*nav ul li{*/
-            /*float: left;*/
-            /*-webkit-transition: all .2s ease-in-out;*/
-            /*-moz-transition: all .2s ease-in-out;*/
-            /*transition: all .2s ease-in-out;*/
-        /*}*/
-        /*nav ul li a{*/
-            /*display: block;*/
-            /*padding: 30px 20px;*/
-            /*color: #222;*/
-            /*font-size: .9em;*/
-            /*letter-spacing: 1px;*/
-            /*text-decoration: none;*/
-            /*text-transform: uppercase;*/
-        /*}*/
-        /*nav ul ul{*/
-            /*display: none;*/
-            /*background: #fff;*/
-            /*position: absolute;*/
-            /*top: 100%;*/
-            /*box-shadow: -3px 3px 10px -2px rgba(0,0,0,.1);*/
-            /*border: 1px solid rgba(0,0,0,.1);*/
-        /*}*/
-        /*nav ul ul li{float: none; position: relative;}*/
-        /*nav ul ul li a {*/
-            /*padding: 15px 30px;*/
-            /*border-bottom: 1px solid rgba(0,0,0,.05);*/
-        /*}*/
-        /*nav ul ul ul {*/
-            /*position: absolute;*/
-            /*left: 100%;*/
-            /*top:0;*/
-        /*}*/
         /* latin-ext */
         @font-face {
             font-family: 'Lato';
@@ -140,27 +71,8 @@
             list-style-type: none;
             margin: 0;
             padding: 0;
-            overflow: hidden;
+            /*overflow: hidden;*/
         }
-
-        /*.button1 {*/
-            /*height: 40px;*/
-            /*width: 110px;*/
-            /*float: right;*/
-            /*border-radius: 5px;*/
-            /*-webkit-transition-duration: 0.4s;*/
-            /*transition-duration: 0.4s;*/
-            /*cursor: pointer;*/
-            /*background-color: white;*/
-            /*color: #337ab7;*/
-            /*border: 1px solid #337ab7;*/
-        /*}*/
-
-        /*.button1:hover {*/
-            /*background-color: #337ab7;*/
-            /*color: white;*/
-        /*}*/
-
         .navbutton1 {
             width: 150px;
             font-size: 15px;
@@ -178,140 +90,137 @@
             background-color: #333;
             color: white;
         }
-        #Username{
-            height:60px;
-        }
 
 
-        /* for1024px or less */
-        @media screen and (max-width:1024px) {
-            .date{
-                font-size:15px;
-                width:10%;
-            }
-            .btn-sm{
-                width:10%;
-            }
-        }
-        /* for 768px or less */
-        @media screen and (max-width:768px) {
+        /*!* for1024px or less *!*/
+        /*@media screen and (max-width:1024px) {*/
+            /*.date{*/
+                /*font-size:15px;*/
+                /*width:10%;*/
+            /*}*/
+            /*.btn-sm{*/
+                /*width:10%;*/
+            /*}*/
+        /*}*/
+        /*!* for 768px or less *!*/
+        /*@media screen and (max-width:768px) {*/
 
-            .date{
-                width:15%;
-                font-size:15px;
-            }
-            .btn-sm{
-                width:10%;
-            }
-        }
-        /* for 480px or less */
-        @media screen and (max-width:480px) {
-            .btn{
-                padding: 5px 6px;
-                margin:5px;
-            }
-            input{
-                width:35%;
-            }
-            .date {
-                width: 20%;
-                font-size: 12px;
-            }
-            #firstName {
-                width: 20%;
-                height: 20px;
-                margin-left: -10px;
-            }
-            #lastName {
-                width: 20%;
-                height: 20px;
-            }
-        }
-        /* for 414px or less */
-        @media screen and (max-width:414px) {
-            select {
-                width: 35%;
-            }
+            /*.date{*/
+                /*width:15%;*/
+                /*font-size:15px;*/
+            /*}*/
+            /*.btn-sm{*/
+                /*width:10%;*/
+            /*}*/
+        /*}*/
+        /*!* for 480px or less *!*/
+        /*@media screen and (max-width:480px) {*/
+            /*.btn{*/
+                /*padding: 5px 6px;*/
+                /*margin:5px;*/
+            /*}*/
+            /*input{*/
+                /*width:35%;*/
+            /*}*/
+            /*.date {*/
+                /*width: 20%;*/
+                /*font-size: 12px;*/
+            /*}*/
+            /*#firstName {*/
+                /*width: 20%;*/
+                /*height: 20px;*/
+                /*margin-left: -10px;*/
+            /*}*/
+            /*#lastName {*/
+                /*width: 20%;*/
+                /*height: 20px;*/
+            /*}*/
+        /*}*/
+        /*!* for 414px or less *!*/
+        /*@media screen and (max-width:414px) {*/
+            /*select {*/
+                /*width: 35%;*/
+            /*}*/
 
-            input {
-                width: 35%;
-            }
+            /*input {*/
+                /*width: 35%;*/
+            /*}*/
 
-            .date {
-                width: 20%;
-                font-size: 12px;
-            }
+            /*.date {*/
+                /*width: 20%;*/
+                /*font-size: 12px;*/
+            /*}*/
 
-            .btn {
-                font-size: 19px;
-                padding: 5px 6px;
-            }
+            /*.btn {*/
+                /*font-size: 19px;*/
+                /*padding: 5px 6px;*/
+            /*}*/
 
-            h1 {
-                font-size: 25px;
-            }
+            /*h1 {*/
+                /*font-size: 25px;*/
+            /*}*/
 
-            #firstName {
-                width: 20%;
-                height: 20px;
-                margin-left: -10px;
-            }
+            /*#firstName {*/
+                /*width: 20%;*/
+                /*height: 20px;*/
+                /*margin-left: -10px;*/
+            /*}*/
 
-            #lastName {
-                width: 20%;
-                height: 20px;
-            }
+            /*#lastName {*/
+                /*width: 20%;*/
+                /*height: 20px;*/
+            /*}*/
 
-            .btn-sm {
-                width: 15%;
-                font-size: 12px;
-            }
-        }
-        /* for 375px or less */
-        @media screen and (max-width:375px) {
-                #firstName{
-                    width:20%;
-                    height:20px;
-                    margin-left:-10px;
-                }
-                #lastName{
-                    width:20%;
-                    height:20px;
-                }
-                h1{
-                    font-size:25px;
-                }
-            }
-        /* for 320px or less */
-        @media screen and (max-width:320px) {
-                select{
-                    width:35%;
-                }
-                input{
-                    width:35%;
-                }
-                .date{
-                    width:21%;
-                    font-size:10px;
-                }
-                .btn{
-                    font-size:12px;
-                    padding:5px 6px;
-                    width:80px;
-                }
-                #firstName{
-                    width:20%;
-                    height:20px;
-                    margin-left:-10px;
-                }
-                #lastName{
-                    width:20%;
-                    height:20px;
-                }
-                h1{
-                    font-size:25px;
-                }
-            }
+            /*.btn-sm {*/
+                /*width: 15%;*/
+                /*font-size: 12px;*/
+            /*}*/
+        /*}*/
+        /*!* for 375px or less *!*/
+        /*@media screen and (max-width:375px) {*/
+                /*#firstName{*/
+                    /*width:20%;*/
+                    /*height:20px;*/
+                    /*margin-left:-10px;*/
+                /*}*/
+                /*#lastName{*/
+                    /*width:20%;*/
+                    /*height:20px;*/
+                /*}*/
+                /*h1{*/
+                    /*font-size:25px;*/
+                /*}*/
+            /*}*/
+        /*!* for 320px or less *!*/
+        /*@media screen and (max-width:320px) {*/
+                /*select{*/
+                    /*width:35%;*/
+                /*}*/
+                /*input{*/
+                    /*width:35%;*/
+                /*}*/
+                /*.date{*/
+                    /*width:21%;*/
+                    /*font-size:10px;*/
+                /*}*/
+                /*.btn{*/
+                    /*font-size:12px;*/
+                    /*padding:5px 6px;*/
+                    /*width:80px;*/
+                /*}*/
+                /*#firstName{*/
+                    /*width:20%;*/
+                    /*height:20px;*/
+                    /*margin-left:-10px;*/
+                /*}*/
+                /*#lastName{*/
+                    /*width:20%;*/
+                    /*height:20px;*/
+                /*}*/
+                /*h1{*/
+                    /*font-size:25px;*/
+                /*}*/
+            /*}*/
     </style>
 </head>
 <ul class="navul" style="height:60px;background:#000000;">
@@ -339,11 +248,6 @@
 <div class="container center">
     <div class="page-header text-center header">
         <h1><span class="fa fa-anchor"></span>User Home </h1><h4><span class="fa fa-user"></span>&nbsp;<strong>Account Name</strong>: <%= user.username %></h4><br>
-
-        <!--<a href="/newRequest" id= "Request" class="btn btn-default btn-lg">New Request</a>&nbsp;&nbsp;-->
-        <!--<a href="/recovery" id ="Restore" class="btn btn-default btn-lg">Restore</a>&nbsp;&nbsp;-->
-        <!--<a href="/dataHistory"class="btn btn-default btn-lg">Approved Request</a>&nbsp;&nbsp;-->
-
     </div>
 </div>
 <br>
