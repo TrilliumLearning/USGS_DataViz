@@ -23,8 +23,7 @@ module.exports = {
     'Upload_db': 'USGS',
 
     'Server_Port': 9085,
-    // 'CORS_host' : '0.0.0.0',
-    // 'CORS_port' : 9084,
+
     // 'local_URL' : "",
     // 'local_URL' : "http://viewer.usgs.aworldbridgelabs.com",
 
