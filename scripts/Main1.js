@@ -65,8 +65,9 @@ requirejs(['./WorldWindShim',
                 for (var a = 0; a < layers.length; a++) {
                     if ($('.wmsLayer').is(":checkbox:checked")) {
                         $(':checkbox:checked').each(function () {
-                            console.log(layers);
                             if (layers[a].displayName === $(this).val()) {
+                                // console.log(layers[a].displayName);
+                                // console.log($(this).val());
                                 layers[a].enabled = true;
                             }
                         });
@@ -158,15 +159,17 @@ requirejs(['./WorldWindShim',
 
                 wmsLayerCapabilities = wms.getNamedLayers();
 
+                var wmsLayerCapability = wms.getNamedLayer(layerName[n]);
+
                 // Form a configuration object from the WmsLayerCapability object
-                var wmsConfig = WorldWind.WmsLayer.formLayerConfiguration(wmsLayerCapabilities[n]);
+                var wmsConfig = WorldWind.WmsLayer.formLayerConfiguration(wmsLayerCapability);
 
                 // Modify the configuration objects title property to a more user friendly title
                 wmsConfig.title = layerName[n];
 
                 // Create the WMS Layer from the configuration object
                 var wmsLayer = new WorldWind.WmsLayer(wmsConfig);
-                console.log(wmsLayer);
+
                 // Add the layers to WorldWind and update the layer manager
                 globe.addLayer(wmsLayer);
                 layerManager.synchronizeLayerList();
