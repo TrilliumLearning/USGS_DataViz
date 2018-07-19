@@ -18,12 +18,11 @@
     <!--<script src="//unpkg.com/flatpickr"></script>-->
     <style>
         body{
-            padding-top:80px;
             word-wrap:break-word;
         }
         .banner{
-            position:relative;
-            width: 100%;
+            /*position:relative;*/
+            width: 30%;
         }
         .floating-Box{
             display: inline;
@@ -52,13 +51,140 @@
             padding: 10px;
             text-align: left;
         }
+        /**, *:before, *:after{*/
+            /*-webkit-box-sizing: border-box;*/
+            /*-moz-box-sizing: border-box;*/
+            /*box-sizing: border-box;*/
+            /*padding: 0;*/
+            /*margin: 0;*/
+            /*font-family: 'Lato', sans-serif;*/
+        /*}*/
+
+        /*| Navigation |*/
+
+        /*nav{*/
+            /*position: fixed;*/
+            /*top: 0;*/
+            /*left: 0;*/
+            /*width: 100%;*/
+            /*background: #fff;*/
+            /*box-shadow: 0 3px 10px -2px rgba(0,0,0,.1);*/
+            /*border: 1px solid rgba(0,0,0,.1);*/
+        /*}*/
+        /*nav ul{*/
+            /*list-style: none;*/
+            /*position: relative;*/
+            /*float: right;*/
+            /*margin-right: 100px;*/
+            /*display: inline-table;*/
+        /*}*/
+        /*nav ul li{*/
+            /*float: left;*/
+            /*-webkit-transition: all .2s ease-in-out;*/
+            /*-moz-transition: all .2s ease-in-out;*/
+            /*transition: all .2s ease-in-out;*/
+        /*}*/
+
+        /*nav ul li:hover{background: rgba(0,0,0,.15);}*/
+        /*nav ul li:hover > ul{display: block;}*/
+        /*nav ul li{*/
+            /*float: left;*/
+            /*-webkit-transition: all .2s ease-in-out;*/
+            /*-moz-transition: all .2s ease-in-out;*/
+            /*transition: all .2s ease-in-out;*/
+        /*}*/
+        /*nav ul li a{*/
+            /*display: block;*/
+            /*padding: 30px 20px;*/
+            /*color: #222;*/
+            /*font-size: .9em;*/
+            /*letter-spacing: 1px;*/
+            /*text-decoration: none;*/
+            /*text-transform: uppercase;*/
+        /*}*/
+        /*nav ul ul{*/
+            /*display: none;*/
+            /*background: #fff;*/
+            /*position: absolute;*/
+            /*top: 100%;*/
+            /*box-shadow: -3px 3px 10px -2px rgba(0,0,0,.1);*/
+            /*border: 1px solid rgba(0,0,0,.1);*/
+        /*}*/
+        /*nav ul ul li{float: none; position: relative;}*/
+        /*nav ul ul li a {*/
+            /*padding: 15px 30px;*/
+            /*border-bottom: 1px solid rgba(0,0,0,.05);*/
+        /*}*/
+        /*nav ul ul ul {*/
+            /*position: absolute;*/
+            /*left: 100%;*/
+            /*top:0;*/
+        /*}*/
+        /* latin-ext */
+        @font-face {
+            font-family: 'Lato';
+            font-style: normal;
+            font-weight: 400;
+            src: local('Lato Regular'), local('Lato-Regular'), url(https://fonts.gstatic.com/s/lato/v14/S6uyw4BMUTPHjxAwXiWtFCfQ7A.woff2) format('woff2');
+            unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+        }
+        /* latin */
+        @font-face {
+            font-family: 'Lato';
+            font-style: normal;
+            font-weight: 400;
+            src: local('Lato Regular'), local('Lato-Regular'), url(https://fonts.gstatic.com/s/lato/v14/S6uyw4BMUTPHjx4wXiWtFCc.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+        }
+        .navul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        /*.button1 {*/
+            /*height: 40px;*/
+            /*width: 110px;*/
+            /*float: right;*/
+            /*border-radius: 5px;*/
+            /*-webkit-transition-duration: 0.4s;*/
+            /*transition-duration: 0.4s;*/
+            /*cursor: pointer;*/
+            /*background-color: white;*/
+            /*color: #337ab7;*/
+            /*border: 1px solid #337ab7;*/
+        /*}*/
+
+        /*.button1:hover {*/
+            /*background-color: #337ab7;*/
+            /*color: white;*/
+        /*}*/
+
+        .navbutton1 {
+            width: 150px;
+            font-size: 15px;
+            height:40px;
+            margin: 0;
+            border-radius: 0px 0 0;
+            background-color: #000000;
+            border: 0 solid;
+            color: #ffffff;
+            -webkit-transition-duration: 0.4s;
+            transition-duration: 0.4s;
+        }
+
+        .navbutton1:hover {
+            background-color: #333;
+            color: white;
+        }
+        #Username{
+            height:60px;
+        }
+
 
         /* for1024px or less */
         @media screen and (max-width:1024px) {
-            .button{
-                font-size:100%;
-                width:20%;
-            }
             .date{
                 font-size:15px;
                 width:10%;
@@ -69,10 +195,7 @@
         }
         /* for 768px or less */
         @media screen and (max-width:768px) {
-            .button{
-                font-size:100%;
-                width:20%;
-            }
+
             .date{
                 width:15%;
                 font-size:15px;
@@ -87,7 +210,7 @@
                 padding: 5px 6px;
                 margin:5px;
             }
-            imput{
+            input{
                 width:35%;
             }
             .date {
@@ -103,18 +226,9 @@
                 width: 20%;
                 height: 20px;
             }
-            .button {
-                font-size: 12px;
-                width: 15%;
-            }
         }
         /* for 414px or less */
         @media screen and (max-width:414px) {
-            .button {
-                font-size: 100%;
-                width: 20%;
-            }
-
             select {
                 width: 35%;
             }
@@ -153,8 +267,8 @@
                 font-size: 12px;
             }
         }
-            /* for 375px or less */
-            @media screen and (max-width:375px) {
+        /* for 375px or less */
+        @media screen and (max-width:375px) {
                 #firstName{
                     width:20%;
                     height:20px;
@@ -168,16 +282,8 @@
                     font-size:25px;
                 }
             }
-            /* for 320px or less */
-            @media screen and (max-width:320px) {
-                .button{
-                    font-size:100%;
-                    width:20%;
-                }
-                .floatingBox3{
-                    display: inline-table;
-                    width:350px;
-                }
+        /* for 320px or less */
+        @media screen and (max-width:320px) {
                 select{
                     width:35%;
                 }
@@ -208,23 +314,36 @@
             }
     </style>
 </head>
+<ul class="navul" style="height:60px;background:#000000;">
+    <a class="navul" style="background:#000000;" href="http://aworldbridge.com">
+        <img class="banner" src="/images/NewWBBanner.jpg" style="width:400px;height:60px;"/>
+    </a>
+    <a href="/newRequest" id= "Request" style="width:110px;">
+        <button class="navbutton1"> New Request </button>
+    </a>
+    <a href="/recovery" id ="Restore" style="width:110px;">
+        <button class="navbutton1"> Restore </button>
+    </a>
+    <a href="/dataHistory" style="width:110px;">
+        <button class="navbutton1"> Approved Request </button>
+    </a>
+    <div class="dropdown floating-Box">
+        <button class="btn btn-primary btn-lg navbutton1" type="button" data-toggle="dropdown" id="Username"><%= firstName%>
+            <span class="caret"></span></button>
+        <ul id="userMenu" class="dropdown-menu" >
+        </ul>
+    </div>
+</ul>
 <body>
+
 <div class="container center">
-    <a href="http://aworldbridge.com"><img class="banner" src="/images/NewWBBanner.jpg" /></a>
-    <br><br>
     <div class="page-header text-center header">
         <h1><span class="fa fa-anchor"></span>User Home </h1><h4><span class="fa fa-user"></span>&nbsp;<strong>Account Name</strong>: <%= user.username %></h4><br>
-        <a href="/newRequest" id= "Request" class="btn btn-default btn-lg">New Request</a>&nbsp;&nbsp;
-        <a href="/recovery" id ="Restore" class="btn btn-default btn-lg">Restore</a>&nbsp;&nbsp;
-        <a href="/dataHistory"class="btn btn-default btn-lg">Approved Request</a>&nbsp;&nbsp;
-        <div class="dropdown floating-Box">
-            <button class="btn btn-primary btn-lg" data-toggle="dropdown" id="Username"><%= firstName %>
-                <span class="caret"></span>
-            </button>
-            <ul id="userMenu" class="dropdown-menu">
 
-            </ul>
-        </div>
+        <!--<a href="/newRequest" id= "Request" class="btn btn-default btn-lg">New Request</a>&nbsp;&nbsp;-->
+        <!--<a href="/recovery" id ="Restore" class="btn btn-default btn-lg">Restore</a>&nbsp;&nbsp;-->
+        <!--<a href="/dataHistory"class="btn btn-default btn-lg">Approved Request</a>&nbsp;&nbsp;-->
+
     </div>
 </div>
 <br>
