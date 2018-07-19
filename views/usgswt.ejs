@@ -19,7 +19,64 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/flatpickr"></script>
     <script data-main="../scripts/usgswt.js" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.17/require.min.js"></script>
-    <!--<script worldwind="../scripts/heatmap/Main.js"></script>-->
+    <style>
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 30px;
+            height: 17px;
+            top: 10px;
+        }
+
+        .switch input {display:none;}
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #2196F3;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 13px;
+            width: 13px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(13px);
+            -ms-transform: translateX(13px);
+            transform: translateX(13px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 17px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
@@ -52,15 +109,39 @@
                 </div>
                 <br><br>
                 <div id="buttons">
+                    Density Heatmap
+                    <label class="switch">
+                        <input type="checkbox" id="switchLayer" checked>
+                        <span class="slider round"></span>
+                    </label>
+                    Point Locations
+
+                    <br><br><br><br>
                     <!--<button type="button" id="loadHeatmap">Load Heat Map</button>-->
-                    <button type="button" id="none">None</button>
-                    <button type="button" id="p_year">Year</button>
-                    <button type="button" id="p_avgcap">Average Capacity</button>
-                    <button type="button" id="t_ttlh">Height</button>
-                    <!--<input type="radio" name="gender"> Male-->
-                    <!--<input type="radio" name="gender"> Female-->
-                    <!--<input type="radio" name="gender"> Other-->
-                    <!--<input type="radio" name="gender"> Other-->
+                    <!--<button type="button" id="none">None</button>-->
+                    <!--<button type="button" id="p_year">Year</button>-->
+                    <!--<button type="button" id="p_avgcap">Average Capacity</button>-->
+                    <!--<button type="button" id="t_ttlh">Height</button>-->
+
+                    <!--"blue": "rgba(0, 0, 255, 0.25)",-->
+                    <!--"green": "rgba(0, 255, 0, 0.25)",-->
+                    <!--"yellow": "rgba(255, 255, 0, 0.25)",-->
+                    <!--"orange": "rgba(255, 127.5, 0, 0.25)",-->
+                    <!--"red": "rgba(255, 0, 0, 0.25)",-->
+                    <div id="placemarkButton">
+                        <input type="radio" id="none" name="category"> None
+                        <input type="radio" id="p_year" name="category"> Year
+                        <input type="radio" id="p_avgcap" name="category"> Capacity
+                        <input type="radio" id="t_ttlh" name="category"> Height
+                        <br><br>
+
+                        <div style="width: 235px; height: 15px; background: linear-gradient(to right, rgba(0, 0, 255, 0.25), rgba(0, 255, 0, 0.25), rgba(255, 255, 0, 0.25), rgba(255, 127.5, 0, 0.25), rgba(255, 0, 0, 0.25));"></div>
+                        <div style="width: 235px; height: 30px;">
+                            <p id="leftScale" style="float: left;"></p>
+                            <p id="rightScale" style="float: right;"></p>
+                        </div>
+                    </div>
+                    <br><br><br><br>
                 </div>
             </div>
         </div>
@@ -71,7 +152,7 @@
             </canvas>
         </div>
         <br><br>
-        <div id="popover" style="border-style: solid;" hidden></div>
+        <div id="popover" style="border-style: solid; width: 100%" hidden></div>
         <!--<div style="border-style: solid; position: absolute; left: 749px; top: 775px"></div>-->
     </div>
 </div>

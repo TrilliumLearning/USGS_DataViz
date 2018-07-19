@@ -52,6 +52,16 @@ requirejs(['./worldwind.min',
                         'undefined': "rgba(255, 255, 255, 1)"
                     };
 
+                    var scale = {
+                        "none": ["", ""],
+                        "p_year": ["1980", "2017"],
+                        "p_avgcap": ["< 1MW", ">3 MW"],
+                        "t_ttlh": ["5m", "185m"],
+                    };
+
+                    $("#leftScale").html(scale[category][0]);
+                    $("#rightScale").html(scale[category][1]);
+
                     // console.log(color['undefined']);
                     // console.log(color[undefined]);
                     // console.log(color[placemark[0].userProperties["none"]]);
@@ -83,6 +93,23 @@ requirejs(['./worldwind.min',
                         if (i === placemark.length - 1) {
                             // console.log("B");
                             // console.log(placemark);
+                        }
+                    }
+                });
+
+                $("#switchLayer").on("click", function () {
+                    // this.checked, true: placemark, false: heatmap
+                    // 10 basis layers
+                    // console.log(this.checked + "   " + !this.checked);
+
+                    document.getElementById("placemarkButton").style.pointerEvents = (this.checked === true) ? "auto" : "none";
+
+
+                    for (var i = 10; i < wwd.layers.length; i++) {
+                        if (i === wwd.layers.length - 1) {
+                            wwd.layers[i].enabled = !this.checked;
+                        } else {
+                            wwd.layers[i].enabled = this.checked;
                         }
                     }
                 });
@@ -119,7 +146,7 @@ requirejs(['./worldwind.min',
                             // ctx.stroke();
 
                             ctx.closePath();
-                            console.log(new Date());
+                            // console.log(new Date());
 
                             // var placemarkLayer = new WorldWind.RenderableLayer("USWTDB");
 
@@ -161,11 +188,11 @@ requirejs(['./worldwind.min',
 
                                 if (i === resp.data.length - 1) {
                                     // wwd.addLayer(placemarkLayer);
-                                    console.log("A");
-                                    console.log(new Date());
+                                    // console.log("A");
+                                    // console.log(new Date());
                                     // console.log(layerNames);
-                                    console.log(wwd.layers.length);
-                                    console.log(wwd.layers);
+                                    // console.log(wwd.layers.length);
+                                    // console.log(wwd.layers);
 
                                     // var z = 10;
                                     // var x = z;
@@ -186,14 +213,19 @@ requirejs(['./worldwind.min',
                                     //     }, 500);
                                     // }, 10000);
 
-                                    // var HeatMapLayer = new WorldWind.HeatMapLayer("Custom Heatmap", data, {
-                                    //     tile: RadiantCircleTile,
-                                    //     incrementPerIntensity: 0.0075,
-                                    //     blur: 10,
-                                    //     scale: ['rgba(255, 255, 255, 0)', 'rgba(172, 211, 236, 0.25)', 'rgba(204, 255, 255, 0.5)', 'rgba(77, 158, 25, 0.25)']
-                                    // });
-                                    //
-                                    // wwd.addLayer(HeatMapLayer);
+                                    console.log(data);
+                                    var HeatMapLayer = new WorldWind.HeatMapLayer("Heatmap", data, {
+                                        tile: RadiantCircleTile,
+                                        incrementPerIntensity: 0.2,
+                                        blur: 10,
+                                        scale: ['rgba(255, 255, 255, 0)', 'rgba(172, 211, 236, 0.25)', 'rgba(204, 255, 255, 0.5)', 'rgba(77, 158, 25, 0.5)']
+                                    });
+
+                                    HeatMapLayer.enabled = false;
+
+                                    wwd.addLayer(HeatMapLayer);
+
+                                    console.log(wwd.layers);
                                 }
                             }
                         }
