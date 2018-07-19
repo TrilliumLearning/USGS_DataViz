@@ -20,7 +20,7 @@
     <!--<script src="//unpkg.com/flatpickr"></script>-->
 
     <style>
-        body 		{ padding-top:80px; word-wrap:break-word; }
+        body 		{ word-wrap:break-word; }
 
 
         form{
@@ -38,7 +38,6 @@
             margin: 0 10% 0 10%;
         }
         #dvData {
-            /*overflow-x: auto;*/
             width: 82%;
             margin-left:110px;
         }
@@ -52,9 +51,6 @@
         .floatingBox {
             display: inline-block;
             /*width:350px;*/
-        }
-        .button{
-            width:8%;
         }
         table{
             overflow-x: auto;
@@ -80,289 +76,55 @@
             -webkit-appearance: none;
             height: 7px;
         }
-        @media  screen and (max-width: 320px){
-            h1 {
-                font-size: 25px;
-            }
-
-            .inputBoxDate {
-                font-size: 9px;
-                width: 21%;
-                margin-left: -10px;
-            }
-
-            #dvData {
-                width: 82%;
-                margin-left: 10px;
-            }
-
-            .btn {
-                font-size: 14px;
-                padding: 5px 12px;
-            }
-
-            #firstName {
-                font-size: 9px;
-                width: 28%;
-            }
-
-            #lastName {
-                font-size: 9px;
-                width: 28%;
-            }
-
-            h4 {
-                font-size: 13.5px;
-                margin-left: -10px;
-            }
-
-            h6 {
-                margin-left: -19px;
-            }
-
-            .DateModified1 {
-                margin-left: -65px;
-            }
-
-            .DateModified2 {
-                margin-left: -19px;
-            }
-
-            .DateModified3 {
-                margin-left: -12px;
-            }
-
-            .click {
-                margin-left: -12px;
-                font-size: 13px;
-            }
-
-            #Role {
-                margin-right: 1px;
-            }
+        .navul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            /*overflow: hidden;*/
+        }
+        .navbutton1 {
+            width: 150px;
+            font-size: 15px;
+            height:40px;
+            margin: 0;
+            border-radius: 0px 0 0;
+            background-color: #000000;
+            border: 0 solid;
+            color: #ffffff;
+            -webkit-transition-duration: 0.4s;
+            transition-duration: 0.4s;
         }
 
-        @media  screen and (min-width:330px) and (max-width: 375px){
-            h1 {
-                font-size: 31px;
-            }
-
-            h4 {
-                font-size: 15px;
-                margin-left: -10px;
-            }
-
-            .inputBoxDate {
-                font-size: 12px;
-                width: 23%;
-                margin-left: -10px;
-            }
-
-            #dvData {
-                width: 82%;
-                margin-left: 10px;
-            }
-
-            #firstName {
-                font-size: 13px;
-                width: 36%;
-            }
-
-            #lastName {
-                font-size: 13px;
-                width: 36%;
-            }
-
-            h6 {
-                margin-left: -19px;
-            }
-
-            .DateModified1 {
-                margin-left: -64px;
-            }
-
-            .DateModified2 {
-                margin-left: -21px;
-            }
-
-            .DateModified3 {
-                margin-left: -11px;
-            }
-
-            .click {
-                font-size: 14px;
-            }
-            #Role {
-                margin-right: 1px;
-            }
-        }
-
-        @media  screen and (min-width:380px) and (max-width: 414px){
-            h1 {
-                font-size: 34px;
-            }
-
-            h4 {
-                margin-left: -20px;
-            }
-
-            h6 {
-                margin-left: -19px;
-            }
-
-            .inputBoxDate {
-                width: 25%;
-                margin-left: -10px;
-            }
-
-            #dvData {
-                width: 82%;
-                margin-left: 7px;
-            }
-
-            #firstName {
-                width: 35%;
-            }
-
-            #lastName {
-                width: 35%;
-            }
-
-            .DateModified1 {
-                margin-left: -74px;
-            }
-
-            .DateModified2 {
-                margin-left: -20px;
-            }
-
-            .DateModified3 {
-                margin-left: -14px;
-            }
-
-            #Role {
-                margin-right: 19px;
-            }
-        }
-
-        @media screen and (min-width:420px) and (max-width: 768px){
-            .inputBoxDate {
-                width: 25%;
-            }
-
-            #dvData {
-                width: 82%;
-                margin-left: 60px;
-            }
-
-            #firstName {
-                width: 19%;
-                font-size:11px;
-            }
-
-            #lastName {
-                width: 19%;
-                font-size:11px;
-            }
-
-            .DateModified1 {
-                margin-left: -2px;
-            }
-
-            .DateModified2 {
-                margin-left: -10px;
-            }
-
-            .DateModified3 {
-                margin-left: -5px;
-            }
-
-            #Role {
-                margin-left: -82px;
-            }
-        }
-        @media screen and (min-width:500px) and (max-width: 700px){
-            .inputBoxDate{
-                width:20%
-            }
-        }
-        @media  screen and (min-width:768px) and (max-width: 1024px){
-            .inputBoxDate {
-                font-size:13px
-
-            }
-            #firstName {
-                font-size:13px;
-
-            }
-
-            #lastName {
-                font-size:13px;
-            }
-
-            .DateModified1 {
-                margin-left: -10px;
-            }
-
-            .DateModified2 {
-                margin-left: -15px;
-            }
-
-            .DateModified3 {
-                margin-left: -7px;
-            }
-
-            #Role {
-                margin-left: -42px;
-            }
-
-            h6 {
-                margin-left: -15px;
-            }
-        }
-        @media  screen and (min-width:1024px) and (max-width: 1920px) {
-            #firstName {
-                font-size: 12px;
-                width:13%;
-            }
-
-            #lastName {
-                font-size: 12px;
-                width:13%;
-            }
-            .inputBoxDate {
-                width: 10%;
-            }
-            #Phone_Number{
-                font-size: 12px;
-                width:13%;
-            }
+        .navbutton1:hover {
+            background-color: #333;
+            color: white;
         }
 
     </style>
 
 </head>
+<ul class="navul" style="height:60px;background:#000000;">
+    <a class="navul" style="background:#000000;" href="http://aworldbridge.com">
+        <img class="banner" src="/images/NewWBBanner.jpg" style="width:400px;height:60px;"/>
+    </a>
+    <a href="/userhome" id ="Restore" style="width:110px;">
+        <button class="navbutton1"> User Home </button>
+    </a>
+    <a href="/addUser" id= "Request" style="width:110px;">
+        <button class="navbutton1"> Add User </button>
+    </a>
+    <div class="dropdown floating-Box">
+        <button class="btn btn-primary btn-lg navbutton1" type="button" data-toggle="dropdown" id="Username"><%= firstName%>
+            <span class="caret"></span></button>
+        <ul id="userMenu" class="dropdown-menu" >
+        </ul>
+    </div>
+</ul>
 <body>
 <div class="container center">
-    <a href="http://aworldbridge.com">
-        <img class="banner" src="/images/NewWBBanner.jpg"/>
-    </a>
-</div>
-<br>
-<br>
-<div class="page-header text-center">
-    <h1><span class="fa fa-anchor"></span> User Management </h1>
-    <h4><span class="fa fa-user"></span>&nbsp;<strong>Account Name</strong>:  <%= user.username %> </h4>
-    <br>
-    <a href="/userhome" class="btn btn-default btn-lg userhome">User Home</a>&nbsp;&nbsp;
-    <a href="/addUser" class="btn btn-default btn-lg adduser">Add User</a>&nbsp;&nbsp;
-    <div class="dropdown floating-Box">
-        <button class="btn btn-primary btn-lg" type="button" data-toggle="dropdown" id="Username">
-            <%= firstName%>
-            <span class="caret"></span>
-        </button>
-        <ul id="userMenu" class="dropdown-menu">
-        </ul>
+    <div class="page-header text-center">
+        <h1><span class="fa fa-anchor"></span> User Management </h1>
+        <h4><span class="fa fa-user"></span>&nbsp;<strong>Account Name</strong>:  <%= user.username %> </h4>
     </div>
 </div>
 <!--<a href="/newEntry" class="btn btn-default btn-lg" id="class1">New Entry</a>-->
