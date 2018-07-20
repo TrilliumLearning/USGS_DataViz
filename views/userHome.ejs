@@ -90,142 +90,50 @@
             background-color: #333;
             color: white;
         }
+        .dropbtn {
+            background-color: #000000;
+            color: white;
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+        }
 
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
 
-        /*!* for1024px or less *!*/
-        /*@media screen and (max-width:1024px) {*/
-            /*.date{*/
-                /*font-size:15px;*/
-                /*width:10%;*/
-            /*}*/
-            /*.btn-sm{*/
-                /*width:10%;*/
-            /*}*/
-        /*}*/
-        /*!* for 768px or less *!*/
-        /*@media screen and (max-width:768px) {*/
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            /*margin-top:20px;*/
+        }
 
-            /*.date{*/
-                /*width:15%;*/
-                /*font-size:15px;*/
-            /*}*/
-            /*.btn-sm{*/
-                /*width:10%;*/
-            /*}*/
-        /*}*/
-        /*!* for 480px or less *!*/
-        /*@media screen and (max-width:480px) {*/
-            /*.btn{*/
-                /*padding: 5px 6px;*/
-                /*margin:5px;*/
-            /*}*/
-            /*input{*/
-                /*width:35%;*/
-            /*}*/
-            /*.date {*/
-                /*width: 20%;*/
-                /*font-size: 12px;*/
-            /*}*/
-            /*#firstName {*/
-                /*width: 20%;*/
-                /*height: 20px;*/
-                /*margin-left: -10px;*/
-            /*}*/
-            /*#lastName {*/
-                /*width: 20%;*/
-                /*height: 20px;*/
-            /*}*/
-        /*}*/
-        /*!* for 414px or less *!*/
-        /*@media screen and (max-width:414px) {*/
-            /*select {*/
-                /*width: 35%;*/
-            /*}*/
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
 
-            /*input {*/
-                /*width: 35%;*/
-            /*}*/
+        .dropdown-content a:hover {background-color: #ddd;}
 
-            /*.date {*/
-                /*width: 20%;*/
-                /*font-size: 12px;*/
-            /*}*/
+        .dropdown:hover .dropdown-content {display: block;}
 
-            /*.btn {*/
-                /*font-size: 19px;*/
-                /*padding: 5px 6px;*/
-            /*}*/
-
-            /*h1 {*/
-                /*font-size: 25px;*/
-            /*}*/
-
-            /*#firstName {*/
-                /*width: 20%;*/
-                /*height: 20px;*/
-                /*margin-left: -10px;*/
-            /*}*/
-
-            /*#lastName {*/
-                /*width: 20%;*/
-                /*height: 20px;*/
-            /*}*/
-
-            /*.btn-sm {*/
-                /*width: 15%;*/
-                /*font-size: 12px;*/
-            /*}*/
-        /*}*/
-        /*!* for 375px or less *!*/
-        /*@media screen and (max-width:375px) {*/
-                /*#firstName{*/
-                    /*width:20%;*/
-                    /*height:20px;*/
-                    /*margin-left:-10px;*/
-                /*}*/
-                /*#lastName{*/
-                    /*width:20%;*/
-                    /*height:20px;*/
-                /*}*/
-                /*h1{*/
-                    /*font-size:25px;*/
-                /*}*/
-            /*}*/
-        /*!* for 320px or less *!*/
-        /*@media screen and (max-width:320px) {*/
-                /*select{*/
-                    /*width:35%;*/
-                /*}*/
-                /*input{*/
-                    /*width:35%;*/
-                /*}*/
-                /*.date{*/
-                    /*width:21%;*/
-                    /*font-size:10px;*/
-                /*}*/
-                /*.btn{*/
-                    /*font-size:12px;*/
-                    /*padding:5px 6px;*/
-                    /*width:80px;*/
-                /*}*/
-                /*#firstName{*/
-                    /*width:20%;*/
-                    /*height:20px;*/
-                    /*margin-left:-10px;*/
-                /*}*/
-                /*#lastName{*/
-                    /*width:20%;*/
-                    /*height:20px;*/
-                /*}*/
-                /*h1{*/
-                    /*font-size:25px;*/
-                /*}*/
-            /*}*/
+        .dropdown:hover .dropbtn {background-color: #333;
+            color: white;}
     </style>
 </head>
 <ul class="navul" style="height:60px;background:#000000;">
     <a class="navul" style="background:#000000;" href="http://aworldbridge.com">
         <img class="banner" src="/images/NewWBBanner.jpg" style="width:400px;height:60px;"/>
+    </a>
+    <a href="/" style="width:110px;">
+        <button class="navbutton1"> Home Page </button>
     </a>
     <a href="/newRequest" id= "Request" style="width:110px;">
         <button class="navbutton1"> New Request </button>
@@ -236,7 +144,7 @@
     <a href="/dataHistory" style="width:110px;">
         <button class="navbutton1"> Approved Request </button>
     </a>
-    <div class="dropdown floating-Box">
+    <div class="dropdown floating-Box" style="float:right;margin-top:10px;margin-right:10px;">
         <button class="btn btn-primary btn-lg navbutton1" type="button" data-toggle="dropdown" id="Username"><%= firstName%>
             <span class="caret"></span></button>
         <ul id="userMenu" class="dropdown-menu" >
@@ -247,7 +155,8 @@
 
 <div class="container center">
     <div class="page-header text-center header">
-        <h1><span class="fa fa-anchor"></span>User Home </h1><h4><span class="fa fa-user"></span>&nbsp;<strong>Account Name</strong>: <%= user.username %></h4><br>
+        <h2><span class="fa fa-anchor"></span>User Home </h2><h4><span class="fa fa-user"></span>&nbsp;
+            <strong>Account Name</strong>: <%= user.username %></h4><br>
     </div>
 </div>
 <br>
