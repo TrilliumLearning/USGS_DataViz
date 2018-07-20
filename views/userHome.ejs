@@ -74,7 +74,7 @@
             /*overflow: hidden;*/
         }
         .navbutton1 {
-            width: 150px;
+            width: 140px;
             font-size: 15px;
             height:40px;
             margin: 0;
@@ -90,47 +90,16 @@
             background-color: #333;
             color: white;
         }
-        .dropbtn {
-            background-color: #000000;
-            color: white;
-            padding: 16px;
-            font-size: 16px;
-            border: none;
-        }
 
         .dropdown {
             position: relative;
             display: inline-block;
         }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #f1f1f1;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-            /*margin-top:20px;*/
-        }
-
-        .dropdown-content a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-        }
-
-        .dropdown-content a:hover {background-color: #ddd;}
-
-        .dropdown:hover .dropdown-content {display: block;}
-
-        .dropdown:hover .dropbtn {background-color: #333;
-            color: white;}
     </style>
 </head>
 <ul class="navul" style="height:60px;background:#000000;">
     <a class="navul" style="background:#000000;" href="http://aworldbridge.com">
-        <img class="banner" src="/images/NewWBBanner.jpg" style="width:400px;height:60px;"/>
+        <img class="banner" src="/images/NewWBBanner.jpg" style="width:480px;height:60px;"/>
     </a>
     <a href="/" style="width:110px;">
         <button class="navbutton1"> Home Page </button>
@@ -138,7 +107,7 @@
     <a href="/newRequest" id= "Request" style="width:110px;">
         <button class="navbutton1"> New Request </button>
     </a>
-    <a href="/recovery" id ="Restore" style="width:110px;">
+    <a href="/recovery" id ="Restore" style="width:50px;">
         <button class="navbutton1"> Restore </button>
     </a>
     <a href="/dataHistory" style="width:110px;">
@@ -155,7 +124,7 @@
 
 <div class="container center">
     <div class="page-header text-center header">
-        <h2><span class="fa fa-anchor"></span>User Home </h2><h4><span class="fa fa-user"></span>&nbsp;
+        <h2><span class="fa fa-home"></span> User Home </h2><h4><span class="fa fa-user"></span>
             <strong>Account Name</strong>: <%= user.username %></h4><br>
     </div>
 </div>
@@ -233,7 +202,7 @@
             <!-- formal table //approve //recovery-->
         </div>
     </div>
-            <div style="margin-top:10px;margin-bottom:20px;">
+            <div style="margin-top:10px;margin-bottom:20px;margin-left:100px;" >
                 <button id="editButton" class="btn btn-primary btn-sm" type="button">Edit</button>
                 <button id="deleteButton" class="btn btn-primary btn-sm" type="button">Delete</button>
             </div>
