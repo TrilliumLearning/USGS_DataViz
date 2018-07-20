@@ -65,19 +65,19 @@ module.exports = function (app, passport) {
     });
 
     app.get('/uswtdb', function (req, res) {
-        console.log("A: " + new Date());
+        // console.log("A: " + new Date());
 
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
 
         // var statement = "SELECT p_name, xlong, ylat, p_year_color, p_avgcap_color, t_ttlh_color FROM USWTDB INNER JOIN USWTDB_COLOR ON USWTDB.case_id = USWTDB_COLOR.case_id ORDER BY p_name;";
-        var statement = "SELECT p_name, xlong, ylat, p_year_color, p_avgcap_color, t_ttlh_color FROM USWTDB_Sample INNER JOIN USWTDB_COLOR_Sample ON USWTDB_Sample.case_id = USWTDB_COLOR_Sample.case_id ORDER BY p_name;";
+        var statement = "SELECT p_name, xlong, ylat, p_year, p_avgcap, t_ttlh, p_year_color, p_avgcap_color, t_ttlh_color FROM USWTDB_Sample INNER JOIN USWTDB_COLOR_Sample ON USWTDB_Sample.case_id = USWTDB_COLOR_Sample.case_id ORDER BY p_name;";
 
         con_CS.query(statement, function (err, results, fields) {
             if (err) {
                 console.log(err);
                 res.json({"error": true, "message": "An unexpected error occurred !"});
             } else {
-                console.log("success: " + new Date());
+                // console.log("success: " + new Date());
                 // console.log(results);
                 res.json({"error": false, "data": results});
             }

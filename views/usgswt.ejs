@@ -85,6 +85,7 @@
         <br><br>
         <div class="page-header text-center header">
             <h1><span class="fa fa-anchor"></span> USGS Wind Turbine </h1><h4><span class="fa fa-user"></span></h4><br>
+            <a href="/" class="btn btn-default btn-lg">Home Page</a>&nbsp;&nbsp;
         </div>
     </div>
     <div class="row">
@@ -123,19 +124,14 @@
                     <!--<button type="button" id="p_avgcap">Average Capacity</button>-->
                     <!--<button type="button" id="t_ttlh">Height</button>-->
 
-                    <!--"blue": "rgba(0, 0, 255, 0.25)",-->
-                    <!--"green": "rgba(0, 255, 0, 0.25)",-->
-                    <!--"yellow": "rgba(255, 255, 0, 0.25)",-->
-                    <!--"orange": "rgba(255, 127.5, 0, 0.25)",-->
-                    <!--"red": "rgba(255, 0, 0, 0.25)",-->
                     <div id="placemarkButton">
                         <input type="radio" id="none" name="category"> None
-                        <input type="radio" id="p_year" name="category"> Year
-                        <input type="radio" id="p_avgcap" name="category"> Capacity
-                        <input type="radio" id="t_ttlh" name="category"> Height
+                        <input type="radio" id="p_year_color" name="category"> Year
+                        <input type="radio" id="p_avgcap_color" name="category"> Capacity
+                        <input type="radio" id="t_ttlh_color" name="category"> Height
                         <br><br>
 
-                        <div style="width: 235px; height: 15px; background: linear-gradient(to right, rgba(0, 0, 255, 0.25), rgba(0, 255, 0, 0.25), rgba(255, 255, 0, 0.25), rgba(255, 127.5, 0, 0.25), rgba(255, 0, 0, 0.25));"></div>
+                        <div style="width: 235px; height: 15px; background: linear-gradient(to right, rgba(0, 0, 255, 0.75), rgba(0, 255, 0, 0.75), rgba(255, 255, 0, 0.75), rgba(255, 127.5, 0, 0.75), rgba(255, 0, 0, 0.75));"></div>
                         <div style="width: 235px; height: 30px;">
                             <p id="leftScale" style="float: left;"></p>
                             <p id="rightScale" style="float: right;"></p>
@@ -152,7 +148,7 @@
             </canvas>
         </div>
         <br><br>
-        <div id="popover" style="border-style: solid; width: 100%" hidden></div>
+        <div id="popover" style="border-style: solid; opacity: 0;" hidden></div>
         <!--<div style="border-style: solid; position: absolute; left: 749px; top: 775px"></div>-->
     </div>
 </div>
