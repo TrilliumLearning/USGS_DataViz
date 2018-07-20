@@ -20,10 +20,6 @@
         body{
             word-wrap:break-word;
         }
-        .banner{
-            /*position:relative;*/
-            width: 30%;
-        }
         .floating-Box{
             display: inline;
         }
@@ -74,7 +70,7 @@
             /*overflow: hidden;*/
         }
         .navbutton1 {
-            width: 150px;
+            width: 140px;
             font-size: 15px;
             height:40px;
             margin: 0;
@@ -91,152 +87,29 @@
             color: white;
         }
 
-
-        /*!* for1024px or less *!*/
-        /*@media screen and (max-width:1024px) {*/
-            /*.date{*/
-                /*font-size:15px;*/
-                /*width:10%;*/
-            /*}*/
-            /*.btn-sm{*/
-                /*width:10%;*/
-            /*}*/
-        /*}*/
-        /*!* for 768px or less *!*/
-        /*@media screen and (max-width:768px) {*/
-
-            /*.date{*/
-                /*width:15%;*/
-                /*font-size:15px;*/
-            /*}*/
-            /*.btn-sm{*/
-                /*width:10%;*/
-            /*}*/
-        /*}*/
-        /*!* for 480px or less *!*/
-        /*@media screen and (max-width:480px) {*/
-            /*.btn{*/
-                /*padding: 5px 6px;*/
-                /*margin:5px;*/
-            /*}*/
-            /*input{*/
-                /*width:35%;*/
-            /*}*/
-            /*.date {*/
-                /*width: 20%;*/
-                /*font-size: 12px;*/
-            /*}*/
-            /*#firstName {*/
-                /*width: 20%;*/
-                /*height: 20px;*/
-                /*margin-left: -10px;*/
-            /*}*/
-            /*#lastName {*/
-                /*width: 20%;*/
-                /*height: 20px;*/
-            /*}*/
-        /*}*/
-        /*!* for 414px or less *!*/
-        /*@media screen and (max-width:414px) {*/
-            /*select {*/
-                /*width: 35%;*/
-            /*}*/
-
-            /*input {*/
-                /*width: 35%;*/
-            /*}*/
-
-            /*.date {*/
-                /*width: 20%;*/
-                /*font-size: 12px;*/
-            /*}*/
-
-            /*.btn {*/
-                /*font-size: 19px;*/
-                /*padding: 5px 6px;*/
-            /*}*/
-
-            /*h1 {*/
-                /*font-size: 25px;*/
-            /*}*/
-
-            /*#firstName {*/
-                /*width: 20%;*/
-                /*height: 20px;*/
-                /*margin-left: -10px;*/
-            /*}*/
-
-            /*#lastName {*/
-                /*width: 20%;*/
-                /*height: 20px;*/
-            /*}*/
-
-            /*.btn-sm {*/
-                /*width: 15%;*/
-                /*font-size: 12px;*/
-            /*}*/
-        /*}*/
-        /*!* for 375px or less *!*/
-        /*@media screen and (max-width:375px) {*/
-                /*#firstName{*/
-                    /*width:20%;*/
-                    /*height:20px;*/
-                    /*margin-left:-10px;*/
-                /*}*/
-                /*#lastName{*/
-                    /*width:20%;*/
-                    /*height:20px;*/
-                /*}*/
-                /*h1{*/
-                    /*font-size:25px;*/
-                /*}*/
-            /*}*/
-        /*!* for 320px or less *!*/
-        /*@media screen and (max-width:320px) {*/
-                /*select{*/
-                    /*width:35%;*/
-                /*}*/
-                /*input{*/
-                    /*width:35%;*/
-                /*}*/
-                /*.date{*/
-                    /*width:21%;*/
-                    /*font-size:10px;*/
-                /*}*/
-                /*.btn{*/
-                    /*font-size:12px;*/
-                    /*padding:5px 6px;*/
-                    /*width:80px;*/
-                /*}*/
-                /*#firstName{*/
-                    /*width:20%;*/
-                    /*height:20px;*/
-                    /*margin-left:-10px;*/
-                /*}*/
-                /*#lastName{*/
-                    /*width:20%;*/
-                    /*height:20px;*/
-                /*}*/
-                /*h1{*/
-                    /*font-size:25px;*/
-                /*}*/
-            /*}*/
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
     </style>
 </head>
 <ul class="navul" style="height:60px;background:#000000;">
     <a class="navul" style="background:#000000;" href="http://aworldbridge.com">
-        <img class="banner" src="/images/NewWBBanner.jpg" style="width:400px;height:60px;"/>
+        <img class="banner" src="/images/NewWBBanner.jpg" style="width:480px;height:60px;"/>
+    </a>
+    <a href="/" style="width:110px;">
+        <button class="navbutton1"> Home Page </button>
     </a>
     <a href="/newRequest" id= "Request" style="width:110px;">
         <button class="navbutton1"> New Request </button>
     </a>
-    <a href="/recovery" id ="Restore" style="width:110px;">
+    <a href="/recovery" id ="Restore" style="width:50px;">
         <button class="navbutton1"> Restore </button>
     </a>
     <a href="/dataHistory" style="width:110px;">
         <button class="navbutton1"> Approved Request </button>
     </a>
-    <div class="dropdown floating-Box">
+    <div class="dropdown floating-Box" style="float:right;margin-top:10px;margin-right:10px;">
         <button class="btn btn-primary btn-lg navbutton1" type="button" data-toggle="dropdown" id="Username"><%= firstName%>
             <span class="caret"></span></button>
         <ul id="userMenu" class="dropdown-menu" >
@@ -247,7 +120,8 @@
 
 <div class="container center">
     <div class="page-header text-center header">
-        <h1><span class="fa fa-anchor"></span>User Home </h1><h4><span class="fa fa-user"></span>&nbsp;<strong>Account Name</strong>: <%= user.username %></h4><br>
+        <h2><span class="fa fa-home"></span> User Home </h2><h4><span class="fa fa-user"></span>
+            <strong>Account Name</strong>: <%= user.username %></h4><br>
     </div>
 </div>
 <br>
@@ -324,7 +198,7 @@
             <!-- formal table //approve //recovery-->
         </div>
     </div>
-            <div style="margin-top:10px;margin-bottom:20px;">
+            <div style="margin-top:10px;margin-bottom:20px;margin-left:100px;" >
                 <button id="editButton" class="btn btn-primary btn-sm" type="button">Edit</button>
                 <button id="deleteButton" class="btn btn-primary btn-sm" type="button">Delete</button>
             </div>

@@ -39,24 +39,91 @@ requirejs(['./worldwind.min',
                     wwd.addLayer(layers[l].layer);
                 }
 
-                $("#none, #p_year, #p_avgcap, #t_ttlh").on("click", function () {
+                // var placemarkLayer = new WorldWind.RenderableLayer("Custom Placemark");
+                //
+                // var canvas = document.createElement("canvas"),
+                //     ctx2d = canvas.getContext("2d"),
+                //     size = 64, c = size / 2  - 0.5, innerRadius = 5, outerRadius = 20;
+                //
+                // canvas.width = size;
+                // canvas.height = size;
+                //
+                // var gradient = ctx2d.createRadialGradient(c, c, innerRadius, c, c,   outerRadius);
+                // gradient.addColorStop(0, 'rgba(204, 255, 255, 0.49)');
+                // gradient.addColorStop(0.5, 'rgba(102, 153, 255, 0.25)');
+                // gradient.addColorStop(1, 'rgba(102, 0, 255, 0.25)');
+                // // gradient.addColorStop(0, 'rgb(204, 255, 255)');
+                // // gradient.addColorStop(0.5, 'rgb(102, 153, 255)');
+                // // gradient.addColorStop(1, 'rgb(102, 0, 255)');
+                //
+                // ctx2d.fillStyle = gradient;
+                // ctx2d.arc(c, c, outerRadius, 0, 2 * Math.PI, false);
+                // ctx2d.fill();
+                //
+                // var placemarkAttributes = new WorldWind.PlacemarkAttributes(null);
+                // placemarkAttributes.imageSource = new WorldWind.ImageSource(canvas);
+                // placemarkAttributes.imageScale = 0.5;
+                //
+                // var highlightAttributes = new WorldWind.PlacemarkAttributes(placemarkAttributes);
+                // highlightAttributes.imageScale = 1.0;
+                //
+                // var placemarkPosition = new WorldWind.Position(0, 0, 0);
+                // var placemarks = new WorldWind.Placemark(placemarkPosition, false, placemarkAttributes);
+                // placemarks.altitudeMode = WorldWind.RELATIVE_TO_GROUND;
+                // placemarks.highlightAttributes = highlightAttributes;
+                // // placemarks[i].updateImage = true;
+                // placemarkLayer.addRenderable(placemarks);
+                // wwd.addLayer(placemarkLayer);
+                // console.log(wwd.layers[7].renderables);
+                //
+                // function handleMouseCLK(o) {
+                //
+                //     // The input argument is either an Event or a TapRecognizer. Both have the same properties for determining
+                //     // the mouse or tap location.
+                //     var x = o.clientX,
+                //         y = o.clientY;
+                //
+                //     // Perform the pick. Must first convert from window coordinates to canvas coordinates, which are
+                //     // relative to the upper left corner of the canvas rather than the upper left corner of the page.
+                //     // console.log(o.x, o.clientX, o.layerX, o.offsetX, o.pageX, o.screenX);
+                //     // console.log(o.y, o.clientY, o.layerY, o.offsetY, o.pageY, o.screenY);
+                //     // console.log(x + ", " + y + "   " + wwd.canvasCoordinates(x, y));
+                //     var pickList = wwd.pick(wwd.canvasCoordinates(x, y));
+                //     console.log(pickList.objects);
+                //     for (var q = 0; q < pickList.objects.length; q++) {
+                //         var pickedPL = pickList.objects[q].userObject;
+                //         // console.log(pickedPL);
+                //         if (pickedPL instanceof WorldWind.Placemark) {
+                //             // console.log(pickedPL);
+                //             // console.log("A");
+                //             // autoZoom(pickedPL.position, pickedPL.userProperties);
+                //         }
+                //     }
+                //
+                //     pickList = [];
+                // }
+                //
+                // // Listen for mouse double clicks placemarks and then pop up a new dialog box.
+                // wwd.addEventListener("click", handleMouseCLK);
+
+                $("#none, #p_year_color, #p_avgcap_color, #t_ttlh_color").on("click", function () {
                     var category = this.id;
                     // console.log(category);
                     var color = {
-                        "grey": "rgba(192, 192, 192, 0.25)",
-                        "blue": "rgba(0, 0, 255, 0.25)",
-                        "green": "rgba(0, 255, 0, 0.25)",
-                        "yellow": "rgba(255, 255, 0, 0.25)",
-                        "orange": "rgba(255, 127.5, 0, 0.25)",
-                        "red": "rgba(255, 0, 0, 0.25)",
+                        "grey": "rgba(192, 192, 192, 0.5)",
+                        "blue": "rgba(0, 0, 255, 0.5)",
+                        "green": "rgba(0, 255, 0, 0.5)",
+                        "yellow": "rgba(255, 255, 0, 0.5)",
+                        "orange": "rgba(255, 127.5, 0, 0.5)",
+                        "red": "rgba(255, 0, 0, 0.5)",
                         'undefined': "rgba(255, 255, 255, 1)"
                     };
 
                     var scale = {
                         "none": ["", ""],
-                        "p_year": ["1980", "2017"],
-                        "p_avgcap": ["< 1MW", ">3 MW"],
-                        "t_ttlh": ["5m", "185m"],
+                        "p_year_color": ["1980", "2017"],
+                        "p_avgcap_color": ["<1MW", ">3 MW"],
+                        "t_ttlh_color": ["5m", "185m"],
                     };
 
                     $("#leftScale").html(scale[category][0]);
@@ -99,20 +166,74 @@ requirejs(['./worldwind.min',
 
                 $("#switchLayer").on("click", function () {
                     // this.checked, true: placemark, false: heatmap
-                    // 10 basis layers
+                    // 7 basis layers
                     // console.log(this.checked + "   " + !this.checked);
 
                     document.getElementById("placemarkButton").style.pointerEvents = (this.checked === true) ? "auto" : "none";
 
-
-                    for (var i = 10; i < wwd.layers.length; i++) {
+                    for (var i = 7; i < wwd.layers.length; i++) {
                         if (i === wwd.layers.length - 1) {
                             wwd.layers[i].enabled = !this.checked;
+                            // console.log(wwd.layers);
                         } else {
                             wwd.layers[i].enabled = this.checked;
                         }
                     }
                 });
+
+                function handleMouseMove(o) {
+
+                    if ($("#popover").is(":visible")) {
+                        $("#popover").hide();
+                    }
+
+                    // The input argument is either an Event or a TapRecognizer. Both have the same properties for determining
+                    // the mouse or tap location.
+                    var x = o.clientX,
+                        y = o.clientY;
+
+                    // Perform the pick. Must first convert from window coordinates to canvas coordinates, which are
+                    // relative to the upper left corner of the canvas rather than the upper left corner of the page.
+
+                    // var xOffset = Math.max(document.documentElement.scrollLeft, document.body.scrollLeft);
+                    // var yOffset = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
+                    //
+                    // var popover = document.getElementById('popover');
+                    // popover.style.position = "absolute";
+                    // popover.style.left = (x + xOffset) + 'px';
+                    // popover.style.top = (y + yOffset) + 'px';
+                    //
+                    // $("#popover").show();
+
+
+                    var pickList = wwd.pick(wwd.canvasCoordinates(x, y));
+                    // console.log(pickList.objects);
+                    for (var q = 0; q < pickList.objects.length; q++) {
+                        var pickedPL = pickList.objects[q].userObject;
+                        // console.log(pickedPL);
+                        if (pickedPL instanceof WorldWind.Placemark) {
+                            // console.log("A");
+
+                            var xOffset = Math.max(document.documentElement.scrollLeft, document.body.scrollLeft);
+                            var yOffset = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
+
+                            var popover = document.getElementById('popover');
+                            popover.style.position = "absolute";
+                            popover.style.left = (x + xOffset) + 'px';
+                            popover.style.top = (y + yOffset) + 'px';
+
+                            var content = "<p><strong>Project Name:</strong> " + pickedPL.userProperties.p_name +
+                                "<br>" + "<strong>Year Online:</strong> " + pickedPL.userProperties.p_year +
+                                "<br>" + "<strong>Rated Capacity:</strong> " + pickedPL.userProperties.p_avgcap +
+                                "<br>" + "<strong>Total Height:</strong> " + pickedPL.userProperties.t_ttlh + "</p>";
+
+                            $("#popover").attr('data-content', content);
+                            $("#popover").show();
+                        }
+                    }
+
+                    pickList = [];
+                }
 
                 $.ajax({
                     url: '/uswtdb',
@@ -157,12 +278,20 @@ requirejs(['./worldwind.min',
                                 placemarkAttributes.imageSource = new WorldWind.ImageSource(circle);
                                 placemarkAttributes.imageScale = 0.5;
 
+                                var highlightAttributes = new WorldWind.PlacemarkAttributes(placemarkAttributes);
+                                highlightAttributes.imageScale = 0.6;
+
                                 var placemarkPosition = new WorldWind.Position(resp.data[i].ylat, resp.data[i].xlong, 0);
                                 placemark[i] = new WorldWind.Placemark(placemarkPosition, false, placemarkAttributes);
                                 placemark[i].altitudeMode = WorldWind.RELATIVE_TO_GROUND;
-                                placemark[i].userProperties.p_year = resp.data[i].p_year_color;
-                                placemark[i].userProperties.p_avgcap = resp.data[i].p_avgcap_color;
-                                placemark[i].userProperties.t_ttlh = resp.data[i].t_ttlh_color;
+                                placemark[i].highlightAttributes = highlightAttributes;
+                                placemark[i].userProperties.p_name = resp.data[i].p_name;
+                                placemark[i].userProperties.p_year = resp.data[i].p_year;
+                                placemark[i].userProperties.p_avgcap = resp.data[i].p_avgcap;
+                                placemark[i].userProperties.t_ttlh = resp.data[i].t_ttlh;
+                                placemark[i].userProperties.p_year_color = resp.data[i].p_year_color;
+                                placemark[i].userProperties.p_avgcap_color = resp.data[i].p_avgcap_color;
+                                placemark[i].userProperties.t_ttlh_color = resp.data[i].t_ttlh_color;
 
                                 // if ($.inArray(resp.data[i].p_name, layerNames) === -1) {
                                 //     layerNames.push(resp.data[i].p_name);
@@ -213,7 +342,7 @@ requirejs(['./worldwind.min',
                                     //     }, 500);
                                     // }, 10000);
 
-                                    console.log(data);
+                                    // console.log(data);
                                     var HeatMapLayer = new WorldWind.HeatMapLayer("Heatmap", data, {
                                         tile: RadiantCircleTile,
                                         incrementPerIntensity: 0.2,
@@ -222,7 +351,6 @@ requirejs(['./worldwind.min',
                                     });
 
                                     HeatMapLayer.enabled = false;
-
                                     wwd.addLayer(HeatMapLayer);
 
                                     console.log(wwd.layers);
@@ -232,7 +360,11 @@ requirejs(['./worldwind.min',
                     }
                 });
 
-                $("#p_avgcap").click();
+                $("#p_avgcap_color").click();
+
+                // Listen for mouse moves and highlight the placemarks that the cursor rolls over.
+                wwd.addEventListener("mousemove", handleMouseMove);
+                $("#popover").popover({html: true, placement: "top", trigger: "hover"});
             })
         });
     });
