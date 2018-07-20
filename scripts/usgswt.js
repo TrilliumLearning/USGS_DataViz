@@ -10,6 +10,7 @@ requirejs(['./worldwind.min',
             $(function () {
 
                 var placemark = [];
+                var autoSuggestion = [];
 
                 // Tell WorldWind to log only warnings and errors.
                 WorldWind.Logger.setLoggingLevel(WorldWind.Logger.LEVEL_WARNING);
@@ -222,7 +223,7 @@ requirejs(['./worldwind.min',
                             popover.style.left = (x + xOffset) + 'px';
                             popover.style.top = (y + yOffset) + 'px';
 
-                            var content = "<p><strong>Project Name:</strong> " + pickedPL.userProperties.p_name +
+                            var content = "<p><strong>Project Name:</strong> " + pickedPL.layer.displayName +
                                 "<br>" + "<strong>Year Online:</strong> " + pickedPL.userProperties.p_year +
                                 "<br>" + "<strong>Rated Capacity:</strong> " + pickedPL.userProperties.p_avgcap +
                                 "<br>" + "<strong>Total Height:</strong> " + pickedPL.userProperties.t_ttlh + "</p>";
@@ -244,8 +245,8 @@ requirejs(['./worldwind.min',
                     success: function (resp) {
                         if (!resp.error) {
                             var data = [];
-                            var layerNames = [];
-                            var placemarkLayers = [];
+                            // var layerNames = [];
+                            // var placemarkLayers = [];
 
                             var circle = document.createElement("canvas"),
                                 ctx = circle.getContext('2d'),
@@ -285,7 +286,6 @@ requirejs(['./worldwind.min',
                                 placemark[i] = new WorldWind.Placemark(placemarkPosition, false, placemarkAttributes);
                                 placemark[i].altitudeMode = WorldWind.RELATIVE_TO_GROUND;
                                 placemark[i].highlightAttributes = highlightAttributes;
-                                placemark[i].userProperties.p_name = resp.data[i].p_name;
                                 placemark[i].userProperties.p_year = resp.data[i].p_year;
                                 placemark[i].userProperties.p_avgcap = resp.data[i].p_avgcap;
                                 placemark[i].userProperties.t_ttlh = resp.data[i].t_ttlh;
@@ -309,6 +309,7 @@ requirejs(['./worldwind.min',
                                     // placemarkLayer.enabled = false;
                                     wwd.addLayer(placemarkLayer);
                                     wwd.layers[wwd.layers.length - 1].addRenderable(placemark[i]);
+                                    autoSuggestion.push({"value": resp.data[i].p_name, "lati": resp.data[i].ylat, "long": resp.data[i].xlong});
                                 } else {
                                     wwd.layers[wwd.layers.length - 1].addRenderable(placemark[i]);
                                 }
@@ -357,6 +358,16 @@ requirejs(['./worldwind.min',
                                 }
                             }
                         }
+                    }
+                });
+
+                $("#autoSuggestion").autocomplete({
+                    lookup: autoSuggestion,
+                    lookupLimit: 5,
+                    onSelect: function(suggestion) {
+                        console.log(suggestion);
+                        wwd.goTo(new WorldWind.Position(suggestion.lati, suggestion.long, 50000));
+                        $("#autoSuggestion").val("");
                     }
                 });
 
