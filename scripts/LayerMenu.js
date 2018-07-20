@@ -49,7 +49,6 @@ requirejs(['./WorldWindShim',
 
         var layerName = [];
         var preloadLayer = [];
-        var Position = [];
         var layers = globe.layers;
 
         $(document).ready(function () {
@@ -61,17 +60,27 @@ requirejs(['./WorldWindShim',
 
             layerName = strs.split(",");
 
-            $('.wmsLayer').click(function(){
+            $('.wmsLayer').click(function () {
                 for (var a = 0; a < layers.length; a++) {
                     if ($('.wmsLayer').is(":checkbox:checked")) {
                         $(':checkbox:checked').each(function () {
                             if (layers[a].displayName === $(this).val()) {
                                 layers[a].enabled = true;
+                                var layername = "layername=" + layers[a].displayName;
+                                $.ajax({
+                                    url: 'position',
+                                    type: 'GET',
+                                    dataType: 'json',
+                                    data:layername,
+                                    success: function (results) {
+                                        globe.goTo(new WorldWind.Position(results.Latitude,results.Longitude,results.Altitude));
+                                    }
+                                });
                             }
                         });
                     }
 
-                    if($('.wmsLayer').is(":not(:checked)")) {
+                    if ($('.wmsLayer').is(":not(:checked)")) {
                         $(":checkbox:not(:checked)").each(function () {
                             if (layers[a].displayName === $(this).val()) {
                                 layers[a].enabled = false;
@@ -80,107 +89,41 @@ requirejs(['./WorldWindShim',
                     }
                 }
 
-                for(var c = 0; c < layerName.length; c ++) {
-                    if ($('.wmsLayer').is(":checkbox:checked")) {
-                        $(':checkbox:checked').each(function () {
-                            if (Position[c][0] === $(this).val()) {
-                                if (Position[c][1].westBoundLongitude < 0 && Position[c][1].eastBoundLongitude < 0 && Position[c][1].northBoundLatitude < 0 && Position[c][1].southBoundLatitude < 0) {
-                                    var Getlatitude = (Position[c][1].northBoundLatitude + Position[c][1].southBoundLatitude) / 2;
-                                    var GetLongitude = (Position[c][1].westBoundLongitude + Position[c][1].eastBoundLongitude) / 2;
-
-                                    globe.goTo(new WorldWind.Location(Getlatitude, GetLongitude));
-                                } else if(Position[c][1].westBoundLongitude > 0 && Position[c][1].eastBoundLongitude > 0 && Position[c][1].northBoundLatitude > 0 && Position[c][1].southBoundLatitude > 0){
-                                    Getlatitude = (Position[c][1].northBoundLatitude + Position[c][1].southBoundLatitude) / 2;
-                                    GetLongitude = (Position[c][1].westBoundLongitude + Position[c][1].eastBoundLongitude) / 2;
-
-                                    globe.goTo(new WorldWind.Location(Getlatitude, GetLongitude));
-                                }else if (Position[c][1].eastBoundLongitude > 0 && Position[c][1].westBoundLongitude < 0 && Position[c][1].northBoundLatitude > 0 && Position[c][1].southBoundLatitude < 0){
-                                        Getlatitude = (Position[c][1].eastBoundLongitude - Position[c][1].westBoundLongitude) / 2;
-                                        GetLongitude = (Position[c][1].northBoundLatitude - Position[c][1].southBoundLatitude) / 2;
-
-                                        globe.goTo(new WorldWind.Location(Getlatitude, GetLongitude));
-                                }else if(Position[c][1].westBoundLongitude < 0 && Position[c][1].eastBoundLongitude < 0 && Position[c][1].northBoundLatitude > 0 && Position[c][1].southBoundLatitude > 0){
-                                    Getlatitude = (Position[c][1].northBoundLatitude + Position[c][1].southBoundLatitude) / 2;
-                                    GetLongitude = (Position[c][1].westBoundLongitude + Position[c][1].eastBoundLongitude) / 2;
-
-                                    globe.goTo(new WorldWind.Location(Getlatitude, GetLongitude));
-                                }else if (Position[c][1].westBoundLongitude < 0 && Position[c][1].eastBoundLongitude < 0 && Position[c][1].northBoundLatitude > 0 && Position[c][1].southBoundLatitude < 0){
-                                    Getlatitude = (Position[c][1].northBoundLatitude - Position[c][1].southBoundLatitude) / 2;
-                                    GetLongitude = (Position[c][1].westBoundLongitude + Position[c][1].eastBoundLongitude) / 2;
-
-                                    globe.goTo(new WorldWind.Location(Getlatitude, GetLongitude));
-                                }else if(Position[c][1].westBoundLongitude > 0 && Position[c][1].eastBoundLongitude > 0 && Position[c][1].northBoundLatitude < 0 && Position[c][1].southBoundLatitude < 0){
-                                    Getlatitude = (Position[c][1].northBoundLatitude + Position[c][1].southBoundLatitude) / 2;
-                                    GetLongitude = (Position[c][1].westBoundLongitude + Position[c][1].eastBoundLongitude) / 2;
-
-                                    globe.goTo(new WorldWind.Location(Getlatitude, GetLongitude));
-                                }else if(Position[c][1].westBoundLongitude > 0 && Position[c][1].eastBoundLongitude > 0 && Position[c][1].northBoundLatitude > 0 && Position[c][1].southBoundLatitude < 0){
-                                    Getlatitude = (Position[c][1].northBoundLatitude - Position[c][1].southBoundLatitude) / 2;
-                                    GetLongitude = (Position[c][1].westBoundLongitude + Position[c][1].eastBoundLongitude) / 2;
-
-                                    globe.goTo(new WorldWind.Location(Getlatitude, GetLongitude));
-                                }else if(Position[c][1].eastBoundLongitude > 0 && Position[c][1].westBoundLongitude < 0 && Position[c][1].northBoundLatitude > 0 && Position[c][1].southBoundLatitude > 0){
-                                    Getlatitude = (Position[c][1].northBoundLatitude + Position[c][1].southBoundLatitude) / 2;
-                                    GetLongitude = (Position[c][1].westBoundLongitude - Position[c][1].eastBoundLongitude) / 2;
-
-                                    globe.goTo(new WorldWind.Location(Getlatitude, GetLongitude));
-                                }else if(Position[c][1].eastBoundLongitude > 0 && Position[c][1].westBoundLongitude < 0 && Position[c][1].northBoundLatitude < 0 && Position[c][1].southBoundLatitude < 0){
-                                    Getlatitude = (Position[c][1].northBoundLatitude + Position[c][1].southBoundLatitude) / 2;
-                                    GetLongitude = (Position[c][1].westBoundLongitude - Position[c][1].eastBoundLongitude) / 2;
-
-                                    globe.goTo(new WorldWind.Location(Getlatitude, GetLongitude));
-                                }
-                            }
-                        });
-                    }
-                }
-
             });
+
+            var wmsLayerCapabilities;
+            var createWMSLayer = function (xmlDom) {
+                // Create a WmsCapabilities object from the XML DOM
+                var wms = new WorldWind.WmsCapabilities(xmlDom);
+
+                // Retrieve a WmsLayerCapabilities object by the desired layer name
+                for (var n = 0; n < layerName.length; n++) {
+
+                    wmsLayerCapabilities = wms.getNamedLayers();
+
+                    var wmsLayerCapability = wms.getNamedLayer(layerName[n]);
+
+                    // Form a configuration object from the WmsLayerCapability object
+                    var wmsConfig = WorldWind.WmsLayer.formLayerConfiguration(wmsLayerCapability);
+
+                    // Modify the configuration objects title property to a more user friendly title
+                    wmsConfig.title = layerName[n];
+
+                    // Create the WMS Layer from the configuration object
+                    var wmsLayer = new WorldWind.WmsLayer(wmsConfig);
+
+                    // Add the layers to WorldWind and update the layer manager
+                    globe.addLayer(wmsLayer);
+                    layerManager.synchronizeLayerList();
+                }
+            };
+
+            // Called if an error occurs during WMS Capabilities document retrieval
+            var logError = function (jqXhr, text, exception) {
+                console.log("There was a failure retrieving the capabilities document: " + text + " exception: " + exception);
+            };
+
+            $.get(serviceAddress).done(createWMSLayer).fail(logError);
+
         });
-
-        var wmsLayerCapabilities;
-        var createWMSLayer = function (xmlDom) {
-            // Create a WmsCapabilities object from the XML DOM
-            var wms = new WorldWind.WmsCapabilities(xmlDom);
-
-            // Retrieve a WmsLayerCapabilities object by the desired layer name
-            for (var n = 0; n < layerName.length; n++) {
-
-                wmsLayerCapabilities = wms.getNamedLayers();
-
-                var wmsLayerCapability = wms.getNamedLayer(layerName[n]);
-
-                // Form a configuration object from the WmsLayerCapability object
-                var wmsConfig = WorldWind.WmsLayer.formLayerConfiguration(wmsLayerCapability);
-
-                // Modify the configuration objects title property to a more user friendly title
-                wmsConfig.title = layerName[n];
-
-                // Create the WMS Layer from the configuration object
-                var wmsLayer = new WorldWind.WmsLayer(wmsConfig);
-
-                // Add the layers to WorldWind and update the layer manager
-                globe.addLayer(wmsLayer);
-                layerManager.synchronizeLayerList();
-            }
-        };
-
-        // The common gesture-handling function.
-        var handleClick = function () {
-            for(var i = 0; i < layerName.length; i++) {
-                var geographicBoundingBox = wmsLayerCapabilities[i].geographicBoundingBox;
-                var LayerName = wmsLayerCapabilities[i].name;
-                var GOTOLayerName = LayerName.split(",");
-                GOTOLayerName.push(geographicBoundingBox);
-                Position.push(GOTOLayerName);
-            }
-        };
-
-        // Called if an error occurs during WMS Capabilities document retrieval
-        var logError = function (jqXhr, text, exception) {
-            console.log("There was a failure retrieving the capabilities document: " + text + " exception: " + exception);
-        };
-
-        $.get(serviceAddress).done(createWMSLayer,handleClick).fail(logError);
-
     });

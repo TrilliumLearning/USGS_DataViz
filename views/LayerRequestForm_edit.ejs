@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="../scripts/jquery-validation-1.17.0/demo/css/screen.css">
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/file-uploader/5.15.5/fine-uploader-gallery.css" rel="stylesheet">
-
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/file-uploader/5.16.2/all.fine-uploader/all.fine-uploader.min.js"></script>
     <!--<script type = "text/javascript" src="LayerNameSearch.js"></script>-->
@@ -235,7 +234,7 @@
                                     <option value="other">Other(Please specify)</option>
                                 </select>
                                 <div id="other1" style="display:none;">
-                                    <input type="text" name="FirstOther">
+                                    <input type="text" name="FirstOther" id="inputone">
                                 </div>
                             </div>
                         </div>
@@ -245,8 +244,9 @@
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group">
                                 <span class="input-group-addon" style="max-width: 100%;"><i class="glyphicon glyphicon-list"></i></span>
-                                <select id="sub" class="selectpicker form-control" name="SecondLayer" value="">
+                                <select id="sub" class="selectpicker form-control" name="SecondLayer">
                                     <option value="Category">SELECT SUBCATEGORY</option>
+                                    <!--<option id = "idname"></option>-->
                                     <option value="other" id="secondOther">Other(Please specify)</option>
                                 </select>
                                 <div id="other2" style="display:none;">
@@ -263,7 +263,6 @@
                             <p id="LayerName1" style="color: palevioletred;margin-top:15px;">Please enter the Layer Name, and there is no space allowed.</p>
                         </div>
                     </div>
-                    <!--<p id="LayerName1" style="color: palevioletred; margin-left:270px;">Please Enter the Layer Name, the Layer Name must be at least 6 characters</p>-->
                     <div class="form-group">
                         <label class="col-md-4 control-label">Layer Continent</label>
                         <div class="col-md-8 inputGroupContainer">
@@ -282,7 +281,6 @@
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
                                 <select name="CountryName" class="crs-country form-control" data-region-id="two" data-default-option="SELECT COUNTRY" id="country">
-                                    <!--<option value="">Please select a country</option>-->
                                 </select>
                             </div>
                         </div>
@@ -294,7 +292,7 @@
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
                                 <!--<select name="StateName" id="two" class="crs-region form-control" data-default-option="SELECT STATE" data-blank-option="NO STATE SELECTED">-->
                                 <!--<option>Please select a state</option>-->
-                                <input name="StateName" value="" placeholder="State Name" class="form-control" required  type="text">
+                                <input name="StateName" value="" placeholder="State Name" class="form-control" required  type="text" id="LayerStateInput">
                             </div>
                         </div>
                     </div>
@@ -312,7 +310,7 @@
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group">
                                 <span class="input-group-addon" style="max-width: 100%;"><i class="glyphicon glyphicon-list"></i></span>
-                                <select required class="selectpicker form-control" name="LayerFormat">
+                                <select required class="selectpicker form-control" name="LayerFormat" id="LayerFormat">
                                     <option value="">SELECT LAYER FORMAT</option>
                                     <option>GeoTIFF</option>
                                     <option>Shapefile</option>
@@ -342,24 +340,21 @@
 <script>
     var UserRole = "<%= user.userrole %>";
     var getvalue = JSON.parse(localStorage.getItem("getvalue"));
-
+    console.log(getvalue);
     $(document).ready(function() {
         document.getElementById('date').value = getvalue[0];
         document.getElementById('User ID').value = getvalue[1];
         document.getElementById('RID').value = getvalue[2];
         document.getElementById('LayerNameInput').value = getvalue[11];
         document.getElementById('LayerStateInput').value = getvalue[6];
-        document.getElementById('LayerCountryInput').value = getvalue[5];
-        document.getElementById('LayerContinentInput').value = getvalue[4];
         document.getElementById('LayerFormat').value = getvalue[13];
         document.getElementById('message').value = getvalue[12];
-        document.getElementById('idname').value = getvalue[9];
 
         if(getvalue[7] === "other" || getvalue[9] === "other"){
             document.getElementById('main').value = getvalue[7];
             document.getElementById("other1").style.display = "block";
             document.getElementById("inputone").value = getvalue[8];
-            document.getElementById('idname').innerText = getvalue[9];
+            document.getElementById('sub').value = getvalue[9];
             document.getElementById("other2").style.display = "block";
             document.getElementById("inputtwo").value = getvalue[10];
         }else{
@@ -386,11 +381,9 @@
                 $("#sub").html("<option value='other'>Other(Please specify)</option>");
             }
         })
-
     });
 
     function Check(that) {
-        console.log(that);
         if (that === "other") {
             document.getElementById("other1").style.display = "block";
             document.getElementById("other2").style.display = "block";
@@ -399,6 +392,7 @@
             document.getElementById("other2").style.display = "none";
         }
     }
+
     //resubmit the photo
     var photoDiv = $("#photo");
     photoDiv.empty();
@@ -464,15 +458,15 @@
                     dataType: 'json',
                     data: tID + '&' + LUN,
                 });
-                $.ajax({
-                    url: 'replace',
-                    method: "post",
-                    data: data,
-                    dataType: 'json',
-                    success: function (d) {
-                        console.log(d);
-                    }
-                });
+                // $.ajax({
+                //     url: 'replace',
+                //     method: "post",
+                //     data: data,
+                //     dataType: 'json',
+                //     success: function (d) {
+                //         console.log(d);
+                //     }
+                // });
                 window.location.replace('/userHome');
             } else {
                 return false;
@@ -590,6 +584,16 @@
             }
         })
     }
+
+    $(function() {
+        new dgContinentsCountries({
+            continentVal: document.getElementById("continent").val,
+            countryVal: document.getElementById("country").val,
+            continent: document.getElementById("continent"),
+            country: document.getElementById("country"),
+            change: true
+        });
+    });
 </script>
 </body>
 </html>
