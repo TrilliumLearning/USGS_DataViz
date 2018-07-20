@@ -246,7 +246,6 @@
                                 <span class="input-group-addon" style="max-width: 100%;"><i class="glyphicon glyphicon-list"></i></span>
                                 <select id="sub" class="selectpicker form-control" name="SecondLayer">
                                     <option value="Category">SELECT SUBCATEGORY</option>
-                                    <!--<option id = "idname"></option>-->
                                     <option value="other" id="secondOther">Other(Please specify)</option>
                                 </select>
                                 <div id="other2" style="display:none;">
@@ -269,8 +268,8 @@
                             <div class="input-group">
                                 <span class="input-group-addon" style="max-width: 100%;"><i class="glyphicon glyphicon-globe"></i></span>
                                 <!--<input id="LayerContinentInput" name="ContinentName" placeholder="Layer Continent" class="form-control" required value="" type="text"></div>-->
-                                <select name="ContinentName" class="form-control selectpicker" id="continent" >
-                                    <option selected>SELECT CONTINENT</option>
+                                <select  id="continent" class="form-control selectpicker" name="ContinentName">
+                                    <option value="select">SELECT CONTINENT</option>
                                 </select>
                             </div>
                         </div>
@@ -280,7 +279,8 @@
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
-                                <select name="CountryName" class="crs-country form-control" data-region-id="two" data-default-option="SELECT COUNTRY" id="country">
+                                <select  id="country" name="CountryName" class="crs-country form-control" data-region-id="two" data-default-option="SELECT COUNTRY">
+                                    <option value="select">SELECT COUNTRY</option>
                                 </select>
                             </div>
                         </div>
@@ -290,8 +290,6 @@
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
-                                <!--<select name="StateName" id="two" class="crs-region form-control" data-default-option="SELECT STATE" data-blank-option="NO STATE SELECTED">-->
-                                <!--<option>Please select a state</option>-->
                                 <input name="StateName" value="" placeholder="State Name" class="form-control" required  type="text" id="LayerStateInput">
                             </div>
                         </div>
@@ -340,7 +338,7 @@
 <script>
     var UserRole = "<%= user.userrole %>";
     var getvalue = JSON.parse(localStorage.getItem("getvalue"));
-    console.log(getvalue);
+
     $(document).ready(function() {
         document.getElementById('date').value = getvalue[0];
         document.getElementById('User ID').value = getvalue[1];
@@ -349,6 +347,8 @@
         document.getElementById('LayerStateInput').value = getvalue[6];
         document.getElementById('LayerFormat').value = getvalue[13];
         document.getElementById('message').value = getvalue[12];
+        document.getElementById('continent').options[0].innerHTML = getvalue[4];
+        document.getElementById('country').options[0].innerHTML = getvalue[5];
 
         if(getvalue[7] === "other" || getvalue[9] === "other"){
             document.getElementById('main').value = getvalue[7];
@@ -381,6 +381,13 @@
                 $("#sub").html("<option value='other'>Other(Please specify)</option>");
             }
         })
+
+        $("#continent").change(function () {
+            var val = $(this).val();
+            if (val == "select") {
+                $("#country").html("<option value='select'>SELECT SUBCATEGORY</option>");
+            }
+        })
     });
 
     function Check(that) {
@@ -403,21 +410,23 @@
         dataType: 'json',
         data: editIDSr,
         success: function (results) {
-            if (!results.error) {
-                globalResults = results;
-                var list = [];
-                for (var i = 0; i < globalResults.length; i++) {
-                    var first = {
-                        id: i,
-                        size: 561276,
-                        thumbnailUrl: globalResults[i].Layer_Uploader,
-                        name: globalResults[i].Layer_Uploader_name
-                    };
-                    list.push(first);
+            if(!results === "") {
+                if (!results.error) {
+                    globalResults = results;
+                    var list = [];
+                    for (var i = 0; i < globalResults.length; i++) {
+                        var first = {
+                            id: i,
+                            size: 561276,
+                            thumbnailUrl: globalResults[i].Layer_Uploader,
+                            name: globalResults[i].Layer_Uploader_name
+                        };
+                        list.push(first);
+                    }
+                    uploader.addInitialFiles(list);
+                } else {
+                    console.log("didn't work :(");
                 }
-                uploader.addInitialFiles(list);
-            } else {
-                console.log("didn't work :(");
             }
         }
     });
@@ -458,15 +467,15 @@
                     dataType: 'json',
                     data: tID + '&' + LUN,
                 });
-                // $.ajax({
-                //     url: 'replace',
-                //     method: "post",
-                //     data: data,
-                //     dataType: 'json',
-                //     success: function (d) {
-                //         console.log(d);
-                //     }
-                // });
+                $.ajax({
+                    url: 'replace',
+                    method: "post",
+                    data: data,
+                    dataType: 'json',
+                    success: function (d) {
+                        console.log(d);
+                    }
+                });
                 window.location.replace('/userHome');
             } else {
                 return false;
@@ -585,7 +594,7 @@
         })
     }
 
-    $(function() {
+    $("#continent").click(function () {
         new dgContinentsCountries({
             continentVal: document.getElementById("continent").val,
             countryVal: document.getElementById("country").val,
