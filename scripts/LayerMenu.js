@@ -72,7 +72,7 @@ requirejs(['./WorldWindShim',
                     }
 
                     if($('.wmsLayer').is(":not(:checked)")) {
-                        $(":checkbox:not(:checked)").each(function (i) {
+                        $(":checkbox:not(:checked)").each(function () {
                             if (layers[a].displayName === $(this).val()) {
                                 layers[a].enabled = false;
                             }
