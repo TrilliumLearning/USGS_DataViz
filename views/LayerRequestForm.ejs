@@ -208,14 +208,14 @@
                                 <span class="input-group-addon" style="max-width: 100%;"><i class="glyphicon glyphicon-list"></i></span>
                                 <select required id="main" class="selectpicker form-control" name="FirstLayer" onchange="ChangeMainCategory(this.value); Check(this.value);"  >
                                     <option value="Category">SELECT MAIN CATEGORY</option>
-                                    <option>Energy</option>
-                                    <option>Water</option>
-                                    <option>Agriculture</option>
-                                    <option>Transportation</option>
-                                    <option>Economics</option>
-                                    <option>Health_Services</option>
-                                    <option>Risk_Management</option>
-                                    <option>Education</option>
+                                    <option>CustomLayers_Energy</option>
+                                    <option>CustomLayers_Water</option>
+                                    <option>CustomLayers_Agriculture</option>
+                                    <option>CustomLayers_Transportation</option>
+                                    <option>CustomLayers_Economics</option>
+                                    <option>CustomLayers_Health_Services</option>
+                                    <option>CustomLayers_Risk_Management</option>
+                                    <option>CustomLayers_Education</option>
                                     <option value="other">Other(Please specify)</option>
                                 </select>
                                 <div id="other1" style="display:none;">
@@ -256,13 +256,6 @@
                                 <!--<input id="LayerContinentInput" name="ContinentName" placeholder="Layer Continent" class="form-control" required value="" type="text"></div>-->
                                 <select name="ContinentName" class="form-control selectpicker" onclick="ContinentName();" id="continent" >
                                     <option selected>SELECT CONTINENT</option>
-                                    <!--<option>Africa</option>-->
-                                    <!--<option>Antarctica</option>-->
-                                    <!--<option>Asia</option>-->
-                                    <!--<option>Australia</option>-->
-                                    <!--<option>Europe</option>-->
-                                    <!--<option>North America</option>-->
-                                    <!--<option>South America</option>-->
                                 </select>
                         </div>
                     </div>
@@ -273,7 +266,6 @@
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
                                 <select name="CountryName" class="crs-country form-control" data-region-id="two" data-default-option="SELECT COUNTRY" id="country">
-                                    <!--<option value="">Please select a country</option>-->
                                 </select>
                             </div>
                         </div>

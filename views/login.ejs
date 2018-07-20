@@ -138,7 +138,7 @@
             margin-top:100px;
             text-align:center;
         }
-        #layerpreview {
+        .layerpreview {
             font-size: 16px;
             color: white;
             line-height: 1.2;
@@ -182,10 +182,10 @@
             /*-moz-transition: all 0.4s;*/
             /*transition: all 0.4s;*/
         /*}*/
-        #layerpreview:hover{
+        .layerpreview:hover{
             color: #fff;
         }
-        #layerpreview:hover:before{
+        .layerpreview:hover:before{
             opacity: 0;
         }
 
@@ -259,8 +259,12 @@
                 <a href="/signup">Register</a> • <a href="/forgot">Forgot Password</a>
             </div>
             <div id="back" class="container-login100-form-btn">
-                <a href="/" id="layerpreview">
-                    &#10094; Back to Layer viewer</a>
+                <a href="/mapsvcviewer" class="layerpreview">
+                    &#10094; MapService Viewer
+                </a>
+                <a href="/usgswt" class="layerpreview" style="margin-left:20px;">
+                    &#10094; US Wind Turbines Viewer
+                </a>
             </div>
         </div>
     </div>

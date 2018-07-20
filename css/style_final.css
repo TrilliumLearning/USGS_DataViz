@@ -255,11 +255,11 @@ select {
     -webkit-appearance: none;
 }
 
-.banner {
-    display: inline-block;
-    text-align: center;
-    width: 100%;
-}
+/*.banner {*/
+    /*display: inline-block;*/
+    /*text-align: center;*/
+    /*width: 100%;*/
+/*}*/
 
 /* The Modal (background) */
 .modal {

@@ -17,6 +17,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/file-uploader/5.16.2/all.fine-uploader/all.fine-uploader.min.js"></script>
     <!--<script type = "text/javascript" src="LayerNameSearch.js"></script>-->
     <script src="../src/jquery.multi-select.js"></script>
+    <script src="../country/dist/country.js"></script>
     <!--<script src="../src/jquery.form.min.js"></script>-->
     <!-- Change the "src" attribute according to your installation path -->
     <!--<script src="https://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.min.js"></script>-->
@@ -186,8 +187,8 @@
 <div class="container">
     <a href="http://aworldbridge.com"><img class="banner" src="../images/NewWBBanner.jpg"/></a>
     <div id="container">
-        <h1 id="title" style="margin-top:-20px;">Layer Request Form</h1>
-        <h3 id="Linfo" style="margin-top:30px;">Layer Information</h3>
+        <h1 id="title">Layer Request Form</h1>
+        <h2 id="Linfo">Layer Information</h2>
         <div class="generalForm">
             <form class="well form-horizontal" id="layer">
                 <fieldset >
@@ -223,14 +224,14 @@
                                 <span class="input-group-addon" style="max-width: 100%;"><i class="glyphicon glyphicon-list"></i></span>
                                 <select required id="main" class="selectpicker form-control" name="FirstLayer" onchange="ChangeMainCategory(this.value); Check(this.value);"  >
                                     <option value="Category">SELECT MAIN CATEGORY</option>
-                                    <option>Energy</option>
-                                    <option>Water</option>
-                                    <option>Agriculture</option>
-                                    <option>Transportation</option>
-                                    <option>Economics</option>
-                                    <option>Health_Services</option>
-                                    <option>Risk_Management</option>
-                                    <option>Education</option>
+                                    <option>CustomLayers_Energy</option>
+                                    <option>CustomLayers_Water</option>
+                                    <option>CustomLayers_Agriculture</option>
+                                    <option>CustomLayers_Transportation</option>
+                                    <option>CustomLayers_Economics</option>
+                                    <option>CustomLayers_Health_Services</option>
+                                    <option>CustomLayers_Risk_Management</option>
+                                    <option>CustomLayers_Education</option>
                                     <option value="other">Other(Please specify)</option>
                                 </select>
                                 <div id="other1" style="display:none;">
@@ -249,7 +250,7 @@
                                     <option value="other" id="secondOther">Other(Please specify)</option>
                                 </select>
                                 <div id="other2" style="display:none;">
-                                    <input type="text" name="SecondOther">
+                                    <input type="text" name="SecondOther" id="inputtwo">
                                 </div>
                             </div>
                         </div>
@@ -269,15 +270,8 @@
                             <div class="input-group">
                                 <span class="input-group-addon" style="max-width: 100%;"><i class="glyphicon glyphicon-globe"></i></span>
                                 <!--<input id="LayerContinentInput" name="ContinentName" placeholder="Layer Continent" class="form-control" required value="" type="text"></div>-->
-                                <select name="ContinentName" class="form-control selectpicker" onclick="ContinentName();" id="continent" >
+                                <select name="ContinentName" class="form-control selectpicker" id="continent" >
                                     <option selected>SELECT CONTINENT</option>
-                                    <!--<option>Africa</option>-->
-                                    <!--<option>Antarctica</option>-->
-                                    <!--<option>Asia</option>-->
-                                    <!--<option>Australia</option>-->
-                                    <!--<option>Europe</option>-->
-                                    <!--<option>North America</option>-->
-                                    <!--<option>South America</option>-->
                                 </select>
                             </div>
                         </div>
@@ -337,15 +331,10 @@
             </form>
         </div>
         <div class="row">
-            <div class="column">
-                <button id="submit" type="submit" value="Submit" form="layer"  >Submit</button>
-            </div>
-            <div class="column">
-                <button id="clear" type="reset" onclick="clearForm()" value="  Clear  ">Clear</button>
-            </div>
-            <div class="column">
-                <button id="cancel" type="button" onclick="userHome();">Cancel</button>
-            </div>
+            <button id="clear" type="reset" onclick="clearForm()" value="  Clear  ">Clear</button>
+            <button id="approve" type="submit" form="layer" disabled  title="this is only for Admin Users">Approve</button>
+            <button id="submit" form="layer" disabled title="this is only for Regular Users">Submit</button>
+            <button id="cancel" onclick="userHome();">Cancel</button>
         </div>
     </div>
 </div>
