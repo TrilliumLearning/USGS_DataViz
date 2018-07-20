@@ -115,7 +115,7 @@ requirejs(['./worldwind.min',
                 });
 
                 $.ajax({
-                    url: 'http://localhost:9085/uswtdb',
+                    url: '/uswtdb',
                     type: 'GET',
                     dataType: 'json',
                     // data: data,
