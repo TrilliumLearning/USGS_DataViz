@@ -121,7 +121,7 @@ dgContinentsCountries.prototype = {
         elm.appendChild(opt);
     },
     continents: [
-        ['', 'SELECT CONTINENT'],
+        ['SELECT CONTINENT', 'SELECT CONTINENT'],
         ['Africa', 'Africa'],
         ['Antarctica', 'Antarctica'],
         ['Asia', 'Asia'],
@@ -132,7 +132,7 @@ dgContinentsCountries.prototype = {
     ],
     countries: [
         /* Prompt */
-        [''],
+        ['SELECT COUNTRY'],
         /* Africa */
         ['Algeria', 'Angolia', 'Benin', 'Botswana', 'Burkina', 'Burundi', 'Cameroon', 'Central African Republic', 'Chad', 'Chana', 'Comoros Island', 'Congo', 'Congo (Zaire)', 'Cote D\'Ivoire', 'Djibouti', 'Egypt', 'Equatorial Guinea', 'Eritrea', 'Ethiopia', 'Gabon', 'Guinea', 'Guinea Bissau', 'Kenya', 'Lesotho', 'Liberia', 'Libya', 'Madagascar', 'Malawi', 'Mali', 'Mauritania', 'Mauritius', 'Morocco', 'Mozambique', 'Namibia', 'Niger', 'Nigeria', 'Rwanda', 'Sao Tomi and Principe', 'Senegal', 'Seychelles', 'Sierra Leone', 'Somalia', 'Republic of South Africa', 'Sudan', 'Swaziland', 'Tanzania', 'Tunisia', 'Togo', 'Uganda', 'Zambia', 'Zimbabwe'],
 
