@@ -73,7 +73,11 @@ requirejs(['./WorldWindShim',
                                     dataType: 'json',
                                     data:layername,
                                     success: function (results) {
-                                        globe.goTo(new WorldWind.Position(results.Latitude,results.Longitude,results.Altitude));
+                                        var Altitude = results.Altitude * 1000;
+                                        // globe.goTo(new WorldWind.Position(39.72,-100.89844));//US center
+                                        // globe.goTo(new WorldWind.Position(54.953071,-130.385742));//all state center
+                                        // globe.goTo(new WorldWind.Position(39.811046,-101.042378,1000));
+                                        globe.goTo(new WorldWind.Position(results.Latitude,results.Longitude,Altitude));
                                     }
                                 });
                             }
