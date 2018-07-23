@@ -45,7 +45,7 @@ requirejs(['./WorldWindShim',
 
         // Web Map Service information from NASA's Near Earth Observations WMS
         // var serviceAddress = "http://cs.aworldbridgelabs.com:8080/geoserver/ows?service=WMS&request=GetCapabilities&version=1.1.1";
-        var serviceAddress = "https://cors.aworldbridgelabs.com:9084/http://cs.aworldbridgelabs.com:8080/geoserver/ows?service=wms&version=1.3.0&request=GetCapabilities";
+        var serviceAddress = "https://cors.aworldbridgelabs.com/http://cs.aworldbridgelabs.com:8080/geoserver/ows?service=wms&version=1.3.0&request=GetCapabilities";
 
         var layerName = [];
         var preloadLayer = [];
@@ -74,9 +74,6 @@ requirejs(['./WorldWindShim',
                                     data:layername,
                                     success: function (results) {
                                         var Altitude = results.Altitude * 1000;
-                                        // globe.goTo(new WorldWind.Position(39.72,-100.89844));//US center
-                                        // globe.goTo(new WorldWind.Position(54.953071,-130.385742));//all state center
-                                        // globe.goTo(new WorldWind.Position(39.811046,-101.042378,1000));
                                         globe.goTo(new WorldWind.Position(results.Latitude,results.Longitude,Altitude));
                                     }
                                 });
@@ -102,8 +99,6 @@ requirejs(['./WorldWindShim',
 
                 // Retrieve a WmsLayerCapabilities object by the desired layer name
                 for (var n = 0; n < layerName.length; n++) {
-
-                    wmsLayerCapabilities = wms.getNamedLayers();
 
                     var wmsLayerCapability = wms.getNamedLayer(layerName[n]);
 
