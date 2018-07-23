@@ -75,7 +75,7 @@
             /*overflow: hidden;*/
         }
         .navbutton1 {
-            width: 150px;
+            width: 140px;
             font-size: 15px;
             height:40px;
             margin: 0;
@@ -95,7 +95,10 @@
 </head>
 <ul class="navul" style="height:60px;background:#000000;">
     <a class="navul" style="background:#000000;" href="http://aworldbridge.com">
-        <img class="banner" src="/images/NewWBBanner.jpg" style="width:400px;height:60px;"/>
+        <img class="banner" src="/images/NewWBBanner.jpg" style="width:480px;height:60px;"/>
+    </a>
+    <a href="/" style="width:110px;">
+        <button class="navbutton1"> Home Page </button>
     </a>
     <a href="/userhome" id ="Restore" style="width:110px;">
         <button class="navbutton1"> User Home </button>
@@ -106,7 +109,7 @@
     <a href="/recovery" style="width:110px;">
         <button class="navbutton1"> Restore </button>
     </a>
-    <div class="dropdown floating-Box">
+    <div class="dropdown floating-Box" style="float:right;margin-top:10px;margin-right:10px;">
         <button class="btn btn-primary btn-lg navbutton1" type="button" data-toggle="dropdown" id="Username"><%= firstName%>
             <span class="caret"></span></button>
         <ul id="userMenu" class="dropdown-menu" >
@@ -116,7 +119,7 @@
 <body>
 <div class="container">
     <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span> Approved Request </h1>
+        <h2><span class="fa fa-check-square-o"></span> Approved Request </h2>
         <h4><span class="fa fa-user"></span>&nbsp;<strong>Account Name</strong>: <%= user.username %></h4>
     </div>
 </div>
