@@ -197,66 +197,66 @@ requirejs(['./worldwind.min',
                 //     // $("#switchLayer").click();
                 //     // var altitude = wwd.layers[5].eyeText.text.substring(5, wwd.layers[5].eyeText.text.length - 3);
                 //
-                //     console.log(wwd.layers[5].eyeText.text);
-                //     console.log(wwd.layers[5].eyeText.text.replace(/Eye  |,| km/g, ''));
+                //     console.log(wwd.layers[7].renderables[0]);
                 // });
 
                 function highlightLayer(e) {
                     // console.log(this.id);
                     var category = $("input[name='category']:checked")[0].id;
 
-                    var color = {
-                        "grey": "rgba(192, 192, 192, 0.5)",
-                        "blue": "rgba(0, 0, 255, 0.5)",
-                        "green": "rgba(0, 255, 0, 0.5)",
-                        "yellow": "rgba(255, 255, 0, 0.5)",
-                        "orange": "rgba(255, 127.5, 0, 0.5)",
-                        "red": "rgba(255, 0, 0, 0.5)",
-                        'undefined': "rgba(255, 255, 255, 1)"
-                    };
+                    // var color = {
+                    //     "grey": "rgba(192, 192, 192, 0.5)",
+                    //     "blue": "rgba(0, 0, 255, 0.5)",
+                    //     "green": "rgba(0, 255, 0, 0.5)",
+                    //     "yellow": "rgba(255, 255, 0, 0.5)",
+                    //     "orange": "rgba(255, 127.5, 0, 0.5)",
+                    //     "red": "rgba(255, 0, 0, 0.5)",
+                    //     'undefined': "rgba(255, 255, 255, 1)"
+                    // };
 
                     var renderables = wwd.layers[this.id].renderables;
                     // console.log(renderables);
 
-                    var canvas = document.createElement("canvas");
-                    var img = canvas.getContext('2d');
-                    canvas.width = canvas.height = 30;
-                    img.beginPath();
-                    img.arc(15, 15, 15, 0, Math.PI * 2, true);
-                    img.fillStyle = "#ccff99";
-                    img.fill();
-                    var imgData = img.getImageData(0, 0, 30, 30);
+                    // var canvas = document.createElement("canvas");
+                    // var img = canvas.getContext('2d');
+                    // canvas.width = canvas.height = 30;
+                    // img.beginPath();
+                    // img.arc(15, 15, 15, 0, Math.PI * 2, true);
+                    // img.fillStyle = "#ccff99";
+                    // img.fill();
+                    // var imgData = img.getImageData(0, 0, 30, 30);
 
                     for (var i = 0; i < renderables.length; i++) {
-                        var circle = document.createElement("canvas"),
-                            ctx = circle.getContext('2d'),
-                            radius = 10,
-                            r2 = radius + radius;
+                        // var circle = document.createElement("canvas"),
+                        //     ctx = circle.getContext('2d'),
+                        //     radius = 10,
+                        //     r2 = radius + radius;
+                        //
+                        // circle.width = circle.height = r2;
+                        //
+                        // if (e.handleObj.type === "mouseover") {
+                        //     circle.width = circle.height = radius + radius + radius;
+                        //     ctx.putImageData(imgData, 0, 0);
+                        // }
+                        //
+                        // var gradient = ctx.createRadialGradient(radius, radius, 0, radius, radius, radius);
+                        // gradient.addColorStop(0, color[renderables[i].userProperties[category]]);
+                        //
+                        // ctx.beginPath();
+                        // ctx.arc(radius, radius, radius, 0, Math.PI * 2, true);
+                        //
+                        // ctx.fillStyle = gradient;
+                        // ctx.fill();
+                        // // ctx.strokeStyle = "rgb(255, 255, 255)";
+                        // // ctx.stroke();
+                        //
+                        // ctx.closePath();
+                        //
+                        // renderables[i].attributes.imageSource.image = circle;
+                        // renderables[i].updateImage = true;
 
-                        circle.width = circle.height = r2;
-
-                        if (e.handleObj.type === "mouseover") {
-                            circle.width = circle.height = radius + radius + radius;
-                            ctx.putImageData(imgData, 0, 0);
-                        }
-
-                        var gradient = ctx.createRadialGradient(radius, radius, 0, radius, radius, radius);
-                        gradient.addColorStop(0, color[renderables[i].userProperties[category]]);
-
-                        ctx.beginPath();
-                        ctx.arc(radius, radius, radius, 0, Math.PI * 2, true);
-
-                        ctx.fillStyle = gradient;
-                        ctx.fill();
-                        // ctx.strokeStyle = "rgb(255, 255, 255)";
-                        // ctx.stroke();
-
-                        ctx.closePath();
-
-                        renderables[i].attributes.imageSource.image = circle;
-                        renderables[i].updateImage = true;
+                        renderables[i].highlighted = (e.handleObj.type === "mouseover") ? true : false;
                     }
-
                 }
 
                 wwd.worldWindowController.__proto__.handleWheelEvent = function (event) {
@@ -448,7 +448,7 @@ requirejs(['./worldwind.min',
                                 placemarkAttributes.imageScale = 0.5;
 
                                 var highlightAttributes = new WorldWind.PlacemarkAttributes(placemarkAttributes);
-                                highlightAttributes.imageScale = 0.6;
+                                highlightAttributes.imageScale = 1.0;
 
                                 var placemarkPosition = new WorldWind.Position(resp.data[i].ylat, resp.data[i].xlong, 0);
                                 placemark[i] = new WorldWind.Placemark(placemarkPosition, false, placemarkAttributes);
