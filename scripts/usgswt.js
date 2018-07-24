@@ -448,7 +448,7 @@ requirejs(['./worldwind.min',
                                 placemarkAttributes.imageScale = 0.5;
 
                                 var highlightAttributes = new WorldWind.PlacemarkAttributes(placemarkAttributes);
-                                highlightAttributes.imageScale = 1.0;
+                                highlightAttributes.imageScale = 2.0;
 
                                 var placemarkPosition = new WorldWind.Position(resp.data[i].ylat, resp.data[i].xlong, 0);
                                 placemark[i] = new WorldWind.Placemark(placemarkPosition, false, placemarkAttributes);
