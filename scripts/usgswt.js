@@ -1,6 +1,7 @@
 requirejs(['./worldwind.min',
         './LayerManager',
-        './RadiantCircleTile'],
+        './RadiantCircleTile',
+        '../config/mainconf'],
     function (WorldWind,
               LayerManager,
               RadiantCircleTile) {
@@ -12,12 +13,15 @@ requirejs(['./worldwind.min',
                 var placemark = [];
                 var autoSuggestion = [];
 
+                // reading configGlobal from mainconf.js
+                var mainconfig = config;
+
                 // Tell WorldWind to log only warnings and errors.
                 WorldWind.Logger.setLoggingLevel(WorldWind.Logger.LEVEL_WARNING);
 
                 // Create the WorldWindow.
                 var wwd = new WorldWind.WorldWindow("canvasOne");
-                console.log(wwd.worldWindowController.__proto__);
+                // console.log(wwd.worldWindowController.__proto__);
 
                 // Create and add layers to the WorldWindow.
                 var layers = [
@@ -318,11 +322,10 @@ requirejs(['./worldwind.min',
 
                 function autoSwitch() {
                     var altitude = wwd.layers[5].eyeText.text.replace(/Eye  |,| km/g, '');
-                    // console.log(wwd.layers[5].eyeText.text.replace(/Eye  |,| km/g, ''));
 
-                    if (altitude <= 1000 && !$("#switchLayer").is(':checked')) {
+                    if (altitude <= mainconfig.eyeDistance_Heatmap && !$("#switchLayer").is(':checked')) {
                         $("#switchLayer").click();
-                    } else if (altitude > 1000 && $("#switchLayer").is(':checked')) {
+                    } else if (altitude > mainconfig.eyeDistance_Heatmap && $("#switchLayer").is(':checked')) {
                         $("#switchLayer").click();
                     }
                 }
@@ -332,7 +335,7 @@ requirejs(['./worldwind.min',
                    // console.log(altitude);
                     $("#layerMenu").empty();
                     // var z = 0;
-                   if (altitude <= 1000 && $("#switchLayer").is(':checked')) {
+                   if (altitude <= mainconfig.eyeDistance_PL && $("#switchLayer").is(':checked')) {
                        for (var i = 7; i < wwd.layers.length - 1; i++) {
                            // if (i === 174) {
                            //     console.log(wwd.layers[i].inCurrentFrame);
@@ -519,7 +522,8 @@ requirejs(['./worldwind.min',
                                     // HeatMapLayer.enabled = false;
                                     wwd.addLayer(HeatMapLayer);
 
-                                    console.log(wwd.layers);
+                                    wwd.goTo(new WorldWind.Position(37.0902, -95.7129, mainconfig.eyeDistance_initial));
+                                    // console.log(wwd.layers);
                                 }
                             }
                         }
@@ -530,7 +534,7 @@ requirejs(['./worldwind.min',
                     lookup: autoSuggestion,
                     lookupLimit: 5,
                     onSelect: function(suggestion) {
-                        console.log(suggestion);
+                        // console.log(suggestion);
                         wwd.goTo(new WorldWind.Position(suggestion.lati, suggestion.long, 50000));
                         $("#autoSuggestion").val("");
                     }

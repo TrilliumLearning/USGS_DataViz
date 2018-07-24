@@ -1,5 +1,5 @@
 // config/database.js
-module.exports = {
+var configGlobal = {
     'commondb_connection': {
         'multipleStatements': true,
         'connectionLimit' : 100,
@@ -38,6 +38,20 @@ module.exports = {
     'GeoData_Dir':'b',
 
     //trashfolder file--trashfolder
-    'Delete_Dir':'trashfolder'
+    'Delete_Dir':'trashfolder',
 
+    // uswtdb eye distance for placemark layer menu display (km)
+    'eyeDistance_PL': 1000,
+
+    // uswtdb eye distance for display heatmap until eyeDistance_Heatmap less than 4500 (km)
+    'eyeDistance_Heatmap': 4500,
+
+    // uswtdb initial eye distance (m)
+    'eyeDistance_initial': 6500000
 };
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = configGlobal;
+} else {
+    window.config = configGlobal;
+}
