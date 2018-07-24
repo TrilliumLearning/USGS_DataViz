@@ -17,6 +17,7 @@ requirejs(['./worldwind.min',
 
                 // Create the WorldWindow.
                 var wwd = new WorldWind.WorldWindow("canvasOne");
+                console.log(wwd.worldWindowController.__proto__);
 
                 // Create and add layers to the WorldWindow.
                 var layers = [
@@ -182,6 +183,167 @@ requirejs(['./worldwind.min',
                     }
                 });
 
+                $("#test").on('click', function () {
+                    // console.log(wwd.layers[7].isLayerInView(wwd.drawContext));
+                    // var altitude = wwd.layers[5].eyeText.text;
+                    // console.log(altitude.substring(5, altitude.length - 3));
+                    // for (var i = 7; i < wwd.layers.length; i++) {
+                    //     console.log(wwd.layers[i].inCurrentFrame);
+                    // }
+                    console.log($(".layers"));
+                });
+
+                function highlightLayer(e) {
+                    // console.log(this.id);
+                    var category = $("input[name='category']:checked")[0].id;
+
+                    var color = {
+                        "grey": "rgba(192, 192, 192, 0.5)",
+                        "blue": "rgba(0, 0, 255, 0.5)",
+                        "green": "rgba(0, 255, 0, 0.5)",
+                        "yellow": "rgba(255, 255, 0, 0.5)",
+                        "orange": "rgba(255, 127.5, 0, 0.5)",
+                        "red": "rgba(255, 0, 0, 0.5)",
+                        'undefined': "rgba(255, 255, 255, 1)"
+                    };
+
+                    var renderables = wwd.layers[this.id].renderables;
+                    // console.log(renderables);
+
+                    for (var i = 0; i < renderables.length; i++) {
+                        var circle = document.createElement("canvas"),
+                            ctx = circle.getContext('2d'),
+                            radius = 10,
+                            r2 = radius + radius;
+
+                        circle.width = circle.height = r2;
+
+                        if (e.handleObj.type === "mouseover") {
+                            // circle.width = circle.height = radius + radius + radius;
+                            ctx.beginPath();
+                            ctx.arc(radius, radius, radius * 3, 0, Math.PI * 2, true);
+                            ctx.fillStyle = "#ccff99";
+                            ctx.fill();
+                        }
+
+                        var gradient = ctx.createRadialGradient(radius, radius, 0, radius, radius, radius);
+                        gradient.addColorStop(0, color[renderables[i].userProperties[category]]);
+
+                        ctx.beginPath();
+                        ctx.arc(radius, radius, radius, 0, Math.PI * 2, true);
+
+                        ctx.fillStyle = gradient;
+                        ctx.fill();
+                        // ctx.strokeStyle = "rgb(255, 255, 255)";
+                        // ctx.stroke();
+
+                        ctx.closePath();
+
+                        renderables[i].attributes.imageSource.image = circle;
+                        renderables[i].updateImage = true;
+                    }
+
+                }
+
+                // $(".layers").on('mouseover', function () {
+                //     console.log("A");
+                // });
+
+                // $(".layers").on('mouseleave', function () {
+                //     console.log("B");
+                // });
+
+                wwd.worldWindowController.__proto__.handleWheelEvent = function (event) {
+                    var navigator = this.wwd.navigator;
+                    // Normalize the wheel delta based on the wheel delta mode. This produces a roughly consistent delta across
+                    // browsers and input devices.
+                    var normalizedDelta;
+                    if (event.deltaMode === WheelEvent.DOM_DELTA_PIXEL) {
+                        normalizedDelta = event.deltaY;
+                    } else if (event.deltaMode === WheelEvent.DOM_DELTA_LINE) {
+                        normalizedDelta = event.deltaY * 40;
+                    } else if (event.deltaMode === WheelEvent.DOM_DELTA_PAGE) {
+                        normalizedDelta = event.deltaY * 400;
+                    }
+
+                    // Compute a zoom scale factor by adding a fraction of the normalized delta to 1. When multiplied by the
+                    // navigator's range, this has the effect of zooming out or zooming in depending on whether the delta is
+                    // positive or negative, respectfully.
+                    var scale = 1 + (normalizedDelta / 1000);
+
+                    // Apply the scale to this navigator's properties.
+                    navigator.range *= scale;
+                    this.applyLimits();
+                    this.wwd.redraw();
+
+                    layerMenu();
+                };
+
+                // wwd.worldWindowController.__proto__.handlePanOrDrag3D = function (recognizer) {
+                //     var state = recognizer.state,
+                //         tx = recognizer.translationX,
+                //         ty = recognizer.translationY;
+                //
+                //     var navigator = this.wwd.navigator;
+                //     if (state === WorldWind.BEGAN) {
+                //         this.lastPoint.set(0, 0);
+                //     } else if (state === WorldWind.CHANGED) {
+                //         // Convert the translation from screen coordinates to arc degrees. Use this navigator's range as a
+                //         // metric for converting screen pixels to meters, and use the globe's radius for converting from meters
+                //         // to arc degrees.
+                //         var canvas = this.wwd.canvas,
+                //             globe = this.wwd.globe,
+                //             globeRadius = WWMath.max(globe.equatorialRadius, globe.polarRadius),
+                //             distance = WWMath.max(1, navigator.range),
+                //             metersPerPixel = WWMath.perspectivePixelSize(canvas.clientWidth, canvas.clientHeight, distance),
+                //             forwardMeters = (ty - this.lastPoint[1]) * metersPerPixel,
+                //             sideMeters = -(tx - this.lastPoint[0]) * metersPerPixel,
+                //             forwardDegrees = (forwardMeters / globeRadius) * Angle.RADIANS_TO_DEGREES,
+                //             sideDegrees = (sideMeters / globeRadius) * Angle.RADIANS_TO_DEGREES;
+                //
+                //         // Apply the change in latitude and longitude to this navigator, relative to the current heading.
+                //         var sinHeading = Math.sin(navigator.heading * Angle.DEGREES_TO_RADIANS),
+                //             cosHeading = Math.cos(navigator.heading * Angle.DEGREES_TO_RADIANS);
+                //
+                //         navigator.lookAtLocation.latitude += forwardDegrees * cosHeading - sideDegrees * sinHeading;
+                //         navigator.lookAtLocation.longitude += forwardDegrees * sinHeading + sideDegrees * cosHeading;
+                //         this.lastPoint.set(tx, ty);
+                //         this.applyLimits();
+                //         this.wwd.redraw();
+                //     }
+                // };
+
+                function layerMenu() {
+                   var altitude = wwd.layers[5].eyeText.text.substring(5, wwd.layers[5].eyeText.text.length - 3);
+                   // console.log(altitude);
+                    $("#layerMenu").empty();
+                    var z = 0;
+                   if (altitude <= 1000) {
+                       for (var i = 7; i < wwd.layers.length; i++) {
+                           // if (i === 174) {
+                           //     console.log(wwd.layers[i].inCurrentFrame);
+                           // }
+
+                           if (wwd.layers[i].inCurrentFrame) {
+                               // console.log("A");
+                                // console.log(wwd.layers[i].displayName);
+
+                                $("#layerMenu").append($("<div id='" + i + "' class='layers'>" +
+                                    "<p>" + wwd.layers[i].displayName + "</p>" +
+                                    "<p>&nbsp;&nbsp;&nbsp;&nbsp;Year Online: " + wwd.layers[i].renderables[0].userProperties.p_year + "</p>" +
+                                    "<p>&nbsp;&nbsp;&nbsp;&nbsp;Rated Capacity: " + wwd.layers[i].renderables[0].userProperties.p_avgcap + "</p>" +
+                                    "</div>"));
+                                z++;
+                           }
+
+                           if (i === wwd.layers.length - 1) {
+                               $(".layers").on('mouseenter', highlightLayer);
+                               $(".layers").on('mouseleave', highlightLayer);
+                           }
+                       }
+                   }
+                }
+
                 function handleMouseMove(o) {
 
                     if ($("#popover").is(":visible")) {
@@ -195,17 +357,6 @@ requirejs(['./worldwind.min',
 
                     // Perform the pick. Must first convert from window coordinates to canvas coordinates, which are
                     // relative to the upper left corner of the canvas rather than the upper left corner of the page.
-
-                    // var xOffset = Math.max(document.documentElement.scrollLeft, document.body.scrollLeft);
-                    // var yOffset = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
-                    //
-                    // var popover = document.getElementById('popover');
-                    // popover.style.position = "absolute";
-                    // popover.style.left = (x + xOffset) + 'px';
-                    // popover.style.top = (y + yOffset) + 'px';
-                    //
-                    // $("#popover").show();
-
 
                     var pickList = wwd.pick(wwd.canvasCoordinates(x, y));
                     // console.log(pickList.objects);
