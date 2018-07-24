@@ -183,15 +183,19 @@ requirejs(['./worldwind.min',
                     }
                 });
 
-                $("#test").on('click', function () {
-                    // console.log(wwd.layers[7].isLayerInView(wwd.drawContext));
-                    // var altitude = wwd.layers[5].eyeText.text;
-                    // console.log(altitude.substring(5, altitude.length - 3));
-                    // for (var i = 7; i < wwd.layers.length; i++) {
-                    //     console.log(wwd.layers[i].inCurrentFrame);
-                    // }
-                    console.log($(".layers"));
-                });
+                // $("#test").on('click', function () {
+                //     // console.log(wwd.layers[7].isLayerInView(wwd.drawContext));
+                //     // var altitude = wwd.layers[5].eyeText.text;
+                //     // console.log(altitude.substring(5, altitude.length - 3));
+                //     // for (var i = 7; i < wwd.layers.length; i++) {
+                //     //     console.log(wwd.layers[i].inCurrentFrame);
+                //     // }
+                //     // $("#switchLayer").click();
+                //     // var altitude = wwd.layers[5].eyeText.text.substring(5, wwd.layers[5].eyeText.text.length - 3);
+                //
+                //     console.log(wwd.layers[5].eyeText.text);
+                //     console.log(wwd.layers[5].eyeText.text.replace(/Eye  |,| km/g, ''));
+                // });
 
                 function highlightLayer(e) {
                     // console.log(this.id);
@@ -210,6 +214,15 @@ requirejs(['./worldwind.min',
                     var renderables = wwd.layers[this.id].renderables;
                     // console.log(renderables);
 
+                    var canvas = document.createElement("canvas");
+                    var img = canvas.getContext('2d');
+                    canvas.width = canvas.height = 30;
+                    img.beginPath();
+                    img.arc(15, 15, 15, 0, Math.PI * 2, true);
+                    img.fillStyle = "#ccff99";
+                    img.fill();
+                    var imgData = img.getImageData(0, 0, 30, 30);
+
                     for (var i = 0; i < renderables.length; i++) {
                         var circle = document.createElement("canvas"),
                             ctx = circle.getContext('2d'),
@@ -219,11 +232,8 @@ requirejs(['./worldwind.min',
                         circle.width = circle.height = r2;
 
                         if (e.handleObj.type === "mouseover") {
-                            // circle.width = circle.height = radius + radius + radius;
-                            ctx.beginPath();
-                            ctx.arc(radius, radius, radius * 3, 0, Math.PI * 2, true);
-                            ctx.fillStyle = "#ccff99";
-                            ctx.fill();
+                            circle.width = circle.height = radius + radius + radius;
+                            ctx.putImageData(imgData, 0, 0);
                         }
 
                         var gradient = ctx.createRadialGradient(radius, radius, 0, radius, radius, radius);
@@ -244,14 +254,6 @@ requirejs(['./worldwind.min',
                     }
 
                 }
-
-                // $(".layers").on('mouseover', function () {
-                //     console.log("A");
-                // });
-
-                // $(".layers").on('mouseleave', function () {
-                //     console.log("B");
-                // });
 
                 wwd.worldWindowController.__proto__.handleWheelEvent = function (event) {
                     var navigator = this.wwd.navigator;
@@ -276,6 +278,7 @@ requirejs(['./worldwind.min',
                     this.applyLimits();
                     this.wwd.redraw();
 
+                    autoSwitch();
                     layerMenu();
                 };
 
@@ -313,30 +316,41 @@ requirejs(['./worldwind.min',
                 //     }
                 // };
 
+                function autoSwitch() {
+                    var altitude = wwd.layers[5].eyeText.text.replace(/Eye  |,| km/g, '');
+                    // console.log(wwd.layers[5].eyeText.text.replace(/Eye  |,| km/g, ''));
+
+                    if (altitude <= 1000 && !$("#switchLayer").is(':checked')) {
+                        $("#switchLayer").click();
+                    } else if (altitude > 1000 && $("#switchLayer").is(':checked')) {
+                        $("#switchLayer").click();
+                    }
+                }
+
                 function layerMenu() {
                    var altitude = wwd.layers[5].eyeText.text.substring(5, wwd.layers[5].eyeText.text.length - 3);
                    // console.log(altitude);
                     $("#layerMenu").empty();
-                    var z = 0;
-                   if (altitude <= 1000) {
-                       for (var i = 7; i < wwd.layers.length; i++) {
+                    // var z = 0;
+                   if (altitude <= 1000 && $("#switchLayer").is(':checked')) {
+                       for (var i = 7; i < wwd.layers.length - 1; i++) {
                            // if (i === 174) {
                            //     console.log(wwd.layers[i].inCurrentFrame);
                            // }
 
                            if (wwd.layers[i].inCurrentFrame) {
-                               // console.log("A");
+                                // console.log("A");
                                 // console.log(wwd.layers[i].displayName);
-
+                                // console.log(i);
                                 $("#layerMenu").append($("<div id='" + i + "' class='layers'>" +
                                     "<p>" + wwd.layers[i].displayName + "</p>" +
                                     "<p>&nbsp;&nbsp;&nbsp;&nbsp;Year Online: " + wwd.layers[i].renderables[0].userProperties.p_year + "</p>" +
                                     "<p>&nbsp;&nbsp;&nbsp;&nbsp;Rated Capacity: " + wwd.layers[i].renderables[0].userProperties.p_avgcap + "</p>" +
                                     "</div>"));
-                                z++;
+                                // z++;
                            }
 
-                           if (i === wwd.layers.length - 1) {
+                           if (i === wwd.layers.length - 2) {
                                $(".layers").on('mouseenter', highlightLayer);
                                $(".layers").on('mouseleave', highlightLayer);
                            }
@@ -457,7 +471,7 @@ requirejs(['./worldwind.min',
 
                                 if (i === 0 || resp.data[i].p_name !== resp.data[i - 1].p_name) {
                                     var placemarkLayer = new WorldWind.RenderableLayer(resp.data[i].p_name);
-                                    // placemarkLayer.enabled = false;
+                                    placemarkLayer.enabled = false;
                                     wwd.addLayer(placemarkLayer);
                                     wwd.layers[wwd.layers.length - 1].addRenderable(placemark[i]);
                                     autoSuggestion.push({"value": resp.data[i].p_name, "lati": resp.data[i].ylat, "long": resp.data[i].xlong});
@@ -502,7 +516,7 @@ requirejs(['./worldwind.min',
                                         scale: ['rgba(255, 255, 255, 0)', 'rgba(172, 211, 236, 0.25)', 'rgba(204, 255, 255, 0.5)', 'rgba(77, 158, 25, 0.5)']
                                     });
 
-                                    HeatMapLayer.enabled = false;
+                                    // HeatMapLayer.enabled = false;
                                     wwd.addLayer(HeatMapLayer);
 
                                     console.log(wwd.layers);
