@@ -320,9 +320,9 @@ requirejs(['./worldwind.min',
                     var altitude = wwd.layers[5].eyeText.text.replace(/Eye  |,| km/g, '');
                     // console.log(wwd.layers[5].eyeText.text.replace(/Eye  |,| km/g, ''));
 
-                    if (altitude <= 1000 && !$("#switchLayer").is(':checked')) {
+                    if (altitude <= 4500 && !$("#switchLayer").is(':checked')) {
                         $("#switchLayer").click();
-                    } else if (altitude > 1000 && $("#switchLayer").is(':checked')) {
+                    } else if (altitude > 4500 && $("#switchLayer").is(':checked')) {
                         $("#switchLayer").click();
                     }
                 }
