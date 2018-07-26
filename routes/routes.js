@@ -505,7 +505,7 @@ module.exports = function (app, passport) {
             //newUser.id = rows.insertId;
             if (err) {
                 console.log(err);
-                res.json({"error": true, "message": "An unexpected error occurred !"});
+                res.json({"error": true, "message": "An unexpected error occurred!"});
                 res.end();
             } else {
                 var username = req.body.username;
@@ -513,6 +513,7 @@ module.exports = function (app, passport) {
                 var text = 'to sign up an account with this email.';
                 var url = "http://" + req.headers.host + "/verify/";
                 sendToken(username, subject, text, url, res);
+                res.render('login.ejs');
             }
         });
     });
@@ -1336,6 +1337,7 @@ module.exports = function (app, passport) {
         res.redirect('/userHome');
         res.render('userHome', {
             user: req.user // get the user out of session and pass to template
+
         });
     });
 
