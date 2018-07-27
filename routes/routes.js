@@ -244,6 +244,7 @@ module.exports = function (app, passport) {
     // =====================================
     // USER Home Section ===================
     // =====================================
+
     app.get('/userhome', isLoggedIn, function (req, res) {
         let myStat = "SELECT userrole FROM UserLogin WHERE username = '" + req.user.username + "';";
         let state2 = "SELECT firstName FROM UserProfile WHERE username = '" + req.user.username + "';";
@@ -255,6 +256,24 @@ module.exports = function (app, passport) {
                 console.log("Error1")
             } else {
                 res.render('userHome.ejs', {
+                    user: req.user, // get the user out of session and pass to template
+                    firstName: results[1][0].firstName
+                });
+            }
+        });
+    });
+
+    app.get('/homepage', isLoggedIn, function (req, res) {
+        let myStat = "SELECT userrole FROM UserLogin WHERE username = '" + req.user.username + "';";
+        let state2 = "SELECT firstName FROM UserProfile WHERE username = '" + req.user.username + "';";
+
+        con_CS.query(myStat + state2, function (err, results, fields) {
+            if (!results[0][0].userrole) {
+                console.log("Error2");
+            } else if (!results[1][0].firstName) {
+                console.log("Error1")
+            } else {
+                res.render('homepageL.ejs', {
                     user: req.user, // get the user out of session and pass to template
                     firstName: results[1][0].firstName
                 });
@@ -285,21 +304,6 @@ module.exports = function (app, passport) {
     // =====================================
     // REQUEST QUERY   =====================
     // =====================================
-    app.get('/deleteRow2', isLoggedIn, function (req, res) {
-        del_recov("Pending", "Deletion failed!", "/dataHistory", req, res);
-    });
-
-    app.get('/recoverRow2', isLoggedIn, function (req, res) {
-        del_recov("Active", "Recovery failed!", "/dataHistory", req, res);
-    });
-
-    app.get('/recovery2', isLoggedIn, function (req, res) {
-        // render the page and pass in any flash data if it exists
-        res.render('recovery_dataHistory.ejs', {
-            user: req.user,
-            message: req.flash('restoreMessage')
-        });
-    });
 
     // show the data history ejs
     app.get('/dataHistory', isLoggedIn, function (req, res) {
@@ -750,7 +754,7 @@ module.exports = function (app, passport) {
     let edit_User, edit_firstName, edit_lastName, edit_userrole, edit_status, edit_city;
     app.get('/editUserQuery', isLoggedIn, function (req, res) {
 
-        // edit_User = req.query.Username;
+        edit_User = req.query.Username;
         edit_firstName = req.query.First_Name;
         edit_city = req.query.City;
         edit_lastName = req.query.Last_Name;
@@ -785,12 +789,11 @@ module.exports = function (app, passport) {
                 status: req.body.Status,
                 newPassword: bcrypt.hashSync(req.body.newPassword, null, null)
             };
-
-            myStat = "UPDATE UserLogin SET password = ?, userrole = ?, status = ?, modifiedUser = '" + req.user.username + "', dateModified = '" + dateTime + "' WHERE username = ?";
             mylogin = "UPDATE UserProfile SET firstName = ?, lastName = ?";
-            myVal = [updatedUserPass.firstName, updatedUserPass.lastName, updatedUserPass.newPassword, updatedUserPass.userrole, updatedUserPass.status, edit_User];
-            updateDBNres(myStat, myVal, mylogin, "Update failed!", "/userManagement", res);
+            myStat = "UPDATE UserLogin SET password = ?, userrole = ?, status = ?, modifiedUser = '" + req.user.username + "', dateModified = '" + dateTime + "' WHERE username = ?";
 
+            myVal = [updatedUserPass.firstName, updatedUserPass.lastName, updatedUserPass.newPassword, updatedUserPass.userrole, updatedUserPass.status, edit_User];
+            updateDBNres(mylogin + myStat, myVal, "Update failed!", "/userManagement", res);
         } else {
             let updatedUser = {
                 firstName: req.body.First_Name,
@@ -798,12 +801,11 @@ module.exports = function (app, passport) {
                 userrole: req.body.User_Role,
                 status: req.body.Status
             };
-
-            myStat = "UPDATE UserLogin SET userrole = ?, status = ?, modifiedUser = '" + req.user.username + "', dateModified = '" + dateTime + "'  WHERE username = ?";
             mylogin = "UPDATE UserProfile SET firstName = ?, lastName = ?";
-            myVal = [updatedUser.firstName, updatedUser.lastName, updatedUser.userrole, updatedUser.status, edit_User];
+            myStat = "UPDATE UserLogin SET userrole = ?, status = ?, modifiedUser = '" + req.user.username + "', dateModified = '" + dateTime + "'  WHERE username = ?";
 
-            updateDBNres(myStat, myVal, mylogin, "Update failed!", "/userManagement", res);
+            myVal = [updatedUser.firstName, updatedUser.lastName, updatedUser.userrole, updatedUser.status, edit_User];
+            updateDBNres(myStat + mylogin, myVal, "Update failed!", "/userManagement", res);
         }
 
     });
