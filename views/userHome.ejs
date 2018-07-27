@@ -135,7 +135,7 @@
             <input class="date" type="text" placeholder="Select Date">
         </div>
     </div>
-    <div class="center">
+    <div class="center" id="searchname">
         <h4 class="floatingBox"><strong>User Name:&nbsp;</strong></h4>
         <div class="name">
             <h5 class="floating-Box">First Name:&nbsp;&nbsp;</h5>
@@ -211,8 +211,6 @@
     var UserRole = "<%= user.userrole %>";
     var scoutingTransactionID = [];
     var trapTransactionID = [];
-    var markers = [];
-    var map;
 
     $(document).ready(function() {
 
@@ -229,20 +227,12 @@
                 $("#userMenu").empty();
                 $("#userMenu").append(DropMenu)
 
-                // var sta = document.getElementById("editButton").value;
-                // sta = "Approve";
-                // $("#editButton").empty();
-                // $("#editButton").append(sta);
             } else if (UserRole === "Regular") {
                 DropMenu = "<li><a href=\"/userprofile\">Profile</a></li>\n" +
                     "\t\t\t<li><a href=\"/signout\">Sign Out</a></li>";
                 $("#userMenu").empty();
                 $("#userMenu").append(DropMenu)
-
-                var sta1 = document.getElementById("editButton").value;
-                sta1 = "Edit";
-                $("#editButton").empty();
-                $("#editButton").append(sta1)
+                document.getElementById('searchname').style.display = "none";
             }
 
             table.clear();
