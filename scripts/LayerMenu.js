@@ -50,6 +50,8 @@ requirejs(['./WorldWindShim',
         var layerName = [];
         var preloadLayer = [];
         var layers = globe.layers;
+        var checked = [];
+        var unchecked = [];
 
         $(document).ready(function () {
             $(".wmsLayer").each(function (i) {
@@ -61,34 +63,42 @@ requirejs(['./WorldWindShim',
             layerName = strs.split(",");
 
             $('.wmsLayer').click(function () {
+                var layer1 = $(this).val();
+                // console.log(layer1);
+                if ($('.wmsLayer').is(":checkbox:checked")) {
+                    checked.push(layer1);
+                    console.log(checked);
+                } else if ($('.wmsLayer').is(":not(:checked)")){
+                    unchecked.push(layer1);
+                    var index = checked.indexOf(layer1);
+                    checked.splice(index,1)
+                    console.log(unchecked);
+                }
+                // console.log(layerar);
                 for (var a = 0; a < layers.length; a++) {
-                    if ($('.wmsLayer').is(":checkbox:checked")) {
                         $(':checkbox:checked').each(function () {
                             if (layers[a].displayName === $(this).val()) {
                                 layers[a].enabled = true;
-                                var layername = "layername=" + layers[a].displayName;
-                                $.ajax({
-                                    url: 'position',
-                                    type: 'GET',
-                                    dataType: 'json',
-                                    data:layername,
-                                    success: function (results) {
-                                        var Altitude = results.Altitude * 1000;
-                                        globe.goTo(new WorldWind.Position(results.Latitude,results.Longitude,Altitude));
-                                    }
-                                });
+
                             }
                         });
-                    }
-
-                    if ($('.wmsLayer').is(":not(:checked)")) {
                         $(":checkbox:not(:checked)").each(function () {
                             if (layers[a].displayName === $(this).val()) {
                                 layers[a].enabled = false;
                             }
                         })
-                    }
                 }
+                var layername = "layername=" + layer1;
+                $.ajax({
+                    url: 'position',
+                    type: 'GET',
+                    dataType: 'json',
+                    data:layername,
+                    success: function (results) {
+                        var Altitude = results.Altitude * 1000;
+                        globe.goTo(new WorldWind.Position(results.Latitude,results.Longitude,Altitude));
+                    }
+                });
 
             });
 
