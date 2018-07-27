@@ -47,7 +47,7 @@ var configGlobal = {
     'eyeDistance_Heatmap': 4500,
 
     // uswtdb initial eye distance (m)
-    'eyeDistance_initial': 6500000
+    'eyeDistance_initial': 4550000
 };
 
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
