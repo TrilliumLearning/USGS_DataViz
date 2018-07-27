@@ -315,9 +315,30 @@
                 success: function (results) {
                     console.log(results);
                     for (var i = 0; i < results.length; i++) {
-                        if(results[i].Status === "Pending") {
-                            if (UserRole === "Regular") {
-                                if (results[i].UID === username) {
+                        if (UserRole === "Regular") {
+                            if (results[i].UID === username) {
+                                table.row.add([
+                                    results[i].Date,
+                                    results[i].UID,
+                                    results[i].RID,
+                                    results[i].LayerCategory,
+                                    results[i].ContinentName,
+                                    results[i].CountryName,
+                                    results[i].StateName,
+                                    results[i].FirstLayer,
+                                    results[i].FirstOther,
+                                    results[i].SecondLayer,
+                                    results[i].SecondOther,
+                                    results[i].LayerName,
+                                    results[i].Layer_Description,
+                                    results[i].LayerFormat,
+                                    results[i].Layer_Uploader,
+                                    results[i].Layer_Uploader_name,
+                                    results[i].Status
+                                    ]).draw(false);
+                                }
+                            } else {
+                                if (results[i].Status === "Pending") {
                                     table.row.add([
                                         results[i].Date,
                                         results[i].UID,
@@ -338,28 +359,7 @@
                                         results[i].Status
                                     ]).draw(false);
                                 }
-                            } else {
-                                table.row.add([
-                                    results[i].Date,
-                                    results[i].UID,
-                                    results[i].RID,
-                                    results[i].LayerCategory,
-                                    results[i].ContinentName,
-                                    results[i].CountryName,
-                                    results[i].StateName,
-                                    results[i].FirstLayer,
-                                    results[i].FirstOther,
-                                    results[i].SecondLayer,
-                                    results[i].SecondOther,
-                                    results[i].LayerName,
-                                    results[i].Layer_Description,
-                                    results[i].LayerFormat,
-                                    results[i].Layer_Uploader,
-                                    results[i].Layer_Uploader_name,
-                                    results[i].Status
-                                ]).draw(false);
                             }
-                        }
                     }
                 }
             });

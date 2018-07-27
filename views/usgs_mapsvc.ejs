@@ -14,7 +14,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" type="text/javascript"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script data-main="../scripts/LayerMenu" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.17/require.min.js"></script>
-    <!--<script src="../scripts/LayerMenu.js"></script>-->
+
     <style>
         #homepage {
             font-size: 16px;
@@ -100,7 +100,7 @@
                     <p>
                         <select id="myListContinent"  style="width:180px; height:21px; background:white" onchange="ChangeSelectList(this.value)">
                             <option selected="selected" value="AL">All Layer</option>
-                            <!--<option>United States of America</option>-->
+                            <!--<option value="AC">All Continents</option>-->
                             <!--<option value="AL" selected="selected" class="a">All Layer</option>-->
                         </select>
                     </p>
@@ -109,7 +109,6 @@
                     <p>
                         <select id="myListCountry"  style="width:180px; height:21px; background:lightgray" onchange="ChangeStateList(this.value)" disabled>
                             <option selected="selected" value="AL">All Layer</option>
-                            <!--<option>-Select a State-</option>-->
                         </select>
                     </p>
                 </div>
@@ -304,8 +303,7 @@
                                         checkboxlabelG.appendChild(checkboxspanG);
                                         document.getElementsByClassName("panel-body " + res[i].SecondLayer)[0].appendChild(checkboxdivG);
                                         comparing3.push([res[i].ThirdLayer, res[i].LayerName]);
-                                        classname.push([res[i].ThirdLayer +" " + statenamestr + countrynamestr + continentnamestr, statenamestr]);
-
+                                        classname.push([res[i].ThirdLayer +" " + continentnamestr + " " + countrynamestr + " " + statenamestr, statenamestr]);
                                     }
 
                                 } else {
@@ -315,8 +313,8 @@
                                         document.getElementsByClassName("input" + res[i].ThirdLayer)[0].setAttribute("value", comparing3[c][1]);
 
                                     }
-                                    if (classname[c][0] !== res[i].ThirdLayer +" "+ statenamestr + countrynamestr + continentnamestr) {
-                                        classname[c][0] += " " + statenamestr + countrynamestr + continentnamestr;
+                                    if (classname[c][0] !== res[i].ThirdLayer +" " + continentnamestr + " " + countrynamestr + " " + statenamestr) {
+                                        classname[c][0] += " " + continentnamestr + " " + countrynamestr + " " + statenamestr;
                                         // classname[c][1] += res[i].CityName;
                                         document.getElementsByClassName("State " + res[i].ThirdLayer)[0].className = "State " + classname[c][0];
 
