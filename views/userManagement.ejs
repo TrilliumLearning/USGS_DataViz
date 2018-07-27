@@ -123,7 +123,7 @@
 <body>
 <div class="container center">
     <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span> User Management </h1>
+        <h1><span class="fa fa-list"></span> USGS Data Visualization - User Management </h1>
         <h4><span class="fa fa-user"></span>&nbsp;<strong>Account Name</strong>:  <%= user.username %> </h4>
     </div>
 </div>
@@ -238,19 +238,6 @@
                     dateFormat: "Y-m-d",
                     time_24hr: true
                 });
-
-                if (UserRol === "Admin") {
-                    DropMenu = "<li><a href=\"/userprofile\">Profile</a></li>\n" +
-                        "\t\t\t<li><a href=\"/userManagement\">User Management</a></li>\n" +
-                        "\t\t\t<li><a href=\"/signout\">Sign Out</a></li>";
-                    $("#userMenu").empty();
-                    $("#userMenu").append(DropMenu)
-                } else if (UserRol === "Regular") {
-                    DropMenu = "<li><a href=\"/userprofile\">Profile</a></li>\n" +
-                        "\t\t\t<li><a href=\"/signout\">Sign Out</a></li>";
-                    $("#userMenu").empty();
-                    $("#userMenu").append(DropMenu)
-                }
             });
 
             $('#dataDisplay tbody').on('click', 'tr', function () {
@@ -278,12 +265,25 @@
                 } else if (rowSelected.length === 0) {
                     confirm("No rows have been selected---- please choose ONE.")
                 } else {
-                    var getvalue = table.rows('.selected').data();
-                    // console.log(getvalue);
-                    localStorage.setItem("getvalue",JSON.stringify(getvalue[0]));
-                    // alert(getvalue[i][0]);
-                    // alert(getvalue[i][4]);
-                    window.location.replace('/editUser')
+                    var tstring = "";
+                    for (var i = 0; i < thArray.length; i++) {
+                        if (i === 0) {
+                            tstring += thArray[i] + "=" + rowSelected[0][i];
+                        } else {
+                            tstring += "&" + thArray[i] + "=" + rowSelected[0][i];
+                        }
+                    }
+//                    console.log("tstring for loop: " + tstring);
+                    $.ajax({
+                        url: '/editUserQuery',
+                        type: 'GET',
+                        dataType: 'json',
+                        async: false,
+                        data: tstring,
+                        success: function (result) {
+                            window.location.replace('/editUser')
+                        }
+                    })
                 }
             });
 
@@ -310,7 +310,36 @@
                     })
                 } else { return false;}
             });
+            $("#showButton").on("click", function () {
+                table.clear();
+                table.draw();
+                queryAndDisplay("statusDel=" + "Active");
+                $(".clearForm input[type='text']").val('');
+                $(".date").val('');
+                $("input:radio[class^=radio2]").each(function(i) {
+                    this.checked = false;
+                })
+            });
         });
+        function dropDown() {
+            console.log(UserRole);
+            if (UserRole === "Admin") {
+                document.getElementById("userMenuAdmin").classList.toggle("show");
+            } else if (UserRole === "Regular") {
+                document.getElementById("userMenuRegular").classList.toggle("show");
+            }
+        }
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropbutton')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
 
         function query() {
             var dateCreatedFrom = document.getElementsByClassName("datePicker")[0].value;
