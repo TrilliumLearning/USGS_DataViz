@@ -16,6 +16,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="../scripts/autocomplete.js"></script>
+    <!--<script src="../config/mainconf.js"></script>-->
     <script data-main="../scripts/usgswt.js" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.17/require.min.js"></script>
     <style>
         #homepage {
@@ -129,6 +130,19 @@
             flex-wrap: wrap;
             justify-content: center;
         }
+
+        .sortButton {
+            background-color: rgb(128, 128, 128);
+            color: white;
+            border-radius: 25%;
+            float: right;
+            outline: none;
+            font-size: 12px;
+        }
+
+        .sortButton:hover {
+            background-color: rgb(0, 128, 255);
+        }
     </style>
 </head>
 <body>
@@ -153,7 +167,7 @@
                 <div id="buttons">
                     Density Heatmap
                     <label class="switch">
-                        <input type="checkbox" id="switchLayer" checked>
+                        <input type="checkbox" id="switchLayer">
                         <span class="slider round"></span>
                     </label>
                     Point Locations
@@ -175,9 +189,20 @@
                         <br><br>
                         <div>
                             <h4>Smart Search</h4>
-                            <input id="autoSuggestion" style="font-size: 15px; width: 235px">
+                            <input id="autoSuggestion" placeholder="Search by Project Name" style="font-size: 15px; width: 235px">
                         </div>
                         <br><br>
+
+                        <!--<button type="button" id="test"></button>-->
+                    </div>
+                    <div id="layerMenuButton" style="width: 235px; height: 50px; overflow: scroll;" hidden>
+                        <p style="float: left;"><span id="projectNumber"></span> Projects</p>
+                        <button data-status="false" id="capacity" class="sortButton">Cap.<span></span></button>
+                        <button data-status="false" id="year" class="sortButton">Year<span></span></button>
+                        <button data-status="true" id="name" class="sortButton" style="background-color: rgb(0, 128, 255)">Name<span> &#9650;</span></button>
+                    </div>
+                    <div id="layerMenu" style="width: 235px; height: 450px; overflow: scroll;">
+
                     </div>
                 </div>
             </div>
