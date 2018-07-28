@@ -20,40 +20,6 @@
     <script data-main="../scripts/usgswt.js" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.17/require.min.js"></script>
     <style>
         body {padding-bottom: 80px;}
-        #homepage {
-            font-size: 16px;
-            color: white;
-            line-height: 1.2;
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: -moz-box;
-            display: -ms-flexbox;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 0 20px;
-            width: 240px;
-            height: 50px;
-            margin-bottom:10px;
-            border-radius: 25px;
-            background: #9152f8;
-            background: -webkit-linear-gradient(bottom, #7579ff, #b224ef);
-            background: -o-linear-gradient(bottom, #7579ff, #b224ef);
-            background: -moz-linear-gradient(bottom, #7579ff, #b224ef);
-            background: linear-gradient(bottom, #7579ff, #b224ef);
-            position: relative;
-            z-index: 1;
-            -webkit-transition: all 0.4s;
-            -o-transition: all 0.4s;
-            -moz-transition: all 0.4s;
-            transition: all 0.4s;
-        }
-        #homepage:hover{
-            color: white;
-        }
-        #homepage:hover:before{
-            opacity: 0;
-        }
         .switch {
             position: relative;
             display: inline-block;
@@ -146,18 +112,22 @@
         }
     </style>
 </head>
+<div class="navul" style="height: 150px;
+    background: #000000;">
+    <a class="navul" href="//aworldbridge.com" style="background: #000000;
+    width: 500px;
+    height: 60px;">
+        <img class="banner" src="../images/NewWBBanner.jpg" style="width: 950px;
+    height: 150px;
+    margin: auto; display: block;" />
+    </a>
+</div>
 <body>
 <div class="container">
-    <div class="container center">
-        <a href="//aworldbridge.com"><img class="banner" src="../images/NewWBBanner.jpg"/></a>
+    <div class="container center" style="width: 750px">
         <br><br>
         <div class="page-header text-center header">
-            <h1><span class="fa fa-anchor"></span> USGS Wind Turbine </h1><h4><span class="fa fa-user"></span></h4><br>
-            <div id="back" class="container-login100-form-btn">
-                <a href="/" id="homepage">
-                    Homepage &#10095;
-                </a>
-            </div>
+            <h1><span class="fa fa-home"></span><strong> USGS Data Visualization -  Homepage - US Wind Turbines </strong></h1>
         </div>
     </div>
     <!--<div class="row">-->
