@@ -136,6 +136,12 @@
                 <br><br>
                 <div></div>
                 <div id="buttons">
+                    <div>
+                        <h4>Smart Search</h4>
+                        <input id="autoSuggestion" placeholder="Search by Project Name" style="font-size: 15px; width: 235px">
+                    </div>
+                    <br><br>
+
                     Density Heatmap
                     <label class="switch">
                         <input type="checkbox" id="switchLayer">
@@ -144,7 +150,7 @@
                     Point Locations
                     <br><br>
 
-                    <div id="placemarkButton">
+                    <div id="placemarkButton" style="pointer-events: none;">
                         <input type="radio" id="none" name="category"> None
                         <input type="radio" id="p_year_color" name="category"> Year
                         <input type="radio" id="p_avgcap_color" name="category"> Capacity
@@ -158,14 +164,15 @@
                         </div>
 
                         <br><br>
-                        <div>
-                            <h4>Smart Search</h4>
-                            <input id="autoSuggestion" placeholder="Search by Project Name" style="font-size: 15px; width: 235px">
-                        </div>
-                        <br><br>
-
-                        <!--<button type="button" id="test"></button>-->
+                        <!--<div>-->
+                            <!--<h4>Smart Search</h4>-->
+                            <!--<input id="autoSuggestion" placeholder="Search by Project Name" style="font-size: 15px; width: 235px">-->
+                        <!--</div>-->
+                        <!--<br><br>-->
                     </div>
+
+                    <button type="button" id="test"></button>
+
                     <div id="layerMenuButton" style="width: 235px; height: 50px; overflow: scroll;" hidden>
                         <p style="float: left;"><span id="projectNumber"></span> Projects</p>
                         <button data-status="false" id="capacity" class="sortButton">Cap.<span></span></button>
