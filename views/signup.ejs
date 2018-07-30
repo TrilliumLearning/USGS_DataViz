@@ -71,19 +71,19 @@
 	<form onsubmit="return checkForm()" action="/signup" method="post" id="signup">
 		<div class="form-group">
 			<label>Username (email address):</label>
-			<input type="email" class="form-control" name="username" style="height: 50px;">
+			<input type="email" class="form-control" name="username" style="height: 50px;" required>
 		</div>
 		<div class="form-group">
 			<label>First Name:</label>
-			<input type="text" class="form-control" name="firstName" style="height: 50px;">
+			<input type="text" class="form-control" name="firstName" style="height: 50px;" required>
 		</div>
 		<div class="form-group">
 			<label>Last Name:</label>
-			<input type="text" class="form-control" name="lastName" style="height: 50px;">
+			<input type="text" class="form-control" name="lastName" style="height: 50px;" required>
 		</div>
 		<div class="form-group">
 			<label>Password:</label>
-			<input type="password" class="form-control" name="password" style="height: 50px;">
+			<input type="password" class="form-control" name="password" style="height: 50px;" required>
 		</div>
 		<div class="form-group" hidden>
 			<label>User Role:</label>

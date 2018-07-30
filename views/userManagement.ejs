@@ -99,6 +99,10 @@
             background-color: #333;
             color: white;
         }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
 
     </style>
 
@@ -113,7 +117,7 @@
     <a href="/addUser" id= "Request" style="width:110px;">
         <button class="navbutton1"> Add User </button>
     </a>
-    <div class="dropdown floating-Box">
+    <div class="dropdown floating-Box" style="float:right;margin-top:10px;margin-right:10px;">
         <button class="btn btn-primary btn-lg navbutton1" type="button" data-toggle="dropdown" id="Username"><%= firstName%>
             <span class="caret"></span></button>
         <ul id="userMenu" class="dropdown-menu" >
