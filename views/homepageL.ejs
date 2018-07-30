@@ -51,16 +51,16 @@
             color: white;
         }
         #mapViewer img {
-            width: 500px;
-            height: 500px;
+            width: 650px;
+            height: 650px;
             position: absolute;
             visibility: hidden;
             opacity:0;
             transition: visibility 0s, opacity 0.5s linear;
             border: 1px solid lightgray;
             border-radius: 15px;
-            top: 500px;
-            left: 120px;
+            margin-left: -450px;
+            margin-top: 90px;
         }
         #mapViewer:hover img {
             visibility: visible;
@@ -76,8 +76,8 @@
             transition: visibility 0s, opacity 0.5s linear;
             border: 1px solid lightgray;
             border-radius: 15px;
-            top: 500px;
-            left: 550px;
+            margin-left: 385px;
+            /*margin-top: 60px;*/
         }
         #usTurbine:hover img {
             visibility: visible;
@@ -85,11 +85,11 @@
         }
 
         .navul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            /*overflow: hidden;*/
-        }
+             list-style-type: none;
+             margin: 0;
+             padding: 0;
+             /*overflow: hidden;*/
+         }
         .navbutton1 {
             width: 110px;
             font-size: 16px;
@@ -156,14 +156,8 @@
     <a class="navul" style="background:#000000;" href="http://aworldbridge.com">
         <img class="banner" src="/images/NewWBBanner.jpg" style="width:510px;height:80px;"/>
     </a>
-    <a href="/homepage" style="width:110px;">
-        <button class="navbutton1"> Homepage </button>
-    </a>
-    <a href="/newRequest" id= "Request" style="width:110px;">
-        <button class="navbutton1" style="width: 140px"> New Request </button>
-    </a>
-    <a href="/recovery" id ="Restore" style="width:50px;">
-        <button class="navbutton1"> Restore </button>
+    <a href="/userHome" style="width:110px;">
+        <button class="navbutton1"> User Home </button>
     </a>
     <a href="/dataHistory" style="width:110px;">
         <button class="navbutton1" style="width: 160px"> Approved Requests </button>
@@ -193,12 +187,12 @@
     </div>
     <div class="spCon">
         <div class="pop floating-Box">
-            <a href="/mapsvcviewer" id="mapViewer" style="width: 110px;">
+            <a href="/mapsvcviewerL" id="mapViewer" style="width: 110px;">
                 <button class="button1"><span class="fa fa-angle-double-left"></span> Go to MapService Viewer </button>
                 <img src="../images/MapViewer.png">
             </a>
 
-            <a href="/usgswt" id="usTurbine">
+            <a href="/usgswtL" id="usTurbine">
                 <button class="button1" style="margin-left: 250px"> Go to US Wind Turbines Viewer <span class="fa fa-angle-double-right"></span></button>
                 <img src="../images/USTurbines.png">
             </a>
@@ -206,6 +200,8 @@
     </div>
 </div>
 <script>
+    var UserRole = "<%= user.userrole %>";
+
     $(function () {
         flatpickr(".date", {
             dateFormat: "Y-m-d",

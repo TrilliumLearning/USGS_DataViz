@@ -375,9 +375,28 @@ requirejs(['./worldwind.min',
 
                     if (altitude <= mainconfig.eyeDistance_Heatmap && !$("#switchLayer").is(':checked')) {
                         $("#switchLayer").click();
+                        $("#switchNote").html("");
+                        $("#switchNote").append("NOTE: Toggle switch to temporarily view density heatmap.");
+                        $("#globeNote").html("");
+                        $("#globeNote").append("NOTE: Zoom in to an eye distance of more than 4,500 km to view the density heatmap.");
+
                     } else if (altitude > mainconfig.eyeDistance_Heatmap && $("#switchLayer").is(':checked')) {
+                        $("#switchNote").html("");
+                        $("#switchNote").append("NOTE: Toggle switch to temporarily view point locations.");
+                        $("#globeNote").html("");
+                        $("#globeNote").append("NOTE: Zoom in to an eye distance of less than 4,500 km to view the point locations.");
+
                         $("#switchLayer").click();
                     }
+
+                    if (altitude <= mainconfig.eyeDistance_PL && $("#switchLayer").is(':checked')) {
+                        $("#menuNote").html("");
+                        $("#menuNote").append("NOTE: Hover mouse over items listed below in the menu to highlight point location(s).");
+                    } else if (altitude > mainconfig.eyeDistance_PL && $("#switchLayer").is(':checked')) {
+                        $("#menuNote").html("");
+                        $("#menuNote").append("NOTE: Zoom in to an eye distance of less than 1,000 km to display a menu for wind turbines.");
+                    }
+
                 }
 
                 function layerMenu() {
