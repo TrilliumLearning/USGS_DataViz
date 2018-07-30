@@ -178,6 +178,20 @@
             right:80px;
             margin-right:10px;
         }
+        #reject{
+            float:right;
+            background-color: #31a0ba;
+            border-radius:4px;
+            font-size:16px;
+            padding:3px 10px 3px 10px;
+            -webkit-transition-duration: 0.4s;
+            transition-duration: 0.4s;
+            color:white;
+            display: inline-block;
+            border-bottom: 1px dotted black;
+            right:80px;
+            margin-right:10px;
+        }
     </style>
 
 </head>
@@ -334,6 +348,7 @@
         <div class="row">
             <button id="clear" type="reset" onclick="clearForm()" value="  Clear  ">Clear</button>
             <button id="approve" type="submit" form="layer" disabled  title="this is only for Admin Users">Approve</button>
+            <button id="reject" disabled  title="this is only for Admin Users">Reject</button>
             <button id="submit" form="layer" disabled title="this is only for Regular Users">Submit</button>
             <button id="cancel" onclick="userHome();">Cancel</button>
         </div>
@@ -370,10 +385,12 @@
         $(function () {
             if (UserRole === "Admin") {
                 document.getElementById("approve").disabled = false;
+                document.getElementById("reject").disabled = false;
                 document.getElementById("submit").style.backgroundColor = "lightgray";
             } else if (UserRole === "Regular") {
                 document.getElementById("submit").disabled = false;
                 document.getElementById("approve").style.backgroundColor = "lightgray";
+                document.getElementById("reject").style.backgroundColor = "lightgray";
             }
 
         });

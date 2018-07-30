@@ -111,8 +111,6 @@ requirejs(['./WorldWindShim',
                 // Retrieve a WmsLayerCapabilities object by the desired layer name
                 for (var n = 0; n < layerName.length; n++) {
 
-                    wmsLayerCapabilities = wms.getNamedLayers();
-
                     var wmsLayerCapability = wms.getNamedLayer(layerName[n]);
 
                     // Form a configuration object from the WmsLayerCapability object
