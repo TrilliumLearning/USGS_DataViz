@@ -2,128 +2,126 @@
 <!doctype html>
 <html>
 <head>
-	<title>FAW/Locust -  Sign Up</title>
+	<title>USGS Data Visualization -  Sign Up</title>
 	<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	<!-- load fontawesome -->
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 	<!--<link rel="stylesheet" href="//unpkg.com/flatpickr/dist/flatpickr.min.css">-->
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="//cdn.jsdelivr.net/npm/flatpickr"></script>
 	<!--<script src="//unpkg.com/flatpickr"></script>-->
-	<style>
-		.floatingBox {
+	<style>.floatingBox {
 			display: inline-block;
 		}
-		body{ padding-top:80px; }
-		.banner{
-			position:relative;
+
+		.banner {
+			position: relative;
 			width: 100%;
 		}
-		/* for 768px or less */
-		@media screen and (max-width:768px) {
-			.btn-mg {
-				font-size: 15px;
-				width:90px;
-				text-align:center;
-			}
-		}
-		/* for 414px or less */
-		@media screen and (max-width:414px) {
-			.btn-mg {
-				font-size: 13px;
-				width:20%;
-				text-align:center;
-			}
-		}
-		/* for 375px or less */
-		@media screen and (max-width:375px) {
-			.btn-mg{
-				font-size:12px;
-				width:22%;
-				text-align:center;
-			}
-		}
-		/* for 320px or less */
-		@media screen and (max-width:320px) {
-			.btn-mg {
-				font-size: 14px;
-				width:30%;
-				text-align:center;
-			}
 
+		.navul {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			overflow: hidden;
+		}
+
+		.button1 {
+			width: 500px;
+			height: 50px;
+			border-radius: 15px;
+			-webkit-transition-duration: 0.4s;
+			transition-duration: 0.4s;
+			cursor: pointer;
+			background-color: white;
+			color: #f0ad4e;
+			border: 1px solid #f0ad4e;
+		}
+
+		.button1:hover {
+			background-color: #f0ad4e;
+			color: white;
 		}
 	</style>
-
 </head>
+<div class="navul" style="height: 80px;
+    background: #000000;">
+	<a class="navul" href="//aworldbridge.com" style="background: #000000;
+    width: 500px;
+    height: 60px;">
+		<img class="banner" src="../images/NewWBBanner.jpg" style="width: 550px;
+    height: 80px;
+    margin: auto; display: block;" />
+	</a>
+</div>
 <body>
-<div class="container">
+<div class="container" style="width: 500px;
+    padding: 0px;">
 
-	<div class="col-sm-6 col-sm-offset-3">
-		<a href="//aworldbridge.com"><img class="banner" src="/images/NewWBBanner.jpg" style="height: 97px; width: 120%" /></a>
-		<h1><span class="fa fa-sign-in"></span> Signup </h1>
-
-		<!-- show any messages that come back with authentication -->
-		<% if (message.length > 0) { %>
-		<div class="alert alert-danger"><%= message %></div>
-		<% } %>
-
-		<!-- LOGIN FORM -->
-		<form action="/signup" method="post" id="signup">
-			<div class="form-group">
-				<label>Username (Valid Email Address)</label>
-				<input type="email" class="form-control" name="username" required>
-			</div>
-			<div class="form-group">
-				<label>First Name</label>
-				<input type="text" class="form-control" name="firstName" required>
-			</div>
-			<div class="form-group">
-				<label>Last Name</label>
-				<input type="text" class="form-control" name="lastName" required>
-			</div>
-			<div class="form-group">
-				<label>Password</label>
-				<input type="password" class="form-control" name="password" required>
-			</div>
-			<div class="form-group" hidden>
-				<label>User Role</label><br>
-				<select name="userrole" >
-					<option>Admin</option>
-					<option selected>Regular</option>
-				</select>
-
-			</div>
-			<div class="form-group">
-				<label>Date Created</label>
-				<input id="DATE" class="form-control date" name="dateCreated" readonly hidden>
-			</div>
-			<div class="form-group" hidden>
-				<label>Created By User</label>
-				<input type="text" id="createdUser" class="form-control" name="createdUser" value="Anonymous" readonly >
-			</div>
-			<div class="form-group" hidden>
-				<label>Status</label>
-				<input type="text" id="status" class="form-control" name="status" value="Never Logged In" readonly >
-			</div>
-
-			<button type="submit" class="btn btn-warning btn-mg"> submit </button>
-			<a href="/login" class="btn btn-warning btn-mg">Cancel</a>
-		</form>
-
-		<hr>
-
+	<h1 style="margin-top: 30px"><span class="fa fa-sign-in"></span> Sign Up </h1>
+	<!-- show any messages that come back with authentication -->
+	<% if (message.length > 0) { %>
+	<div class="alert alert-danger">
+		<%= message %>
 	</div>
-
+	<% } %>
+	<!-- LOGIN FORM -->
+	<form onsubmit="return checkForm()" action="/signup" method="post" id="signup">
+		<div class="form-group">
+			<label>Username (email address):</label>
+			<input type="email" class="form-control" name="username" style="height: 50px;">
+		</div>
+		<div class="form-group">
+			<label>First Name:</label>
+			<input type="text" class="form-control" name="firstName" style="height: 50px;">
+		</div>
+		<div class="form-group">
+			<label>Last Name:</label>
+			<input type="text" class="form-control" name="lastName" style="height: 50px;">
+		</div>
+		<div class="form-group">
+			<label>Password:</label>
+			<input type="password" class="form-control" name="password" style="height: 50px;">
+		</div>
+		<div class="form-group" hidden>
+			<label>User Role:</label>
+			<br>
+			<input type="radio" name="userrole" value="Admin" disabled>
+			<h5 class="floatingBox">&nbsp;&nbsp;&nbsp;Admin</h5>&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="radio" name="userrole" value="Regular" checked>
+			<h5 class="floatingBox">&nbsp;&nbsp;&nbsp;Regular</h5>
+		</div>
+		<div class="form-group" hidden>
+			<label>Date Created:</label>
+			<input id="DATE" class="form-control date" name="dateCreated" readonly>
+		</div>
+		<div class="form-group" hidden>
+			<label>Created By User:</label>
+			<input type="text" id="createdUser" class="form-control" name="createdUser" value="Anonymous" readonly>
+		</div>
+		<div class="form-group" hidden>
+			<label>Status:</label>
+			<input type="text" id="status" class="form-control" name="status" value="Pending" readonly>
+		</div>
+		<div class="container" style="width: 500px;
+    padding: 0px;">
+			<button type="submit" class="button1"> Sign Up </button>
+		</div>
+	</form>
+	<hr>
+	<p style="margin-left: 190px;">
+		Or go back to <a href="/login">Log In</a></p>
 </div>
 <script>
     $(document).ready(function() {
         $(function() {
-            /*flatpickr(".date", {
+            flatpickr(".date", {
                 enableTime: true,
                 dateFormat: "Y-m-d H:i:S",
                 time_24hr: true
-            });*/
+            });
 
             $('#signup').submit(function(e) {
                 console.log($("#signup").serialize());

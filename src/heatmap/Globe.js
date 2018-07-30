@@ -14,8 +14,8 @@ define(['../WorldWind'], function (WorldWind) {
 
         // Standard WorldWind layers
         var layers = [
-            {layer: new WorldWind.BMNGLayer(), enabled: true},
-            {layer: new WorldWind.BMNGLandsatLayer(), enabled: false},
+            // {layer: new WorldWind.BMNGLayer(), enabled: true},
+            // {layer: new WorldWind.BMNGLandsatLayer(), enabled: false},
             {layer: new WorldWind.BingAerialLayer(), enabled: false},
             {layer: new WorldWind.BingAerialWithLabelsLayer(), enabled: true},
             {layer: new WorldWind.BingRoadsLayer(), enabled: false},
