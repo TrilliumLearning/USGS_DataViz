@@ -51,7 +51,7 @@
 <textarea name="vcard" cols="60" rows="40"></textarea>
 <h3>QR code</h3>
 
-<img id="qr" src="http://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=" alt="vcard qr">
+<img id="qr" src="//chart.googleapis.com/chart?cht=qr&chs=200x200&chl=" alt="vcard qr">
 <script>
     /**
      *
@@ -61,7 +61,7 @@
         str_start:'BEGIN:VCARD\nVERSION:3.0\n',
         str_vcard:'BEGIN:VCARD\nVERSION:3.0\n',
         str_end:'\nEND:VCARD',
-        goog_chart:'http://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=',
+        goog_chart:'//chart.googleapis.com/chart?cht=qr&chs=200x200&chl=',
         form:[],
         get_field: function(field){
             for(var i in vcard.form){
