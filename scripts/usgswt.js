@@ -17,7 +17,7 @@ requirejs(['./worldwind.min',
                 var placemark = [];
                 var autoSuggestion = [];
                 var suggestedLayer;
-                // var clickedLayer;
+                var clickedLayer;
 
                 // reading configGlobal from mainconf.js
                 var mainconfig = config;
@@ -52,10 +52,19 @@ requirejs(['./worldwind.min',
                     wwd.addLayer(layers[l].layer);
                 }
 
-                $("#test").on('click', function () {
-                    // console.log(wwd.layers[suggestedLayer].inCurrentFrame);
-                    console.log(wwd.worldWindowController.__proto__);
-                });
+                // $("#test").on('click', function () {
+                //     // console.log(wwd.layers[suggestedLayer].inCurrentFrame);
+                //     // console.log($(".layers"));
+                //     // console.log(wwd.goTo);
+                //     console.log(wwd.goToAnimator);
+                //     // if (wwd.goToAnimator.startPosition === wwd.goToAnimator.targetPosition) {
+                //     //     alert("B");
+                //     //     wwd.goTo(new WorldWind.Position(37.0902, -95.7129, mainconfig.eyeDistance_initial), function() {
+                //     //         alert("A");
+                //     //     });
+                //     // }
+                //     // console.log(wwd.goToAnimator);
+                // });
 
                 $("#none, #p_year_color, #p_avgcap_color, #t_ttlh_color").on("click", function () {
                     var category = this.id;
@@ -133,6 +142,7 @@ requirejs(['./worldwind.min',
 
                 $(".sortButton").on("click", function () {
                     var category = this.id;
+                    console.log(category);
 
                     // this.setAttribute('data-status', (this.getAttribute("data-status") === 'true') ? 'false' : 'true');
                     var status = this.getAttribute("data-status");
@@ -164,58 +174,171 @@ requirejs(['./worldwind.min',
                     // console.log(arr);
                     arr.detach().appendTo(parent);
 
-                    // if (clickedLayer) {
-                    //     $("#" + clickedLayer).detach().prependTo(parent);
-                    // }
+                    if (clickedLayer) {
+                        $("#" + clickedLayer).detach().prependTo(parent);
+                    }
                 });
 
-                // function moveList(id) {
-                //     if (!clickedLayer) {
-                //         clickedLayer = id;
-                //
-                //         var item = $("#" + clickedLayer);
-                //         var clone = $("#" + clickedLayer).clone();
-                //         item.attr('id', clickedLayer + "_hidden");
-                //         item.hide();
-                //         clone.css('background-color', 'rgb(191, 191, 191)');
-                //         clone.prependTo($("#layerMenu"));
-                //     } else if (clickedLayer === id) {
-                //         $("#" + clickedLayer).remove();
-                //         var hiddenElement = $("#" + clickedLayer + "_hidden");
-                //         hiddenElement.show();
-                //         hiddenElement.attr('id', clickedLayer);
-                //         clickedLayer = "";
-                //     } else if (clickedLayer !== id) {
-                //         $("#" + clickedLayer).remove();
-                //         var hiddenElement = $("#" + clickedLayer + "_hidden");
-                //         hiddenElement.show();
-                //         hiddenElement.attr('id', clickedLayer);
-                //
-                //         clickedLayer = id;
-                //
-                //         var item = $("#" + clickedLayer);
-                //         var clone = $("#" + clickedLayer).clone();
-                //         item.attr('id', clickedLayer + "_hidden");
-                //         item.hide();
-                //         clone.css('background-color', 'rgb(191, 191, 191)');
-                //         clone.prependTo($("#layerMenu"));
-                //     }
-                // }
+                function moveList(id) {
+                    // if (clickedLayer) {
+                    //     $("#" + clickedLayer).remove();
+                    //     var hiddenElement = $("#" + clickedLayer + "_hidden");
+                    //     hiddenElement.show();
+                    //     hiddenElement.attr('id', clickedLayer);
+                    //     clickedLayer = "";
+                    // } else {
+                    //
+                    // }
+
+                    // if (!clickedLayer) {
+                    //     clickedLayer = id;
+                    //
+                    //     var item = $("#" + clickedLayer);
+                    //     var clone = $("#" + clickedLayer).clone();
+                    //     item.attr('id', clickedLayer + "_hidden");
+                    //     item.hide();
+                    //     clone.css('background-color', 'rgb(191, 191, 191)');
+                    //     clone.prependTo($("#layerMenu"));
+                    //     refreshEvent();
+                    // } else if (clickedLayer === id) {
+                    //     $("#" + clickedLayer).remove();
+                    //     var hiddenElement = $("#" + clickedLayer + "_hidden");
+                    //     hiddenElement.show();
+                    //     hiddenElement.attr('id', clickedLayer);
+                    //     clickedLayer = "";
+                    //     refreshEvent();
+                    // } else if (clickedLayer !== id) {
+                    //     // console.log(clickedLayer + "!==" + id);
+                    //     console.log($(".layers"));
+                    //     $("#" + clickedLayer).remove();
+                    //     console.log($(".layers"));
+                    //     // var hiddenElement = $("#" + clickedLayer + "_hidden");
+                    //     // console.log(hiddenElement);
+                    //     // hiddenElement.show();
+                    //     // hiddenElement.attr('id', clickedLayer);
+                    //     // console.log(clickedLayer);
+                    //
+                    //     clickedLayer = id;
+                    //     // console.log(clickedLayer);
+                    //
+                    //     // var item = $("#" + clickedLayer);
+                    //     // var clone = $("#" + clickedLayer).clone();
+                    //     // item.attr('id', clickedLayer + "_hidden");
+                    //     // item.hide();
+                    //     // clone.css('background-color', 'rgb(191, 191, 191)');
+                    //     // clone.prependTo($("#layerMenu"));
+                    //     // refreshEvent();
+                    // }
+
+                    if (!clickedLayer) {
+                        clickedLayer = id;
+
+                        var item = $("#" + clickedLayer);
+                        item.css('background-color', 'rgb(191, 191, 191)');
+                        item.prependTo($("#layerMenu"));
+                        refreshEvent();
+                    } else if (clickedLayer === id) {
+                        clickedLayer = "";
+                        $(".sortButton").find("span").each(function() {
+                            if ($(this).html()) {
+                                var id = "#" + $(this)[0].parentElement.id;
+
+                                $(id).click();
+                                $(id).click();
+                            }
+                        })
+
+                    } else if (clickedLayer !== id) {
+                        clickedLayer = id;
+
+                        var item = $("#" + clickedLayer);
+                        item.css('background-color', 'rgb(191, 191, 191)');
+                        item.prependTo($("#layerMenu"));
+                        refreshEvent();
+                    }
+
+                    function refreshEvent() {
+                        $(".layer").off('click', highlightLayer);
+                        $(".layer").on('click', highlightLayer);
+                    }
+                }
 
                 function highlightLayer(e) {
                     console.log("Z");
 
-                    var renderables = wwd.layers[this.id].renderables;
+                    var id = this.id;
 
-                    for (var i = 0; i < renderables.length; i++) {
+                    // if (id === suggestedLayer) {
+                    //     clearHighlight(true, false);
+                    // }
 
-                        renderables[i].highlighted = (e.handleObj.type === "mouseover") ? true : false;
+                    clearHighlight(true, false);
 
-                        // if (i === renderables.length - 1) {
-                        //     wwd.goTo(new WorldWind.Position(renderables[0].position.latitude, renderables[0].position.longitude), function() {
-                        //         layerMenu();
-                        //     });
-                        // }
+                    // console.log(clickedLayer);
+                    // console.log(wwd.layers[clickedLayer]);
+                    // console.log(wwd.layers[clickedLayer].renderables);
+
+                    // if (e.handleObj.type === "click") {
+                    //
+                    // } else if (e.handleObj.type === "") {
+                    //
+                    // }
+
+                    // var renderables = wwd.layers[this.id].renderables;
+                    //
+                    // for (var i = 0; i < renderables.length; i++) {
+                    //
+                    //     renderables[i].highlighted = (e.handleObj.type === "mouseover") ? true : false;
+                    //
+                    //     // if (i === renderables.length - 1) {
+                    //     //     wwd.goTo(new WorldWind.Position(renderables[0].position.latitude, renderables[0].position.longitude), function() {
+                    //     //         layerMenu();
+                    //     //     });
+                    //     // }
+                    // }
+
+                    console.log(clickedLayer + "   " + id);
+                    if (clickedLayer && clickedLayer !== id) {
+                        var oldRenderables = wwd.layers[clickedLayer].renderables;
+                        var status = (clickedLayer === id);
+                        for (var z = 0; z < oldRenderables.length; z++) {
+                            // oldRenderables[z].highlighted = !oldRenderables[z].highlighted;
+                            oldRenderables[z].highlighted = status;
+
+                            if (z === oldRenderables.length - 1) {
+                                highlight();
+                            }
+                        }
+                    } else {
+                        highlight();
+                    }
+
+
+                    function highlight() {
+
+                        var renderables = wwd.layers[id].renderables;
+                        console.log("C");
+                        for (var i = 0; i < renderables.length; i++) {
+
+                            renderables[i].highlighted = !renderables[i].highlighted;
+
+                            if (i === renderables.length - 1) {
+                                console.log(renderables[0].position.latitude, renderables[0].position.longitude);
+                                console.log(wwd.goToAnimator);
+
+                                if (wwd.goToAnimator.targetPosition.latitude === renderables[0].position.latitude && wwd.goToAnimator.targetPosition.longitude === renderables[0].position.longitude) {
+                                    layerMenu();
+                                    console.log("B");
+                                    moveList(id);
+                                } else {
+                                    wwd.goTo(new WorldWind.Position(renderables[0].position.latitude, renderables[0].position.longitude), function () {
+                                        layerMenu();
+                                        console.log("A");
+                                        moveList(id);
+                                    });
+                                }
+                            }
+                        }
                     }
 
                     // var id = this.id;
@@ -268,7 +391,7 @@ requirejs(['./worldwind.min',
 
                     autoSwitch();
                     layerMenu();
-                    clearHighlight();
+                    clearHighlight(true, true);
                 };
 
                 wwd.worldWindowController.__proto__.handlePanOrDrag3D = function (recognizer) {
@@ -307,7 +430,7 @@ requirejs(['./worldwind.min',
                         this.wwd.redraw();
 
                         layerMenu();
-                        clearHighlight();
+                        clearHighlight(true);
                     }
                 };
 
@@ -360,7 +483,7 @@ requirejs(['./worldwind.min',
                                    "<p><strong>" + projectName + ", " + state + "</strong></p>" +
                                    "<p>&nbsp;&nbsp;&nbsp;&nbsp;Year Online: " + year + "</p>" +
                                    "<p>&nbsp;&nbsp;&nbsp;&nbsp;" + number + " Turbines</p>" +
-                                   "<p>&nbsp;&nbsp;&nbsp;&nbsp;Total Rated Capacity: " + cap + ((cap === "N/A") ? "" : " MW") + "</p>" +
+                                   "<p>&nbsp;&nbsp;&nbsp;&nbsp;Total Capacity: " + cap + ((cap === "N/A") ? "" : " MW") + "</p>" +
                                    "<p>&nbsp;&nbsp;&nbsp;&nbsp;Rated Capacity: " + avgcap + ((avgcap === "N/A") ? "" : " MW") + "</p>" +
                                    "</div>"));
                                projectNumber++;
@@ -369,16 +492,16 @@ requirejs(['./worldwind.min',
                            if (i === wwd.layers.length - 2) {
                                $("#projectNumber").html(projectNumber);
                                $("#layerMenuButton").show();
-                               $(".layers").on('mouseenter', highlightLayer);
-                               $(".layers").on('mouseleave', highlightLayer);
-                               // $(".layers").on('click', highlightLayer);
+                               // $(".layers").on('mouseenter', highlightLayer);
+                               // $(".layers").on('mouseleave', highlightLayer);
+                               $(".layers").on('click', highlightLayer);
                            }
                        }
                    }
                 }
 
-                function clearHighlight() {
-                    if (suggestedLayer) {
+                function clearHighlight(suggested, clicked) {
+                    if (suggestedLayer && suggested) {
                         var layer = wwd.layers[suggestedLayer];
                         for (var i = 0; i < layer.renderables.length; i++) {
                             layer.renderables[i].highlighted = false;
@@ -389,17 +512,16 @@ requirejs(['./worldwind.min',
                         }
                     }
 
-                    // if (clickedLayer) {
-                    //     var layer = wwd.layers[clickedLayer];
-                    //     for (var i = 0; i < layer.renderables.length; i++) {
-                    //         layer.renderables[i].highlighted = false;
-                    //
-                    //         if (i === layer.renderables.length - 1) {
-                    //             moveList(clickedLayer);
-                    //             clickedLayer = "";
-                    //         }
-                    //     }
-                    // }
+                    if (clickedLayer && clicked) {
+                        var layer = wwd.layers[clickedLayer];
+                        for (var i = 0; i < layer.renderables.length; i++) {
+                            layer.renderables[i].highlighted = false;
+
+                            if (i === layer.renderables.length - 1) {
+                                clickedLayer = "";
+                            }
+                        }
+                    }
                 }
 
                 function handleMouseMove(o) {
@@ -480,6 +602,8 @@ requirejs(['./worldwind.min',
                             // console.log(new Date());
 
                             // var placemarkLayer = new WorldWind.RenderableLayer("USWTDB");
+
+                            // console.log(wwd.goToAnimator);
 
                             for (var i = 0; i < resp.data.length; i++) {
                                 data[i] = new WorldWind.IntensityLocation(resp.data[i].ylat, resp.data[i].xlong, 1);
@@ -580,7 +704,7 @@ requirejs(['./worldwind.min',
                     onSelect: function(suggestion) {
                         console.log(suggestion);
                         $("#autoSuggestion").val("");
-                        clearHighlight();
+                        clearHighlight(true, true);
 
                         wwd.goTo(new WorldWind.Position(suggestion.lati, suggestion.long, 50000), function() {
                             // console.log(wwd.layers[0].eyeText.text.substring(5, wwd.layers[0].eyeText.text.length - 3));
