@@ -344,7 +344,7 @@ requirejs(['./worldwind.min',
                         $("#menuNote").append("NOTE: Hover mouse over items listed below in the menu to highlight point location(s).");
                     } else if (altitude > mainconfig.eyeDistance_PL && $("#switchLayer").is(':checked')) {
                         $("#menuNote").html("");
-                        $("#menuNote").append("NOTE: Zoom in to an eye distance of less than 1,000 km to display a menu for wind turbines.");
+                        $("#menuNote").append("NOTE: Zoom in to an eye distance of less than 1,500 km to display a menu for wind turbines.");
                     }
 
                 }
