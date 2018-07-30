@@ -64,6 +64,15 @@ module.exports = function (app, passport) {
         res.render('usgswt.ejs');
     });
 
+    app.get('/mapsvcviewerL', function (req, res) {
+        res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
+        res.render('usgs_mapsvcL.ejs');
+    });
+
+    app.get('/usgswtL', function (req, res) {
+        res.render('usgswtL.ejs');
+    });
+
     app.get('/uswtdb', function (req, res) {
         // console.log("A: " + new Date());
 

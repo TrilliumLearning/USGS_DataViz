@@ -21,7 +21,7 @@ requirejs(['./worldwind.min',
 
                 // Create the WorldWindow.
                 var wwd = new WorldWind.WorldWindow("canvasOne");
-                // console.log(wwd.layers);
+                // console.log(wwd.worldWindowController.__proto__);
 
                 // Create and add layers to the WorldWindow.
                 var layers = [
@@ -237,7 +237,7 @@ requirejs(['./worldwind.min',
                 //     // $("#switchLayer").click();
                 //     // var altitude = wwd.layers[5].eyeText.text.substring(5, wwd.layers[5].eyeText.text.length - 3);
                 //
-                //     console.log(wwd.layers);
+                //     console.log(wwd.layers[7].renderables[0]);
                 // });
 
                 function highlightLayer(e) {
@@ -365,9 +365,28 @@ requirejs(['./worldwind.min',
 
                     if (altitude <= mainconfig.eyeDistance_Heatmap && !$("#switchLayer").is(':checked')) {
                         $("#switchLayer").click();
+                        $("#switchNote").html("");
+                        $("#switchNote").append("NOTE: Toggle switch to temporarily view density heatmap.");
+                        $("#globeNote").html("");
+                        $("#globeNote").append("NOTE: Zoom in to an eye distance of more than 4,500 km to view the density heatmap.");
+
                     } else if (altitude > mainconfig.eyeDistance_Heatmap && $("#switchLayer").is(':checked')) {
+                        $("#switchNote").html("");
+                        $("#switchNote").append("NOTE: Toggle switch to temporarily view point locations.");
+                        $("#globeNote").html("");
+                        $("#globeNote").append("NOTE: Zoom in to an eye distance of less than 4,500 km to view the point locations.");
+
                         $("#switchLayer").click();
                     }
+
+                    if (altitude <= mainconfig.eyeDistance_PL && $("#switchLayer").is(':checked')) {
+                        $("#menuNote").html("");
+                        $("#menuNote").append("NOTE: Hover mouse over items listed below in the menu to highlight point location(s).");
+                    } else if (altitude > mainconfig.eyeDistance_PL && $("#switchLayer").is(':checked')) {
+                        $("#menuNote").html("");
+                        $("#menuNote").append("NOTE: Zoom in to an eye distance of less than 1,000 km to display a menu for wind turbines.");
+                    }
+
                 }
 
                 function layerMenu() {
@@ -571,7 +590,7 @@ requirejs(['./worldwind.min',
                                     wwd.addLayer(HeatMapLayer);
 
                                     wwd.goTo(new WorldWind.Position(37.0902, -95.7129, mainconfig.eyeDistance_initial));
-                                    console.log(wwd.layers);
+                                    // console.log(wwd.layers);
                                 }
                             }
                         }

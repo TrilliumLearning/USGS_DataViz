@@ -7,7 +7,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="//www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
     <link href='//fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     <link href='../scripts/autocomplete.css' rel='stylesheet' type='text/css'>
@@ -132,19 +132,6 @@
             text-align:center;
             display:inline-block;
         }
-
-        .sortButton {
-            background-color: rgb(128, 128, 128);
-            color: white;
-            border-radius: 25%;
-            float: right;
-            outline: none;
-            font-size: 12px;
-        }
-
-        .sortButton:hover {
-            background-color: rgb(0, 128, 255);
-        }
     </style>
 </head>
 <div class="navul" style="height: 150px;
@@ -162,7 +149,7 @@
     <div class="container" style="width: 850px;">
         <div class="page-header text-center header">
             <h1><span class="fa fa-globe"></span> USGS Data Visualization - US Wind Turbines </h1>
-            <a href="/" id="homepage">
+            <a href="/homepage" id="homepage">
                 <button class="button1"><< Go back to Homepage</button>
             </a>
             <br>
@@ -202,22 +189,17 @@
                 </div>
                 <br>
 
-                        <!--<button type="button" id="test"></button>-->
-                    </div>
-                    <div id="layerMenuButton" style="width: 240px; height: 50px; overflow: scroll;" hidden>
-                        <p style="float: left;"><span id="projectNumber"></span> Projects</p>
-                        <button data-status="false" id="capacity" class="sortButton">Cap.<span></span></button>
-                        <button data-status="false" id="year" class="sortButton">Year<span></span></button>
-                        <button data-status="true" id="name" class="sortButton" style="background-color: rgb(0, 128, 255)">Name<span> &#9650;</span></button>
-                    </div>
-                    <div id="layerMenu" style="width: 240px; height: 450px; overflow: scroll;">
-
-                    </div>
+                <!--<button type="button" id="test"></button>-->
+            </div>
+            <div id="layerMenu" style="width: 240px; height: 500px; overflow: scroll;">
 
             </div>
         </div>
-
-        <div class="container floating-Box" id="globe" style="width: 900px; height: 900px; margin-left: 450px; padding: 0px;">
+    </div>
+        <div class="container floating-Box" id="globe" style="width: 900px;
+    height: 900px;
+    margin-left: 450px;
+    padding: 0px;">
             <h4 class="note text-center" id="globeNote">NOTE: Zoom in to an eye distance of less than 4,500 km to view the point locations.</h4>
             <canvas id="canvasOne" style="width: 900px; height: 900px;">
                 Your browser does not support HTML5 Canvas.
