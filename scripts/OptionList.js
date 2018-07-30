@@ -75,6 +75,7 @@ function ChangeSelectList(continentlevel) {
                             url: "ClassName",
                             success: function (res) {
                                 continentObj1 = res;
+                                console.log(continentObj1);
                             }
                         })
                     }else{
@@ -122,6 +123,7 @@ function ChangeStateList(countrylevel) {
     for(var i = 0; i < continentObj1.length; i++){
         if(countrylevel === "All Countries"){
             continentObj2 = continentObj1;
+            console.log(continentObj2)
         }else{
             continentObj2 = getObjects(continentObj1, 'CountryName', countrylevel);
         }

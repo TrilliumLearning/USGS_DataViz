@@ -1206,7 +1206,7 @@ module.exports = function (app, passport) {
     //Depend on continent value to get the country and state value
     app.get('/ClassName', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*");
-        con_CS.query('SELECT CountryName, FirstLayer, SecondLayer, LayerName, StateName, ContinentName FROM MapLayerMenu', function (err, results) {
+        con_CS.query('SELECT CountryName, FirstLayer, SecondLayer, ThirdLayer, StateName, ContinentName FROM MapLayerMenu', function (err, results) {
             res.json(results);
             // console.log(results);
         });
