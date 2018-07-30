@@ -41,13 +41,13 @@ var configGlobal = {
     'Delete_Dir':'trashfolder',
 
     // uswtdb eye distance for placemark layer menu display (km)
-    'eyeDistance_PL': 1000,
+    'eyeDistance_PL': 1500,
 
     // uswtdb eye distance for display heatmap until eyeDistance_Heatmap less than 4500 (km)
     'eyeDistance_Heatmap': 4500,
 
     // uswtdb initial eye distance (m)
-    'eyeDistance_initial': 6500000
+    'eyeDistance_initial': 5000000
 };
 
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
