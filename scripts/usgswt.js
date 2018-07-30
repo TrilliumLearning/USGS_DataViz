@@ -21,6 +21,7 @@ requirejs(['./worldwind.min',
 
                 // reading configGlobal from mainconf.js
                 var mainconfig = config;
+                // console.log(mainconfig);
 
                 // Tell WorldWind to log only warnings and errors.
                 WorldWind.Logger.setLoggingLevel(WorldWind.Logger.LEVEL_WARNING);
@@ -142,7 +143,7 @@ requirejs(['./worldwind.min',
 
                 $(".sortButton").on("click", function () {
                     var category = this.id;
-                    console.log(category);
+                    // console.log(category);
 
                     // this.setAttribute('data-status', (this.getAttribute("data-status") === 'true') ? 'false' : 'true');
                     var status = this.getAttribute("data-status");
@@ -264,7 +265,7 @@ requirejs(['./worldwind.min',
                 }
 
                 function highlightLayer(e) {
-                    console.log("Z");
+                    // console.log("Z");
 
                     var id = this.id;
 
@@ -297,7 +298,7 @@ requirejs(['./worldwind.min',
                     //     // }
                     // }
 
-                    console.log(clickedLayer + "   " + id);
+                    // console.log(clickedLayer + "   " + id);
                     if (clickedLayer && clickedLayer !== id) {
                         var oldRenderables = wwd.layers[clickedLayer].renderables;
                         var status = (clickedLayer === id);
@@ -317,23 +318,23 @@ requirejs(['./worldwind.min',
                     function highlight() {
 
                         var renderables = wwd.layers[id].renderables;
-                        console.log("C");
+                        // console.log("C");
                         for (var i = 0; i < renderables.length; i++) {
 
                             renderables[i].highlighted = !renderables[i].highlighted;
 
                             if (i === renderables.length - 1) {
-                                console.log(renderables[0].position.latitude, renderables[0].position.longitude);
-                                console.log(wwd.goToAnimator);
+                                // console.log(renderables[0].position.latitude, renderables[0].position.longitude);
+                                // console.log(wwd.goToAnimator);
 
                                 if (wwd.goToAnimator.targetPosition.latitude === renderables[0].position.latitude && wwd.goToAnimator.targetPosition.longitude === renderables[0].position.longitude) {
                                     layerMenu();
-                                    console.log("B");
+                                    // console.log("B");
                                     moveList(id);
                                 } else {
                                     wwd.goTo(new WorldWind.Position(renderables[0].position.latitude, renderables[0].position.longitude), function () {
                                         layerMenu();
-                                        console.log("A");
+                                        // console.log("A");
                                         moveList(id);
                                     });
                                 }
@@ -430,7 +431,7 @@ requirejs(['./worldwind.min',
                         this.wwd.redraw();
 
                         layerMenu();
-                        clearHighlight(true);
+                        clearHighlight(true, true);
                     }
                 };
 
@@ -464,11 +465,13 @@ requirejs(['./worldwind.min',
                 }
 
                 function layerMenu() {
-                   var altitude = wwd.layers[0].eyeText.text.substring(5, wwd.layers[0].eyeText.text.length - 3);
+                   var altitude = wwd.layers[0].eyeText.text.replace(/Eye  |,| km/g, '');
                    $("#layerMenu").empty();
                    $("#layerMenuButton").hide();
                    var projectNumber = 0;
+
                    if (altitude <= mainconfig.eyeDistance_PL && $("#switchLayer").is(':checked')) {
+                       // console.log("G");
                        for (var i = layers.length; i < wwd.layers.length - 1; i++) {
 
                            if (wwd.layers[i].inCurrentFrame) {
@@ -518,7 +521,7 @@ requirejs(['./worldwind.min',
                             layer.renderables[i].highlighted = false;
 
                             if (i === layer.renderables.length - 1) {
-                                clickedLayer = "";
+                                moveList(clickedLayer);
                             }
                         }
                     }

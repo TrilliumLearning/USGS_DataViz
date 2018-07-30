@@ -41,7 +41,7 @@ var configGlobal = {
     'Delete_Dir':'trashfolder',
 
     // uswtdb eye distance for placemark layer menu display (km)
-    'eyeDistance_PL': 1000,
+    'eyeDistance_PL': 1500,
 
     // uswtdb eye distance for display heatmap until eyeDistance_Heatmap less than 4500 (km)
     'eyeDistance_Heatmap': 4500,
