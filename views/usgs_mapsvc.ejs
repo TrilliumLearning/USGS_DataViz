@@ -303,7 +303,7 @@
                                         checkboxlabelG.appendChild(checkboxspanG);
                                         document.getElementsByClassName("panel-body " + res[i].SecondLayer)[0].appendChild(checkboxdivG);
                                         comparing3.push([res[i].ThirdLayer, res[i].LayerName]);
-                                        classname.push([res[i].ThirdLayer +" " + continentnamestr + " " + countrynamestr + " " + statenamestr, statenamestr]);
+                                        classname.push([res[i].ThirdLayer +" " + continentnamestr + countrynamestr + statenamestr, statenamestr]);
                                     }
 
                                 } else {
@@ -313,8 +313,8 @@
                                         document.getElementsByClassName("input" + res[i].ThirdLayer)[0].setAttribute("value", comparing3[c][1]);
 
                                     }
-                                    if (classname[c][0] !== res[i].ThirdLayer +" " + continentnamestr + " " + countrynamestr + " " + statenamestr) {
-                                        classname[c][0] += " " + continentnamestr + " " + countrynamestr + " " + statenamestr;
+                                    if (classname[c][0] !== res[i].ThirdLayer +" " + continentnamestr + countrynamestr + statenamestr) {
+                                        classname[c][0] += " " + continentnamestr + countrynamestr + statenamestr;
                                         // classname[c][1] += res[i].CityName;
                                         document.getElementsByClassName("State " + res[i].ThirdLayer)[0].className = "State " + classname[c][0];
 

@@ -1,4 +1,4 @@
-    let Continentlevel, Countrylevel;
+    let Continentlevel, Countrylevel,continentObj1,continentObj2;
 
     $(document).ready(function() {
         let x = document.getElementById("myListContinent");
@@ -11,41 +11,6 @@
                     option = new Option(results[i].ContinentName, results[i].ContinentName);
                     x.add(option);
                 }
-            }
-        });
-
-        $("#myListContinent").change(function () {
-            let val = $(this).val();
-            if (val == "AL"){
-                $("#myListCountry").html("<option value='AL'> All Layer </option>");
-                $("#myListState").html("<option value= 'AL'> All Layer </option>");
-                document.getElementById("myListCountry").disabled = true;
-                document.getElementById("myListCountry").style.backgroundColor = "lightgray";
-                document.getElementById("myListState").disabled = true;
-                document.getElementById("myListState").style.backgroundColor = "lightgray";
-                $('.Menu').show();
-                $('.State').show();
-            } else{
-                $("#myListCountry").html("<option value = 'SAS'> -Select a Country- </option>");
-                $("#myListState").html("<option> -Select a State- </option>");
-                document.getElementById("myListCountry").disabled = false;
-                document.getElementById("myListCountry").style.backgroundColor = "white";
-                $('.Menu').hide();
-            }
-        });
-
-        $("#myListCountry").change(function () {
-            var value = $(this).val();
-            if (value == "SAS"){
-                $("#myListState").html("<option> -Select a State-</option>");
-                document.getElementById("myListState").disabled = true;
-                document.getElementById("myListState").style.backgroundColor = "lightgray";
-                $('.Menu').show();
-                $('.State').show();
-            } else{
-                $("#myListState").html("<option> -Select a State- </option>");
-                document.getElementById("myListState").disabled = false;
-                document.getElementById("myListState").style.backgroundColor = "white";
             }
         });
     });
@@ -71,10 +36,31 @@
     }
 
     function ChangeSelectList(continentlevel) {
+        Continentlevel = continentlevel;
+        $('.Menu').hide();
+        $('.State').hide();
         var countryList = document.getElementById("myListCountry");
         while (countryList.options.length) {
             countryList.remove(0);
         }
+
+        if (continentlevel === "AL"){
+            $("#myListCountry").html("<option value='AL'> All Layer </option>");
+            $("#myListState").html("<option value= 'AL'> All Layer </option>");
+            document.getElementById("myListCountry").disabled = true;
+            document.getElementById("myListCountry").style.backgroundColor = "lightgray";
+            document.getElementById("myListState").disabled = true;
+            document.getElementById("myListState").style.backgroundColor = "lightgray";
+            $('.Menu').show();
+            $('.State').show();
+        } else{
+            $("#myListCountry").html("<option value = 'SAS'> -Select a Country- </option>");
+            $("#myListState").html("<option> -Select a State- </option>");
+            document.getElementById("myListCountry").disabled = false;
+            document.getElementById("myListCountry").style.backgroundColor = "white";
+            $('.Menu').hide();
+        }
+
         $.ajax({
             url: "CountryList",
             dataType: 'json',
@@ -83,17 +69,21 @@
                 for (var i = 0; i < results.length; i++) {
                     if (continentlevel === results[i].ContinentName) {
                         option = new Option(results[i].CountryName, results[i].CountryName);
-                        console.log(option);
                         countryList.add(option);
-                        if(continentlevel === "All Continents") {
-                            $('.Menu').show();
-                            $('.State').show();
-                        } else{
+                        if(continentlevel === "All Continents"){
                             $.ajax({
                                 url: "ClassName",
                                 success: function (res) {
-                                    var continentObj1 = getObjects(res, 'ContinentName', continentlevel);
-                                    localStorage.setItem("returnvalue1",JSON.stringify(continentObj1));
+                                    console.log(res);
+                                    continentObj1 = res;
+                                }
+                            })
+                        }else{
+                            $.ajax({
+                                url: "ClassName",
+                                success: function (res) {
+                                    continentObj1 = getObjects(res, 'ContinentName', continentlevel);
+                                    // localStorage.setItem("returnvalue1",JSON.stringify(continentObj1));
                                 }
                             });
                         }
@@ -104,35 +94,45 @@
     }
 
     function ChangeStateList(countrylevel) {
+        Countrylevel = countrylevel;
+        // var returnvalue1 = JSON.parse(localStorage.getItem("returnvalue1"));
+        $('.Menu').hide();
+        $('.State').hide();
         var stateList = document.getElementById("myListState");
         while (stateList.options.length) {
             stateList.remove(0);
         }
-        var returnvalue1 = JSON.parse(localStorage.getItem("returnvalue1"));
-        var option;
-        for(var i = 0; i < returnvalue1.length; i++){
-            if(countrylevel === returnvalue1[i].CountryName) {
-                console.log(returnvalue1);
-                console.log("work?");
-               option = new Option(returnvalue1[i].StateName,returnvalue1[i].StateName);
-               console.log(option);
-                stateList.add(option);
-                if (countrylevel === "All Countries") {
-                    $('.Menu').show();
-                    $('.State').show();
+        console.log(countrylevel);
+        if (countrylevel === "SAS"){
+            $("#myListState").html("<option> -Select a State-</option>");
+            document.getElementById("myListState").disabled = true;
+            document.getElementById("myListState").style.backgroundColor = "lightgray";
+        } else{
+            $("#myListState").html("<option> -Select a State- </option>");
+            document.getElementById("myListState").disabled = false;
+            document.getElementById("myListState").style.backgroundColor = "white";
+        }
+
+        $.ajax({
+            url: "StateList",
+            dataType: 'json',
+            success: function (results) {
+                console.log(results);
+                for(var j = 0; j < results.length; j++){
+                    if(countrylevel === results[j].CountryName){
+                        var option = new Option(results[j].StateName, results[j].StateName);
+                        stateList.add(option);
+                    }
+                }
+            }
+        });
+
+        for(var i = 0; i < continentObj1.length; i++){
+            if(Continentlevel === continentObj1[i].ContinentName && countrylevel === continentObj1[i].CountryName){
+                if(countrylevel === "All Countries"){
+                    continentObj2 = continentObj1;
                 }else{
-                    let continentnamestr = returnvalue1[i].ContinentName.replace(/\s+/g, '');
-                    let countrynamestr = returnvalue1[i].CountryName.replace(/\s+/g, '');
-                    var obj1 = returnvalue1[i].FirstLayer;
-                    var obj2 = returnvalue1[i].SecondLayer;
-                    var obj3 = continentnamestr + "." + countrynamestr;
-                    var className1 = '.' + obj1;
-                    var className2 = '.' + obj2;
-                    var className3 = '.' + obj3;
-                    $(className1).show();
-                    $(className2).show();
-                    $(className3).show();
-                    var continentObj2 = getObjects(returnvalue1, 'ContinentName', countrylevel);
+                    continentObj2 = getObjects(continentObj2, 'CountryName', countrylevel);
                     localStorage.setItem("returnvalue2",JSON.stringify(continentObj2));
                 }
             }
@@ -142,18 +142,17 @@
     function ChangeLayerList(statelevel) {
         $('.Menu').hide();
         $('.State').hide();
+
         var returnvalue2 = JSON.parse(localStorage.getItem("returnvalue2"));
         console.log(returnvalue2);
-        for(var i =0; i< returnvalue.length; i++) {
-            if(Continentlevel === returnvalue[i].ContinentName) {
-                if(Countrylevel === returnvalue[i].CountryName) {
-                    if (statelevel === returnvalue[i].StateName) {
-                        let continentnamestr = returnvalue[i].ContinentName.replace(/\s+/g, '');
-                        let countrynamestr = returnvalue[i].CountryName.replace(/\s+/g, '');
-                        let statenamestr = returnvalue[i].StateName.replace(/\s+/g, '');
-                        var obj1 = returnvalue[i].FirstLayer;
-                        var obj2 = returnvalue[i].SecondLayer;
-                        var obj3 = statenamestr + countrynamestr + continentnamestr;
+
+        for(var i =0; i< returnvalue2.length; i++) {
+            if(Continentlevel === returnvalue2[i].ContinentName && Countrylevel === continentObj2[i].CountryName) {
+                if(Countrylevel === returnvalue2[i].CountryName) {
+                    if (statelevel === returnvalue2[i].StateName) {
+                        var obj1 = returnvalue2[i].FirstLayer;
+                        var obj2 = returnvalue2[i].SecondLayer;
+                        var obj3 = returnvalue2[i].ThirdLayer;
                         var className1 = '.' + obj1;
                         var className2 = '.' + obj2;
                         var className3 = '.' + obj3;

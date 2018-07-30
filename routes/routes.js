@@ -1193,7 +1193,7 @@ module.exports = function (app, passport) {
     //Depend on continent value to get the country and state value
     app.get('/ClassName', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*");
-        con_CS.query('SELECT CountryName, FirstLayer, SecondLayer, StateName, ContinentName FROM MapLayerMenu', function (err, results) {
+        con_CS.query('SELECT CountryName, FirstLayer, SecondLayer, ThirdLayer, StateName, ContinentName FROM MapLayerMenu', function (err, results) {
             res.json(results);
             // console.log(results);
         });
@@ -1201,7 +1201,7 @@ module.exports = function (app, passport) {
     //state level
     app.get('/StateList', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*");
-        con_CS.query('SELECT StateName, CountryName, COUNT (*) AS count FROM optionList GROUP BY StateName, CountryName', function (err, results, fields) {
+        con_CS.query('SELECT StateName, CountryName, ContinentName COUNT (*) AS count FROM optionList GROUP BY StateName, CountryName, ContinentName', function (err, results, fields) {
             res.json(results);
             // console.log(results);
         });
