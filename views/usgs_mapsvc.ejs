@@ -7,6 +7,7 @@
     <title>CitySmart - WorldWise v2</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css">-->
     <link href="//www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
     <link href='//fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
@@ -16,90 +17,83 @@
     <script data-main="../scripts/LayerMenu" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.17/require.min.js"></script>
     <!--<script src="../scripts/LayerMenu.js"></script>-->
     <style>
-        #homepage {
-            font-size: 16px;
-            color: white;
-            line-height: 1.2;
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: -moz-box;
-            display: -ms-flexbox;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 0 20px;
-            width: 240px;
-            height: 50px;
-            margin-bottom:10px;
-            border-radius: 25px;
-            background: #9152f8;
-            background: -webkit-linear-gradient(bottom, #7579ff, #b224ef);
-            background: -o-linear-gradient(bottom, #7579ff, #b224ef);
-            background: -moz-linear-gradient(bottom, #7579ff, #b224ef);
-            background: linear-gradient(bottom, #7579ff, #b224ef);
-            position: relative;
-            z-index: 1;
-            -webkit-transition: all 0.4s;
-            -o-transition: all 0.4s;
-            -moz-transition: all 0.4s;
-            transition: all 0.4s;
-        }
-        #homepage:hover{
-            color: white;
-        }
-        #homepage:hover:before{
-            opacity: 0;
-        }
-        #back{
-            text-align:center;
-            margin-top:50px;
-        }
-        .container-login100-form-btn {
-            width: 100%;
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: -moz-box;
-            display: -ms-flexbox;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .banner{
-            position:relative;
-            width:100%;
-            text-align:center;
-            display:inline-block;
+        body {padding-bottom: 80px}
+        
+        .note {
+            color: #959595;
         }
 
+        .button1 {
+            width: 300px;
+            height: 70px;
+            border-radius: 30px;
+            -webkit-transition-duration: 0.4s;
+            transition-duration: 0.4s;
+            cursor: pointer;
+            background-color: white;
+            color: #337ab7;
+            border: 1px solid #337ab7;
+            font-size: 18px;
+            margin-left: 25px;
+        }
 
+        .button1:hover {
+            background-color: #337ab7;
+            color: white;
+        }
+
+        .box1 {
+            margin-left: 100px;
+            position: absolute;
+            width: 380px;
+            height: 900px;
+        }
+
+        #accordion::-webkit-scrollbar-thumb {
+            border-radius: 2px;
+            background-color: rgba(0, 0, 0, .5);
+            -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+        }
+
+        #accordion::-webkit-scrollbar {
+            -webkit-appearance: none;
+            width: 7px;
+        }
     </style>
 
 </head>
+<div class="navul" style="height: 150px;
+    background: #000000;">
+    <a class="navul" href="//aworldbridge.com" style="background: #000000;
+    width: 500px;
+    height: 60px;">
+        <img class="banner" src="../images/NewWBBanner.jpg" style="width: 950px;
+    height: 150px;
+    margin: auto; display: block;" />
+    </a>
+</div>
 <body>
-<div class="container">
-    <div>
-        <a href="http://aworldbridge.com"><img class="banner" src="../images/NewWBBanner.jpg"/></a>
-
-        <!--<div id="back" class="container-login100-form-btn">-->
-            <!--<a href="/login" id="homepage">-->
-                <!--<i class="fa fa-long-arrow-left m-l-5" aria-hidden="true"></i>-->
-                <!--</a>-->
-        <!--</div>-->
-        <div id="back" class="container-login100-form-btn">
+<div class="container" style="width: 1550px;">
+    <div class="container" style="width: 850px;">
+        <div class="page-header text-center header">
+            <h1><span class="fa fa-globe"></span> USGS Data Visualization - MapService Viewer </h1>
             <a href="/" id="homepage">
-                Homepage &#10095;
+                <button class="button1">Go back to Homepage >></button>
             </a>
+            <br>
         </div>
-        <div>
-        <div class="row">
-        <div class="col-sm-3">
-            <div class="container">
-                <br>
-                <h4>Please Select Here First</h4>
+    </div>
+    <div class="container" style="width: 100%; height: 1000px; overflow: hidden">
+        <!--<div class="row">-->
+        <div class="box1 floating-Box">
+            <div style="border-style: solid; padding: 20px">
+                <div style="margin-left: 15px">
+                    <h4><strong>Select Location:</strong></h4>
+                <h5 class="note"> NOTE: Default is set to ALL LAYERS. Select the continent, country, and state/city. </h5>
                 <div>
                     <p>
-                        <select id="myListContinent"  style="width:180px; height:21px; background:white" onchange="ChangeSelectList(this.value)">
-                            <option selected="selected" value="AL">All Layer</option>
+                        <select id="myListContinent"  style="width:300px; height:50px; background:white; padding-left: 15px" onchange="ChangeSelectList(this.value)">
+                            <option selected="selected" value="AL">All Layers</option>
                             <!--<option>United States of America</option>-->
                             <!--<option value="AL" selected="selected" class="a">All Layer</option>-->
                         </select>
@@ -107,28 +101,33 @@
                 </div>
                 <div>
                     <p>
-                        <select id="myListCountry"  style="width:180px; height:21px; background:lightgray" onchange="ChangeStateList(this.value)" disabled>
-                            <option selected="selected" value="AL">All Layer</option>
+                        <select id="myListCountry"  style="width:300px; height:50px; background:lightgray; padding-left: 15px" onchange="ChangeStateList(this.value)" disabled>
+                            <option selected="selected" value="AL">All Layers</option>
                             <!--<option>-Select a State-</option>-->
                         </select>
                     </p>
                 </div>
                 <div>
                     <p>
-                        <select id="myListState"  style="width:180px; height:21px; background:lightgray" onchange="ChangeLayerList(this.value)" disabled>
-                            <option selected="selected" value="AL">All Layer</option>
+                        <select id="myListState"  style="width:300px; height:50px; background:lightgray; padding-left: 15px" onchange="ChangeLayerList(this.value)" disabled>
+                            <option selected="selected" value="AL">All Layers</option>
                         </select>
                     </p>
                 </div>
-            </div>
+                </div>
             <br>
-            <div class="container">
-                <h4>Menu</h4>
-                <div class="panel-group medium-3" id="accordion"></div>
+            <div style="margin-left: 15px;">
+                <h4><strong>Layer Menu:</strong></h4>
+                <h5 class="note"> NOTE: Selecting a layer will direct the globe to its location.</h5>
+                <div class="panel-group" id="accordion" style="width: 310px; height: 575px;overflow: scroll"></div>
             </div><!-- /.panel-group -->
+            </div>
         </div>
-        <div class="col-sm-9" id="globe">
-            <canvas id="canvasOne" width="1000" height="1000" style="width: 100%; height: auto;">
+        <div class="container floating-Box" id="globe" style="width: 1000px;
+    height: 1000px;
+    margin-left: 475px;
+    padding: 0px;">
+            <canvas id="canvasOne" width="1000" height="1000" style="width: 1000px; height: 1000px;">
                 Your browser does not support HTML5 Canvas.
             </canvas>
         </div>
@@ -195,7 +194,7 @@
                     $.each(firstlayer, function (i) {
 
                         var paneldefault1 = document.createElement("div");
-                        paneldefault1.className = "Menu panel panel-default " + firstlayer[i] ;
+                        paneldefault1.className = "Menu panel panel-info " + firstlayer[i] ;
                         var panelheading1 = document.createElement("div");
                         panelheading1.className = "panel-heading";
                         var paneltitle1 = document.createElement("h4");
@@ -237,7 +236,7 @@
                                 if(v === comparing.length - 1) {
                                     var paneldefault2 = document.createElement("div");
                                     paneldefault2.id = res[i].SecondLayer;
-                                    paneldefault2.className = "Menu panel panel-default "+ res[i].SecondLayer;
+                                    paneldefault2.className = "Menu panel panel-info "+ res[i].SecondLayer;
                                     var panelheading2 = document.createElement("div");
                                     panelheading2.className = "panel-heading";
                                     var paneltitle2 = document.createElement("h4");

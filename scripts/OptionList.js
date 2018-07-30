@@ -16,8 +16,8 @@ $(document).ready(function() {
     $("#myListContinent").change(function () {
         let val = $(this).val();
         if (val == "AL"){
-            $("#myListCountry").html("<option value='AL'> All Layer </option>");
-            $("#myListState").html("<option value= 'AL'> All Layer </option>");
+            $("#myListCountry").html("<option value='AL'> All Layers </option>");
+            $("#myListState").html("<option value= 'AL'> All Layers </option>");
             $('.State').show();
         }else{
             $("#myListCountry").html("<option value = 'SAS'> -Select a Country- </option>");
