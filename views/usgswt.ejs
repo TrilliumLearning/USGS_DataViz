@@ -30,7 +30,7 @@
         .box1 {
             margin-left: 100px;
             position: absolute;
-            width: 250px;
+            width: 300px;
             height: 900px;
         }
 
@@ -52,6 +52,24 @@
             background-color: #337ab7;
             color: white;
         }
+
+        #layerMenu {
+            padding: 15px;
+            background-color: #e5e5e5;
+        }
+
+        #layerMenu::-webkit-scrollbar-thumb {
+            border-radius: 30px;
+            width: 5px;
+            background-color: rgba(0, 0, 0, .5);
+            -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+        }
+
+        #layerMenu::-webkit-scrollbar {
+            -webkit-appearance: none;
+            width: 7px;
+        }
+
         .switch {
             position: relative;
             display: inline-block;
@@ -151,7 +169,7 @@
             </div>
             <br>
         <div style="width: 300px; border-style: solid; padding: 25px;">
-            <h5 class="note" id="switchNote">NOTE: Placemark colors are determined by the filter chosen.</h5>
+            <h5 class="note text-center" id="filterNote">NOTE: Placemark colors are determined by the filter chosen.</h5>
             <div id="placemarkButton">
                 <input type="radio" id="none" name="category"> None
                 <input type="radio" id="p_year_color" name="category"> Year
@@ -159,31 +177,31 @@
                 <input type="radio" id="t_ttlh_color" name="category"> Height
                 <br><br>
 
-                <div style="width: 200px; height: 15px; background: linear-gradient(to right, rgba(0, 0, 255, 0.75), rgba(0, 255, 0, 0.75), rgba(255, 255, 0, 0.75), rgba(255, 127.5, 0, 0.75), rgba(255, 0, 0, 0.75));"></div>
-                <div style="width: 200px; height: 30px;">
+                <div style="width: 240px; height: 15px; background: linear-gradient(to right, rgba(0, 0, 255, 0.75), rgba(0, 255, 0, 0.75), rgba(255, 255, 0, 0.75), rgba(255, 127.5, 0, 0.75), rgba(255, 0, 0, 0.75));"></div>
+                <div style="width: 240px; height: 30px;">
                     <p id="leftScale" style="float: left; font-size:13px;"></p>
                     <p id="rightScale" style="float: right; font-size:13px;"></p>
                 </div>
-
-                <br><br>
+                <h5 class="note text-center" id="menuNote">NOTE: Zoom in to an eye distance of less than 1,000 km to display a menu for wind turbines.</h5>
                 <div>
-                    <h4>Smart Search</h4>
-                    <input id="autoSuggestion" style="font-size: 15px; width: 235px">
+                    <h4>Smart Search:</h4>
+                    <input id="autoSuggestion" style="font-size: 15px; width: 235px; height: 50px; border-radius: 5px; border: 1px solid lightgray; padding-left: 10px;" placeholder="Enter name of wind turbine">
                 </div>
-                <br><br>
+                <br>
 
                 <!--<button type="button" id="test"></button>-->
             </div>
-            <div id="layerMenu" style="width: 235px; height: 500px; overflow: scroll;">
+            <div id="layerMenu" style="width: 240px; height: 500px; overflow: scroll;">
 
             </div>
         </div>
     </div>
         <div class="container floating-Box" id="globe" style="width: 900px;
     height: 900px;
-    margin-left: 375px;
+    margin-left: 450px;
     padding: 0px;">
-            <canvas id="canvasOne" width="6000" height="6000" style="width: 100%; height: auto;">
+            <h4 class="note text-center" id="globeNote">NOTE: Zoom in to an eye distance of less than 4,500 km to view the point locations.</h4>
+            <canvas id="canvasOne" style="width: 900px; height: 900px;">
                 Your browser does not support HTML5 Canvas.
             </canvas>
         </div>
