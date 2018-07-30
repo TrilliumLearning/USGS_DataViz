@@ -51,7 +51,7 @@ requirejs(['./WorldWindShim',
         var preloadLayer = [];
         var layers = globe.layers;
         var checked = [];
-        var unchecked = [];
+        // var unchecked = [];
         var previousArray = [];
             //previous checked array//
 
@@ -65,15 +65,83 @@ requirejs(['./WorldWindShim',
             layerName = strs.split(",");
 
             $('.wmsLayer').click(function () {
-                // var layer1 = $(this).val();
+                var layer1 = $(this).val();
                 var testarray = $(':checkbox:checked');
-                console.log(testarray);
-                // var val = testarray[testarray.length - 1].defaultValue;
-                // console.log(val);
+                // console.log(testarray);
+                var uncheckedval = $(':checkbox:not(:checked)')
+                // console.log(uncheckedval);
 
-                if (testarray.length > 0 ){
-                    var val = testarray[testarray.length - 1].defaultValue;
+                if (testarray.length > 0){
+                    checked.push(layer1);
+                    console.log(checked);
+                    // var val = testarray[testarray.length - 1].defaultValue;
+
+                    // for (var i = 0;i < checked.length; i++) {
+                    //     console.log(layer1);
+                    //     console.log(checked[i]);
+                    // if(layer1 !== checked[i]){
+                    //     checked.push(layer1);
+                    //     console.log(checked);
+                    //     // var val = testarray[testarray.length - 1].defaultValue;
+                    //     var val = checked[checked.length - 1];
+                    // }
+                    // else{
+                    //     var index = checked.indexOf(layer1);
+                    //     console.log(index);
+                    //     checked.splice(index, 1);
+                    //     console.log(checked);
+                    //     }
+                    // }
+                    if (!Array.prototype.remove) {
+                        Array.prototype.remove = function(val, all) {
+                            var i, removedItems = [];
+                            if (all) {
+                                for(i = this.length; i--;){
+                                    if (this[i] === val) removedItems.push(this.splice(i, 1));
+                                }
+                            }
+                            else {  //same as before...
+                                i = this.indexOf(val);
+                                if(i>-1) removedItems = this.splice(i, 1);
+                            }
+                            return removedItems;
+                        };
+                    }
+                    for( var i = checked.length -1 ; i--;){
+                        if ( checked[i] === layer1) {
+                           var removedItems = checked.remove(layer1,true);
+                           console.log(removedItems);
+                        }
+                            // checked.splice(i, 2);
+                    }
+                    var val = checked[checked.length - 1];
+                    console.log(checked);
                 }
+
+                // for (var i = 0; i < testarray.length;i++){
+                //     if(layer1 === checked[i]){
+                //         var index = checked.indexOf(layer1);
+                //         console.log(index);
+                //         checked.splice(index, 1);
+                //         console.log(checked);
+                //     }
+                // }
+                // for( var i = checked.length -1 ; i--;){
+                //     if ( checked[i] === "USGS:0_ColorShadedRelief") checked.splice(i, 1);
+                // }
+                // console.log(checked);
+                // function removeDuplicates(arr){
+                //     let unique_array = [];
+                //     for(let i = 0;i < arr.length; i++){
+                //         if(unique_array.indexOf(arr[i]) == -1){
+                //             unique_array.push(arr[i])
+                //         }
+                //     }
+                //     return unique_array;
+                //
+                // }
+                // console.log(removeDuplicates(checked));
+
 
                 for (var a = 0; a < layers.length; a++) {
                         $(':checkbox:checked').each(function () {
