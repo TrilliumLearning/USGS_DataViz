@@ -1,10 +1,14 @@
 requirejs(['./worldwind.min',
         './LayerManager',
         './RadiantCircleTile',
+        '../src/util/WWMath',
+        '../src/geom/Angle',
         '../config/mainconf'],
     function (WorldWind,
               LayerManager,
-              RadiantCircleTile) {
+              RadiantCircleTile,
+              WWMath,
+              Angle) {
         "use strict";
 
         $(document).ready(function() {
@@ -48,76 +52,9 @@ requirejs(['./worldwind.min',
                     wwd.addLayer(layers[l].layer);
                 }
 
-                // var placemarkLayer = new WorldWind.RenderableLayer("Custom Placemark");
-                //
-                // var canvas = document.createElement("canvas"),
-                //     ctx2d = canvas.getContext("2d"),
-                //     size = 64, c = size / 2  - 0.5, innerRadius = 5, outerRadius = 20;
-                //
-                // canvas.width = size;
-                // canvas.height = size;
-                //
-                // var gradient = ctx2d.createRadialGradient(c, c, innerRadius, c, c,   outerRadius);
-                // gradient.addColorStop(0, 'rgba(204, 255, 255, 0.49)');
-                // gradient.addColorStop(0.5, 'rgba(102, 153, 255, 0.25)');
-                // gradient.addColorStop(1, 'rgba(102, 0, 255, 0.25)');
-                // // gradient.addColorStop(0, 'rgb(204, 255, 255)');
-                // // gradient.addColorStop(0.5, 'rgb(102, 153, 255)');
-                // // gradient.addColorStop(1, 'rgb(102, 0, 255)');
-                //
-                // ctx2d.fillStyle = gradient;
-                // ctx2d.arc(c, c, outerRadius, 0, 2 * Math.PI, false);
-                // ctx2d.fill();
-                //
-                // var placemarkAttributes = new WorldWind.PlacemarkAttributes(null);
-                // placemarkAttributes.imageSource = new WorldWind.ImageSource(canvas);
-                // placemarkAttributes.imageScale = 0.5;
-                //
-                // var highlightAttributes = new WorldWind.PlacemarkAttributes(placemarkAttributes);
-                // highlightAttributes.imageScale = 1.0;
-                //
-                // var placemarkPosition = new WorldWind.Position(0, 0, 0);
-                // var placemarks = new WorldWind.Placemark(placemarkPosition, false, placemarkAttributes);
-                // placemarks.altitudeMode = WorldWind.RELATIVE_TO_GROUND;
-                // placemarks.highlightAttributes = highlightAttributes;
-                // // placemarks[i].updateImage = true;
-                // placemarkLayer.addRenderable(placemarks);
-                // wwd.addLayer(placemarkLayer);
-                // console.log(wwd.layers[7].renderables);
-                //
-                // function handleMouseCLK(o) {
-                //
-                //     // The input argument is either an Event or a TapRecognizer. Both have the same properties for determining
-                //     // the mouse or tap location.
-                //     var x = o.clientX,
-                //         y = o.clientY;
-                //
-                //     // Perform the pick. Must first convert from window coordinates to canvas coordinates, which are
-                //     // relative to the upper left corner of the canvas rather than the upper left corner of the page.
-                //     // console.log(o.x, o.clientX, o.layerX, o.offsetX, o.pageX, o.screenX);
-                //     // console.log(o.y, o.clientY, o.layerY, o.offsetY, o.pageY, o.screenY);
-                //     // console.log(x + ", " + y + "   " + wwd.canvasCoordinates(x, y));
-                //     var pickList = wwd.pick(wwd.canvasCoordinates(x, y));
-                //     console.log(pickList.objects);
-                //     for (var q = 0; q < pickList.objects.length; q++) {
-                //         var pickedPL = pickList.objects[q].userObject;
-                //         // console.log(pickedPL);
-                //         if (pickedPL instanceof WorldWind.Placemark) {
-                //             // console.log(pickedPL);
-                //             // console.log("A");
-                //             // autoZoom(pickedPL.position, pickedPL.userProperties);
-                //         }
-                //     }
-                //
-                //     pickList = [];
-                // }
-                //
-                // // Listen for mouse double clicks placemarks and then pop up a new dialog box.
-                // wwd.addEventListener("click", handleMouseCLK);
-
                 $("#test").on('click', function () {
                     // console.log(wwd.layers[suggestedLayer].inCurrentFrame);
-                    console.log($(".layers"));
+                    console.log(wwd.worldWindowController.__proto__);
                 });
 
                 $("#none, #p_year_color, #p_avgcap_color, #t_ttlh_color").on("click", function () {
@@ -334,39 +271,45 @@ requirejs(['./worldwind.min',
                     clearHighlight();
                 };
 
-                // wwd.worldWindowController.__proto__.handlePanOrDrag3D = function (recognizer) {
-                //     var state = recognizer.state,
-                //         tx = recognizer.translationX,
-                //         ty = recognizer.translationY;
-                //
-                //     var navigator = this.wwd.navigator;
-                //     if (state === WorldWind.BEGAN) {
-                //         this.lastPoint.set(0, 0);
-                //     } else if (state === WorldWind.CHANGED) {
-                //         // Convert the translation from screen coordinates to arc degrees. Use this navigator's range as a
-                //         // metric for converting screen pixels to meters, and use the globe's radius for converting from meters
-                //         // to arc degrees.
-                //         var canvas = this.wwd.canvas,
-                //             globe = this.wwd.globe,
-                //             globeRadius = WWMath.max(globe.equatorialRadius, globe.polarRadius),
-                //             distance = WWMath.max(1, navigator.range),
-                //             metersPerPixel = WWMath.perspectivePixelSize(canvas.clientWidth, canvas.clientHeight, distance),
-                //             forwardMeters = (ty - this.lastPoint[1]) * metersPerPixel,
-                //             sideMeters = -(tx - this.lastPoint[0]) * metersPerPixel,
-                //             forwardDegrees = (forwardMeters / globeRadius) * Angle.RADIANS_TO_DEGREES,
-                //             sideDegrees = (sideMeters / globeRadius) * Angle.RADIANS_TO_DEGREES;
-                //
-                //         // Apply the change in latitude and longitude to this navigator, relative to the current heading.
-                //         var sinHeading = Math.sin(navigator.heading * Angle.DEGREES_TO_RADIANS),
-                //             cosHeading = Math.cos(navigator.heading * Angle.DEGREES_TO_RADIANS);
-                //
-                //         navigator.lookAtLocation.latitude += forwardDegrees * cosHeading - sideDegrees * sinHeading;
-                //         navigator.lookAtLocation.longitude += forwardDegrees * sinHeading + sideDegrees * cosHeading;
-                //         this.lastPoint.set(tx, ty);
-                //         this.applyLimits();
-                //         this.wwd.redraw();
-                //     }
-                // };
+                wwd.worldWindowController.__proto__.handlePanOrDrag3D = function (recognizer) {
+                    var state = recognizer.state,
+                        tx = recognizer.translationX,
+                        ty = recognizer.translationY;
+
+                    var navigator = this.wwd.navigator;
+
+                    // this.lastPoint or navigator.lastPoint
+
+                    if (state === WorldWind.BEGAN) {
+                        navigator.lastPoint.set(0, 0);
+                    } else if (state === WorldWind.CHANGED) {
+                        // Convert the translation from screen coordinates to arc degrees. Use this navigator's range as a
+                        // metric for converting screen pixels to meters, and use the globe's radius for converting from meters
+                        // to arc degrees.
+                        var canvas = this.wwd.canvas,
+                            globe = this.wwd.globe,
+                            globeRadius = WWMath.max(globe.equatorialRadius, globe.polarRadius),
+                            distance = WWMath.max(1, navigator.range),
+                            metersPerPixel = WWMath.perspectivePixelSize(canvas.clientWidth, canvas.clientHeight, distance),
+                            forwardMeters = (ty - navigator.lastPoint[1]) * metersPerPixel,
+                            sideMeters = -(tx - navigator.lastPoint[0]) * metersPerPixel,
+                            forwardDegrees = (forwardMeters / globeRadius) * Angle.RADIANS_TO_DEGREES,
+                            sideDegrees = (sideMeters / globeRadius) * Angle.RADIANS_TO_DEGREES;
+
+                        // Apply the change in latitude and longitude to this navigator, relative to the current heading.
+                        var sinHeading = Math.sin(navigator.heading * Angle.DEGREES_TO_RADIANS),
+                            cosHeading = Math.cos(navigator.heading * Angle.DEGREES_TO_RADIANS);
+
+                        navigator.lookAtLocation.latitude += forwardDegrees * cosHeading - sideDegrees * sinHeading;
+                        navigator.lookAtLocation.longitude += forwardDegrees * sinHeading + sideDegrees * cosHeading;
+                        navigator.lastPoint.set(tx, ty);
+                        this.applyLimits();
+                        this.wwd.redraw();
+
+                        layerMenu();
+                        clearHighlight();
+                    }
+                };
 
                 function autoSwitch() {
                     var altitude = wwd.layers[0].eyeText.text.replace(/Eye  |,| km/g, '');
