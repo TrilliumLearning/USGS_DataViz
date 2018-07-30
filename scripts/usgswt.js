@@ -1,10 +1,12 @@
 requirejs(['./worldwind.min',
         './LayerManager',
         './RadiantCircleTile',
+        '../src/util/WWMath',
         '../config/mainconf'],
     function (WorldWind,
               LayerManager,
-              RadiantCircleTile) {
+              RadiantCircleTile,
+              WWMath) {
         "use strict";
 
         $(document).ready(function() {
@@ -115,10 +117,10 @@ requirejs(['./worldwind.min',
                 // // Listen for mouse double clicks placemarks and then pop up a new dialog box.
                 // wwd.addEventListener("click", handleMouseCLK);
 
-                $("#test").on('click', function () {
-                    // console.log(wwd.layers[suggestedLayer].inCurrentFrame);
-                    console.log($(".layers"));
-                });
+                // $("#test").on('click', function () {
+                //     // console.log(wwd.layers[suggestedLayer].inCurrentFrame);
+                //     console.log($(".layers"));
+                // });
 
                 $("#none, #p_year_color, #p_avgcap_color, #t_ttlh_color").on("click", function () {
                     var category = this.id;
