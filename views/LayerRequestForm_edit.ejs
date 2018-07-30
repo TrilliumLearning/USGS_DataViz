@@ -337,9 +337,9 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label  class="col-md-4 control-label">Layer Uploader</label>
+                        <label class="col-md-4 control-label">Layer Uploader</label>
                         <div class="col-md-8 inputGroupContainer">
-                            <div id="uploader" ></div>
+                            <div id="uploader"></div>
                         </div>
                     </div>
                 </fieldset>
@@ -358,6 +358,7 @@
 <script>
     var UserRole = "<%= user.userrole %>";
     var getvalue = JSON.parse(localStorage.getItem("getvalue"));
+    console.log(getvalue);
 
     $(document).ready(function() {
         document.getElementById('date').value = getvalue[0];
@@ -378,7 +379,7 @@
             document.getElementById("other2").style.display = "block";
             document.getElementById("inputtwo").value = getvalue[10];
         }else{
-            document.getElementById('main').value = getvalue[7];
+            document.getElementById('main').options[0].innerHTML = getvalue[7];
             document.getElementById('sub').options[0].innerHTML = getvalue[9];
         }
 
@@ -432,7 +433,7 @@
         dataType: 'json',
         data: editIDSr,
         success: function (results) {
-            if(!results === "") {
+            if(results !== "") {
                 if (!results.error) {
                     globalResults = results;
                     var list = [];
