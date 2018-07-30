@@ -416,7 +416,6 @@
                 success: function (results) {
                     console.log(results);
                     for (var i = 0; i < results.length; i++) {
-                        if (results[i].Status === "Pending") {
                             if (UserRole === "Regular") {
                                 if (results[i].UID === username) {
                                     table.row.add([
@@ -460,13 +459,12 @@
                                         results[i].Layer_Uploader_name,
                                         results[i].Status
                                     ]).draw(false);
-                                }
                             }
+                        }
                     }
                 }
             });
         }
-
 
 </script>
 </body>

@@ -1,4 +1,4 @@
-    let Continentlevel, Countrylevel,continentObj1,continentObj2;
+    let Continentlevel, Countrylevel,continentObj1,continentObj2,continentObj3;
 
     $(document).ready(function() {
         let x = document.getElementById("myListContinent");
@@ -74,7 +74,6 @@
                             $.ajax({
                                 url: "ClassName",
                                 success: function (res) {
-                                    console.log(res);
                                     continentObj1 = res;
                                 }
                             })
@@ -83,7 +82,7 @@
                                 url: "ClassName",
                                 success: function (res) {
                                     continentObj1 = getObjects(res, 'ContinentName', continentlevel);
-                                    // localStorage.setItem("returnvalue1",JSON.stringify(continentObj1));
+                                    console.log(continentObj1);
                                 }
                             });
                         }
@@ -95,19 +94,14 @@
 
     function ChangeStateList(countrylevel) {
         Countrylevel = countrylevel;
-        // var returnvalue1 = JSON.parse(localStorage.getItem("returnvalue1"));
         $('.Menu').hide();
         $('.State').hide();
         var stateList = document.getElementById("myListState");
         while (stateList.options.length) {
             stateList.remove(0);
         }
-        console.log(countrylevel);
-        if (countrylevel === "SAS"){
-            $("#myListState").html("<option> -Select a State-</option>");
-            document.getElementById("myListState").disabled = true;
-            document.getElementById("myListState").style.backgroundColor = "lightgray";
-        } else{
+
+        if(countrylevel !== "SAS"){
             $("#myListState").html("<option> -Select a State- </option>");
             document.getElementById("myListState").disabled = false;
             document.getElementById("myListState").style.backgroundColor = "white";
@@ -117,9 +111,8 @@
             url: "StateList",
             dataType: 'json',
             success: function (results) {
-                console.log(results);
                 for(var j = 0; j < results.length; j++){
-                    if(countrylevel === results[j].CountryName){
+                    if(countrylevel === results[j].CountryName && Continentlevel === results[j].ContinentName){
                         var option = new Option(results[j].StateName, results[j].StateName);
                         stateList.add(option);
                     }
@@ -128,13 +121,11 @@
         });
 
         for(var i = 0; i < continentObj1.length; i++){
-            if(Continentlevel === continentObj1[i].ContinentName && countrylevel === continentObj1[i].CountryName){
-                if(countrylevel === "All Countries"){
-                    continentObj2 = continentObj1;
-                }else{
-                    continentObj2 = getObjects(continentObj2, 'CountryName', countrylevel);
-                    localStorage.setItem("returnvalue2",JSON.stringify(continentObj2));
-                }
+            if(countrylevel === "All Countries"){
+                continentObj2 = continentObj1;
+            }else{
+                continentObj2 = getObjects(continentObj1, 'CountryName', countrylevel);
+                console.log(continentObj2)
             }
         }
     }
@@ -143,25 +134,39 @@
         $('.Menu').hide();
         $('.State').hide();
 
-        var returnvalue2 = JSON.parse(localStorage.getItem("returnvalue2"));
-        console.log(returnvalue2);
-
-        for(var i =0; i< returnvalue2.length; i++) {
-            if(Continentlevel === returnvalue2[i].ContinentName && Countrylevel === continentObj2[i].CountryName) {
-                if(Countrylevel === returnvalue2[i].CountryName) {
-                    if (statelevel === returnvalue2[i].StateName) {
-                        var obj1 = returnvalue2[i].FirstLayer;
-                        var obj2 = returnvalue2[i].SecondLayer;
-                        var obj3 = returnvalue2[i].ThirdLayer;
-                        var className1 = '.' + obj1;
-                        var className2 = '.' + obj2;
-                        var className3 = '.' + obj3;
-                        $(className1).show();
-                        $(className2).show();
-                        $(className3).show();
-                    }
-                }
+        for(var i = 0; i < continentObj2.length; i++) {
+            if(Countrylevel === "All Countries" && Continentlevel === "All Continents" && statelevel === "All States") {
+                $('.Menu').show();
+                $('.State').show();
+            }else if(Countrylevel === "All Countries" && Continentlevel === "All Continents" && statelevel !== "All States"){
+                continentObj3 = getObjects(continentObj2, 'StateName', statelevel);
+                myFunction(i);
+            }else if(Continentlevel === "All Continents" && Countrylevel !== "All Countries" && statelevel !== "All States"){
+                continentObj3 = continentObj2;
+                myFunction(i);
+            }else if(Continentlevel !== "All Continents" && Countrylevel === "All Countries" && statelevel === "All States"){
+                continentObj3 = continentObj1;
+                myFunction(i);
+            }else if(Continentlevel !== "All Continents" && Countrylevel !== "All Countries" && statelevel === "All States"){
+                continentObj3 = continentObj2;
+                console.log(continentObj3);
+                myFunction(i);
+            }else{
+                continentObj3 = getObjects(continentObj2, 'StateName', statelevel);
+                myFunction(i);
             }
+
         }
     }
 
+    function myFunction(index) {
+        var obj1 = continentObj3[index].FirstLayer;
+        var obj2 = continentObj3[index].SecondLayer;
+        var obj3 = continentObj3[index].ThirdLayer;
+        var className1 = '.' + obj1;
+        var className2 = '.' + obj2;
+        var className3 = '.' + obj3;
+        $(className1).show();
+        $(className2).show();
+        $(className3).show();
+    }
