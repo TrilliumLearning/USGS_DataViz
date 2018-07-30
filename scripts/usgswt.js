@@ -12,6 +12,8 @@ requirejs(['./worldwind.min',
 
                 var placemark = [];
                 var autoSuggestion = [];
+                var suggestedLayer;
+                // var clickedLayer;
 
                 // reading configGlobal from mainconf.js
                 var mainconfig = config;
@@ -26,8 +28,10 @@ requirejs(['./worldwind.min',
                 // Create and add layers to the WorldWindow.
                 var layers = [
                     // Imagery layers.
-                    {layer: new WorldWind.BMNGLayer(), enabled: true},
-                    {layer: new WorldWind.BMNGLandsatLayer(), enabled: true},
+                    // coordinates layer always top
+                    {layer: new WorldWind.CoordinatesDisplayLayer(wwd), enabled: true},
+                    // {layer: new WorldWind.BMNGLayer(), enabled: true},
+                    // {layer: new WorldWind.BMNGLandsatLayer(), enabled: true},
                     // {layer: new WorldWind.BingAerialLayer(null), enabled: false},
                     {layer: new WorldWind.BingAerialWithLabelsLayer(null), enabled: true},
                     // {layer: new WorldWind.BingRoadsLayer(null), enabled: false},
@@ -36,7 +40,6 @@ requirejs(['./worldwind.min',
                     {layer: new WorldWind.AtmosphereLayer(), enabled: true},
                     // WorldWindow UI layers.
                     {layer: new WorldWind.CompassLayer(), enabled: true},
-                    {layer: new WorldWind.CoordinatesDisplayLayer(wwd), enabled: true},
                     {layer: new WorldWind.ViewControlsLayer(wwd), enabled: true}
                 ];
 
@@ -112,6 +115,11 @@ requirejs(['./worldwind.min',
                 // // Listen for mouse double clicks placemarks and then pop up a new dialog box.
                 // wwd.addEventListener("click", handleMouseCLK);
 
+                $("#test").on('click', function () {
+                    // console.log(wwd.layers[suggestedLayer].inCurrentFrame);
+                    console.log($(".layers"));
+                });
+
                 $("#none, #p_year_color, #p_avgcap_color, #t_ttlh_color").on("click", function () {
                     var category = this.id;
                     // console.log(category);
@@ -172,12 +180,11 @@ requirejs(['./worldwind.min',
 
                 $("#switchLayer").on("click", function () {
                     // this.checked, true: placemark, false: heatmap
-                    // 7 basis layers
                     // console.log(this.checked + "   " + !this.checked);
 
                     document.getElementById("placemarkButton").style.pointerEvents = (this.checked === true) ? "auto" : "none";
 
-                    for (var i = 7; i < wwd.layers.length; i++) {
+                    for (var i = layers.length; i < wwd.layers.length; i++) {
                         if (i === wwd.layers.length - 1) {
                             wwd.layers[i].enabled = !this.checked;
                             // console.log(wwd.layers);
@@ -202,12 +209,6 @@ requirejs(['./worldwind.min',
                     $(".sortButton").css("background-color", "rgb(128, 128, 128)");
                     $(this).css("background-color", "rgb(0, 128, 255)");
 
-                    // if (status === true) {
-                    //     console.log("A");
-                    // } else if (status === false) {
-                    //     console.log("B");
-                    // }
-
                     function sort(arr, isNotReverse){
                         arr.sort(function(a, b){
                             // console.log($(a).attr("data-" + category), $(b).attr("data-" + category));
@@ -225,78 +226,84 @@ requirejs(['./worldwind.min',
                     var arr = sort(parent.children(), status);
                     // console.log(arr);
                     arr.detach().appendTo(parent);
+
+                    // if (clickedLayer) {
+                    //     $("#" + clickedLayer).detach().prependTo(parent);
+                    // }
                 });
 
-                // $("#test").on('click', function () {
-                //     // console.log(wwd.layers[7].isLayerInView(wwd.drawContext));
-                //     // var altitude = wwd.layers[5].eyeText.text;
-                //     // console.log(altitude.substring(5, altitude.length - 3));
-                //     // for (var i = 7; i < wwd.layers.length; i++) {
-                //     //     console.log(wwd.layers[i].inCurrentFrame);
-                //     // }
-                //     // $("#switchLayer").click();
-                //     // var altitude = wwd.layers[5].eyeText.text.substring(5, wwd.layers[5].eyeText.text.length - 3);
+                // function moveList(id) {
+                //     if (!clickedLayer) {
+                //         clickedLayer = id;
                 //
-                //     console.log(wwd.layers);
-                // });
+                //         var item = $("#" + clickedLayer);
+                //         var clone = $("#" + clickedLayer).clone();
+                //         item.attr('id', clickedLayer + "_hidden");
+                //         item.hide();
+                //         clone.css('background-color', 'rgb(191, 191, 191)');
+                //         clone.prependTo($("#layerMenu"));
+                //     } else if (clickedLayer === id) {
+                //         $("#" + clickedLayer).remove();
+                //         var hiddenElement = $("#" + clickedLayer + "_hidden");
+                //         hiddenElement.show();
+                //         hiddenElement.attr('id', clickedLayer);
+                //         clickedLayer = "";
+                //     } else if (clickedLayer !== id) {
+                //         $("#" + clickedLayer).remove();
+                //         var hiddenElement = $("#" + clickedLayer + "_hidden");
+                //         hiddenElement.show();
+                //         hiddenElement.attr('id', clickedLayer);
+                //
+                //         clickedLayer = id;
+                //
+                //         var item = $("#" + clickedLayer);
+                //         var clone = $("#" + clickedLayer).clone();
+                //         item.attr('id', clickedLayer + "_hidden");
+                //         item.hide();
+                //         clone.css('background-color', 'rgb(191, 191, 191)');
+                //         clone.prependTo($("#layerMenu"));
+                //     }
+                // }
 
                 function highlightLayer(e) {
-                    // console.log(this.id);
-                    var category = $("input[name='category']:checked")[0].id;
-
-                    // var color = {
-                    //     "grey": "rgba(192, 192, 192, 0.5)",
-                    //     "blue": "rgba(0, 0, 255, 0.5)",
-                    //     "green": "rgba(0, 255, 0, 0.5)",
-                    //     "yellow": "rgba(255, 255, 0, 0.5)",
-                    //     "orange": "rgba(255, 127.5, 0, 0.5)",
-                    //     "red": "rgba(255, 0, 0, 0.5)",
-                    //     'undefined': "rgba(255, 255, 255, 1)"
-                    // };
+                    console.log("Z");
 
                     var renderables = wwd.layers[this.id].renderables;
-                    // console.log(renderables);
-
-                    // var canvas = document.createElement("canvas");
-                    // var img = canvas.getContext('2d');
-                    // canvas.width = canvas.height = 30;
-                    // img.beginPath();
-                    // img.arc(15, 15, 15, 0, Math.PI * 2, true);
-                    // img.fillStyle = "#ccff99";
-                    // img.fill();
-                    // var imgData = img.getImageData(0, 0, 30, 30);
 
                     for (var i = 0; i < renderables.length; i++) {
-                        // var circle = document.createElement("canvas"),
-                        //     ctx = circle.getContext('2d'),
-                        //     radius = 10,
-                        //     r2 = radius + radius;
-                        //
-                        // circle.width = circle.height = r2;
-                        //
-                        // if (e.handleObj.type === "mouseover") {
-                        //     circle.width = circle.height = radius + radius + radius;
-                        //     ctx.putImageData(imgData, 0, 0);
-                        // }
-                        //
-                        // var gradient = ctx.createRadialGradient(radius, radius, 0, radius, radius, radius);
-                        // gradient.addColorStop(0, color[renderables[i].userProperties[category]]);
-                        //
-                        // ctx.beginPath();
-                        // ctx.arc(radius, radius, radius, 0, Math.PI * 2, true);
-                        //
-                        // ctx.fillStyle = gradient;
-                        // ctx.fill();
-                        // // ctx.strokeStyle = "rgb(255, 255, 255)";
-                        // // ctx.stroke();
-                        //
-                        // ctx.closePath();
-                        //
-                        // renderables[i].attributes.imageSource.image = circle;
-                        // renderables[i].updateImage = true;
 
                         renderables[i].highlighted = (e.handleObj.type === "mouseover") ? true : false;
+
+                        // if (i === renderables.length - 1) {
+                        //     wwd.goTo(new WorldWind.Position(renderables[0].position.latitude, renderables[0].position.longitude), function() {
+                        //         layerMenu();
+                        //     });
+                        // }
                     }
+
+                    // var id = this.id;
+                    //
+                    // if (id !== clickedLayer && clickedLayer) {
+                    //     var oldRenderables = wwd.layers[clickedLayer].renderables;
+                    //     for (var z = 0; z < oldRenderables.length; z++) {
+                    //         oldRenderables[z].highlighted = !oldRenderables[z].highlighted;
+                    //     }
+                    // }
+                    //
+                    //
+                    // var renderables = wwd.layers[this.id].renderables;
+                    // for (var i = 0; i < renderables.length; i++) {
+                    //
+                    //     renderables[i].highlighted = !renderables[i].highlighted;
+                    //
+                    //     if (i === renderables.length - 1) {
+                    //         wwd.goTo(new WorldWind.Position(renderables[0].position.latitude, renderables[0].position.longitude), function () {
+                    //             layerMenu();
+                    //             console.log("A");
+                    //             moveList(id);
+                    //         });
+                    //     }
+                    // }
                 }
 
                 wwd.worldWindowController.__proto__.handleWheelEvent = function (event) {
@@ -324,6 +331,7 @@ requirejs(['./worldwind.min',
 
                     autoSwitch();
                     layerMenu();
+                    clearHighlight();
                 };
 
                 // wwd.worldWindowController.__proto__.handlePanOrDrag3D = function (recognizer) {
@@ -361,22 +369,41 @@ requirejs(['./worldwind.min',
                 // };
 
                 function autoSwitch() {
-                    var altitude = wwd.layers[5].eyeText.text.replace(/Eye  |,| km/g, '');
+                    var altitude = wwd.layers[0].eyeText.text.replace(/Eye  |,| km/g, '');
 
                     if (altitude <= mainconfig.eyeDistance_Heatmap && !$("#switchLayer").is(':checked')) {
                         $("#switchLayer").click();
+                        $("#switchNote").html("");
+                        $("#switchNote").append("NOTE: Toggle switch to temporarily view density heatmap.");
+                        $("#globeNote").html("");
+                        $("#globeNote").append("NOTE: Zoom in to an eye distance of more than 4,500 km to view the density heatmap.");
+
                     } else if (altitude > mainconfig.eyeDistance_Heatmap && $("#switchLayer").is(':checked')) {
+                        $("#switchNote").html("");
+                        $("#switchNote").append("NOTE: Toggle switch to temporarily view point locations.");
+                        $("#globeNote").html("");
+                        $("#globeNote").append("NOTE: Zoom in to an eye distance of less than 4,500 km to view the point locations.");
+
                         $("#switchLayer").click();
                     }
+
+                    if (altitude <= mainconfig.eyeDistance_PL && $("#switchLayer").is(':checked')) {
+                        $("#menuNote").html("");
+                        $("#menuNote").append("NOTE: Hover mouse over items listed below in the menu to highlight point location(s).");
+                    } else if (altitude > mainconfig.eyeDistance_PL && $("#switchLayer").is(':checked')) {
+                        $("#menuNote").html("");
+                        $("#menuNote").append("NOTE: Zoom in to an eye distance of less than 1,000 km to display a menu for wind turbines.");
+                    }
+
                 }
 
                 function layerMenu() {
-                   var altitude = wwd.layers[5].eyeText.text.substring(5, wwd.layers[5].eyeText.text.length - 3);
+                   var altitude = wwd.layers[0].eyeText.text.substring(5, wwd.layers[0].eyeText.text.length - 3);
                    $("#layerMenu").empty();
-                    $("#layerMenuButton").hide();
+                   $("#layerMenuButton").hide();
                    var projectNumber = 0;
                    if (altitude <= mainconfig.eyeDistance_PL && $("#switchLayer").is(':checked')) {
-                       for (var i = 7; i < wwd.layers.length - 1; i++) {
+                       for (var i = layers.length; i < wwd.layers.length - 1; i++) {
 
                            if (wwd.layers[i].inCurrentFrame) {
                                var projectName = wwd.layers[i].displayName,
@@ -401,9 +428,35 @@ requirejs(['./worldwind.min',
                                $("#layerMenuButton").show();
                                $(".layers").on('mouseenter', highlightLayer);
                                $(".layers").on('mouseleave', highlightLayer);
+                               // $(".layers").on('click', highlightLayer);
                            }
                        }
                    }
+                }
+
+                function clearHighlight() {
+                    if (suggestedLayer) {
+                        var layer = wwd.layers[suggestedLayer];
+                        for (var i = 0; i < layer.renderables.length; i++) {
+                            layer.renderables[i].highlighted = false;
+
+                            if (i === layer.renderables.length - 1) {
+                                suggestedLayer = "";
+                            }
+                        }
+                    }
+
+                    // if (clickedLayer) {
+                    //     var layer = wwd.layers[clickedLayer];
+                    //     for (var i = 0; i < layer.renderables.length; i++) {
+                    //         layer.renderables[i].highlighted = false;
+                    //
+                    //         if (i === layer.renderables.length - 1) {
+                    //             moveList(clickedLayer);
+                    //             clickedLayer = "";
+                    //         }
+                    //     }
+                    // }
                 }
 
                 function handleMouseMove(o) {
@@ -525,7 +578,7 @@ requirejs(['./worldwind.min',
                                     placemarkLayer.enabled = false;
                                     wwd.addLayer(placemarkLayer);
                                     wwd.layers[wwd.layers.length - 1].addRenderable(placemark[i]);
-                                    autoSuggestion.push({"value": resp.data[i].p_name, "lati": resp.data[i].ylat, "long": resp.data[i].xlong});
+                                    autoSuggestion.push({"value": resp.data[i].p_name, "lati": resp.data[i].ylat, "long": resp.data[i].xlong, "i": wwd.layers.length - 1});
                                 } else {
                                     wwd.layers[wwd.layers.length - 1].addRenderable(placemark[i]);
                                 }
@@ -582,9 +635,28 @@ requirejs(['./worldwind.min',
                     lookup: autoSuggestion,
                     lookupLimit: 5,
                     onSelect: function(suggestion) {
-                        // console.log(suggestion);
-                        wwd.goTo(new WorldWind.Position(suggestion.lati, suggestion.long, 50000));
+                        console.log(suggestion);
                         $("#autoSuggestion").val("");
+                        clearHighlight();
+
+                        wwd.goTo(new WorldWind.Position(suggestion.lati, suggestion.long, 50000), function() {
+                            // console.log(wwd.layers[0].eyeText.text.substring(5, wwd.layers[0].eyeText.text.length - 3));
+                            suggestedLayer = suggestion.i;
+                            autoSwitch();
+                            // console.log(wwd.layers[suggestion.i].inCurrentFrame);
+                            // console.log(wwd.layers[wwd.layers.length - 1].inCurrentFrame);
+
+                            setTimeout(function() {
+                                // console.log(wwd.layers[suggestion.i].inCurrentFrame);
+                                // console.log(wwd.layers[wwd.layers.length - 1].inCurrentFrame);
+                                layerMenu();
+
+                                var layer = wwd.layers[suggestion.i];
+                                for (var i = 0; i < layer.renderables.length; i++) {
+                                    layer.renderables[i].highlighted = true;
+                                }
+                            }, 1)
+                        });
                     }
                 });
 

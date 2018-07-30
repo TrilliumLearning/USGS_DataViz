@@ -2,7 +2,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>FAW/Locust Project - Data History</title>
+    <title>USGS Data Visualization - Approved Requests</title>
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -20,7 +20,7 @@
     <!--<script src="//unpkg.com/flatpickr"></script>-->
 
     <style>
-        body 		{ word-wrap:break-word; }
+        body { padding-bottom: 80px; word-wrap:break-word; }
 
         .floatingBox3{
             display: inline-table;
@@ -30,40 +30,40 @@
             position:relative;
             width: 100%;
         }
-        .floating-Box{
+        .floatingBox{
             display: inline;
         }
-        .floatingBox {
+        .floating-Box {
             display: inline-block;
             /*width:350px;*/
         }
-        .button{
-            width:8%;
-        }
-        .date{
-            width:20%;
-            font-size:100%;
-        }
-        table{
+        table {
             overflow-x: auto;
             width: 100%;
             display: block;
             margin-bottom: 20px;
             border-collapse: collapse;
         }
-        table, th, td{
+
+        table,
+        th,
+        td {
             border: 1px solid #cdcdcd;
-            text-align:center;
+            text-align: center;
         }
-        table th, table td{
+
+        table th,
+        table td {
             padding: 10px;
             text-align: left;
         }
+
         table::-webkit-scrollbar-thumb {
             border-radius: 2px;
             background-color: rgba(0, 0, 0, .5);
             -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
         }
+
         table::-webkit-scrollbar {
             -webkit-appearance: none;
             height: 7px;
@@ -75,9 +75,9 @@
             /*overflow: hidden;*/
         }
         .navbutton1 {
-            width: 140px;
-            font-size: 15px;
-            height:40px;
+            width: 110px;
+            font-size: 16px;
+            height: 80px;
             margin: 0;
             border-radius: 0px 0 0;
             background-color: #000000;
@@ -91,61 +91,171 @@
             background-color: #333;
             color: white;
         }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .button1 {
+            height: 40px;
+            width: 110px;
+            float: right;
+            border-radius: 5px;
+            -webkit-transition-duration: 0.4s;
+            transition-duration: 0.4s;
+            cursor: pointer;
+            background-color: white;
+            color: #337ab7;
+            border: 1px solid #337ab7;
+        }
+
+        .button1:hover {
+            background-color: #337ab7;
+            color: white;
+        }
+
+        .button2 {
+            height: 40px;
+            width: 220px;
+            border-radius: 2px;
+            -webkit-transition-duration: 0.4s;
+            transition-duration: 0.4s;
+            cursor: pointer;
+            background-color: white;
+            color: #6a6a6a;
+            border: 1px solid #6a6a6a;
+        }
+
+        .button2:hover {
+            background-color: #c8c8c8;
+            color: white;
+        }
+
+        .dropbutton {
+            float: right;
+            width: 150px;
+            height: 80px;
+            padding: 16px;
+            color: white;
+            background-color: #337ab7;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            -webkit-transition-duration: 0.4s;
+            transition-duration: 0.4s;
+        }
+        .dropbutton:hover, .dropbutton:focus {
+            background-color: #2b6699;
+        }
+        .dropdown-content {
+            display: none;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            overflow: auto;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            right: 0;
+            z-index: 1;
+        }
+        .dropdown-content a {
+            color: black;
+            padding: 20px;
+            text-decoration: none;
+            display: block;
+        }
+        .dropdown a:hover {
+            background-color: #ddd;
+        }
+        .show {
+            display: block;
+        }
     </style>
 </head>
-<ul class="navul" style="height:60px;background:#000000;">
+<div class="navul" style="height:80px;background:#000000;">
     <a class="navul" style="background:#000000;" href="http://aworldbridge.com">
-        <img class="banner" src="/images/NewWBBanner.jpg" style="width:480px;height:60px;"/>
+        <img class="banner" src="/images/NewWBBanner.jpg" style="width:510px;height:80px;"/>
     </a>
-    <a href="/" style="width:110px;">
-        <button class="navbutton1"> Home Page </button>
+    <a href="/homepage" style="width:110px;">
+        <button class="navbutton1"> Homepage </button>
     </a>
-    <a href="/userhome" id ="Restore" style="width:110px;">
-        <button class="navbutton1"> User Home </button>
+    <a href="/userHome" style="width:110px;">
+        <button class="navbutton1" style="width: 160px"> User Home </button>
     </a>
     <a href="/newRequest" id= "Request" style="width:110px;">
-        <button class="navbutton1"> New Request </button>
+        <button class="navbutton1" style="width: 140px"> New Request </button>
     </a>
-    <a href="/recovery" style="width:110px;">
-        <button class="navbutton1"> Restore </button>
-    </a>
-    <div class="dropdown floating-Box" style="float:right;margin-top:10px;margin-right:10px;">
-        <button class="btn btn-primary btn-lg navbutton1" type="button" data-toggle="dropdown" id="Username"><%= firstName%>
-            <span class="caret"></span></button>
-        <ul id="userMenu" class="dropdown-menu" >
-        </ul>
+
+    <div class="dropdown" style="height: 80px; width: 200px; float: right; margin: 0;">
+        <button onclick="dropDown()" class="dropbutton" id="Username">
+            <%= firstName%>
+            <span class="caret"></span>
+        </button>
+        <div id="userMenuAdmin" class="dropdown-content">
+            <a href="/userProfile"> User Profile </a>
+            <a href="/userManagement"> User Management </a>
+            <a href="/signout"> Sign Out </a>
+        </div>
+        <div id="userMenuRegular" class="dropdown-content">
+            <a href="/userProfile"> User Profile </a>
+            <a href="/signout"> Sign Out </a>
+        </div>
     </div>
-</ul>
+</div>
 <body>
 <div class="container">
     <div class="page-header text-center">
-        <h2><span class="fa fa-check-square-o"></span> Approved Request </h2>
+        <h2><span class="fa fa-check-square-o"></span><strong> USGS Data Visualization - Approved Requests </strong></h2>
         <h4><span class="fa fa-user"></span>&nbsp;<strong>Account Name</strong>: <%= user.username %></h4>
     </div>
 </div>
 <br>
-<div class="container">
-    <div class="center">
-        <h4 class="floating-Box"><strong>Date Range:&nbsp;</strong></h4>
-        <div class="button1">
-            <h5 class="floating-Box">From:&nbsp;</h5>&nbsp;
-            <input class="date" type="text" placeholder="Select Date"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <h5 class="floating-Box">To:&nbsp;</h5>&nbsp;
-            <input class="date" type="text" placeholder="Select Date">
+    <div class="container" style="width: 900px;">
+        <div class="center floating-Box clearForm" style="width: 490px;">
+            <h4 class="floating-Box" style="width: 220px;"><strong>Date Range:&nbsp;</strong></h4>
+            <div style="width: 350px;">
+                <h5 class="floating-Box" style="width: 50px;">From:&nbsp;</h5>&nbsp;
+                <input class="date floating-Box" type="text" placeholder="Select Date" style="width: 280px;
+    height: 40px;
+    padding-left: 10px;
+    margin: 5px 5px 5px 0px;
+    border-radius: 5px;
+    border: 1px solid #c8c8c8;">
+                <h5 class="floating-Box" style="width: 50px;">To:&nbsp;</h5>&nbsp;
+                <input class="date floating-Box" type="text" placeholder="Select Date" style="width: 280px;
+    height: 40px;
+    padding-left: 10px;
+    margin: 5px 5px 5px 0px;
+    border-radius: 5px;
+    border: 1px solid #c8c8c8;">
+            </div>
         </div>
-    </div>
-    <div class="center">
-        <h4 class="floatingBox"><strong>User Name:&nbsp;</strong></h4>
-        <div class="name">
-            <h5 class="floating-Box">First Name:&nbsp;&nbsp;</h5>
-            <input id="firstName" type="text" name="first name" style="background:WhiteSmoke;" value="">&nbsp;&nbsp;
-            <h5 class="floating-Box">Last Name:&nbsp;&nbsp;</h5>
-            <input id="lastName" type="text" name="first name" style="background:WhiteSmoke;" value="">
+        <div class="floating-Box clearForm" style="width: 350px;">
+            <h4 class="floatingBox" style="width: 220px;"><strong>User Name:&nbsp;</strong></h4>
+            <div class="name" style="width: 375px;">
+                <h5 class="floating-Box">First Name:</h5>
+                <input class="floating-Box" id="firstName" type="text" name="first name" style="background: WhiteSmoke;
+    width: 275px;
+    height: 40px;
+    padding-left: 10px;
+    margin: 5px 0px;
+    border-radius: 5px;
+    border: 1px solid #c8c8c8;" value="">
+                <h5 class="floating-Box">Last Name:</h5>
+                <input class="floating-Box" id="lastName" type="text" name="first name" style="background: WhiteSmoke;
+    width: 275px;
+    height: 40px;
+    padding-left: 10px;
+    margin: 5px 0px;
+    border-radius: 5px;
+    border: 1px solid #c8c8c8;" value="">
+            </div>
         </div>
-    </div>
-    <div class="center">
-        <h4><strong>Other Customized Filters</strong></h4>
-        <h5 class="floatingBox3">Category1:&nbsp;<select class="filter">
+        <div class="center clearForm" style="width: 900px;">
+            <h4><strong>Other Customized Filters</strong></h4>
+            <h5 class="floatingBox3" style="width: 490px;">Category1:&nbsp;&nbsp;<select class="filter" style="width: 260px;
+    height: 40px;
+    padding-left: 10px;
+    border-radius: 5px;
+    border: 1px solid #c8c8c8;">
                 <option value="">Select A Field</option>
                 <option value="UID">UID</option>
                 <option value="RID">RID</option>
@@ -162,9 +272,17 @@
                 <option value="Layer_Uploader_name">Layer Uploader Name</option>
             </select>
         </h5>
-		<h5 class="floatingBox3" >Content:&nbsp;&nbsp;<input type="text" class="content"></h5><br>
-		<h5 class="floatingBox3">Category2:&nbsp;
-            <select class="filter">
+            <h5 class="floatingBox3" style="width: 360px;">Content:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="content" style="width: 280px;
+    padding-left: 10px;
+    height: 40px;
+    border-radius: 5px;
+    border: 1px solid #c8c8c8;"></h5>
+            <br style="width: 300px;">
+            <h5 class="floatingBox3" style="width: 490px;">Category2:&nbsp; <select class="filter" style="width: 260px;
+    height: 40px;
+    padding-left: 10px;
+    border-radius: 5px;
+    border: 1px solid #c8c8c8;">
                 <option value="">Select A Field</option>
                 <option value="UID">UID</option>
                 <option value="RID">RID</option>
@@ -181,9 +299,17 @@
                 <option value="Layer_Uploader_name">Layer Uploader Name</option>
             </select>
         </h5>
-		<h5 class="floatingBox3">Content:&nbsp;&nbsp;<input type="text" class="content"></h5><br>
-		<h5 class="floatingBox3">Category3:&nbsp;
-            <select class="filter">
+            <h5 class="floatingBox3" style="width: 360px;">Content:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="content" style="width: 280px;
+    padding-left: 10px;
+    height: 40px;
+    border-radius: 5px;
+    border: 1px solid #c8c8c8;"></h5>
+            <br style="width: 300px;">
+            <h5 class="floatingBox3" style="width: 490px;">Category3:&nbsp; <select class="filter" style="width: 260px;
+    height: 40px;
+    padding-left: 10px;
+    border-radius: 5px;
+    border: 1px solid #c8c8c8;">
                 <option value="">Select A Field</option>
                 <option value="UID">UID</option>
                 <option value="RID">RID</option>
@@ -198,15 +324,23 @@
                 <option value="Layer_Description">Layer Description</option>
                 <option value="Layer_uploader">Layer Uploader</option>
                 <option value="Layer_Uploader_name">Layer Uploader Name</option>
-            </select>
-        </h5>
-        <h5 class="floatingBox3">Content:&nbsp;&nbsp;<input type="text" class="content"></h5>
+            </select></h5>
+            <h5 class="floatingBox3" style="width: 360px;">Content:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="content" style="width: 280px;
+    padding-left: 10px;
+    height: 40px;
+    border-radius: 5px;
+    border: 1px solid #c8c8c8;"></h5>
     </div>
-    <div class="center">
-        <button class="btn btn-primary btn-sm button" type="button" onclick="query()">Filter</button>
-        <!--<button id="button" class="btn btn-primary btn-sm" type="button">Edit</button>-->
-        <!--<button class="btn btn-primary btn-sm button" type="button">Delete</button>-->
-    </div>
+        <br>
+        <div class="center" style="width: 850px;
+    padding: 0px;
+    height: 40px;">
+            <button id="submitButton" class="button1" type="button" onclick="query()">Filter</button>
+            <button id="deleteButton" class="btn btn-primary btn-sm button" type="button" style="height: 40px;
+    width: 110px; float: left; margin-right: 5px;">Disapprove</button>
+            <button id="showButton" class="btn btn-primary btn-sm button" type="button" style="height: 40px;
+    width: 110px; float: left">Show All</button>
+        </div>
     <br>
     <div class="center">
 	    <h4 id="subtitles"><strong>Most Recent Records:</strong></h4>
@@ -254,10 +388,8 @@
                 </tfoot>
             </table>
 
-            <button id="deleteButton" class="btn btn-primary btn-sm button" type="button" style="margin-left:15px;">Disapprove</button><br>
-            <button onclick="exportTableToCSV('Scouting_<%= user.username %>.csv')">Export above rows to .CSV File</button>
-
-
+            <br>
+            <button class="button2" onclick="exportTableToCSV('Scouting_<%= user.username %>.csv')">Export above rows to .CSV File</button>
         </div>
     </div>
     <!--<div id="map" style="width:100%; height:400px;"></div>-->
@@ -284,19 +416,8 @@
                 time_24hr: true
             });
 
-            if (UserRole === "Admin") {
-                DropMenu = "<li><a href=\"/userprofile\">Profile</a></li>\n" +
-                    "\t\t\t<li><a href=\"/userManagement\">User Management</a></li>\n" +
-                    "\t\t\t<li><a href=\"/signout\">Sign Out</a></li>";
-                $("#userMenu").empty();
-                $("#userMenu").append(DropMenu)
-            } else if ( UserRole === "Regular") {
+            if (UserRole === "Regular") {
                 document.getElementById("deleteButton").style.display = "none";
-                DropMenu = "<li><a href=\"/userprofile\">Profile</a></li>\n" +
-                    "\t\t\t<li><a href=\"/signout\">Sign Out</a></li>";
-                $("#userMenu").empty();
-                $("#userMenu").append(DropMenu)
-                queryAndDisplay("statusDel=" + "Active");
             }
         });
 
@@ -338,7 +459,36 @@
                 })
             } else { return false;}
         });
+
+        $("#showButton").on("click", function () {
+            table.clear();
+            table.draw();
+            queryAndDisplay();
+            $(".clearForm input[type='text']").val('');
+            $(".filter").val('');
+            $(".date").val('');
+        });
     });
+
+    function dropDown() {
+        console.log(UserRole);
+        if (UserRole === "Admin") {
+            document.getElementById("userMenuAdmin").classList.toggle("show");
+        } else if (UserRole === "Regular") {
+            document.getElementById("userMenuRegular").classList.toggle("show");
+        }
+    }
+    window.onclick = function(event) {
+        if (!event.target.matches('.dropbutton')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            for (var i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
 
     function query() {
         var firstName = document.getElementById("firstName").value;
@@ -399,34 +549,6 @@
             }
         });
     }
-
-    // function drawImage(rowNumber, cellNumber, paths, name) {
-    //     var string = "https://www.w3schools.com/w3css/img_lights.jpg;https://www.w3schools.com/howto/img_fjords.jpg;https://static.pexels.com/photos/67636/rose-blue-flower-rose-blooms-67636.jpeg";
-    //     //var path = paths.split(";");
-    //     var path = string.split(";");
-    //
-    //     for (var i = 0; i < path.length; i++) {
-    //         //alert(i);
-    //         document.getElementById("dataDisplay").rows[rowNumber].cells[cellNumber].innerHTML += "<a target=\"_blank\" href='" + path[i] + "'><img onload='setSize(this.id)' id='" + name + "." + rowNumber + "." + i + "' src='" + path[i] + "'></a>";
-    //
-    //     }
-    // }
-    //
-    // function setSize(id) {
-    //     var picWidth = document.getElementById(id).naturalWidth;
-    //     var picHeight = document.getElementById(id).naturalHeight;
-    //     // alert(picWidth + "   " + picHeight);
-    //
-    //     if (picWidth > picHeight) {
-    //         document.getElementById(id).setAttribute("class", "x");
-    //     } else if (picWidth < picHeight) {
-    //         document.getElementById(id).setAttribute("class", "y");
-    //     } else if (picWidth === picHeight) {
-    //         document.getElementById(id).setAttribute("class", "z");
-    //     }
-    //
-    //     // alert(document.getElementById(name + "." + rowNumber + "." + i).width + "   " + document.getElementById(name + "." + rowNumber + "." + i).height);
-    // }
 
     function downloadCSV(csv, filename) {
         var csvFile;

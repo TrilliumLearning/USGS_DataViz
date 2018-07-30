@@ -18,50 +18,46 @@
     <!--<script src="//unpkg.com/flatpickr"></script>-->
     <style>
         body{
+            padding-bottom: 80px;
             word-wrap:break-word;
         }
-        .floating-Box{
+        .floatingBox{
             display: inline;
         }
-        .floatingBox {
+        .floating-Box {
             display: inline-block;
             /*width:350px;*/
         }
-        .date{
-            width:20%;
-            font-size:100%;
-        }
-        table{
-            height:550px;
+        table {
             overflow-x: auto;
-            overflow-y: auto;
+            width: 100%;
             display: block;
             margin-bottom: 20px;
             border-collapse: collapse;
         }
-        table, th, td{
+
+        table,
+        th,
+        td {
             border: 1px solid #cdcdcd;
-            text-align:center;
+            text-align: center;
         }
-        table th, table td{
+
+        table th,
+        table td {
             padding: 10px;
             text-align: left;
         }
-        /* latin-ext */
-        @font-face {
-            font-family: 'Lato';
-            font-style: normal;
-            font-weight: 400;
-            src: local('Lato Regular'), local('Lato-Regular'), url(https://fonts.gstatic.com/s/lato/v14/S6uyw4BMUTPHjxAwXiWtFCfQ7A.woff2) format('woff2');
-            unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+
+        table::-webkit-scrollbar-thumb {
+            border-radius: 2px;
+            background-color: rgba(0, 0, 0, .5);
+            -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
         }
-        /* latin */
-        @font-face {
-            font-family: 'Lato';
-            font-style: normal;
-            font-weight: 400;
-            src: local('Lato Regular'), local('Lato-Regular'), url(https://fonts.gstatic.com/s/lato/v14/S6uyw4BMUTPHjx4wXiWtFCc.woff2) format('woff2');
-            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+
+        table::-webkit-scrollbar {
+            -webkit-appearance: none;
+            height: 7px;
         }
         .navul {
             list-style-type: none;
@@ -70,9 +66,9 @@
             /*overflow: hidden;*/
         }
         .navbutton1 {
-            width: 140px;
-            font-size: 15px;
-            height:40px;
+            width: 110px;
+            font-size: 16px;
+            height: 80px;
             margin: 0;
             border-radius: 0px 0 0;
             background-color: #000000;
@@ -91,48 +87,122 @@
             position: relative;
             display: inline-block;
         }
+        .button1 {
+            height: 40px;
+            width: 110px;
+            float: right;
+            border-radius: 5px;
+            -webkit-transition-duration: 0.4s;
+            transition-duration: 0.4s;
+            cursor: pointer;
+            background-color: white;
+            color: #337ab7;
+            border: 1px solid #337ab7;
+        }
+
+        .button1:hover {
+            background-color: #337ab7;
+            color: white;
+        }
+
+        .dropbutton {
+            float: right;
+            width: 150px;
+            height: 80px;
+            padding: 16px;
+            color: white;
+            background-color: #337ab7;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            -webkit-transition-duration: 0.4s;
+            transition-duration: 0.4s;
+        }
+        .dropbutton:hover, .dropbutton:focus {
+            background-color: #2b6699;
+        }
+        .dropdown-content {
+            display: none;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            overflow: auto;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            right: 0;
+            z-index: 1;
+        }
+        .dropdown-content a {
+            color: black;
+            padding: 20px;
+            text-decoration: none;
+            display: block;
+        }
+        .dropdown a:hover {
+            background-color: #ddd;
+        }
+        .show {
+            display: block;
+        }
     </style>
 </head>
-<ul class="navul" style="height:60px;background:#000000;">
+<div class="navul" style="height:80px;background:#000000;">
     <a class="navul" style="background:#000000;" href="http://aworldbridge.com">
-        <img class="banner" src="/images/NewWBBanner.jpg" style="width:480px;height:60px;"/>
+        <img class="banner" src="/images/NewWBBanner.jpg" style="width:510px;height:80px;"/>
     </a>
-    <a href="/" style="width:110px;">
-        <button class="navbutton1"> Home Page </button>
+    <a href="/homepage" style="width:110px;">
+        <button class="navbutton1"> Homepage </button>
     </a>
     <a href="/newRequest" id= "Request" style="width:110px;">
-        <button class="navbutton1"> New Request </button>
+        <button class="navbutton1" style="width: 140px"> New Request </button>
     </a>
     <a href="/recovery" id ="Restore" style="width:50px;">
         <button class="navbutton1"> Restore </button>
     </a>
     <a href="/dataHistory" style="width:110px;">
-        <button class="navbutton1"> Approved Request </button>
+        <button class="navbutton1" style="width: 160px"> Approved Requests </button>
     </a>
-    <div class="dropdown floating-Box" style="float:right;margin-top:10px;margin-right:10px;">
-        <button class="btn btn-primary btn-lg navbutton1" type="button" data-toggle="dropdown" id="Username"><%= firstName%>
-            <span class="caret"></span></button>
-        <ul id="userMenu" class="dropdown-menu" >
-        </ul>
+    <div class="dropdown" style="height: 80px; width: 200px; float: right; margin: 0;">
+        <button onclick="dropDown()" class="dropbutton" id="Username">
+            <%= firstName%>
+            <span class="caret"></span>
+        </button>
+        <div id="userMenuAdmin" class="dropdown-content">
+            <a href="/userProfile"> User Profile </a>
+            <a href="/userManagement"> User Management </a>
+            <a href="/signout"> Sign Out </a>
+        </div>
+        <div id="userMenuRegular" class="dropdown-content">
+            <a href="/userProfile"> User Profile </a>
+            <a href="/signout"> Sign Out </a>
+        </div>
     </div>
-</ul>
+</div>
 <body>
 
 <div class="container center">
     <div class="page-header text-center header">
-        <h2><span class="fa fa-home"></span> User Home </h2><h4><span class="fa fa-user"></span>
+        <h2><span class="fa fa-home"></span><strong> USGS Data Visualization - User Home </strong></h2><h4><span class="fa fa-user"></span>
             <strong>Account Name</strong>: <%= user.username %></h4><br>
     </div>
 </div>
 <br>
-<div class="container">
-    <div class="center">
-        <h4 class="floating-Box"><strong>Date Range:&nbsp;</strong></h4>
-        <div class="button1">
-            <h5 class="floating-Box">From:&nbsp;</h5>&nbsp;
-            <input class="date" type="text" placeholder="Select Date"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <h5 class="floating-Box">To:&nbsp;</h5>&nbsp;
-            <input class="date" type="text" placeholder="Select Date">
+<div class="container" style="width: 900px;">
+    <div class="center floating-Box clearForm" style="width: 490px;">
+        <h4 class="floating-Box" style="width: 220px;"><strong>Date Range:&nbsp;</strong></h4>
+        <div style="width: 350px;">
+            <h5 class="floating-Box" style="width: 50px;">From:&nbsp;</h5>&nbsp;
+            <input class="date floating-Box" type="text" placeholder="Select Date" style="width: 280px;
+    height: 40px;
+    padding-left: 10px;
+    margin: 5px 5px 5px 0px;
+    border-radius: 5px;
+    border: 1px solid #c8c8c8;">
+            <h5 class="floating-Box" style="width: 50px;">To:&nbsp;</h5>&nbsp;
+            <input class="date floating-Box" type="text" placeholder="Select Date" style="width: 280px;
+    height: 40px;
+    padding-left: 10px;
+    margin: 5px 5px 5px 0px;
+    border-radius: 5px;
+    border: 1px solid #c8c8c8;">
         </div>
     </div>
     <div class="center" id="searchname">
@@ -145,9 +215,24 @@
         </div>
     </div>
     <br>
-    <div class="center">
-	    <h4 id="subtitles"><strong>Most Recent Records:</strong></h4>
-        <div id="dvData"  style="width:80%; margin-left:100px; margin-top:50px;">
+    <br>
+    <div class="center" style="width: 850px;
+    padding: 0px;
+    height: 40px;">
+        <button id="submitButton" class="button1" type="button" onclick="query()">Filter</button>
+        <button id="editButton" class="btn btn-primary btn-sm button" type="button" style="height: 40px;
+    width: 110px;
+    float: left;
+    margin-right: 5px;">Edit</button>
+        <button id="deleteButton" class="btn btn-primary btn-sm button" type="button" style="height: 40px;
+    width: 110px; float: left; margin-right: 5px;">Delete</button>
+        <button id="showButton" class="btn btn-primary btn-sm button" type="button" style="height: 40px;
+    width: 110px; float: left">Show All</button>
+    </div>
+    <br>
+    <div class="center" style="width: 850px;">
+        <h4 id="subtitles"><strong>Most Recent Records (still pending approval):</strong></h4>
+        <div id="dvData">
             <table id="dataDisplay">
                 <thead>
                 <tr>
@@ -198,10 +283,6 @@
             <!-- formal table //approve //recovery-->
         </div>
     </div>
-            <div style="margin-top:10px;margin-bottom:20px;margin-left:100px;" >
-                <button id="editButton" class="btn btn-primary btn-sm" type="button">Edit</button>
-                <button id="deleteButton" class="btn btn-primary btn-sm" type="button">Delete</button>
-            </div>
 </div>
 <script type='text/javascript'>
     var username = "<%= user.username %>";
@@ -298,6 +379,36 @@
             }
         });
 
+        $("#showButton").on("click", function () {
+            table.clear();
+            table.draw();
+            queryAndDisplay("statusDel=" + "Active" + "&firstName=" + "<%= firstName %>" + "&lastName=" + "<%= user.lastName %>");
+            $(".clearForm input[type='text']").val('');
+            $(".filter").val('');
+            $(".date").val('');
+        });
+    });
+
+        function dropDown() {
+            console.log(UserRole);
+            if (UserRole === "Admin") {
+                document.getElementById("userMenuAdmin").classList.toggle("show");
+            } else if (UserRole === "Regular") {
+                document.getElementById("userMenuRegular").classList.toggle("show");
+            }
+        }
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropbutton')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+
         var queryAndDisplay = function (querystr) {
             $.ajax({
                 url: 'AddData',
@@ -305,26 +416,27 @@
                 success: function (results) {
                     console.log(results);
                     for (var i = 0; i < results.length; i++) {
-                        if (UserRole === "Regular") {
-                            if (results[i].UID === username) {
-                                table.row.add([
-                                    results[i].Date,
-                                    results[i].UID,
-                                    results[i].RID,
-                                    results[i].LayerCategory,
-                                    results[i].ContinentName,
-                                    results[i].CountryName,
-                                    results[i].StateName,
-                                    results[i].FirstLayer,
-                                    results[i].FirstOther,
-                                    results[i].SecondLayer,
-                                    results[i].SecondOther,
-                                    results[i].LayerName,
-                                    results[i].Layer_Description,
-                                    results[i].LayerFormat,
-                                    results[i].Layer_Uploader,
-                                    results[i].Layer_Uploader_name,
-                                    results[i].Status
+                        if (results[i].Status === "Pending") {
+                            if (UserRole === "Regular") {
+                                if (results[i].UID === username) {
+                                    table.row.add([
+                                        results[i].Date,
+                                        results[i].UID,
+                                        results[i].RID,
+                                        results[i].LayerCategory,
+                                        results[i].ContinentName,
+                                        results[i].CountryName,
+                                        results[i].StateName,
+                                        results[i].FirstLayer,
+                                        results[i].FirstOther,
+                                        results[i].SecondLayer,
+                                        results[i].SecondOther,
+                                        results[i].LayerName,
+                                        results[i].Layer_Description,
+                                        results[i].LayerFormat,
+                                        results[i].Layer_Uploader,
+                                        results[i].Layer_Uploader_name,
+                                        results[i].Status
                                     ]).draw(false);
                                 }
                             } else {
@@ -354,7 +466,6 @@
                 }
             });
         }
-    });
 
 
 </script>
