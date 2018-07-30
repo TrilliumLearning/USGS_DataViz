@@ -52,6 +52,8 @@ requirejs(['./WorldWindShim',
         var layers = globe.layers;
         var checked = [];
         var unchecked = [];
+        var previousArray = [];
+            //previous checked array//
 
         $(document).ready(function () {
             $(".wmsLayer").each(function (i) {
@@ -63,23 +65,20 @@ requirejs(['./WorldWindShim',
             layerName = strs.split(",");
 
             $('.wmsLayer').click(function () {
-                var layer1 = $(this).val();
-                // console.log(layer1);
-                if ($('.wmsLayer').is(":checkbox:checked")) {
-                    checked.push(layer1);
-                    console.log(checked);
-                } else if ($('.wmsLayer').is(":not(:checked)")){
-                    unchecked.push(layer1);
-                    var index = checked.indexOf(layer1);
-                    checked.splice(index,1)
-                    console.log(unchecked);
+                // var layer1 = $(this).val();
+                var testarray = $(':checkbox:checked');
+                console.log(testarray);
+                // var val = testarray[testarray.length - 1].defaultValue;
+                // console.log(val);
+
+                if (testarray.length > 0 ){
+                    var val = testarray[testarray.length - 1].defaultValue;
                 }
-                // console.log(layerar);
+
                 for (var a = 0; a < layers.length; a++) {
                         $(':checkbox:checked').each(function () {
                             if (layers[a].displayName === $(this).val()) {
                                 layers[a].enabled = true;
-
                             }
                         });
                         $(":checkbox:not(:checked)").each(function () {
@@ -88,7 +87,8 @@ requirejs(['./WorldWindShim',
                             }
                         })
                 }
-                var layername = "layername=" + layer1;
+                var layername = "layername=" + val;
+
                 $.ajax({
                     url: 'position',
                     type: 'GET',
@@ -97,6 +97,7 @@ requirejs(['./WorldWindShim',
                     success: function (results) {
                         var Altitude = results.Altitude * 1000;
                         globe.goTo(new WorldWind.Position(results.Latitude,results.Longitude,Altitude));
+                        console.log(results)
                     }
                 });
 
