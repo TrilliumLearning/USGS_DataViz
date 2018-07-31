@@ -53,19 +53,12 @@ requirejs(['./worldwind.min',
                     wwd.addLayer(layers[l].layer);
                 }
 
-                // $("#test").on('click', function () {
-                //     // console.log(wwd.layers[suggestedLayer].inCurrentFrame);
-                //     // console.log($(".layers"));
-                //     // console.log(wwd.goTo);
-                //     console.log(wwd.goToAnimator);
-                //     // if (wwd.goToAnimator.startPosition === wwd.goToAnimator.targetPosition) {
-                //     //     alert("B");
-                //     //     wwd.goTo(new WorldWind.Position(37.0902, -95.7129, mainconfig.eyeDistance_initial), function() {
-                //     //         alert("A");
-                //     //     });
-                //     // }
-                //     // console.log(wwd.goToAnimator);
-                // });
+                $("#test").on('click', function () {
+                    // wwd.layers[5].renderables[0].enableLeaderLinePicking = true;
+
+                    console.log(wwd.layers[5].renderables[0]);
+                    console.log(wwd.layers[5].renderables[1]);
+                });
 
                 $("#none, #p_year_color, #p_avgcap_color, #t_ttlh_color").on("click", function () {
                     var category = this.id;
@@ -436,7 +429,13 @@ requirejs(['./worldwind.min',
                 };
 
                 function autoSwitch() {
-                    var altitude = wwd.layers[0].eyeText.text.replace(/Eye  |,| km/g, '');
+                    var altitude = wwd.layers[0].eyeText.text;
+
+                    if (altitude.substring(altitude.length - 2, altitude.length) === "km") {
+                        altitude = altitude.replace(/Eye  |,| km/g, '');
+                    } else {
+                        altitude = (altitude.replace(/Eye  |,| m/g, '')) / 1000;
+                    }
 
                     if (altitude <= mainconfig.eyeDistance_Heatmap && !$("#switchLayer").is(':checked')) {
                         $("#switchLayer").click();
@@ -465,13 +464,20 @@ requirejs(['./worldwind.min',
                 }
 
                 function layerMenu() {
-                   var altitude = wwd.layers[0].eyeText.text.replace(/Eye  |,| km/g, '');
+                   var altitude = wwd.layers[0].eyeText.text;
+
+                   if (altitude.substring(altitude.length - 2, altitude.length) === "km") {
+                       altitude = altitude.replace(/Eye  |,| km/g, '');
+                   } else {
+                       altitude = (altitude.replace(/Eye  |,| m/g, '')) / 1000;
+                   }
+
                    $("#layerMenu").empty();
                    $("#layerMenuButton").hide();
                    var projectNumber = 0;
 
                    if (altitude <= mainconfig.eyeDistance_PL && $("#switchLayer").is(':checked')) {
-                       // console.log("G");
+                       console.log("G");
                        for (var i = layers.length; i < wwd.layers.length - 1; i++) {
 
                            if (wwd.layers[i].inCurrentFrame) {
