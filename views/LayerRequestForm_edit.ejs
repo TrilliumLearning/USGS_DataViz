@@ -12,11 +12,11 @@
     <link rel="stylesheet" href="../scripts/jquery-validation-1.17.0/demo/css/screen.css">
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/file-uploader/5.15.5/fine-uploader-gallery.css" rel="stylesheet">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../scripts/jquery-3.3.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/file-uploader/5.16.2/all.fine-uploader/all.fine-uploader.min.js"></script>
     <!--<script type = "text/javascript" src="LayerNameSearch.js"></script>-->
     <script src="../src/jquery.multi-select.js"></script>
-    <script src="../country/dist/country.js"></script>
+    <script src="../scripts/country/dist/country.js"></script>
     <!--<script src="../src/jquery.form.min.js"></script>-->
     <!-- Change the "src" attribute according to your installation path -->
     <!--<script src="https://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.min.js"></script>-->
@@ -145,7 +145,7 @@
         }
         #approve{
             background-color: #31a0ba;
-            width: 815px;
+            width: 700px;
             height: 60px;
             margin-top: 10px;
             border-radius:15px;
@@ -176,6 +176,21 @@
             border: 1px solid lightgray;
         }
 
+        #reject{
+            background-color: white;
+            border-radius:15px;
+            font-size:16px;
+            -webkit-transition-duration: 0.4s;
+            transition-duration: 0.4s;
+            color: #31a0ba;
+            display: inline-block;
+            border-color: #31a0ba;
+            margin-left: 6px;
+        }
+        #reject:hover {
+            background-color: #31a0ba;
+            color: white;
+        }
     </style>
 
 </head>
@@ -329,9 +344,9 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label  class="col-md-4 control-label">Layer Uploader</label>
+                        <label class="col-md-4 control-label">Layer Uploader</label>
                         <div class="col-md-8 inputGroupContainer">
-                            <div id="uploader" ></div>
+                            <div id="uploader"></div>
                         </div>
                     </div>
                 </fieldset>
@@ -341,6 +356,7 @@
             <button id="submit" form="layer" disabled title="this is only for Regular Users">Submit</button>
             <button id="clear" type="reset" onclick="clearForm()" value="  Clear  ">Clear</button>
             <button id="approve" type="submit" form="layer" disabled  title="this is only for Admin Users">Approve</button>
+            <button id="reject" disabled  title="this is only for Admin Users">Reject</button>
         </div>
         <hr>
         <p class="text-center"><a id="cancel" onclick="userHome();">Cancel</a></p>
@@ -349,6 +365,7 @@
 <script>
     var UserRole = "<%= user.userrole %>";
     var getvalue = JSON.parse(localStorage.getItem("getvalue"));
+    console.log(getvalue);
 
     $(document).ready(function() {
         document.getElementById('date').value = getvalue[0];
@@ -369,17 +386,19 @@
             document.getElementById("other2").style.display = "block";
             document.getElementById("inputtwo").value = getvalue[10];
         }else{
-            document.getElementById('main').value = getvalue[7];
+            document.getElementById('main').options[0].innerHTML = getvalue[7];
             document.getElementById('sub').options[0].innerHTML = getvalue[9];
         }
 
         $(function () {
             if (UserRole === "Admin") {
                 document.getElementById("approve").disabled = false;
+                document.getElementById("reject").disabled = false;
                 document.getElementById("submit").style.backgroundColor = "lightgray";
             } else if (UserRole === "Regular") {
                 document.getElementById("submit").disabled = false;
                 document.getElementById("approve").style.backgroundColor = "lightgray";
+                document.getElementById("reject").style.backgroundColor = "lightgray";
             }
 
         });
@@ -421,7 +440,7 @@
         dataType: 'json',
         data: editIDSr,
         success: function (results) {
-            if(!results === "") {
+            if(results !== "") {
                 if (!results.error) {
                     globalResults = results;
                     var list = [];

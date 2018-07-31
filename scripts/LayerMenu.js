@@ -51,7 +51,7 @@ requirejs(['./WorldWindShim',
         var preloadLayer = [];
         var layers = globe.layers;
         var checked = [];
-        var unchecked = [];
+        // var unchecked = [];
         var previousArray = [];
             //previous checked array//
 
@@ -65,14 +65,42 @@ requirejs(['./WorldWindShim',
             layerName = strs.split(",");
 
             $('.wmsLayer').click(function () {
-                // var layer1 = $(this).val();
+                var layer1 = $(this).val();
                 var testarray = $(':checkbox:checked');
-                console.log(testarray);
-                // var val = testarray[testarray.length - 1].defaultValue;
-                // console.log(val);
+                // console.log(testarray);
 
-                if (testarray.length > 0 ){
-                    var val = testarray[testarray.length - 1].defaultValue;
+
+                if (testarray.length > 0){
+                    checked.push(layer1);
+                    // console.log(checked);
+
+                    if (!Array.prototype.remove) {
+                        Array.prototype.remove = function(val, all) {
+                            var i, removedItems = [];
+                            if (all) {
+                                for(i = this.length; i--;){
+                                    if (this[i] === val) removedItems.push(this.splice(i, 1));
+                                }
+                            }
+                            else {  //same as before...
+                                i = this.indexOf(val);
+                                if(i>-1) removedItems = this.splice(i, 1);
+                            }
+                            return removedItems;
+                        };
+                    }
+                    for( var i = checked.length -1 ; i--;){
+                        if ( checked[i] === layer1) {
+                           var removedItems = checked.remove(layer1,true);
+                           // console.log(removedItems);
+                        }
+                    }
+                    var val = checked[checked.length - 1];
+                    // console.log(checked);
+                }
+
+                if(testarray.length === 0 ){
+                    checked = [];
                 }
 
                 for (var a = 0; a < layers.length; a++) {
@@ -110,8 +138,6 @@ requirejs(['./WorldWindShim',
 
                 // Retrieve a WmsLayerCapabilities object by the desired layer name
                 for (var n = 0; n < layerName.length; n++) {
-
-                    wmsLayerCapabilities = wms.getNamedLayers();
 
                     var wmsLayerCapability = wms.getNamedLayer(layerName[n]);
 

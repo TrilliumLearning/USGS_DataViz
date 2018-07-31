@@ -13,10 +13,10 @@
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/file-uploader/5.15.5/fine-uploader-gallery.css" rel="stylesheet">
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/file-uploader/5.16.2/all.fine-uploader/all.fine-uploader.min.js"></script>
+    <script src="../scripts/jquery-3.3.1.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/file-uploader/5.16.2/all.fine-uploader/all.fine-uploader.min.js"></script>
     <!--<script src="../country/dist/crs.min.js"></script>-->
-    <script src="../country/dist/country.js"></script>
+    <script src="../scripts/country/dist/country.js"></script>
     <!--<script type = "text/javascript" src="LayerNameSearch.js"></script>-->
     <script src="../src/jquery.multi-select.js"></script>
     <script src="../scripts/Subcategory.js"></script>
@@ -407,23 +407,7 @@
         },
         callbacks: {
             onComplete: function (id, name, responseJSON) {
-                // alert(responseJSON.newuuid);
-                // alert(id + "      " + name);
                 uploader.setUuid(id, responseJSON.newuuid);
-                // $.ajax({
-                //     url: '/submit',
-                //     type: 'POST',
-                //     dataType: 'json',
-                //     async: false,
-                //     success: function (product) {
-                //         if (!product.error) {
-                //             globalPaths = product;
-                //             console.log("results: " + globalPaths[0].Damage_photo);
-                //         } else {
-                //             console.log("you're gonna have a bad time");
-                //         }
-                //     }
-                // })
             }
         },
         validation:{
@@ -446,13 +430,6 @@
         });
         window.location.replace('/userHome');
     }
-
-    // function clearForm(){
-    //     if (confirm("Are you sure to clear this page? All the data will be cleared accordingly!") === true) {
-    //         document.getElementById("layer").reset();
-    //         document.getElementById("basic").reset();
-    //     }
-    // }
 
     // Wait for the DOM to be ready
     $('#layer').validate({
@@ -535,10 +512,6 @@
                 console.log(msg);
             }
         })
-
-        //use if to check
-        //false replace the <p> to the Layer Name is duplicated
-        //ture --> nothing
     }
 
     $(function() {
