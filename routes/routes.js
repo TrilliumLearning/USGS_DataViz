@@ -46,6 +46,7 @@ module.exports = function (app, passport) {
     // =====================================
     // CS APP Home Section =================
     // =====================================
+
     app.get('/',function (req,res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
         res.render('homepage.ejs');
@@ -1186,7 +1187,7 @@ module.exports = function (app, passport) {
     //Continent level
     app.get('/ContinentList', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*");
-        con_CS.query("SELECT ContinentName FROM MapLayerMenu GROUP BY ContinentName", function (err, results) {
+        con_CS.query("SELECT ContinentName FROM optionList GROUP BY ContinentName", function (err, results) {
             if (err) throw err;
             res.json(results);
             // console.log(results);
@@ -1195,7 +1196,7 @@ module.exports = function (app, passport) {
     //Country level
     app.get('/CountryList', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*");
-        con_CS.query('SELECT CountryName, ContinentName, COUNT (*) AS count FROM MapLayerMenu GROUP BY CountryName, ContinentName', function (err, results, fields) {
+        con_CS.query('SELECT CountryName, ContinentName, COUNT (*) AS count FROM optionList GROUP BY CountryName, ContinentName', function (err, results, fields) {
             if (err) throw err;
             res.json(results);
             // console.log(results);
@@ -1205,7 +1206,7 @@ module.exports = function (app, passport) {
     //Depend on continent value to get the country and state value
     app.get('/ClassName', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*");
-        con_CS.query('SELECT CountryName, FirstLayer, SecondLayer, StateName, ContinentName FROM MapLayerMenu', function (err, results) {
+        con_CS.query('SELECT CountryName, FirstLayer, SecondLayer, ThirdLayer, StateName, ContinentName FROM MapLayerMenu', function (err, results) {
             res.json(results);
             // console.log(results);
         });
@@ -1213,7 +1214,7 @@ module.exports = function (app, passport) {
     //state level
     app.get('/StateList', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*");
-        con_CS.query('SELECT StateName, CountryName, COUNT (*) AS count FROM MapLayerMenu GROUP BY StateName, CountryName', function (err, results, fields) {
+        con_CS.query('SELECT StateName, CountryName, ContinentName, COUNT (*) AS count FROM optionList GROUP BY StateName, CountryName, ContinentName', function (err, results, fields) {
             res.json(results);
             // console.log(results);
         });
@@ -1243,7 +1244,7 @@ module.exports = function (app, passport) {
         res.setHeader("Access-Control-Allow-Origin", "*");
         con_CS.query("SELECT Full Name, Address Line 1, Address Line 2, City, State/Province/Region, Postal Code/ZIP, Country, Email, Phone Number, Layer Name, Layer Category, Layer Description, Layer Uploader FROM GeneralFormDatatable", function (err, results) {
             if (err) throw err;
-            console.log(results);
+            // console.log(results);
         })
     });
 
@@ -1328,7 +1329,7 @@ module.exports = function (app, passport) {
         res.setHeader("Access-Control-Allow-Origin", "*");
 
         con_CS.query("SELECT * From USGS.MapLayerMenu", function (err, result) {
-            console.log("recive and processing");
+            // console.log("recive and processing");
 
             let JSONresult = JSON.stringify(result, null, "\t");
 

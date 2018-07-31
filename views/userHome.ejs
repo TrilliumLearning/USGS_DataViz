@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/buttons/1.4.2/css/buttons.dataTables.min.css">
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <!--<link rel="stylesheet" href="//unpkg.com/flatpickr/dist/flatpickr.min.css">-->
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="../scripts/jquery-3.3.1.min.js"></script>
     <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script src="//cdn.datatables.net/buttons/1.4.2/js/dataTables.buttons.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -205,25 +205,13 @@
     border: 1px solid #c8c8c8;">
         </div>
     </div>
-    <div class="floating-Box clearForm" style="width: 350px;">
-        <h4 class="floating-Box" style="width: 220px;"><strong>User Name:&nbsp;</strong></h4>
-        <div class="name" style="width: 375px;">
-            <h5 class="floating-Box">First Name:</h5>
-            <input class="floating-Box" id="firstName" type="text" name="first name" style="background: WhiteSmoke;
-    width: 275px;
-    height: 40px;
-    padding-left: 10px;
-    margin: 5px 0px;
-    border-radius: 5px;
-    border: 1px solid #c8c8c8;" value="">
-            <h5 class="floating-Box">Last Name:</h5>
-            <input class="floating-Box" id="lastName" type="text" name="first name" style="background: WhiteSmoke;
-    width: 275px;
-    height: 40px;
-    padding-left: 10px;
-    margin: 5px 0px;
-    border-radius: 5px;
-    border: 1px solid #c8c8c8;" value="">
+    <div class="center" id="searchname">
+        <h4 class="floatingBox"><strong>User Name:&nbsp;</strong></h4>
+        <div class="name">
+            <h5 class="floating-Box">First Name:&nbsp;&nbsp;</h5>
+            <input id="firstName" type="text" name="first name" style="background:WhiteSmoke;" value="">&nbsp;&nbsp;
+            <h5 class="floating-Box">Last Name:&nbsp;&nbsp;</h5>
+            <input id="lastName" type="text" name="first name" style="background:WhiteSmoke;" value="">
         </div>
     </div>
     <br>
@@ -304,8 +292,6 @@
     var UserRole = "<%= user.userrole %>";
     var scoutingTransactionID = [];
     var trapTransactionID = [];
-    var markers = [];
-    var map;
 
     $(document).ready(function() {
 
@@ -314,6 +300,21 @@
                 dateFormat: "Y-m-d",
                 time_24hr: true
             });
+
+            if (UserRole === "Admin") {
+                DropMenu = "<li><a href=\"/userprofile\">Profile</a></li>\n" +
+                    "\t\t\t<li id = 'Profile' ><a href=\"/userManagement\">User Management</a></li>\n" +
+                    "\t\t\t<li><a href=\"/signout\">Sign Out</a></li>";
+                $("#userMenu").empty();
+                $("#userMenu").append(DropMenu)
+
+            } else if (UserRole === "Regular") {
+                DropMenu = "<li><a href=\"/userprofile\">Profile</a></li>\n" +
+                    "\t\t\t<li><a href=\"/signout\">Sign Out</a></li>";
+                $("#userMenu").empty();
+                $("#userMenu").append(DropMenu)
+                document.getElementById('searchname').style.display = "none";
+            }
 
             table.clear();
             table.draw();
@@ -415,7 +416,6 @@
                 success: function (results) {
                     console.log(results);
                     for (var i = 0; i < results.length; i++) {
-                        if (results[i].Status === "Pending") {
                             if (UserRole === "Regular") {
                                 if (results[i].UID === username) {
                                     table.row.add([
@@ -439,32 +439,32 @@
                                     ]).draw(false);
                                 }
                             } else {
-                                table.row.add([
-                                    results[i].Date,
-                                    results[i].UID,
-                                    results[i].RID,
-                                    results[i].LayerCategory,
-                                    results[i].ContinentName,
-                                    results[i].CountryName,
-                                    results[i].StateName,
-                                    results[i].FirstLayer,
-                                    results[i].FirstOther,
-                                    results[i].SecondLayer,
-                                    results[i].SecondOther,
-                                    results[i].LayerName,
-                                    results[i].Layer_Description,
-                                    results[i].LayerFormat,
-                                    results[i].Layer_Uploader,
-                                    results[i].Layer_Uploader_name,
-                                    results[i].Status
-                                ]).draw(false);
+                                if (results[i].Status === "Pending") {
+                                    table.row.add([
+                                        results[i].Date,
+                                        results[i].UID,
+                                        results[i].RID,
+                                        results[i].LayerCategory,
+                                        results[i].ContinentName,
+                                        results[i].CountryName,
+                                        results[i].StateName,
+                                        results[i].FirstLayer,
+                                        results[i].FirstOther,
+                                        results[i].SecondLayer,
+                                        results[i].SecondOther,
+                                        results[i].LayerName,
+                                        results[i].Layer_Description,
+                                        results[i].LayerFormat,
+                                        results[i].Layer_Uploader,
+                                        results[i].Layer_Uploader_name,
+                                        results[i].Status
+                                    ]).draw(false);
                             }
                         }
                     }
                 }
             });
         }
-
 
 </script>
 </body>
