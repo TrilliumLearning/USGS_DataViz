@@ -2,11 +2,11 @@
 <!doctype html>
 <html>
 <head>
-    <title>WMS Layer Customized Request</title>
+    <title>USGS Data Visualization - WMS Layer Customized Request</title>
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="../css/style_final.css" type="text/css">
-    <link rel="stylesheet" href="../css/multi-select.css" media="screen" type="text/css">
+    <!--<link rel="stylesheet" href="../css/style_final.css" type="text/css">
+    <link rel="stylesheet" href="../css/multi-select.css" media="screen" type="text/css">-->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="../scripts/jquery-validation-1.17.0/demo/css/screen.css">
@@ -106,7 +106,7 @@
 
 
     <style>
-        body      { padding-top:80px; word-wrap:break-word; }
+        body      { padding-bottom:80px; word-wrap:break-word; }
         /*#hide { display: none; }*/
         /*.FAW        { display: none; }*/
         /*#stay, #cancel {  position: relative;  width: 20%;  left: 20%;  }*/
@@ -115,10 +115,6 @@
             position:relative;
             width:100%;
         }
-        #Linfo{
-            margin-top:20px;
-            margin-bottom:20px;
-        }
         .column {
             float:right;
             position:relative;
@@ -126,21 +122,26 @@
 
         }
         #clear{
-            background-color: #31a0ba;
-            border-radius:4px;
+            background-color: white;
+            width: 105px;
+            height: 60px;
+            border-radius:15px;
             font-size:16px;
             -webkit-transition-duration: 0.4s;
             transition-duration: 0.4s;
-            color:white;
+            color: #31a0ba;
+            border-color: #31a0ba;
             margin-left:6px;
         }
         #clear:hover {
-            background-color: #ff758f;
+            background-color: #31a0ba;
             color: white;
         }
         #submit{
             background-color: #31a0ba;
-            border-radius:4px;
+            width: 700px;
+            height: 60px;
+            border-radius:15px;
             font-size:16px;
             -webkit-transition-duration: 0.4s;
             transition-duration: 0.4s;
@@ -150,29 +151,41 @@
             background-color: #ff758f;
             color:white;
         }
-        #cancel{
-            background-color: #31a0ba;
-            border-radius:4px;
-            font-size:16px;
-            -webkit-transition-duration: 0.4s;
-            transition-duration: 0.4s;
-            color:white;
+        input[type="text"] {
+            height: 60px;
         }
-        #cancel:hover{
-            background-color: #ff758f;
-            color:white;
+        .selectpicker {
+            height: 60px;
+        }
+        #continent, #country {
+            height: 60px;
+        }
+        .other {
+            padding-left: 10px;
+            height: 40px;
+            margin-top: 10px;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid lightgray;
         }
 
     </style>
-
 </head>
+<div class="navul" style="height: 150px;
+    background: #000000;">
+    <a class="navul" href="//aworldbridge.com" style="background: #000000;
+    width: 500px;
+    height: 60px;">
+        <img class="banner" src="../images/NewWBBanner.jpg" style="width: 950px;
+    height: 150px;
+    margin: auto; display: block;" />
+    </a>
+</div>
 <body>
 
-<div class="container">
-    <a href="http://aworldbridge.com"><img class="banner" src="../images/NewWBBanner.jpg"/></a>
-    <div id="container">
-        <h1 id="title" style="margin-top:-20px;">Layer Request Form</h1>
-        <h3 id="Linfo" style="margin-top:30px;">Layer Information</h3>
+<div class="container" style="width: 850px;">
+    <h1 class="text-center page-header"><strong>Layer Request Form</strong></h1>
+        <h3 class="text-center" style="margin:30px;">Layer Information</h3>
         <div class="generalForm">
             <form class="well form-horizontal" id="layer">
                 <fieldset >
@@ -224,7 +237,7 @@
                                     <option value="other">Other(Please specify)</option>
                                 </select>
                                 <div id="other1" style="display:none;">
-                                    <input type="text" name="FirstOther">
+                                    <input class="other" type="text" name="FirstOther">
                                 </div>
                             </div>
                         </div>
@@ -239,7 +252,7 @@
                                     <option value="other" id="secondOther">Other(Please specify)</option>
                                 </select>
                                 <div id="other2" style="display:none;">
-                                    <input type="text" name="SecondOther">
+                                    <input class="other" type="text" name="SecondOther">
                                 </div>
                             </div>
                         </div>
@@ -249,7 +262,7 @@
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
                                 <input id="LayerNameInput" name="LayerName" value="" placeholder="Layer Name" class="form-control" required  type="text" onchange="SearchLayerName(this.value)"></div>
-                            <p id="LayerName1" style="color: palevioletred;margin-top:15px;">Please enter the Layer Name, and there is no space allowed.</p>
+                            <p id="LayerName1" style="color: palevioletred;margin-top:15px;">Please enter the layer name. NOTE: Do not include spaces.</p>
                         </div>
                     </div>
                     <!--<p id="LayerName1" style="color: palevioletred; margin-left:270px;">Please Enter the Layer Name, the Layer Name must be at least 6 characters</p>-->
@@ -291,7 +304,7 @@
                         <div class="col-md-8 inputGroupContainer">
                             <div>
                                 <textarea class="form-control" id="message" name="Layer_Description" placeholder="Enter your description here..." required type="text" rows="6" maxlength="400" ></textarea>
-                                <p style="color:palevioletred;margin-top:15px;">Please include image resolution, drone altitude, date created and other conditions.</p>
+                                <p style="color:palevioletred;margin-top:15px;">Please include the image resolution, drone altitude, date created and other conditions.</p>
                             </div>
                         </div>
                     </div>
@@ -318,18 +331,12 @@
                 </fieldset>
             </form>
         </div>
-        <div class="row">
-            <div class="column">
-                <button id="submit" type="submit" value="Submit" form="layer"  >Submit</button>
-            </div>
-            <div class="column">
-                <button id="clear" type="reset" onclick="clearForm()" value="  Clear  ">Clear</button>
-            </div>
-            <div class="column">
-                <button id="cancel" type="button" onclick="userHome();">Cancel</button>
-            </div>
+        <div>
+            <button id="submit" type="submit" value="Submit" form="layer"  >Submit</button>
+            <button id="clear" type="reset" onclick="clearForm()" value="  Clear  ">Clear</button>
         </div>
-    </div>
+        <hr>
+        <p class="text-center"><a id="cancel" onclick="userHome();">Cancel</a></p>
 </div>
 
 <script>
@@ -359,7 +366,7 @@
     });
 
     function clearForm(){
-        if (confirm("Are you sure you want to leave this page? All the data will be cleared accordingly!") === true) {
+        if (confirm("Are you sure you want to clear the form? All the data will be reset accordingly!") === true) {
             window.location.reload();
         }
     }
@@ -465,13 +472,13 @@
         },
         // Specify validation error messages
         messages: {
-            LayerName: "Please enter the layer name",
-            StateName:"Please enter the layer state",
-            CountryName:"Please enter the layer country",
-            ContinentName:"Please enter the layer continent",
-            FirstLayer: "Please select the main category",
-            Layer_Description: "Please write the description of the layer",
-            LayerFormat:"Please choose your layer format"
+            LayerName: "Please enter the layer name.",
+            StateName:"Please enter the layer state.",
+            CountryName:"Please enter the layer country.",
+            ContinentName:"Please enter the layer continent.",
+            FirstLayer: "Please select the main category.",
+            Layer_Description: "Please write a description of the layer.",
+            LayerFormat:"Please choose your layer format."
         },
 
         // invalidHandler: function(event) {
@@ -493,19 +500,19 @@
             success: function (results) {
                 for(var i = 0; i < results.length; i++) {
                     if (value === results[i].ThirdLayer) {
-                        document.getElementById("LayerName1").innerHTML = "The Layer Name has already been used";
+                        document.getElementById("LayerName1").innerHTML = "The layer name has already been used. Please use another one.";
                         document.addEventListener("keyup", function (e) {
                             if (event.keyCode === 8) {
-                                document.getElementById("LayerName1").innerHTML = "Please Enter the Layer Name, the Layer Name length at least 6 characters";
+                                document.getElementById("LayerName1").innerHTML = "Please enter the layer name. The length of the layer name must be at least 6 characters.";
                             }
                         }, false);
                         break;
                     } else{
-                        document.getElementById("LayerName1").innerHTML = "This Layer Name is available";
+                        document.getElementById("LayerName1").innerHTML = "This layer name is available.";
                     }
                 }
                 if(value.length === 0){
-                    document.getElementById("LayerName1").innerHTML = "Please Enter the Layer Name, the Layer Name length at least 6 characters";
+                    document.getElementById("LayerName1").innerHTML = "Please enter the layer name. The length of the layer name must be at least 6 characters.";
                 }
             },
             error: function (jqXHR, exception) {
