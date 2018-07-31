@@ -400,23 +400,7 @@
         },
         callbacks: {
             onComplete: function (id, name, responseJSON) {
-                // alert(responseJSON.newuuid);
-                // alert(id + "      " + name);
                 uploader.setUuid(id, responseJSON.newuuid);
-                // $.ajax({
-                //     url: '/submit',
-                //     type: 'POST',
-                //     dataType: 'json',
-                //     async: false,
-                //     success: function (product) {
-                //         if (!product.error) {
-                //             globalPaths = product;
-                //             console.log("results: " + globalPaths[0].Damage_photo);
-                //         } else {
-                //             console.log("you're gonna have a bad time");
-                //         }
-                //     }
-                // })
             }
         },
         validation:{
@@ -439,13 +423,6 @@
         });
         window.location.replace('/userHome');
     }
-
-    // function clearForm(){
-    //     if (confirm("Are you sure to clear this page? All the data will be cleared accordingly!") === true) {
-    //         document.getElementById("layer").reset();
-    //         document.getElementById("basic").reset();
-    //     }
-    // }
 
     // Wait for the DOM to be ready
     $('#layer').validate({
@@ -528,10 +505,6 @@
                 console.log(msg);
             }
         })
-
-        //use if to check
-        //false replace the <p> to the Layer Name is duplicated
-        //ture --> nothing
     }
 
     $(function() {
