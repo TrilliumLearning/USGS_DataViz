@@ -53,12 +53,12 @@ requirejs(['./worldwind.min',
                     wwd.addLayer(layers[l].layer);
                 }
 
-                $("#test").on('click', function () {
-                    // wwd.layers[5].renderables[0].enableLeaderLinePicking = true;
-
-                    console.log(wwd.layers[5].renderables[0]);
-                    console.log(wwd.layers[5].renderables[1]);
-                });
+                // $("#test").on('click', function () {
+                //     // wwd.layers[5].renderables[0].enableLeaderLinePicking = true;
+                //
+                //     console.log(wwd.layers[5].renderables[0]);
+                //     console.log(wwd.layers[5].renderables[1]);
+                // });
 
                 $("#none, #p_year_color, #p_avgcap_color, #t_ttlh_color").on("click", function () {
                     var category = this.id;
@@ -477,7 +477,7 @@ requirejs(['./worldwind.min',
                    var projectNumber = 0;
 
                    if (altitude <= mainconfig.eyeDistance_PL && $("#switchLayer").is(':checked')) {
-                       console.log("G");
+                       // console.log("G");
                        for (var i = layers.length; i < wwd.layers.length - 1; i++) {
 
                            if (wwd.layers[i].inCurrentFrame) {
