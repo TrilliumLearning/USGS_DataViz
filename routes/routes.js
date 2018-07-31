@@ -922,7 +922,7 @@ module.exports = function (app, passport) {
         let result = Object.keys(req.body).map(function (key) {
             return [String(key), req.body[key]];
         });
-        console.log(result);
+
         res.setHeader("Access-Control-Allow-Origin", "*");
 
         let name = "";
@@ -937,21 +937,19 @@ module.exports = function (app, passport) {
                 valueSubmit += '"' + result[i][1] + '"' + ", ";
             }
         }
-        // console.log("??0"+valueSubmit);
-        let newImage = {
-            Layer_Uploader: uploadPath + "/" + responseDataUuid,
-            Layer_Uploader_name: responseDataUuid
-        };
-        name += ", Layer_Uploader, Layer_Uploader_name";
-        valueSubmit += ", '" + newImage.Layer_Uploader + "','" + newImage.Layer_Uploader_name + "'";
-        let filepathname = uploadPath + "/" + responseDataUuid;
 
+        // if(array.length !== 5){
+        //     array.push("");
+        //     array.slice(array.length+1 , 5);
+        //
+        // }
+        console.log("array" + array);
 
         let statement2 = "INSERT INTO USGS.Request_Form (" + name + ") VALUES (" + valueSubmit + ");";
-        // let statement3 = "INSERT INTO USGS.LayerUploader VALUES (" + valueSubmit[1] + " " + valueSubmit[13]
+        let statement4 = "INSERT INTO USGS.LayerUploader SET RID = '" + result[1][1] + "';";
+        let statement3 = "UPDATE USGS.LayerUploader SET LayerUploaderName1 = '" + array[0] + "', LayerUploaderName2 = '" + array[1] + "', LayerUploaderName3 = '" + array[2] + "', LayerUploaderName4 = '" + array[3] + "', LayerUploaderName5 = '" + array[4] + "' WHERE RID = '" + result[1][1] + "';";
 
-
-        con_CS.query(statement2, function (err, result) {
+        con_CS.query(statement2 + statement4 + statement3, function (err, result) {
             if (err) {
                 throw err;
             } else {
@@ -1020,11 +1018,8 @@ module.exports = function (app, passport) {
                 update2 += result[i][0] + " = '" + result[i][1] + "', " ;
             }
         }
-        let Layer_Uploader = uploadPath + "/" + responseDataUuid;
-        let Layer_Uploader_name = responseDataUuid;
-        let filepathname = uploadPath + "/" + responseDataUuid;
-        let statement1 = update1+update2+update3;
-        let statement2 = "UPDATE USGS.Request_Form SET Layer_Uploader = '" + Layer_Uploader + "', Layer_Uploader_name = '" + Layer_Uploader_name + "';";
+        let statement1 = update1 + update2 + update3;
+        let statement2 = "UPDATE USGS.LayerUploader SET LayerUploaderName1 = '" + array[0] + "', LayerUploaderName2 = '" + array[1] + "', LayerUploaderName3 = '" + array[2] + "', LayerUploaderName4 = '" + array[3] + "', LayerUploaderName5 = '" + array[4] + "' WHERE RID = '" + result[1][1] + "';";
         con_CS.query(statement1 + statement2, function (err, result) {
             if (err) {
                 throw err;
@@ -1120,14 +1115,11 @@ module.exports = function (app, passport) {
     app.get('/edit', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
         let editIDSr = req.query.editIDSr;
-        console.log(editIDSr);
-        let myStat = "SELECT Layer_Uploader, Layer_Uploader_name FROM Request_Form WHERE RID = '" + editIDSr + "'";
-        // console.log(myStat);
-
+        let myStat = "SELECT * FROM LayerUploader WHERE RID = '" + editIDSr + "';";
         let filePath0;
         con_CS.query(myStat, function (err, results) {
             // console.log("query statement : " + myStat);
-            if (!results[0].Layer_Uploader && !results[0].Layer_Uploader_name) {
+            if (!results[0].LayerUploaderName1) {
                 console.log("Error");
             } else {
                 filePath0 = results[0];
@@ -1164,10 +1156,9 @@ module.exports = function (app, passport) {
     //AddData in table
     app.get('/AddData', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*");
-        con_CS.query('SELECT * FROM Request_Form', function (err, results) {
+        con_CS.query('SELECT Request_Form.* , LayerUploader.LayerUploaderName1 FROM LayerUploader INNER JOIN Request_Form ON Request_Form.RID = LayerUploader.RID', function (err, results) {
             if (err) throw err;
             res.json(results);
-            // console.log(results);
         })
     });
 
@@ -1555,7 +1546,8 @@ function QueryStat(myObj, scoutingStat, res) {
     let responseDataUuid = "",
         responseDataName = "",
         responseDataUuid2 = "",
-        responseDataName2 = "";
+        responseDataName2 = "",
+        array = [];
 
     function onSimpleUpload(fields, file, res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
@@ -1575,6 +1567,8 @@ function QueryStat(myObj, scoutingStat, res) {
         file.name = fields.qqfilename;
         responseDataName = file.name;
         responseDataName2 = file.name;
+
+        array.push(responseDataUuid);
 
         console.log("forth hokage: " + responseDataUuid);
         console.log("fifth harmony: " + responseDataName);
@@ -1644,7 +1638,7 @@ function QueryStat(myObj, scoutingStat, res) {
         responseData.preventRetry = true;
         res.send(responseData);
     }
-//delete new photo
+    //delete new photo
     function onDeleteFile1(req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
         console.log("result=" + req.params.uuid);
