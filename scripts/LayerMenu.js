@@ -73,7 +73,7 @@ requirejs(['./WorldWindShim',
                 var layer1 = $(this).val();
                 currentCheckedArray = $(':checkbox:checked');
                 if (currentCheckedArray.length > 0 && alertVal){
-                    alert("123");
+                    confirm("Some layers may take minutes to load. Sorry about that!")
                 }
                 // console.log(checkedArray);
                 if (currentCheckedArray.length > checkedCount){
