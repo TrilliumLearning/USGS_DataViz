@@ -441,7 +441,7 @@
         dataType: 'json',
         data: editIDSr,
         success: function (results) {
-            if(results !== "") {
+            if(results[0].Layer_Uploader_name !== "") {
                 if (!results.error) {
                     globalResults = results;
                     var list = [];
