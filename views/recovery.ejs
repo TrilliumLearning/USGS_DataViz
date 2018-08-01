@@ -242,7 +242,6 @@
     var d;
     var transactionID = [];
     var picturename = []
-    var LayerNameStr = [];
 
     $(document).ready(function(){
 
@@ -288,7 +287,6 @@
 
                 transactionID.push(d[1]);
                 picturename.push(d[11]);
-                // LayerNameStr.push(d[])
 
                 var thArray = [];
 
@@ -317,7 +315,6 @@
                 }
                 function update() {
                     var pictureStr = "pictureStr=" + picturename.toString();
-                    var LayerName = "LayerName=" + LayerNameStr.toString();
                     $.ajax({
                         url: '/recoverRow',
                         type: 'GET',
