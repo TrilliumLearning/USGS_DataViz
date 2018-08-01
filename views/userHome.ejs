@@ -290,6 +290,7 @@
     var UserRole = "<%= user.userrole %>";
     var scoutingTransactionID = [];
     var trapTransactionID = [];
+    var LayerNameStr = [];
 
     $(document).ready(function() {
 
@@ -335,7 +336,8 @@
             for (var i = 0; i < scoutingRowSelected.length; i++) {
 //                console.log("rowSelected[" + i + "][0]: " + rowSelected[i][0]);
                 scoutingTransactionID.push(scoutingRowSelected[i][2]);
-                transactionpicturename.push(scoutingRowSelected[i][15])
+                transactionpicturename.push(scoutingRowSelected[i][14]);
+                LayerNameStr.push(scoutingRowSelected[i][11]);
             }
         });
 
@@ -364,12 +366,12 @@
             if (confirm("Are you sure you would like to trashfolder this row(s)?") === true) {
                 var transactionIDStr = "transactionIDStr=" + scoutingTransactionID.concat(trapTransactionID).toString();
                 var pictureStr = "pictureStr=" + transactionpicturename.toString();
-
+                var LayerName = "LayerName=" + LayerNameStr.toString();
                 $.ajax({
                     url: 'deleteData',
                     type: "GET",
                     dataType: 'json',
-                    data: transactionIDStr + '&' + pictureStr
+                    data: transactionIDStr + '&' + pictureStr + '&' + LayerName
                 });
                 window.location.reload();
             } else {
