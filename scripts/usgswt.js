@@ -646,8 +646,8 @@ requirejs(['./worldwind.min',
 
                             var popover = document.getElementById('popover');
                             popover.style.position = "absolute";
-                            popover.style.left = (x + xOffset) + 'px';
-                            popover.style.top = (y + yOffset) + 'px';
+                            popover.style.left = (x + xOffset - 3) + 'px';
+                            popover.style.top = (y + yOffset - 3) + 'px';
 
                             var content = "<p><strong>Project Name:</strong> " + pickedPL.layer.displayName +
                                 "<br>" + "<strong>Year Online:</strong> " + pickedPL.userProperties.p_year +
