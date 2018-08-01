@@ -67,32 +67,32 @@ requirejs(['./WorldWindShim',
             var strs = preloadLayer + '';
 
             layerName = strs.split(",");
-            var checkedCount;
+            var checkedCount = 0;
             var currentCheckedArray;
             $('.wmsLayer').click(function () {
                 var layer1 = $(this).val();
                 currentCheckedArray = $(':checkbox:checked');
                 if (currentCheckedArray.length > 0 && alertVal){
-                    confirm("123");
+                    alert("123");
                 }
                 // console.log(checkedArray);
                 if (currentCheckedArray.length > checkedCount){
                     checked.push(layer1); //insert current value to checked
                     console.log(checked);
                     val = checked[checked.length - 1];
-                    checkedCount = currentCheckedArray.length 
+                    checkedCount = currentCheckedArray.length;
+                    alertVal = false
                 } else {
-                    for( var i = checked.length -1 ; i--;) {
+                    for( var i = 0 ; i < checked.length; i++) {
                         if (checked[i] === layer1) {
                             checked.splice(i,1); //remove current value from checked
                         }
                     }
                     console.log(checked);
                     val = checked[checked.length - 1];
-                    checkedCount = currentCheckedArray.length
+                    checkedCount = currentCheckedArray.length;
+                    alertVal = false
                 }
-                
-
 
                 // if (checkedArray.length > 0){
                 //     // console.log(checked);
@@ -126,21 +126,6 @@ requirejs(['./WorldWindShim',
                 //     // }
                 //     // console.log(checked);
                 // }
-
-                // $(document).ready(function() {
-                //     if(localStorage.getItem('popState') != 'shown'){
-                //         $("#popup").delay(2000).fadeIn();
-                //         localStorage.setItem('popState','shown')
-                //     }
-                //
-                //     $('#popup-close, #popup').click(function(e) // You are clicking the close button
-                //     {
-                //         $('#popup').fadeOut(); // Now the pop up is hiden.
-                //     });
-                // });
-
-
-                // if(checkedArray.length === 1 && layer1 !== )
 
                 for (var a = 0; a < layers.length; a++) {
                         $(':checkbox:checked').each(function () {
