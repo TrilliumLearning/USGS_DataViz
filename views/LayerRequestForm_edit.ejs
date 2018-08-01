@@ -432,22 +432,18 @@
         dataType: 'json',
         data: editIDSr,
         success: function (results) {
-            if(results !== "" && results !== "undefined") {
+            if(results !== "") {
                 if (!results.error) {
                     globalResults = results;
                     var list = [];
-                    let array = [];
-                    array.push(globalResults[0].LayerUploaderName1,globalResults[0].LayerUploaderName2,globalResults[0].LayerUploaderName3,globalResults[0].LayerUploaderName4,globalResults[0].LayerUploaderName5)
-                    for(var i = 0; i < 5; i++) {
-                        if(array[i] !== "undefined"){
-                            var first = {
-                                id: i,
-                                size: 561276,
-                                thumbnailUrl: "uploadfiles/" + array[i],
-                                name: array[i]
-                            };
-                            list.push(first);
-                        }
+                    for (var i = 0; i < globalResults.length; i++) {
+                        var first = {
+                            id: i,
+                            size: 561276,
+                            thumbnailUrl: globalResults[i].Layer_Uploader,
+                            name: globalResults[i].Layer_Uploader_name
+                        };
+                        list.push(first);
                     }
                     uploader.addInitialFiles(list);
                 } else {
