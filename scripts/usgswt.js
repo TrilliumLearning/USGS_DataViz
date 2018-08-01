@@ -453,7 +453,7 @@ requirejs(['./worldwind.min',
 
                                 // autoSwitch();
                                 // console.log(wwd.layers[0].eyeText.text);
-                                setTimeout(function() {autoSwitch(); layerMenu(); clearHighlight(true, true);}, 20);
+                                setTimeout(function() {autoSwitch(); layerMenu(); clearHighlight(true, true);}, 25);
 
                                 setTimeout(setRange, 50);
                             }
@@ -503,7 +503,7 @@ requirejs(['./worldwind.min',
                                 // console.log(wwd.navigator.lookAtLocation);
                                 // layerMenu();
                                 // clearHighlight(true, true);
-                                setTimeout(function() {layerMenu(); clearHighlight(true, true);}, 20);
+                                setTimeout(function() {layerMenu(); clearHighlight(true, true);}, 25);
 
                                 setTimeout(setLookAtLocation, 50);
                             }
