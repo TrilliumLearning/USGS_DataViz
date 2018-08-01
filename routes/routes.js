@@ -11,7 +11,7 @@ const async = require('async');
 const crypto = require('crypto');
 const fs = require("fs");
 const rimraf = require("rimraf");
-const mkdirp = require("mkdirp");
+// const mkdirp = require("mkdirp");
 const multiparty = require('multiparty');
 const upload_Dir = config.Upload_Dir;
 const geoData_Dir = config.GeoData_Dir;
@@ -334,10 +334,30 @@ module.exports = function (app, passport) {
 
     });
 
+    app.get('/deleteRow2',function (req,res) {
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        let transactionID = req.query.transactionIDStr.split(',');
+        let pictureStr = req.query.pictureStr.split(',');
+        let LayerName = req.query.LayerName.split(',');
+        for (let i = 0; i < transactionID.length; i++) {
+            let statement = "UPDATE USGS.Request_Form SET Status = 'Pending' WHERE RID = '" + transactionID[i] + "';";
+            let statement1 = "UPDATE USGS.MapLayerMenu SET Status = 'Disapproved' WHERE ThirdLayer = '" + LayerName  + "';";
+            fs.rename(''+ geoData_Dir + '/' + pictureStr[i] + '' , '' + upload_Dir + '/' + pictureStr[i] + '',  function (err) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log("success");
+                }
+            });
+            con_CS.query(statement + statement1, function (err, results) {
+                if (err) throw err;
+                res.json(results[i]);
+            });
+        }
+    });
+
     app.get('/filterQuery', isLoggedIn, function (req, res) {
         var scoutingStat = "SELECT UserProfile.firstName, UserProfile.lastName, Request_Form.* FROM Request_Form INNER JOIN UserProfile ON UserProfile.username = Request_Form.UID";
-        // var trapStat = "SELECT UserProfile.username, UserProfile.firstName, UserProfile.lastName, General_Form.*, Detailed_Trap.* FROM Transaction INNER JOIN Users ON UserProfile.username = Transaction.Cr_UN INNER JOIN General_Form ON General_Form.transactionID = Transaction.transactionID INNER JOIN Detailed_Trap ON Detailed_Trap.transactionID = Transaction.transactionID";
-        // console.log(req.query);
         var myQueryObj = [
             {
                 fieldVal: req.query.firstName,
@@ -423,7 +443,6 @@ module.exports = function (app, passport) {
             Newpassword: bcrypt.hashSync(req.body.newpassword, null, null),
             ConfirmPassword: bcrypt.hashSync(req.body.ConfirmNewPassword, null, null)
         };
-        // console.log(newPass);
 
         // dateNtime();
 
@@ -1549,10 +1568,10 @@ function QueryStat(myObj, scoutingStat, res) {
         });
     }
 
-    let responseDataUuid = "";
-    let responseDataName = "";
-        // responseDataUuid2 = "",
-        // responseDataName2 = "";
+    let responseDataUuid = "",
+        responseDataName = "",
+        responseDataUuid2 = "",
+        responseDataName2 = "";
 
     function onSimpleUpload(fields, file, res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
@@ -1571,7 +1590,7 @@ function QueryStat(myObj, scoutingStat, res) {
 
         file.name = fields.qqfilename;
         responseDataName = file.name;
-        // responseDataName2 = file.name;
+        responseDataName2 = file.name;
 
         // console.log("forth hokage: " + responseDataUuid);
         // console.log("fifth harmony: " + responseDataName);
@@ -1585,7 +1604,6 @@ function QueryStat(myObj, scoutingStat, res) {
                 },
                 function () {
                     responseData.error = "Problem copying the file!";
-                    console.log (responseData.error);
                     res.send(responseData);
                 });
         }
@@ -1597,7 +1615,7 @@ function QueryStat(myObj, scoutingStat, res) {
     function onChunkedUpload(fields, file, res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
 
-        // console.log("Z");
+        console.log("Z");
         let size = parseInt(fields.qqtotalfilesize),
             uuid = fields.qquuid,
             index = fields.qqpartindex,
