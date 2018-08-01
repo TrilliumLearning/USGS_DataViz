@@ -1549,10 +1549,10 @@ function QueryStat(myObj, scoutingStat, res) {
         });
     }
 
-    let responseDataUuid = "",
-        responseDataName = "",
-        responseDataUuid2 = "",
-        responseDataName2 = "";
+    let responseDataUuid = "";
+    let responseDataName = "";
+        // responseDataUuid2 = "",
+        // responseDataName2 = "";
 
     function onSimpleUpload(fields, file, res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
@@ -1571,12 +1571,12 @@ function QueryStat(myObj, scoutingStat, res) {
 
         file.name = fields.qqfilename;
         responseDataName = file.name;
-        responseDataName2 = file.name;
+        // responseDataName2 = file.name;
 
-        console.log("forth hokage: " + responseDataUuid);
-        console.log("fifth harmony: " + responseDataName);
-        console.log("trials 4 days: " + responseDataUuid2);
-        console.log("pentatonic success: " + responseDataName2);
+        // console.log("forth hokage: " + responseDataUuid);
+        // console.log("fifth harmony: " + responseDataName);
+        // console.log("trials 4 days: " + responseDataUuid2);
+        // console.log("pentatonic success: " + responseDataName2);
 
         if (isValid(file.size)) {
             moveUploadedFile(file, uuid, function () {
@@ -1585,6 +1585,7 @@ function QueryStat(myObj, scoutingStat, res) {
                 },
                 function () {
                     responseData.error = "Problem copying the file!";
+                    console.log (responseData.error);
                     res.send(responseData);
                 });
         }
@@ -1596,7 +1597,7 @@ function QueryStat(myObj, scoutingStat, res) {
     function onChunkedUpload(fields, file, res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
 
-        console.log("Z");
+        // console.log("Z");
         let size = parseInt(fields.qqtotalfilesize),
             uuid = fields.qquuid,
             index = fields.qqpartindex,
