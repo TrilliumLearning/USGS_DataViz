@@ -1140,8 +1140,10 @@ module.exports = function (app, passport) {
         res.setHeader("Access-Control-Allow-Origin", "*");
         let transactionID = req.query.transactionIDStr.split(',');
         let pictureStr = req.query.pictureStr.split(',');
+        let LayerName = req.query.LayerName.split(',');
         for (let i = 0; i < transactionID.length; i++) {
-            let statement = "UPDATE USGS.Request_Form SET Status = 'Delete' WHERE RID = '" + transactionID[i] + "'";
+            let statement = "UPDATE USGS.Request_Form SET Status = 'Delete' WHERE RID = '" + transactionID[i] + "';";
+            let statement1 = "UPDATE USGS.MapLayerMenu SET Status = 'Disapproved' WHERE ThirdLayer = '" + LayerName  + "';";
             fs.rename(''+ Delete_Dir + '/' + pictureStr[i] + '' , '' + upload_Dir + '/' + pictureStr[i] + '',  function (err) {
                 if (err) {
                     console.log(err);
@@ -1149,13 +1151,11 @@ module.exports = function (app, passport) {
                     console.log("success");
                 }
             });
-            con_CS.query(statement, function (err, results) {
+            con_CS.query(statement + statement1, function (err, results) {
                 if (err) throw err;
                 res.json(results[i]);
             });
         }
-
-
     });
 
     //AddData in table
@@ -1326,7 +1326,7 @@ module.exports = function (app, passport) {
     app.get('/createlayer', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*");
 
-        con_CS.query("SELECT * From USGS.MapLayerMenu", function (err, result) {
+        con_CS.query("SELECT * From USGS.MapLayerMenu WHERE Status = 'Approved'", function (err, result) {
             // console.log("recive and processing");
 
             let JSONresult = JSON.stringify(result, null, "\t");

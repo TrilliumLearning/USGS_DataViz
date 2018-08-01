@@ -242,6 +242,8 @@
     var d;
     var transactionID = [];
     var picturename = []
+    var LayerNameStr = [];
+
     $(document).ready(function(){
 
         $(function () {
@@ -286,6 +288,8 @@
 
                 transactionID.push(d[1]);
                 picturename.push(d[11]);
+                // LayerNameStr.push(d[])
+
                 var thArray = [];
 
                 $('#dataDisplay > thead > tr > th').each(function () {
@@ -311,9 +315,9 @@
                         update();
                     }
                 }
-            console.log(transactionIDStr);
                 function update() {
                     var pictureStr = "pictureStr=" + picturename.toString();
+                    var LayerName = "LayerName=" + LayerNameStr.toString();
                     $.ajax({
                         url: '/recoverRow',
                         type: 'GET',
@@ -336,7 +340,6 @@
             url: 'AddData',
             dataType: 'json',
             success: function (results) {
-                console.log(results);
                 for (var i = 0; i < results.length; i++) {
                     if (results[i].Status === "Delete") {
                         if (UserRole === "Regular") {
