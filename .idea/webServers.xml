@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="f4d268ed-df55-47fa-8429-ca7ae51654a8" name="usgs" url="http://localhost:9085">
+        <fileTransfer host="usgs.aworldbridgelabs.com" port="5532" rootFolder="/var/www/usgs" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="5532" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
