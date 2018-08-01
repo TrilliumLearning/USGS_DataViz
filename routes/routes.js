@@ -1061,7 +1061,6 @@ module.exports = function (app, passport) {
                     console.log("success");
                 }
             });
-            // console.log(statement);
             con_CS.query(statement, function (err, results) {
                 if (err) throw err;
                 res.json(results[i]);
@@ -1073,6 +1072,7 @@ module.exports = function (app, passport) {
         let result = Object.keys(req.body).map(function (key) {
             return [String(key), req.body[key]];
         });
+
         res.setHeader("Access-Control-Allow-Origin", "*");
 
         var update1 = "UPDATE USGS.Request_Form SET " ;
@@ -1091,9 +1091,9 @@ module.exports = function (app, passport) {
         let Layer_Uploader_name = responseDataUuid;
         let filepathname = uploadPath + "/" + responseDataUuid;
         let statement1 = update1+update2+update3;
-        let statement2 = "UPDATE USGS.Request_Form SET Layer_Uploader = '" + Layer_Uploader + "', Layer_Uploader_name = '" + Layer_Uploader_name + "';";
+        let statement2 = "UPDATE USGS.Request_Form SET Layer_Uploader = '" + Layer_Uploader + "', Layer_Uploader_name = '" + Layer_Uploader_name + "' WHERE RID = '" + result[1][1] + "';";
         if(result[3][1] === "other"){
-            let statement = "INSERT INTO USGS.MapLayerMenu VALUES ('" + result[7][1] + "', 'Wmslayer', '" + result[4][1] + "','" + result[6][1] + "','" + result[7][1] + "','" + result[10][1] + "','" + result[8][1] + "','" + result[9][1] + "', 'Active');";
+            let statement = "INSERT INTO USGS.MapLayerMenu (LayerName, LayerType, FirstLayer, SecondLayer, ThirdLayer, ContinentName, CountryName, StateName, Status) VALUES ('" + result[7][1] + "', 'Wmslayer', '" + result[4][1] + "','" + result[6][1] + "','" + result[7][1] + "','" + result[10][1] + "','" + result[8][1] + "','" + result[9][1] + "', 'Approved');";
             con_CS.query(statement1 + statement + statement2, function (err, result) {
                 if (err) {
                     throw err;
@@ -1102,7 +1102,7 @@ module.exports = function (app, passport) {
                 }
             });
         }else{
-            let statement = "INSERT INTO USGS.MapLayerMenu VALUES ('" + result[7][1] + "', 'Wmslayer', '" + result[3][1] + "','" + result[5][1] + "','" + result[7][1] + "','" + result[10][1] + "','" + result[8][1] + "','" + result[9][1] + "', 'Active');";
+            let statement = "INSERT INTO USGS.MapLayerMenu (LayerName, LayerType, FirstLayer, SecondLayer, ThirdLayer, ContinentName, CountryName, StateName, Status) VALUES ('" + result[7][1] + "', 'Wmslayer', '" + result[3][1] + "','" + result[5][1] + "','" + result[7][1] + "','" + result[10][1] + "','" + result[8][1] + "','" + result[9][1] + "', 'Approved');";
            con_CS.query(statement1 + statement + statement2, function (err, result) {
                 if (err) {
                     throw err;
