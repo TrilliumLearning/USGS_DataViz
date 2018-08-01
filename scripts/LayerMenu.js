@@ -51,9 +51,11 @@ requirejs(['./WorldWindShim',
         var preloadLayer = [];
         var layers = globe.layers;
         var checked = [];
-        // var unchecked = [];
-        var previousArray = [];
-            //previous checked array//
+        // var remove = [];
+        var val;
+        var alertVal = true;
+
+
 
         $(document).ready(function () {
             $(".wmsLayer").each(function (i) {
@@ -63,45 +65,80 @@ requirejs(['./WorldWindShim',
             var strs = preloadLayer + '';
 
             layerName = strs.split(",");
-
+            var checkedCount;
+            var currentCheckedArray;
             $('.wmsLayer').click(function () {
                 var layer1 = $(this).val();
-                var testarray = $(':checkbox:checked');
-                // console.log(testarray);
-
-
-                if (testarray.length > 0){
-                    checked.push(layer1);
-                    // console.log(checked);
-
-                    if (!Array.prototype.remove) {
-                        Array.prototype.remove = function(val, all) {
-                            var i, removedItems = [];
-                            if (all) {
-                                for(i = this.length; i--;){
-                                    if (this[i] === val) removedItems.push(this.splice(i, 1));
-                                }
-                            }
-                            else {  //same as before...
-                                i = this.indexOf(val);
-                                if(i>-1) removedItems = this.splice(i, 1);
-                            }
-                            return removedItems;
-                        };
-                    }
-                    for( var i = checked.length -1 ; i--;){
-                        if ( checked[i] === layer1) {
-                           var removedItems = checked.remove(layer1,true);
-                           // console.log(removedItems);
+                currentCheckedArray = $(':checkbox:checked');
+                if (currentCheckedArray.length > 0 && alertVal){
+                    confirm("123");
+                }
+                // console.log(checkedArray);
+                if (currentCheckedArray.length > checkedCount){
+                    checked.push(layer1); //insert current value to checked
+                    console.log(checked);
+                    val = checked[checked.length - 1];
+                    checkedCount = currentCheckedArray.length 
+                } else {
+                    for( var i = checked.length -1 ; i--;) {
+                        if (checked[i] === layer1) {
+                            checked.splice(i,1); //remove current value from checked
                         }
                     }
-                    var val = checked[checked.length - 1];
-                    // console.log(checked);
+                    console.log(checked);
+                    val = checked[checked.length - 1];
+                    checkedCount = currentCheckedArray.length
                 }
+                
 
-                if(testarray.length === 0 ){
-                    checked = [];
-                }
+
+                // if (checkedArray.length > 0){
+                //     // console.log(checked);
+                //
+                //     if (!Array.prototype.remove) {
+                //         Array.prototype.remove = function(val, all) {
+                //             var i, removedItems = [];
+                //             if (all) {
+                //                 for(i = this.length; i--;){
+                //                     if (this[i] === val) removedItems.push(this.splice(i, 1));
+                //                 }
+                //             }
+                //             else {
+                //                 i = this.indexOf(val);
+                //                 if(i>-1) removedItems = this.splice(i, 1);
+                //             }
+                //             return removedItems;
+                //         };
+                //     }
+                //     for( var i = checked.length -1 ; i--;){
+                //         if ( checked[i] === layer1) {
+                //            var removedItems = checked.remove(layer1,true);
+                //            remove.push(removedItems);
+                //            console.log(remove);
+                //         }
+                //     }
+                //     // for (var i = remove.length + 1 ; i++;){
+                //     //     if (remove[i] === layer1 && checkedArray.length === 1){
+                //     //         alert("123")
+                //     //     }
+                //     // }
+                //     // console.log(checked);
+                // }
+
+                // $(document).ready(function() {
+                //     if(localStorage.getItem('popState') != 'shown'){
+                //         $("#popup").delay(2000).fadeIn();
+                //         localStorage.setItem('popState','shown')
+                //     }
+                //
+                //     $('#popup-close, #popup').click(function(e) // You are clicking the close button
+                //     {
+                //         $('#popup').fadeOut(); // Now the pop up is hiden.
+                //     });
+                // });
+
+
+                // if(checkedArray.length === 1 && layer1 !== )
 
                 for (var a = 0; a < layers.length; a++) {
                         $(':checkbox:checked').each(function () {
