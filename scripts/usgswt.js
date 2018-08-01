@@ -693,7 +693,8 @@ requirejs(['./worldwind.min',
                                         tile: RadiantCircleTile,
                                         incrementPerIntensity: 0.2,
                                         blur: 10,
-                                        scale: ['rgba(255, 255, 255, 0)', 'rgba(172, 211, 236, 0.25)', 'rgba(204, 255, 255, 0.5)', 'rgba(77, 158, 25, 0.5)']
+                                        // scale: ['rgba(255, 255, 255, 0)', 'rgba(172, 211, 236, 0.25)', 'rgba(204, 255, 255, 0.5)', 'rgba(77, 158, 25, 0.5)']
+                                        scale: ['#000000', '#ffffff', '#00ff00', '#ffff00', '#ff0000']
                                     });
 
                                     // HeatMapLayer.enabled = false;
