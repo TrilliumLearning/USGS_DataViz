@@ -350,7 +350,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-4 control-label">Layer Uploader</label>
+                        <label class="col-md-4 control-label">Layer Uploader  <p>(You can only upload one file)</p> </label>
                         <div class="col-md-8 inputGroupContainer">
                             <div id="uploader"></div>
                         </div>
@@ -372,7 +372,6 @@
     var UserRole = "<%= user.userrole %>";
     var getvalue = JSON.parse(localStorage.getItem("getvalue"));
     console.log(getvalue);
-
     $(document).ready(function() {
         document.getElementById('date').value = getvalue[0];
         document.getElementById('User ID').value = getvalue[1];
@@ -496,7 +495,7 @@
         if (UserRole === "Admin") {
             if (confirm("Are you sure you would like to approve this data?") === true) {
                 var tID = "tID=" + document.getElementById('RID').value;
-                var LUN = "LUN=" + getvalue[15];
+                var LUN = "LUN=" + getvalue[14];
                 var data = $("#layer").serialize();
                 $.ajax({
                     url: 'approve',

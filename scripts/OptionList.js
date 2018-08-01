@@ -160,9 +160,9 @@ function myFunction(index) {
     var obj1 = continentObj3[index].FirstLayer;
     var obj2 = continentObj3[index].SecondLayer;
     var obj3 = continentObj3[index].ThirdLayer;
-    var className1 = '.' + obj1;
-    var className2 = '.' + obj2;
-    var className3 = '.' + obj3;
+    var className1 = "." + obj1;
+    var className2 = "." + obj2;
+    var className3 = "." + obj3;
     $(className1).show();
     $(className2).show();
     $(className3).show();
