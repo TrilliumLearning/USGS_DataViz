@@ -75,7 +75,6 @@ function ChangeSelectList(continentlevel) {
                             url: "ClassName",
                             success: function (res) {
                                 continentObj1 = res;
-                                console.log(continentObj1);
                             }
                         })
                     }else{
@@ -123,7 +122,6 @@ function ChangeStateList(countrylevel) {
     for(var i = 0; i < continentObj1.length; i++){
         if(countrylevel === "All Countries"){
             continentObj2 = continentObj1;
-            console.log(continentObj2)
         }else{
             continentObj2 = getObjects(continentObj1, 'CountryName', countrylevel);
         }
@@ -162,9 +160,9 @@ function myFunction(index) {
     var obj1 = continentObj3[index].FirstLayer;
     var obj2 = continentObj3[index].SecondLayer;
     var obj3 = continentObj3[index].ThirdLayer;
-    var className1 = '.' + obj1;
-    var className2 = '.' + obj2;
-    var className3 = '.' + obj3;
+    var className1 = "." + obj1;
+    var className2 = "." + obj2;
+    var className3 = "." + obj3;
     $(className1).show();
     $(className2).show();
     $(className3).show();

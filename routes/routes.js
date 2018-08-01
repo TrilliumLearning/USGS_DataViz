@@ -922,7 +922,7 @@ module.exports = function (app, passport) {
         let result = Object.keys(req.body).map(function (key) {
             return [String(key), req.body[key]];
         });
-        // console.log(result);
+
         res.setHeader("Access-Control-Allow-Origin", "*");
 
         let name = "";
@@ -948,7 +948,6 @@ module.exports = function (app, passport) {
 
 
         let statement2 = "INSERT INTO USGS.Request_Form (" + name + ") VALUES (" + valueSubmit + ");";
-        // console.log(statement2);
 
         con_CS.query(statement2, function (err, result) {
             if (err) {
@@ -1119,7 +1118,6 @@ module.exports = function (app, passport) {
     app.get('/edit', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
         let editIDSr = req.query.editIDSr;
-        console.log(editIDSr);
         let myStat = "SELECT Layer_Uploader, Layer_Uploader_name FROM Request_Form WHERE RID = '" + editIDSr + "'";
         // console.log(myStat);
 

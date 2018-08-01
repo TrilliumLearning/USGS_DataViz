@@ -5,8 +5,8 @@
     <title>WMS Layer Customized Request</title>
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="../css/style_final.css" type="text/css">
-    <link rel="stylesheet" href="../css/multi-select.css" media="screen" type="text/css">
+    <!--<link rel="stylesheet" href="../css/style_final.css" type="text/css">
+    <link rel="stylesheet" href="../css/multi-select.css" media="screen" type="text/css">-->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="../scripts/jquery-validation-1.17.0/demo/css/screen.css">
@@ -103,7 +103,7 @@
 
 
     <style>
-        body      { padding-top:80px; word-wrap:break-word; }
+        body      { padding-bottom:80px; word-wrap:break-word; }
         /*#hide { display: none; }*/
         /*.FAW        { display: none; }*/
         /*#stay, #cancel {  position: relative;  width: 20%;  left: 20%;  }*/
@@ -113,95 +113,108 @@
             width:100%;
         }
 
-
-        #Linfo{
-            margin-top:20px;
-            margin-bottom:20px;
-        }
-
         #clear{
-            float:right;
-            background-color: #31a0ba;
-            border-radius:4px;
+            background-color: white;
+            width: 105px;
+            height: 60px;
+            border-radius:15px;
             font-size:16px;
-            padding:3px 10px 3px 10px;
             -webkit-transition-duration: 0.4s;
             transition-duration: 0.4s;
-            color:white;
-            margin-right:10px;
+            color: #31a0ba;
+            border-color: #31a0ba;
+            margin-left:6px;
         }
         #clear:hover {
-            background-color: #ff758f;
+            background-color: #31a0ba;
             color: white;
         }
-        #cancel{
-            float:right;
+        #submit{
             background-color: #31a0ba;
-            border-radius:4px;
+            width: 700px;
+            height: 60px;
+            border-radius:15px;
             font-size:16px;
-            padding:3px 10px 3px 10px;
             -webkit-transition-duration: 0.4s;
             transition-duration: 0.4s;
             color:white;
-            right:80px;
-            margin-right:10px;
         }
-        #cancel:hover{
+        #submit:hover{
             background-color: #ff758f;
             color:white;
         }
         #approve{
-              float:right;
-              background-color: #31a0ba;
-              border-radius:4px;
-              font-size:16px;
-              padding:3px 10px 3px 10px;
-              -webkit-transition-duration: 0.4s;
-              transition-duration: 0.4s;
-              color:white;
-              display: inline-block;
-              border-bottom: 1px dotted black;
-              right:80px;
-              margin-right:10px;
-          }
-        #submit{
-            float:right;
             background-color: #31a0ba;
-            border-radius:4px;
+            width: 700px;
+            height: 60px;
+            margin-top: 10px;
+            border-radius:15px;
             font-size:16px;
-            padding:3px 10px 3px 10px;
             -webkit-transition-duration: 0.4s;
             transition-duration: 0.4s;
             color:white;
-            display: inline-block;
-            border-bottom: 1px dotted black;
-            right:80px;
-            margin-right:10px;
         }
+        #approve:hover{
+            background-color: #ff758f;
+            color:white;
+        }
+        input[type="text"] {
+            height: 60px;
+        }
+        .selectpicker {
+            height: 60px;
+        }
+        #continent, #country {
+            height: 60px;
+        }
+        .other {
+            padding-left: 10px;
+            height: 40px;
+            margin-top: 10px;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid lightgray;
+        }
+
         #reject{
-            float:right;
-            background-color: #31a0ba;
-            border-radius:4px;
+            width: 105px;
+            height: 60px;
+            background-color: white;
+            border-radius:15px;
             font-size:16px;
-            padding:3px 10px 3px 10px;
             -webkit-transition-duration: 0.4s;
             transition-duration: 0.4s;
-            color:white;
+            color: #31a0ba;
             display: inline-block;
-            border-bottom: 1px dotted black;
-            right:80px;
-            margin-right:10px;
+            border-color: #31a0ba;
+            margin-left: 6px;
+        }
+        #reject:hover {
+            background-color: #31a0ba;
+            color: white;
+        }
+        #reject:disabled {
+            color: white;
+            border-color: lightgray;
         }
     </style>
 
 </head>
+<div class="navul" style="height: 150px;
+    background: #000000;">
+    <a class="navul" href="//aworldbridge.com" style="background: #000000;
+    width: 500px;
+    height: 60px;">
+        <img class="banner" src="../images/NewWBBanner.jpg" style="width: 950px;
+    height: 150px;
+    margin: auto; display: block;" />
+    </a>
+</div>
 <body>
 
-<div class="container">
-    <a href="http://aworldbridge.com"><img class="banner" src="../images/NewWBBanner.jpg"/></a>
-    <div id="container">
-        <h1 id="title">Layer Request Form</h1>
-        <h2 id="Linfo">Layer Information</h2>
+<div class="container" style="width: 850px;">
+    <h1 class="text-center page-header"><strong>Layer Request Form</strong></h1>
+    <h3 class="text-center" style="margin:30px;">Layer Information</h3>
         <div class="generalForm">
             <form class="well form-horizontal" id="layer">
                 <fieldset >
@@ -253,7 +266,7 @@
                                     <option value="other">Other(Please specify)</option>
                                 </select>
                                 <div id="other1" style="display:none;">
-                                    <input type="text" name="FirstOther" id="inputone">
+                                    <input class="other" type="text" name="FirstOther" id="inputone">
                                 </div>
                             </div>
                         </div>
@@ -268,7 +281,7 @@
                                     <option value="other" id="secondOther">Other(Please specify)</option>
                                 </select>
                                 <div id="other2" style="display:none;">
-                                    <input type="text" name="SecondOther" id="inputtwo">
+                                    <input class="other" type="text" name="SecondOther" id="inputtwo">
                                 </div>
                             </div>
                         </div>
@@ -278,7 +291,7 @@
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
                                 <input id="LayerNameInput" name="LayerName" value="" placeholder="Layer Name" class="form-control" required  type="text" onchange="SearchLayerName(this.value)"></div>
-                            <p id="LayerName1" style="color: palevioletred;margin-top:15px;">Please enter the Layer Name, and there is no space allowed.</p>
+                            <p id="LayerName1" style="color: palevioletred;margin-top:15px;">Please enter the layer name. NOTE: Do not include spaces.</p>
                         </div>
                     </div>
                     <div class="form-group">
@@ -337,7 +350,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-4 control-label">Layer Uploader</label>
+                        <label class="col-md-4 control-label">Layer Uploader  <p>(You can only upload one file)</p> </label>
                         <div class="col-md-8 inputGroupContainer">
                             <div id="uploader"></div>
                         </div>
@@ -345,21 +358,19 @@
                 </fieldset>
             </form>
         </div>
-        <div class="row">
+        <div>
+            <button id="submit" form="layer" disabled title="this is only for Regular Users">Submit</button>
             <button id="clear" type="reset" onclick="clearForm()" value="  Clear  ">Clear</button>
             <button id="approve" type="submit" form="layer" disabled  title="this is only for Admin Users">Approve</button>
             <button id="reject" disabled  title="this is only for Admin Users">Reject</button>
-            <button id="submit" form="layer" disabled title="this is only for Regular Users">Submit</button>
-            <button id="cancel" onclick="userHome();">Cancel</button>
         </div>
-    </div>
+        <hr>
+        <p class="text-center"><a id="cancel" onclick="userHome();">Cancel</a></p>
 </div>
 
 <script>
     var UserRole = "<%= user.userrole %>";
     var getvalue = JSON.parse(localStorage.getItem("getvalue"));
-    console.log(getvalue);
-
     $(document).ready(function() {
         document.getElementById('date').value = getvalue[0];
         document.getElementById('User ID').value = getvalue[1];
@@ -483,7 +494,7 @@
         if (UserRole === "Admin") {
             if (confirm("Are you sure you would like to approve this data?") === true) {
                 var tID = "tID=" + document.getElementById('RID').value;
-                var LUN = "LUN=" + getvalue[15];
+                var LUN = "LUN=" + getvalue[14];
                 var data = $("#layer").serialize();
                 $.ajax({
                     url: 'approve',
@@ -550,7 +561,7 @@
     }
 
     function clearForm(){
-        if (confirm("Are you sure to clear this page? All the data will be cleared accordingly!") === true) {
+        if (confirm("Are you sure to clear the form? All the data will be reset accordingly!") === true) {
             document.getElementById("layer").reset();
             document.getElementById("sub").disabled = true;
             $("#sub").html("<option value='Category'>SELECT SUBCATEGORY</option>");
@@ -576,14 +587,14 @@
         },
         // Specify validation error messages
         messages: {
-            Layer_Name: "Please enter the layer name",
-            StateName:"Please enter the layer state",
-            CountryName:"Please enter the layer country",
-            ContinentName:"Please enter the layer continent",
-            FirstLayer: "Please select the main category",
-            SecondLayer:"Please select the subcategory",
-            Layer_Description: "Please write the description of the layer",
-            LayerFormat:"Please choose your layer format"
+            Layer_Name: "Please enter the layer name.",
+            StateName:"Please enter the layer state.",
+            CountryName:"Please enter the layer country.",
+            ContinentName:"Please enter the layer continent.",
+            FirstLayer: "Please select the main category.",
+            SecondLayer:"Please select the subcategory.",
+            Layer_Description: "Please write the description of the layer.",
+            LayerFormat:"Please choose your layer format."
         },
 
         // Make sure the form is submitted to the destination defined
@@ -600,19 +611,19 @@
             success: function (results) {
                 for(var i = 0; i < results.length; i++) {
                     if (value === results[i].ThirdLayer) {
-                        document.getElementById("LayerName1").innerHTML = "The Layer Name has already been used";
+                        document.getElementById("LayerName1").innerHTML = "The layer name has already been used. Please use another one.";
                         document.addEventListener("keyup", function (e) {
                             if (event.keyCode === 8) {
-                                document.getElementById("LayerName1").innerHTML = "Please Enter the Layer Name, the Layer Name length at least 6 characters";
+                                document.getElementById("LayerName1").innerHTML = "Please enter the layer name. The length of the layer name must be at least 6 characters.";
                             }
                         }, false);
                         break;
                     } else{
-                        document.getElementById("LayerName1").innerHTML = "This Layer Name is available";
+                        document.getElementById("LayerName1").innerHTML = "This layer name is available.";
                     }
                 }
                 if(value.length === 0){
-                    document.getElementById("LayerName1").innerHTML = "Please Enter the Layer Name, the Layer Name length at least 6 characters";
+                    document.getElementById("LayerName1").innerHTML = "Please enter the layer name. The length of the layer name must be at least 6 characters.";
                 }
             }
         })

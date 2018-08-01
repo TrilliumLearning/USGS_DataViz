@@ -2,7 +2,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>Datatable</title>
+    <title>USGS Data Visualization - User Home</title>
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -250,7 +250,6 @@
                     <th>Layer Name</th>
                     <th>Layer Description</th>
                     <th>Layer Format</th>
-                    <th>Layer Uploader</th>
                     <th>Layer Uploader Name</th>
                     <th>Status</th>
                 </tr>
@@ -274,7 +273,6 @@
                     <th>Layer Name</th>
                     <th>Layer Description</th>
                     <th>Layer Format</th>
-                    <th>Layer Uploader</th>
                     <th>Layer Uploader Name</th>
                     <th>Status</th>
                 </tr>
@@ -433,7 +431,6 @@
                                         results[i].LayerName,
                                         results[i].Layer_Description,
                                         results[i].LayerFormat,
-                                        results[i].Layer_Uploader,
                                         results[i].Layer_Uploader_name,
                                         results[i].Status
                                     ]).draw(false);
@@ -455,17 +452,15 @@
                                         results[i].LayerName,
                                         results[i].Layer_Description,
                                         results[i].LayerFormat,
-                                        results[i].Layer_Uploader,
                                         results[i].Layer_Uploader_name,
                                         results[i].Status
                                     ]).draw(false);
+                                }
                             }
-                        }
                     }
                 }
             });
         }
-
 </script>
 </body>
 </html>
