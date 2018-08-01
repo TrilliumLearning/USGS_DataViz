@@ -948,8 +948,6 @@ module.exports = function (app, passport) {
 
 
         let statement2 = "INSERT INTO USGS.Request_Form (" + name + ") VALUES (" + valueSubmit + ");";
-        // let statement3 = "INSERT INTO USGS.LayerUploader VALUES (" + valueSubmit[1] + " " + valueSubmit[13]
-
 
         con_CS.query(statement2, function (err, result) {
             if (err) {
