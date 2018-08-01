@@ -367,7 +367,7 @@
 <script>
     var UserRole = "<%= user.userrole %>";
     var getvalue = JSON.parse(localStorage.getItem("getvalue"));
-
+    console.log(getvalue);
     $(document).ready(function() {
         document.getElementById('date').value = getvalue[0];
         document.getElementById('User ID').value = getvalue[1];
@@ -491,7 +491,7 @@
         if (UserRole === "Admin") {
             if (confirm("Are you sure you would like to approve this data?") === true) {
                 var tID = "tID=" + document.getElementById('RID').value;
-                var LUN = "LUN=" + getvalue[15];
+                var LUN = "LUN=" + getvalue[14];
                 var data = $("#layer").serialize();
                 $.ajax({
                     url: 'approve',
