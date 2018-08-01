@@ -3,12 +3,14 @@ requirejs(['./worldwind.min',
         './RadiantCircleTile',
         '../src/util/WWMath',
         '../src/geom/Angle',
+        '../src/geom/Location',
         '../config/mainconf'],
     function (WorldWind,
               LayerManager,
               RadiantCircleTile,
               WWMath,
-              Angle) {
+              Angle,
+              Location) {
         "use strict";
 
         $(document).ready(function() {
@@ -28,7 +30,7 @@ requirejs(['./worldwind.min',
 
                 // Create the WorldWindow.
                 var wwd = new WorldWind.WorldWindow("canvasOne");
-                // console.log(wwd.layers);
+                // console.log(wwd);
 
                 // Create and add layers to the WorldWindow.
                 var layers = [
@@ -56,8 +58,8 @@ requirejs(['./worldwind.min',
                 // $("#test").on('click', function () {
                 //     // wwd.layers[5].renderables[0].enableLeaderLinePicking = true;
                 //
-                //     console.log(wwd.layers[5].renderables[0]);
-                //     console.log(wwd.layers[5].renderables[1]);
+                //     // console.log(wwd.layers[0].eyeText.text);
+                //     console.log(wwd.navigator.lookAtLocation);
                 // });
 
                 $("#none, #p_year_color, #p_avgcap_color, #t_ttlh_color").on("click", function () {
@@ -428,6 +430,90 @@ requirejs(['./worldwind.min',
                     }
                 };
 
+                wwd.worldWindowController.allGestureListeners[0].__proto__.handleZoom = function(e, control) {
+                    var handled = false;
+                    // Start an operation on left button down or touch start.
+                    if (this.isPointerDown(e) || this.isTouchStart(e)) {
+                        this.activeControl = control;
+                        this.activeOperation = this.handleZoom;
+                        e.preventDefault();
+                        if (this.isTouchStart(e)) {
+                            this.currentTouchId = e.changedTouches.item(0).identifier; // capture the touch identifier
+                        }
+                        // This function is called by the timer to perform the operation.
+                        var thisLayer = this; // capture 'this' for use in the function
+                        var setRange = function () {
+                            if (thisLayer.activeControl) {
+                                if (thisLayer.activeControl === thisLayer.zoomInControl) {
+                                    thisLayer.wwd.navigator.range *= (1 - thisLayer.zoomIncrement);
+                                } else if (thisLayer.activeControl === thisLayer.zoomOutControl) {
+                                    thisLayer.wwd.navigator.range *= (1 + thisLayer.zoomIncrement);
+                                }
+                                thisLayer.wwd.redraw();
+
+                                // autoSwitch();
+                                // console.log(wwd.layers[0].eyeText.text);
+                                setTimeout(function() {autoSwitch(); layerMenu(); clearHighlight(true, true);}, 20);
+
+                                setTimeout(setRange, 50);
+                            }
+                        };
+
+                        setTimeout(setRange, 50);
+                        handled = true;
+                    }
+                    return handled;
+                };
+
+                wwd.worldWindowController.allGestureListeners[0].__proto__.handlePan = function(e, control) {
+                    var handled = false;
+                    // Capture the current position.
+                    if (this.isPointerDown(e) || this.isPointerMove(e)) {
+                        this.currentEventPoint = this.wwd.canvasCoordinates(e.clientX, e.clientY);
+                    } else if (this.isTouchStart(e) || this.isTouchMove(e)) {
+                        var touch = e.changedTouches.item(0);
+                        this.currentEventPoint = this.wwd.canvasCoordinates(touch.clientX, touch.clientY);
+                    }
+                    // Start an operation on left button down or touch start.
+                    if (this.isPointerDown(e) || this.isTouchStart(e)) {
+                        this.activeControl = control;
+                        this.activeOperation = this.handlePan;
+                        e.preventDefault();
+                        if (this.isTouchStart(e)) {
+                            this.currentTouchId = e.changedTouches.item(0).identifier; // capture the touch identifier
+                        }
+                        // This function is called by the timer to perform the operation.
+                        var thisLayer = this; // capture 'this' for use in the function
+                        var setLookAtLocation = function () {
+                            if (thisLayer.activeControl) {
+                                var dx = thisLayer.panControlCenter[0] - thisLayer.currentEventPoint[0],
+                                    dy = thisLayer.panControlCenter[1]
+                                        - (thisLayer.wwd.viewport.height - thisLayer.currentEventPoint[1]),
+                                    oldLat = thisLayer.wwd.navigator.lookAtLocation.latitude,
+                                    oldLon = thisLayer.wwd.navigator.lookAtLocation.longitude,
+                                    // Scale the increment by a constant and the relative distance of the eye to the surface.
+                                    scale = thisLayer.panIncrement
+                                        * (thisLayer.wwd.navigator.range / thisLayer.wwd.globe.radiusAt(oldLat, oldLon)),
+                                    heading = thisLayer.wwd.navigator.heading + (Math.atan2(dx, dy) * Angle.RADIANS_TO_DEGREES),
+                                    distance = scale * Math.sqrt(dx * dx + dy * dy);
+                                Location.greatCircleLocation(thisLayer.wwd.navigator.lookAtLocation, heading, -distance,
+                                    thisLayer.wwd.navigator.lookAtLocation);
+                                thisLayer.wwd.redraw();
+
+                                // console.log(wwd.navigator.lookAtLocation);
+                                layerMenu();
+                                clearHighlight(true, true);
+
+                                setTimeout(setLookAtLocation, 50);
+                            }
+                        };
+                        setTimeout(setLookAtLocation, 50);
+                        handled = true;
+                    }
+                    return handled;
+
+                };
+
                 function autoSwitch() {
                     var altitude = wwd.layers[0].eyeText.text;
 
@@ -693,7 +779,7 @@ requirejs(['./worldwind.min',
                                         tile: RadiantCircleTile,
                                         incrementPerIntensity: 0.2,
                                         blur: 10,
-                                        // scale: ['rgba(255, 255, 255, 0)', 'rgba(172, 211, 236, 0.25)', 'rgba(204, 255, 255, 0.5)', 'rgba(77, 158, 25, 0.5)']
+                                        // scale: ['rgba(255, 255, 255, 0)', 'rgba(172, 211, 236, 0.25)', 'rgba(204, 255, 255, 0.5)', 'rgba(0, 191, 0, 0.5)']
                                         scale: ['#000000', '#ffffff', '#00ff00', '#ffff00', '#ff0000']
                                     });
 
