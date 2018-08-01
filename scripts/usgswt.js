@@ -501,8 +501,9 @@ requirejs(['./worldwind.min',
                                 thisLayer.wwd.redraw();
 
                                 // console.log(wwd.navigator.lookAtLocation);
-                                layerMenu();
-                                clearHighlight(true, true);
+                                // layerMenu();
+                                // clearHighlight(true, true);
+                                setTimeout(function() {layerMenu(); clearHighlight(true, true);}, 20);
 
                                 setTimeout(setLookAtLocation, 50);
                             }
