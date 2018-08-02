@@ -644,7 +644,7 @@ module.exports = function (app, passport) {
                     }
                 });
             }, function(PendingUsername, done) {
-                myStat = "UPDATE UserLogin SET username = '" + PendingUsername  + "' WHERE PendingUsername = '" + PendingUsername + "';";
+                myStat = "UPDATE UserLogin SET username = '"+ PendingUsername  + "' WHERE PendingUsername = '"+ PendingUsername + "';";
                 mylogin = "UPDATE UserLogin SET PendingUsername = '' WHERE PendingUsername = username";
                 con_CS.query(myStat + mylogin, function(err, user) {
                     if (err) {
