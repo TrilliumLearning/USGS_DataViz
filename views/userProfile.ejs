@@ -88,7 +88,7 @@
                         <label class="col-md-4 control-label">User Name(Email)</label>
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span><input id="username" name="username" class="form-control" value="<%= user.username %>" type="text">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span><input id="username" name="username" class="form-control" value="<%= user.username %>" type="text" onchange="verifyemail()">
                             </div>
                         </div>
                     </div>
@@ -374,18 +374,18 @@
         });
     }
 
-    function verifyemail(){
-        var UNS = "UNS= " + document.getElementById('username').value;
-        $.ajax({
-            url  : 'UsernameV',
-            method : "GET",
-            dataType: 'json',
-            data : UNS,
-            success : function(d){
-                console.log(d);
-            }
-        });
-    }
+    // function verifyemail(){
+    //     var UNS = "UNS=" + document.getElementById('username').value;
+    //     $.ajax({
+    //         url  : 'UsernameV',
+    //         method : "GET",
+    //         dataType: 'json',
+    //         data : UNS,
+    //         success : function(d){
+    //             console.log(d);
+    //         }
+    //     });
+    // }
 
 </script>
 </body>
