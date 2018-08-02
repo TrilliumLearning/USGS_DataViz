@@ -546,7 +546,6 @@ module.exports = function (app, passport) {
                 var text = 'to sign up an account with this email.';
                 var url = "http://" + req.headers.host + "/verify/";
                 sendToken(username, subject, text, url, res);
-                res.render('login.ejs');
             }
         });
     });

@@ -133,8 +133,9 @@
                     data: $("#signup").serialize(),
                     success: function (result) {
                         if (!result.error) {
-                            alert(result.message);
+                            // alert(result.message);
                             alert("We are sending you the email verification. Please check it before login to your account.");
+                            window.location.replace('/login');
                         } else {
                             alert(result.message);
                         }
