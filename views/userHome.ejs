@@ -311,19 +311,7 @@
                 dateFormat: "Y-m-d",
                 time_24hr: true
             });
-
-            if (UserRole === "Admin") {
-                DropMenu = "<li><a href=\"/userprofile\">Profile</a></li>\n" +
-                    "\t\t\t<li id = 'Profile' ><a href=\"/userManagement\">User Management</a></li>\n" +
-                    "\t\t\t<li><a href=\"/signout\">Sign Out</a></li>";
-                $("#userMenu").empty();
-                $("#userMenu").append(DropMenu)
-
-            } else if (UserRole === "Regular") {
-                DropMenu = "<li><a href=\"/userprofile\">Profile</a></li>\n" +
-                    "\t\t\t<li><a href=\"/signout\">Sign Out</a></li>";
-                $("#userMenu").empty();
-                $("#userMenu").append(DropMenu)
+        if (UserRole === "Regular") {
                 document.getElementById('searchname').style.display = "none";
             }
 
