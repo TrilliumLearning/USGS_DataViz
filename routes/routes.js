@@ -438,6 +438,64 @@ module.exports = function (app, passport) {
         res.render('userProfile.ejs', {user: req.user});
     });
 
+    app.post('/userProfile', isLoggedIn, function (req, res) {
+        res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
+
+        // new password (User Login)
+        let user = req.user;
+        let newPass = {
+            currentpassword: req.body.CurrentPassword,
+            Newpassword: bcrypt.hashSync(req.body.newpassword, null, null),
+            ConfirmPassword: bcrypt.hashSync(req.body.ConfirmNewPassword, null, null)
+        };
+
+        let passComp = bcrypt.compareSync(newPass.currentpassword, user.password);
+
+        if (!!req.body.newpassword && passComp) {
+            let passReset = "UPDATE UserLogin SET password = '" + newPass.Newpassword + "' WHERE username = '" + user.username + "'";
+
+            con_CS.query(passReset, function (err, rows) {
+                //console.log(result);
+                if (err) {
+                    console.log(err);
+                    res.json({"error": true, "message": "Fail !"});
+                } else {
+                    // res.json({"error": false, "message": "Success !"});
+                    basicInformation();
+                }
+            });
+        } else {
+            basicInformation();
+        }
+
+        // User Profile
+        function basicInformation() {
+            let result = Object.keys(req.body).map(function (key) {
+                return [String(key), req.body[key]];
+            });
+
+            var update1 = "UPDATE USGS.UserProfile SET ";
+            let update2 = "";
+            var update3 = " WHERE username = '" + req.user.username + "'";
+            for (let i = 0; i < result.length - 3; i++) {
+                if (i === result.length - 4) {
+                    update2 += result[i][0] + " = '" + result[i][1] + "'";
+                } else {
+                    update2 += result[i][0] + " = '" + result[i][1] + "', ";
+                }
+            }
+            let statement1 = update1 + update2 + update3;
+
+            con_CS.query(statement1, function (err, result) {
+                if (err) {
+                    res.json({"error": true, "message": "Fail !"});
+                } else {
+                    res.json({"error": false, "message": "Success !"})
+                }
+            });
+        }
+    });
+
     // Update user profile page
     app.post('/newPass', isLoggedIn, function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
