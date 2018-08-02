@@ -34,13 +34,6 @@
             background-color: brown;
             color: #FFF;
         }
-        #userListForm {
-            margin: 0 10% 0 10%;
-        }
-        #dvData {
-            width: 82%;
-            margin-left:110px;
-        }
         .banner{
             position:relative;
             width: 100%;
@@ -85,7 +78,7 @@
         .navbutton1 {
             width: 150px;
             font-size: 15px;
-            height:40px;
+            height:80px;
             margin: 0;
             border-radius: 0px 0 0;
             background-color: #000000;
@@ -99,90 +92,219 @@
             background-color: #333;
             color: white;
         }
-        .dropdown {
-            position: relative;
-            display: inline-block;
+        .dropbutton {
+            float: right;
+            width: 150px;
+            height: 80px;
+            padding: 16px;
+            color: white;
+            background-color: #337ab7;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            -webkit-transition-duration: 0.4s;
+            transition-duration: 0.4s;
+        }
+        .dropbutton:hover, .dropbutton:focus {
+            background-color: #2b6699;
+        }
+        .dropdown-content {
+            display: none;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            overflow: auto;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            right: 0;
+            z-index: 1;
+        }
+        .dropdown-content a {
+            color: black;
+            padding: 20px;
+            text-decoration: none;
+            display: block;
+        }
+        .dropdown a:hover {
+            background-color: #ddd;
+        }
+        .show {
+            display: block;
+        }
+        .button1 {
+            height: 40px;
+            width: 110px;
+            float: right;
+            border-radius: 5px;
+            -webkit-transition-duration: 0.4s;
+            transition-duration: 0.4s;
+            cursor: pointer;
+            background-color: white;
+            color: #a7cb9f;
+            border: 1px solid #a7cb9f;
         }
 
+        .button1:hover {
+            background-color: #a7cb9f;
+            color: white;
+        }
+
+        .button2 {
+            width: 110px;
+            color: #ffffff;
+            height: 40px;
+            background-color: #a7cb9f;
+        }
+
+        .button2:hover {
+            background-color: #9BBF93;
+            color: white;
+        }
     </style>
 
 </head>
-<ul class="navul" style="height:60px;background:#000000;">
+<div class="navul" style="height:80px;background:#000000;">
     <a class="navul" style="background:#000000;" href="http://aworldbridge.com">
-        <img class="banner" src="/images/NewWBBanner.jpg" style="width:400px;height:60px;"/>
+        <img class="banner" src="/images/NewWBBanner.jpg" style="width:500px;height:76px;"/>
     </a>
-    <a href="/userhome" id ="Restore" style="width:110px;">
+    <a href="/userHome" style="width:110px;">
         <button class="navbutton1"> User Home </button>
     </a>
     <a href="/addUser" id= "Request" style="width:110px;">
-        <button class="navbutton1"> Add User </button>
+        <button class="navbutton1" style="width: 140px"> Add User </button>
     </a>
-    <div class="dropdown floating-Box" style="float:right;margin-top:10px;margin-right:10px;">
-        <button class="btn btn-primary btn-lg navbutton1" type="button" data-toggle="dropdown" id="Username"><%= firstName%>
-            <span class="caret"></span></button>
-        <ul id="userMenu" class="dropdown-menu" >
-        </ul>
-    </div>
-</ul>
-<body>
-<div class="container center">
-    <div class="page-header text-center">
-        <h1><span class="fa fa-list"></span> USGS Data Visualization - User Management </h1>
-        <h4><span class="fa fa-user"></span>&nbsp;<strong>Account Name</strong>:  <%= user.username %> </h4>
+    <div class="dropdown" style="height: 80px; width: 200px; float: right; margin: 0;">
+        <button onclick="dropDown()" class="dropbutton" id="Username">
+            <%= firstName%>
+            <span class="caret"></span>
+        </button>
+        <div id="userMenuAdmin" class="dropdown-content">
+            <a href="/userProfile"> User Profile </a>
+            <a href="/userManagement"> User Management </a>
+            <a href="/signout"> Sign Out </a>
+        </div>
+        <div id="userMenuRegular" class="dropdown-content">
+            <a href="/userProfile"> User Profile </a>
+            <a href="/signout"> Sign Out </a>
+        </div>
     </div>
 </div>
+<body>
+<div class="container" style="width: 900px">
+    <div class="container" style="width: 850px">
+        <div class="page-header text-center">
+            <h1><span class="fa fa-list"></span><strong> USGS Data Visualization - User Management </strong></h1>
+            <h4><span class="fa fa-user"></span>&nbsp;<strong>Account Name</strong>:  <%= user.username %> </h4>
+        </div>
+    </div>
 <!--<a href="/newEntry" class="btn btn-default btn-lg" id="class1">New Entry</a>-->
 <!--<a href="/query" class="btn btn-default btn-lg" id="class2">Data History</a>-->
-<div class="container">
-    <div id="userListForm">
-        <div class="row">
-            <h4 class="floatingBox"><strong>Date Created:</strong></h4>&nbsp;&nbsp;&nbsp;&nbsp;
-            <h6 class="floatingBox">From:</h6>&nbsp;
-            <input class="inputBoxDate datePicker date" type="text" id="dateCreated" placeholder="Select Date">&nbsp;&nbsp;
-            <h6 class="floatingBox">To:</h6>&nbsp;
-            <input class="inputBoxDate datePicker date" type="text" id="dateCreated" placeholder="Select Date">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <h4 class="floatingBox DateModified1"><strong>Date Modified:</strong></h4>&nbsp;&nbsp;
-            <h6 class="floatingBox DateModified2">From:</h6>&nbsp;
-            <input class="inputBoxDate datePicker date DateModified3" type="text" id="dateModified" placeholder="Select Date">&nbsp;&nbsp;
-            <h6 class="floatingBox DateModified2">To:</h6>&nbsp;
-            <input class="inputBoxDate datePicker date DateModified3" type="text" id="dateModified" placeholder="Select Date">
+    <div id="userListForm" style="width: 900px;
+    padding: 0px 10px;">
+        <div class="floatingBox" style="width: 500px;
+    padding: 0px;">
+            <h4 class="floatingBox" style="width: 500px;"><strong style="width: 365px;">Date Created:</strong></h4>
+            <h5 class="floatingBox" style="width: 50px;">From:</h5>
+            <input class="inputBoxDate datePicker date" type="text" id="dateCreated" placeholder="Select Date" style="width: 265px;
+    height: 40px;
+    margin: 5px 150px 5px 0px;
+    padding-left: 10px;
+    border-radius: 5px;
+    border: 1px solid #c8c8c8;">
+            <h5 class="floatingBox" style="width: 50px;">To:</h5>
+            <input class="inputBoxDate datePicker date" type="text" id="dateCreated" placeholder="Select Date" style="width: 265px;
+    height: 40px;
+    margin: 5px 5px 5px 0px;
+    padding-left: 10px;
+    border-radius: 5px;
+    border: 1px solid #c8c8c8;">
+        </div>
+        <div class="container floatingBox" style="width: 360px;
+    margin: 0px;
+    padding: 0px;">
+            <h4 class="floatingBox DateModified1" style="width: 325px;"><strong>Date Modified:</strong></h4>
+            <h5 class="floatingBox DateModified2" style="width: 50px;">From:</h5>
+            <input class="inputBoxDate datePicker date DateModified3" type="text" id="dateModified" placeholder="Select Date" style="width: 280px;
+    height: 40px;
+    margin: 5px 5px 5px 0px;
+    padding-left: 10px;
+    border-radius: 5px;
+    border: 1px solid #c8c8c8;">
+            <h5 class="floatingBox DateModified2" style="width: 50px;">To:</h5>
+            <input class="inputBoxDate datePicker date DateModified3" type="text" id="dateModified" placeholder="Select Date" style="width: 280px;
+    height: 40px;
+    margin: 5px 5px 5px 0px;
+    padding-left: 10px;
+    border-radius: 5px;
+    border: 1px solid #c8c8c8;">
         </div>
         <br>
-        <div class="row">
-            <h4 class="floatingBox"><strong>User:</strong></h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <h6 class="floatingBox">First Name:</h6>&nbsp;&nbsp;&nbsp;
-            <input class="inputBoxDate" type="text" id="firstName" placeholder="Enter First Name">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <h6 id="123" class="floatingBox">Last Name:</h6>&nbsp;&nbsp;&nbsp;
-            <input class="inputBoxDate" type="text" id="lastName" placeholder="Enter Last Name">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <h6 class="floatingBox">Phone Number:</h6>&nbsp;&nbsp;&nbsp;
-            <input class="inputBoxDate" id="Phone_Number" type="text" placeholder="Enter Phone Number">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <br><br>
-            <div class="center">
-                <h4 class="floatingBox"><strong>Status:&nbsp;</strong></h4>
-                <select id="status">
-                    <option value="">Select the status</option>
-                    <option value="Active">Active</option>
-                    <option value="Never Logged In">Never Logged In</option>
-                    <option value="Suspended">Suspended</option>
-                </select>
-            </div>
-            <br>
-            <h4 class="floatingBox" id="Role"><strong>User Role:</strong></h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <input type="radio" name="userrole" id="Regular" value="Regular">
-            <h5 class="floatingBox click">&nbsp;&nbsp;&nbsp;Regular</h5>&nbsp;&nbsp;&nbsp;&nbsp;
-            <input type="radio" name="userrole" id="Admin" value="Admin">
-            <h5 class="floatingBox click">&nbsp;&nbsp;&nbsp;Admin</h5>&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="container floatingBox" style="width: 500px;
+    padding: 0px;">
+            <h4 class="floatingBox" style="width: 500px;"><strong>User Name:</strong></h4>
+            <h5 class="floatingBox" style="width: 100px">First Name:</h5>
+            <input class="inputBoxDate" type="text" id="firstName" placeholder="Enter First Name" style="width: 210px;
+    height: 40px;
+    padding-left: 10px;
+    margin: 5px 150px 5px 5px;
+    border-radius: 5px;
+    border: 1px solid #c8c8c8;">
+            <h5 id="123" class="floatingBox" style="width: 100px">Last Name:</h5>
+            <input class="inputBoxDate" type="text" id="lastName" placeholder="Enter Last Name" style="width: 210px;
+    height: 40px;
+    padding-left: 10px;
+    margin: 5px 150px 5px 5px;
+    border-radius: 5px;
+    border: 1px solid #c8c8c8;">
+            <h5 class="floatingBox">Phone Number:</h5>
+            <input class="inputBoxDate" type="text" id="Phone_Number" placeholder="Enter Phone Number" style="width: 210px;
+    height: 40px;
+    padding-left: 10px;
+    margin: 5px;
+    border-radius: 5px;
+    border: 1px solid #c8c8c8;">
         </div>
-        <br>
-        <input type="submit" onclick="query()" id="Filter" class="btn btn-default" style="color: #ffffff; background-color: #a7cb9f" value="Filter">
-        <button id="editUserButton" class="btn delete-row btn-default">Edit User</button>
-        <button id="suspendUserButton" class="btn btn-default">Suspend User(s)</button>
-        <br>
+        <div class="container floatingBox" style="width: 100px;
+    padding: 0px;">
+            <h4 class="floatingBox" style="width: 100px;
+    margin-bottom: 10px;"><strong>Status:</strong></h4>
+            <select id="status" style="width: 335px;
+    height: 40px;
+    background-color: white;
+    margin-bottom: 20px;
+    padding-left: 10px;
+    border-radius: 5px;
+    border: 1px solid #c8c8c8;">
+                <option value=""> SELECT THE STATUS </option>
+                <option value="Active">Active</option>
+                <option value="Never Logged In">Never Logged In</option>
+                <option value="Suspended">Suspended</option>
+            </select>
+
+            <h4 class="floatingBox" style="width: 100px;
+    margin-bottom: 10px;"><strong>User Role:</strong></h4>
+            <select id="userrole" style="width: 335px;
+    height: 40px;
+    background-color: white;
+    padding-left: 10px;
+    border-radius: 5px;
+    border: 1px solid #c8c8c8;">
+                <option value=""> SELECT THE USER ROLE </option>
+                <option value="Admin">Admin</option>
+                <option value="Regular">Regular</option>
+            </select>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div style="width: 850px;">
+        <input type="submit" onclick="query()" id="Filter" class="button1" value="Filter">
+        <button id="editUserButton" class="btn delete-row btn-default button2">Edit User</button>
+        <button id="suspendUserButton" class="btn btn-default button2" style="width: 140px;">Suspend User(s)</button>
+        <button id="showButton" class="btn btn-default button2">Show All</button>
     </div>
     <br>
     <h4 style="margin-left:80px;"><strong>Most Recent Records:</strong></h4>
 
-    <div id="dvData">
+    <div id="dvData" style="width: 850px;">
 
         <table id="dataDisplay" cellspacing="0" width="100%">
             <thead>
@@ -320,9 +442,7 @@
                 queryAndDisplay("statusDel=" + "Active");
                 $(".clearForm input[type='text']").val('');
                 $(".date").val('');
-                $("input:radio[class^=radio2]").each(function(i) {
-                    this.checked = false;
-                })
+                $(".select").val('');
             });
         });
         function dropDown() {
@@ -354,12 +474,12 @@
             var lastName = document.getElementById("lastName").value;
             var Phone_Number = document.getElementById("Phone_Number").value;
             var status = document.getElementById("status").value;
-
-            if ($("input[name='userrole']").is(":checked")) {
+            var userrole = document.getElementById("userrole").value;
+            /*if ($("input[name='userrole']").is(":checked")) {
                 userrole = $("input[name='userrole']:checked").val();
             } else {
                 userrole = "";
-            }
+            }*/
 
             queryString1 = "dateCreatedFrom=" + dateCreatedFrom + "&dateCreatedTo=" + dateCreatedTo + "&dateModifiedFrom=" + dateModifiedFrom + "&dateModifiedTo=" + dateModifiedTo + "&userrole=" + userrole;
             queryString2 = "&firstName=" + firstName + "&lastName=" + lastName + "&Phone_Number=" + Phone_Number + "&status=" + status;
