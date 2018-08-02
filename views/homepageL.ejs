@@ -202,18 +202,6 @@
 <script>
     var UserRole = "<%= user.userrole %>";
 
-    $(function () {
-        flatpickr(".date", {
-            dateFormat: "Y-m-d",
-            time_24hr: true
-        });
-    });
-    var today = new Date();
-    var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-    var time2 = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    var dateTime = date + ' ' + time2;
-    document.getElementById("date").value = dateTime;
-
     function dropDown() {
         console.log(UserRole);
         if (UserRole === "Admin") {
