@@ -20,7 +20,7 @@
     <!--<script src="//unpkg.com/flatpickr"></script>-->
 
     <style>
-        body 		{ word-wrap:break-word; }
+        body 		{ padding-bottom: 80px; word-wrap:break-word; }
 
 
         form{
@@ -353,7 +353,7 @@
         var table = $('#dataDisplay').DataTable({ "lengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]]});
         var querystr = "";
         var userrole = "";
-        var UserRol = "<%= user.userrole %>";
+        var UserRole = "<%= user.userrole %>";
         var rowUserName = [];
 
         $(document).ready(function() {
@@ -445,6 +445,7 @@
                 $(".select").val('');
             });
         });
+
         function dropDown() {
             console.log(UserRole);
             if (UserRole === "Admin") {
