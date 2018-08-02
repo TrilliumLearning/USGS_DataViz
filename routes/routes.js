@@ -789,7 +789,6 @@ module.exports = function (app, passport) {
         edit_lastName = req.query.Last_Name;
         edit_userrole = req.query.User_Role;
         edit_status = req.query.Status;
-        // console.log("1" + edit_city);
 
         res.json({"error": false, "message": "/editUser"});
     });
@@ -844,13 +843,11 @@ module.exports = function (app, passport) {
         dateNtime();
 
         let username = req.query.usernameStr.split(",");
-        // console.log(username);
         myStat = "UPDATE UserLogin SET modifiedUser = '" + req.user.username + "', dateModified = '" + dateTime + "',  status = 'Suspended'";
 
         for (let i = 0; i < username.length; i++) {
             if (i === 0) {
                 myStat += " WHERE username = '" + username[i] + "'";
-                // console.log(myStat);
                 if (i === username.length - 1) {
                     updateDBNres(myStat, "", "Suspension failed!", "/userManagement", res);
                 }
@@ -866,7 +863,6 @@ module.exports = function (app, passport) {
     app.get('/recovery', isLoggedIn, function (req, res) {
         let state2 = "SELECT firstName FROM UserProfile WHERE username = '" + req.user.username + "';";
         con_CS.query(state2, function (err, results, fields) {
-            // console.log(results);
             if (!results[0].firstName) {
                 console.log("Error2");
             } else {
@@ -956,7 +952,6 @@ module.exports = function (app, passport) {
                 valueSubmit += '"' + result[i][1] + '"' + ", ";
             }
         }
-        // console.log("??0"+valueSubmit);
         let newImage = {
             Layer_Uploader: uploadPath + "/" + responseDataUuid,
             Layer_Uploader_name: responseDataUuid
@@ -991,7 +986,6 @@ module.exports = function (app, passport) {
             if (err) {
                 console.log(err);
             } else {
-                // console.log(req.user);
                 var insertRID = "INSERT INTO Special_ID (RID, UID) VALUE (" + "'" + RID + "', '" + req.user + "');";
 
                 con_CS.query(insertRID, function (err, results, fields) {
@@ -1002,7 +996,6 @@ module.exports = function (app, passport) {
                             user: req.user, // get the user out of session and pass to template
                             RID: RID
                         });
-                        // console.log(RID);
                     }
                 });
             }
@@ -1015,7 +1008,6 @@ module.exports = function (app, passport) {
         con_CS.query("SELECT FirstLayer, SecondLayer FROM LayerCategories GROUP BY FirstLayer, SecondLayer", function (err, results) {
             if (err) throw err;
             res.json(results);
-            // console.log(results);
         });
     });
 
@@ -1138,11 +1130,9 @@ module.exports = function (app, passport) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
         let editIDSr = req.query.editIDSr;
         let myStat = "SELECT Layer_Uploader, Layer_Uploader_name FROM Request_Form WHERE RID = '" + editIDSr + "'";
-        // console.log(myStat);
 
         let filePath0;
         con_CS.query(myStat, function (err, results) {
-            // console.log("query statement : " + myStat);
             if (!results[0].Layer_Uploader && !results[0].Layer_Uploader_name) {
                 console.log("Error");
             } else {
@@ -1183,7 +1173,6 @@ module.exports = function (app, passport) {
         con_CS.query('SELECT * FROM Request_Form', function (err, results) {
             if (err) throw err;
             res.json(results);
-            // console.log(results);
         })
     });
 
@@ -1207,7 +1196,6 @@ module.exports = function (app, passport) {
         con_CS.query("SELECT ContinentName FROM optionList GROUP BY ContinentName", function (err, results) {
             if (err) throw err;
             res.json(results);
-            // console.log(results);
         });
     });
     //Country level
@@ -1216,8 +1204,6 @@ module.exports = function (app, passport) {
         con_CS.query('SELECT CountryName, ContinentName, COUNT (*) AS count FROM optionList GROUP BY CountryName, ContinentName', function (err, results, fields) {
             if (err) throw err;
             res.json(results);
-            // console.log(results);
-
         });
     });
     //Depend on continent value to get the country and state value
@@ -1225,7 +1211,6 @@ module.exports = function (app, passport) {
         res.setHeader("Access-Control-Allow-Origin", "*");
         con_CS.query('SELECT CountryName, FirstLayer, SecondLayer, ThirdLayer, StateName, ContinentName FROM MapLayerMenu', function (err, results) {
             res.json(results);
-            // console.log(results);
         });
     });
     //state level
@@ -1233,7 +1218,6 @@ module.exports = function (app, passport) {
         res.setHeader("Access-Control-Allow-Origin", "*");
         con_CS.query('SELECT StateName, CountryName, ContinentName, COUNT (*) AS count FROM optionList GROUP BY StateName, CountryName, ContinentName', function (err, results, fields) {
             res.json(results);
-            // console.log(results);
         });
     });
 
@@ -1261,7 +1245,6 @@ module.exports = function (app, passport) {
         res.setHeader("Access-Control-Allow-Origin", "*");
         con_CS.query("SELECT Full Name, Address Line 1, Address Line 2, City, State/Province/Region, Postal Code/ZIP, Country, Email, Phone Number, Layer Name, Layer Category, Layer Description, Layer Uploader FROM GeneralFormDatatable", function (err, results) {
             if (err) throw err;
-            // console.log(results);
         })
     });
 
@@ -1269,7 +1252,6 @@ module.exports = function (app, passport) {
         res.setHeader("Access-Control-Allow-Origin", "*");
         con_CS.query("SELECT ThirdLayer FROM MapLayerMenu", function (err, results) {
             if (err) throw err;
-            // console.log(results);
             res.json(results);
 
         });
