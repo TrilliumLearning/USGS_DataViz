@@ -70,12 +70,12 @@ requirejs(['./WorldWindShim',
                 var layer1 = $(this).val();
                 currentCheckedArray = $(':checkbox:checked');
                 if (currentCheckedArray.length > 0 && alertVal){
-                    confirm("Some layers may take awhile to load. Please be patient.")
+                    confirm("Some layers may take a while to load. Please be patient.")
                 }
                 // console.log(checkedArray);
                 if (currentCheckedArray.length > checkedCount){
                     checked.push(layer1); //insert current value to checked
-                    // console.log(checked);
+                    console.log(checked);
                     val = checked[checked.length - 1];
                     checkedCount = currentCheckedArray.length;
                     alertVal = false
@@ -85,7 +85,7 @@ requirejs(['./WorldWindShim',
                             checked.splice(i,1); //remove current value from checked
                         }
                     }
-                    // console.log(checked);
+                    console.log(checked);
                     val = checked[checked.length - 1];
                     checkedCount = currentCheckedArray.length;
                     alertVal = false
