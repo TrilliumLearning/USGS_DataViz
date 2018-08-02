@@ -75,7 +75,7 @@ requirejs(['./WorldWindShim',
                 // console.log(checkedArray);
                 if (currentCheckedArray.length > checkedCount){
                     checked.push(layer1); //insert current value to checked
-                    // console.log(checked);
+                    console.log(checked);
                     val = checked[checked.length - 1];
                     checkedCount = currentCheckedArray.length;
                     alertVal = false
@@ -85,7 +85,7 @@ requirejs(['./WorldWindShim',
                             checked.splice(i,1); //remove current value from checked
                         }
                     }
-                    // console.log(checked);
+                    console.log(checked);
                     val = checked[checked.length - 1];
                     checkedCount = currentCheckedArray.length;
                     alertVal = false

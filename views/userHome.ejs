@@ -146,7 +146,7 @@
 </head>
 <div class="navul" style="height:80px;background:#000000;">
     <a class="navul" style="background:#000000;" href="http://aworldbridge.com">
-        <img class="banner" src="/images/NewWBBanner.jpg" style="width:500px;height:80px;"/>
+        <img class="banner" src="/images/NewWBBanner.jpg" style="width: 500px;height:76px;"/>
     </a>
     <a href="/homepage" style="width:110px;">
         <button class="navbutton1"> Homepage </button>
@@ -180,7 +180,7 @@
 
 <div class="container center">
     <div class="page-header text-center header">
-        <h2><span class="fa fa-home"></span><strong> USGS Data Visualization - User Home </strong></h2><h4><span class="fa fa-user"></span>
+        <h1><span class="fa fa-home"></span><strong> USGS Data Visualization - User Home </strong></h1><h4><span class="fa fa-user"></span>
             <strong>Account Name</strong>: <%= user.username %></h4><br>
     </div>
 </div>
@@ -329,7 +329,7 @@
 
             table.clear();
             table.draw();
-            queryAndDisplay("statusDel=" + "Active" + "&firstName=" + "<%= firstName %>" + "&lastName=" + "<%= user.lastName %>");
+            queryAndDisplay("statusDel=" + "Active" + "&firstName=" + "<%= user.firstName %>" + "&lastName=" + "<%= user.lastName %>");
         });
 
         $('#dataDisplay tbody').on('click', 'tr', function () {
@@ -394,7 +394,7 @@
         $("#showButton").on("click", function () {
             table.clear();
             table.draw();
-            queryAndDisplay("statusDel=" + "Active" + "&firstName=" + "<%= firstName %>" + "&lastName=" + "<%= user.lastName %>");
+            queryAndDisplay();
             $(".clearForm input[type='text']").val('');
             $(".filter").val('');
             $(".date").val('');
@@ -421,56 +421,128 @@
             }
         }
 
-        var queryAndDisplay = function (querystr) {
+    function query() {
+        var firstName = document.getElementById("firstName").value;
+        var lastName = document.getElementById("lastName").value;
+        var startDate = document.getElementsByClassName("date")[0].value;
+        var endDate = document.getElementsByClassName("date")[1].value;
+
+        var queryStr = "&firstName=" + firstName + "&lastName=" + lastName + "&startDate=" + startDate + "&endDate=" + endDate;
+
+        table.clear();
+        table.draw();
+        // trapTable.clear();
+        // trapTable.draw();
+        queryAndDisplay(queryStr);
+    }
+
+
+    var queryAndDisplay = function (querystr) {
+            // $.ajax({
+            //     url: 'AddData',
+            //     dataType: 'json',
+            //     success: function (results) {
+            //         console.log(results);
+            //         for (var i = 0; i < results.length; i++) {
+            //                 if (UserRole === "Regular") {
+            //                     if (results[i].UID === username) {
+            //                         table.row.add([
+            //                             results[i].Date,
+            //                             results[i].UID,
+            //                             results[i].RID,
+            //                             results[i].LayerCategory,
+            //                             results[i].ContinentName,
+            //                             results[i].CountryName,
+            //                             results[i].StateName,
+            //                             results[i].FirstLayer,
+            //                             results[i].FirstOther,
+            //                             results[i].SecondLayer,
+            //                             results[i].SecondOther,
+            //                             results[i].LayerName,
+            //                             results[i].Layer_Description,
+            //                             results[i].LayerFormat,
+            //                             results[i].Layer_Uploader_name,
+            //                             results[i].Status
+            //                         ]).draw(false);
+            //                     }
+            //                 } else {
+            //                     if (results[i].Status === "Pending") {
+            //                         table.row.add([
+            //                             results[i].Date,
+            //                             results[i].UID,
+            //                             results[i].RID,
+            //                             results[i].LayerCategory,
+            //                             results[i].ContinentName,
+            //                             results[i].CountryName,
+            //                             results[i].StateName,
+            //                             results[i].FirstLayer,
+            //                             results[i].FirstOther,
+            //                             results[i].SecondLayer,
+            //                             results[i].SecondOther,
+            //                             results[i].LayerName,
+            //                             results[i].Layer_Description,
+            //                             results[i].LayerFormat,
+            //                             results[i].Layer_Uploader_name,
+            //                             results[i].Status
+            //                         ]).draw(false);
+            //                     }
+            //                 }
+            //         }
+            //     }
+            // });
+
             $.ajax({
-                url: 'AddData',
+                url: '/filterQuery',
+                type: 'GET',
                 dataType: 'json',
+                async: false,
+                data: querystr,
                 success: function (results) {
                     console.log(results);
                     for (var i = 0; i < results.length; i++) {
-                            if (UserRole === "Regular") {
-                                if (results[i].UID === username) {
-                                    table.row.add([
-                                        results[i].Date,
-                                        results[i].UID,
-                                        results[i].RID,
-                                        results[i].LayerCategory,
-                                        results[i].ContinentName,
-                                        results[i].CountryName,
-                                        results[i].StateName,
-                                        results[i].FirstLayer,
-                                        results[i].FirstOther,
-                                        results[i].SecondLayer,
-                                        results[i].SecondOther,
-                                        results[i].LayerName,
-                                        results[i].Layer_Description,
-                                        results[i].LayerFormat,
-                                        results[i].Layer_Uploader_name,
-                                        results[i].Status
-                                    ]).draw(false);
-                                }
-                            } else {
-                                if (results[i].Status === "Pending") {
-                                    table.row.add([
-                                        results[i].Date,
-                                        results[i].UID,
-                                        results[i].RID,
-                                        results[i].LayerCategory,
-                                        results[i].ContinentName,
-                                        results[i].CountryName,
-                                        results[i].StateName,
-                                        results[i].FirstLayer,
-                                        results[i].FirstOther,
-                                        results[i].SecondLayer,
-                                        results[i].SecondOther,
-                                        results[i].LayerName,
-                                        results[i].Layer_Description,
-                                        results[i].LayerFormat,
-                                        results[i].Layer_Uploader_name,
-                                        results[i].Status
-                                    ]).draw(false);
-                                }
+                        if (UserRole === "Regular") {
+                            if (results[i].UID === username) {
+                                table.row.add([
+                                    results[i].Date,
+                                    results[i].UID,
+                                    results[i].RID,
+                                    results[i].LayerCategory,
+                                    results[i].ContinentName,
+                                    results[i].CountryName,
+                                    results[i].StateName,
+                                    results[i].FirstLayer,
+                                    results[i].FirstOther,
+                                    results[i].SecondLayer,
+                                    results[i].SecondOther,
+                                    results[i].LayerName,
+                                    results[i].Layer_Description,
+                                    results[i].LayerFormat,
+                                    results[i].Layer_Uploader_name,
+                                    results[i].Status
+                                ]).draw(false);
                             }
+                        } else {
+                            if (results[i].Status === "Pending") {
+                                table.row.add([
+                                    results[i].Date,
+                                    results[i].UID,
+                                    results[i].RID,
+                                    results[i].LayerCategory,
+                                    results[i].ContinentName,
+                                    results[i].CountryName,
+                                    results[i].StateName,
+                                    results[i].FirstLayer,
+                                    results[i].FirstOther,
+                                    results[i].SecondLayer,
+                                    results[i].SecondOther,
+                                    results[i].LayerName,
+                                    results[i].Layer_Description,
+                                    results[i].LayerFormat,
+                                    results[i].Layer_Uploader_name,
+                                    results[i].Status
+                                ]).draw(false);
+                            }
+                        }
                     }
                 }
             });

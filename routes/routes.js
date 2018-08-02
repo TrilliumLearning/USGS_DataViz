@@ -11,7 +11,7 @@ const async = require('async');
 const crypto = require('crypto');
 const fs = require("fs");
 const rimraf = require("rimraf");
-// const mkdirp = require("mkdirp");
+const mkdirp = require("mkdirp");
 const multiparty = require('multiparty');
 const upload_Dir = config.Upload_Dir;
 const geoData_Dir = config.GeoData_Dir;
@@ -20,6 +20,12 @@ const Delete_Dir = config.Delete_Dir;
 
 const fileInputName = process.env.FILE_INPUT_NAME || "qqfile";
 const maxFileSize = process.env.MAX_FILE_SIZE || 0; // in bytes, 0 for unlimited
+// const newmask = 0o011;
+// console.log (`Current umask: ${process.umask().toString(8)}`);
+// const oldmask = process.umask(newmask);
+// console.log(
+//    `Changed umask from ${oldmask.toString(8)} to ${process.umask().toString(8)}`
+// );
 
 let transactionID, myStat, myVal, myErrMsg, token, errStatus, mylogin;
 let today, date2, date3, time2, time3, dateTime, tokenExpire;
@@ -373,20 +379,20 @@ module.exports = function (app, passport) {
                 adj: req.query.lastName,
                 table: 1
             },
-            // {
-            //     fieldVal: req.query.startDate,
-            //     dbCol: "date",
-            //     op: " >= '",
-            //     adj: req.query.startDate,
-            //     table: 1
-            // },
-            // {
-            //     fieldVal: req.query.endDate,
-            //     dbCol: "date",
-            //     op: " <= '",
-            //     adj: req.query.endDate,
-            //     table: 1
-            // },
+            {
+                fieldVal: req.query.startDate,
+                dbCol: "date",
+                op: " >= '",
+                adj: req.query.startDate,
+                table: 1
+            },
+            {
+                fieldVal: req.query.endDate,
+                dbCol: "date",
+                op: " <= '",
+                adj: req.query.endDate,
+                table: 1
+            },
             {
                 fieldVal: req.query.content1,
                 dbCol: req.query.filter1,
@@ -546,7 +552,6 @@ module.exports = function (app, passport) {
                 var text = 'to sign up an account with this email.';
                 var url = "http://" + req.headers.host + "/verify/";
                 sendToken(username, subject, text, url, res);
-                res.render('login.ejs');
             }
         });
     });
@@ -1483,7 +1488,7 @@ function QueryStat(myObj, scoutingStat, res) {
 
     function dataList(sqlStatement, res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
-        // console.log(sqlStatement);
+        console.log(sqlStatement);
         con_CS.query(sqlStatement, function (err, results, fields) {
 
             errStatus = [{errMsg: ""}];
@@ -1674,42 +1679,42 @@ function QueryStat(myObj, scoutingStat, res) {
     }
 
     function moveFile(destinationDir, sourceFile, destinationFile, success, failure) {
-        // console.log(destinationDir);
-        // mkdirp(destinationDir, function (error) {
-        //     let sourceStream, destStream;
-        //
-        //     if (error) {
-        //         console.error("Problem creating directory " + destinationDir + ": " + error);
-        //         failure();
-        //     }
-        //     else {
-        //         sourceStream = fs.createReadStream(sourceFile);
-        //         destStream = fs.createWriteStream(destinationFile);
-        //
-        //         sourceStream
-        //             .on("error", function (error) {
-        //                 console.error("Problem copying file: " + error.stack);
-        //                 destStream.end();
-        //                 failure();
-        //             })
-        //             .on("end", function () {
-        //                 destStream.end();
-        //                 success();
-        //             })
-        //             .pipe(destStream);
-        //     }
-        // });
-        let sourceStream = fs.createReadStream(sourceFile);
-        let destStream = fs.createWriteStream(destinationFile);
-
-        sourceStream.on("error", function (error) {
-                console.error("Problem copying file: " + error.stack);
-                destStream.end();
+        console.log(destinationDir);
+        mkdirp(destinationDir, function (error) {
+            let sourceStream, destStream;
+            if (error) {
+                console.error("Problem creating directory " + destinationDir + ": " + error);
                 failure();
-        }).on("end", function () {
-            destStream.end();
-            success();
-        }).pipe(destStream);
+            }
+            else {
+                sourceStream = fs.createReadStream(sourceFile);
+                destStream = fs.createWriteStream(destinationFile);
+
+                sourceStream
+                    .on("error", function (error) {
+                        console.error("Problem copying file: " + error.stack);
+                        destStream.end();
+                        failure();
+                    })
+                    .on("end", function () {
+                        destStream.end();
+                        success();
+                    })
+                    .pipe(destStream);
+                }
+        });
+
+        // let sourceStream = fs.createReadStream(sourceFile);
+        // let destStream = fs.createWriteStream(destinationFile);
+        //
+        // sourceStream.on("error", function (error) {
+        //         console.error("Problem copying file: " + error.stack);
+        //         destStream.end();
+        //         failure();
+        // }).on("end", function () {
+        //     destStream.end();
+        //     success();
+        // }).pipe(destStream);
     }
 
     function moveUploadedFile(file, uuid, success, failure) {
