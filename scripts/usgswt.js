@@ -453,7 +453,7 @@ requirejs(['./worldwind.min',
 
                                 // autoSwitch();
                                 // console.log(wwd.layers[0].eyeText.text);
-                                setTimeout(function() {autoSwitch(); layerMenu(); clearHighlight(true, true);}, 20);
+                                setTimeout(function() {autoSwitch(); layerMenu(); clearHighlight(true, true);}, 25);
 
                                 setTimeout(setRange, 50);
                             }
@@ -501,8 +501,9 @@ requirejs(['./worldwind.min',
                                 thisLayer.wwd.redraw();
 
                                 // console.log(wwd.navigator.lookAtLocation);
-                                layerMenu();
-                                clearHighlight(true, true);
+                                // layerMenu();
+                                // clearHighlight(true, true);
+                                setTimeout(function() {layerMenu(); clearHighlight(true, true);}, 25);
 
                                 setTimeout(setLookAtLocation, 50);
                             }
@@ -646,8 +647,8 @@ requirejs(['./worldwind.min',
 
                             var popover = document.getElementById('popover');
                             popover.style.position = "absolute";
-                            popover.style.left = (x + xOffset) + 'px';
-                            popover.style.top = (y + yOffset) + 'px';
+                            popover.style.left = (x + xOffset - 3) + 'px';
+                            popover.style.top = (y + yOffset - 3) + 'px';
 
                             var content = "<p><strong>Project Name:</strong> " + pickedPL.layer.displayName +
                                 "<br>" + "<strong>Year Online:</strong> " + pickedPL.userProperties.p_year +

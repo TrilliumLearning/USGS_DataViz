@@ -20,6 +20,12 @@ const Delete_Dir = config.Delete_Dir;
 
 const fileInputName = process.env.FILE_INPUT_NAME || "qqfile";
 const maxFileSize = process.env.MAX_FILE_SIZE || 0; // in bytes, 0 for unlimited
+// const newmask = 0o011;
+// console.log (`Current umask: ${process.umask().toString(8)}`);
+// const oldmask = process.umask(newmask);
+// console.log(
+//    `Changed umask from ${oldmask.toString(8)} to ${process.umask().toString(8)}`
+// );
 
 let transactionID, myStat, myVal, myErrMsg, token, errStatus, mylogin;
 let today, date2, date3, time2, time3, dateTime, tokenExpire;
@@ -334,10 +340,30 @@ module.exports = function (app, passport) {
 
     });
 
+    app.get('/deleteRow2',function (req,res) {
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        let transactionID = req.query.transactionIDStr.split(',');
+        let pictureStr = req.query.pictureStr.split(',');
+        let LayerName = req.query.LayerName.split(',');
+        for (let i = 0; i < transactionID.length; i++) {
+            let statement = "UPDATE USGS.Request_Form SET Status = 'Pending' WHERE RID = '" + transactionID[i] + "';";
+            let statement1 = "UPDATE USGS.MapLayerMenu SET Status = 'Disapproved' WHERE ThirdLayer = '" + LayerName  + "';";
+            fs.rename(''+ geoData_Dir + '/' + pictureStr[i] + '' , '' + upload_Dir + '/' + pictureStr[i] + '',  function (err) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log("success");
+                }
+            });
+            con_CS.query(statement + statement1, function (err, results) {
+                if (err) throw err;
+                res.json(results[i]);
+            });
+        }
+    });
+
     app.get('/filterQuery', isLoggedIn, function (req, res) {
         var scoutingStat = "SELECT UserProfile.firstName, UserProfile.lastName, Request_Form.* FROM Request_Form INNER JOIN UserProfile ON UserProfile.username = Request_Form.UID";
-        // var trapStat = "SELECT UserProfile.username, UserProfile.firstName, UserProfile.lastName, General_Form.*, Detailed_Trap.* FROM Transaction INNER JOIN Users ON UserProfile.username = Transaction.Cr_UN INNER JOIN General_Form ON General_Form.transactionID = Transaction.transactionID INNER JOIN Detailed_Trap ON Detailed_Trap.transactionID = Transaction.transactionID";
-        // console.log(req.query);
         var myQueryObj = [
             {
                 fieldVal: req.query.firstName,
@@ -423,7 +449,6 @@ module.exports = function (app, passport) {
             Newpassword: bcrypt.hashSync(req.body.newpassword, null, null),
             ConfirmPassword: bcrypt.hashSync(req.body.ConfirmNewPassword, null, null)
         };
-        // console.log(newPass);
 
         // dateNtime();
 
@@ -527,7 +552,6 @@ module.exports = function (app, passport) {
                 var text = 'to sign up an account with this email.';
                 var url = "http://" + req.headers.host + "/verify/";
                 sendToken(username, subject, text, url, res);
-                res.render('login.ejs');
             }
         });
     });
@@ -1573,10 +1597,10 @@ function QueryStat(myObj, scoutingStat, res) {
         responseDataName = file.name;
         responseDataName2 = file.name;
 
-        console.log("forth hokage: " + responseDataUuid);
-        console.log("fifth harmony: " + responseDataName);
-        console.log("trials 4 days: " + responseDataUuid2);
-        console.log("pentatonic success: " + responseDataName2);
+        // console.log("forth hokage: " + responseDataUuid);
+        // console.log("fifth harmony: " + responseDataName);
+        // console.log("trials 4 days: " + responseDataUuid2);
+        // console.log("pentatonic success: " + responseDataName2);
 
         if (isValid(file.size)) {
             moveUploadedFile(file, uuid, function () {
@@ -1676,7 +1700,6 @@ function QueryStat(myObj, scoutingStat, res) {
         console.log(destinationDir);
         mkdirp(destinationDir, function (error) {
             let sourceStream, destStream;
-
             if (error) {
                 console.error("Problem creating directory " + destinationDir + ": " + error);
                 failure();
@@ -1696,8 +1719,20 @@ function QueryStat(myObj, scoutingStat, res) {
                         success();
                     })
                     .pipe(destStream);
-            }
+                }
         });
+
+        // let sourceStream = fs.createReadStream(sourceFile);
+        // let destStream = fs.createWriteStream(destinationFile);
+        //
+        // sourceStream.on("error", function (error) {
+        //         console.error("Problem copying file: " + error.stack);
+        //         destStream.end();
+        //         failure();
+        // }).on("end", function () {
+        //     destStream.end();
+        //     success();
+        // }).pipe(destStream);
     }
 
     function moveUploadedFile(file, uuid, success, failure) {

@@ -172,7 +172,7 @@
 </head>
 <div class="navul" style="height:80px;background:#000000;">
     <a class="navul" style="background:#000000;" href="http://aworldbridge.com">
-        <img class="banner" src="/images/NewWBBanner.jpg" style="width:510px;height:80px;"/>
+        <img class="banner" src="/images/NewWBBanner.jpg" style="width:510px;height:76px;"/>
     </a>
     <a href="/homepage" style="width:110px;">
         <button class="navbutton1"> Homepage </button>
@@ -203,7 +203,7 @@
 <body>
 <div class="container">
     <div class="page-header text-center">
-        <h2><span class="fa fa-check-square-o"></span><strong> USGS Data Visualization - Approved Requests </strong></h2>
+        <h1><span class="fa fa-check-square-o"></span><strong> USGS Data Visualization - Approved Requests </strong></h1>
         <h4><span class="fa fa-user"></span>&nbsp;<strong>Account Name</strong>: <%= user.username %></h4>
     </div>
 </div>
@@ -401,6 +401,8 @@
     var DropMenu;
     var rowSelected = [];
     var transactionID = [];
+    var transactionpicturename = [];
+    var LayerNameStr = [];
 
     $(document).ready(function(){
         $(function() {
@@ -434,10 +436,12 @@
             $('#dataDisplay > thead > tr > th').each(function () {
                 thArray.push($(this).text())
             })
-
+            // console.log(rowSelected);
             for (var i = 0; i < rowSelected.length; i ++) {
 //                console.log("rowSelected[" + i + "][0]: " + rowSelected[i][0]);
                 transactionID.push(rowSelected[i][1]);
+                transactionpicturename.push(rowSelected[i][11]);
+                LayerNameStr.push(rowSelected[i][8]);
             }
         });
 
@@ -445,14 +449,14 @@
         $("#deleteButton").on("click", function () {
             if (confirm("Are you sure you would like to trashfolder this row(s)?") === true) {
                 var transactionIDStr = "transactionIDStr=" + transactionID.toString();
-                console.log ("transactionIDStr: " + transactionIDStr);
-
+                var pictureStr = "pictureStr=" + transactionpicturename.toString();
+                var LayerName = "LayerName=" + LayerNameStr.toString();
                 $.ajax({
                     url: '/deleteRow2',
                     type: 'GET',
                     dataType: 'json',
                     async: false,
-                    data: transactionIDStr,
+                    data: transactionIDStr + '&' + pictureStr + '&' + LayerName,
                     success: function (result) {
                         window.location.replace('/dataHistory')
                     }
@@ -471,7 +475,6 @@
     });
 
     function dropDown() {
-        console.log(UserRole);
         if (UserRole === "Admin") {
             document.getElementById("userMenuAdmin").classList.toggle("show");
         } else if (UserRole === "Regular") {
@@ -502,8 +505,6 @@
         var content2 = document.getElementsByClassName("content")[1].value;
         var content3 = document.getElementsByClassName("content")[2].value;
 
-        // console.log(filter1);
-
         var queryStr = "&firstName=" + firstName + "&lastName=" + lastName + "&startDate=" + startDate + "&endDate=" + endDate + "&filter1=" + filter1 + "&filter2=" + filter2 + "&filter3=" + filter3 + "&content1=" + content1 + "&content2=" + content2 + "&content3=" + content3;
 
         table.clear();
@@ -514,7 +515,6 @@
     }
 
     var queryAndDisplay = function (querystr) {
-        console.log(querystr);
         $.ajax({
             url: '/filterQuery',
             type: 'GET',
@@ -522,7 +522,6 @@
             async: false,
             data: querystr,
             success: function (resp) {
-                // console.log(resp);
                 if (!resp[0].errMsg) {
                     for (var i = 0; i < resp.length; i++) {
                         if (resp[i].Status === "Active") {

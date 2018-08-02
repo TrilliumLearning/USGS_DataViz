@@ -145,7 +145,7 @@
 </head>
 <div class="navul" style="height:80px;background:#000000;">
     <a class="navul" style="background:#000000;" href="http://aworldbridge.com">
-        <img class="banner" src="/images/NewWBBanner.jpg" style="width:510px;height:80px;"/>
+        <img class="banner" src="/images/NewWBBanner.jpg" style="width:510px;height:76px;"/>
     </a>
     <a href="/homepage" style="width:110px;">
         <button class="navbutton1"> Homepage </button>
@@ -179,7 +179,7 @@
 <body>
     <div class="container center">
         <div id="pageHeader" class="page-header text-center">
-            <h2><span class="fa fa-trash-o"></span> USGS Data Visualization - Restore </h2><h4><span class="fa fa-user"></span>&nbsp;<strong>Account Name</strong>: <%= user.username %></h4><br>
+            <h1><span class="fa fa-trash-o"></span><strong> USGS Data Visualization - Restore </strong></h1><h4><span class="fa fa-user"></span>&nbsp;<strong>Account Name</strong>: <%= user.username %></h4><br>
         </div>
     </div>
     <div class="container" style="width: 850px;
@@ -242,7 +242,6 @@
     var d;
     var transactionID = [];
     var picturename = []
-    var LayerNameStr = [];
 
     $(document).ready(function(){
 
@@ -288,7 +287,6 @@
 
                 transactionID.push(d[1]);
                 picturename.push(d[11]);
-                // LayerNameStr.push(d[])
 
                 var thArray = [];
 
@@ -317,7 +315,6 @@
                 }
                 function update() {
                     var pictureStr = "pictureStr=" + picturename.toString();
-                    var LayerName = "LayerName=" + LayerNameStr.toString();
                     $.ajax({
                         url: '/recoverRow',
                         type: 'GET',
