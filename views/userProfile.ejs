@@ -335,25 +335,41 @@
     }
 
     function submitForm () {
-        alert("Changes were saved!");
+        // alert("Changes were saved!");
         var data = $("#basic").serialize() + "&" + $("#pswchange").serialize();
-        $.ajax({
-            url  : 'submit',
-            method : "POST",
-            data : data,
-            dataType: 'json',
-            success: function (result) {
-                window.location.replace('/userHome')
-            }
-        });
+
+        // $.ajax({
+        //     url  : 'submit',
+        //     method : "POST",
+        //     data : data,
+        //     dataType: 'json',
+        //     success: function (result) {
+        //         // window.location.replace('/userProfile');
+        //     }
+        // });
+        //
+        // $.ajax({
+        //     url  : 'newPass',
+        //     method : "POST",
+        //     data : data,
+        //     dataType: 'json',
+        //     success : function(d){
+        //         // console.log(d);
+        //     }
+        // });
 
         $.ajax({
-            url  : 'newPass',
+            url  : '/userProfile',
             method : "POST",
             data : data,
             dataType: 'json',
             success : function(d){
-                // console.log(d);
+                if (d.error) {
+                    alert(d.message);
+                } else {
+                    alert("Changes were saved!");
+                    window.location.replace('/userProfile');
+                }
             }
         });
     }
