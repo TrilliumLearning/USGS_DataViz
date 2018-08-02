@@ -53,11 +53,8 @@ requirejs(['./WorldWindShim',
         var preloadLayer = [];
         var layers = globe.layers;
         var checked = [];
-        // var remove = [];
         var val;
         var alertVal = true;
-
-
 
         $(document).ready(function () {
             $(".wmsLayer").each(function (i) {
@@ -73,7 +70,7 @@ requirejs(['./WorldWindShim',
                 var layer1 = $(this).val();
                 currentCheckedArray = $(':checkbox:checked');
                 if (currentCheckedArray.length > 0 && alertVal){
-                    confirm("Some layers may take minutes to load. Sorry about that!")
+                    confirm("Some layers may take awhile to load. Please be patient.")
                 }
                 // console.log(checkedArray);
                 if (currentCheckedArray.length > checkedCount){
@@ -94,39 +91,6 @@ requirejs(['./WorldWindShim',
                     alertVal = false
                 }
 
-                // if (checkedArray.length > 0){
-                //     // console.log(checked);
-                //
-                //     if (!Array.prototype.remove) {
-                //         Array.prototype.remove = function(val, all) {
-                //             var i, removedItems = [];
-                //             if (all) {
-                //                 for(i = this.length; i--;){
-                //                     if (this[i] === val) removedItems.push(this.splice(i, 1));
-                //                 }
-                //             }
-                //             else {
-                //                 i = this.indexOf(val);
-                //                 if(i>-1) removedItems = this.splice(i, 1);
-                //             }
-                //             return removedItems;
-                //         };
-                //     }
-                //     for( var i = checked.length -1 ; i--;){
-                //         if ( checked[i] === layer1) {
-                //            var removedItems = checked.remove(layer1,true);
-                //            remove.push(removedItems);
-                //            console.log(remove);
-                //         }
-                //     }
-                //     // for (var i = remove.length + 1 ; i++;){
-                //     //     if (remove[i] === layer1 && checkedArray.length === 1){
-                //     //         alert("123")
-                //     //     }
-                //     // }
-                //     // console.log(checked);
-                // }
-
                 for (var a = 0; a < layers.length; a++) {
                         $(':checkbox:checked').each(function () {
                             if (layers[a].displayName === $(this).val()) {
@@ -139,6 +103,7 @@ requirejs(['./WorldWindShim',
                             }
                         })
                 }
+
                 var layername = "layername=" + val;
 
                 $.ajax({
@@ -149,13 +114,12 @@ requirejs(['./WorldWindShim',
                     success: function (results) {
                         var Altitude = results.Altitude * 1000;
                         globe.goTo(new WorldWind.Position(results.Latitude,results.Longitude,Altitude));
-                        console.log(results)
+                        // console.log(results)
                     }
                 });
 
             });
 
-            var wmsLayerCapabilities;
             var createWMSLayer = function (xmlDom) {
                 // Create a WmsCapabilities object from the XML DOM
                 var wms = new WorldWind.WmsCapabilities(xmlDom);

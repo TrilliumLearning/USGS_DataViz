@@ -355,7 +355,7 @@ module.exports = function (app, passport) {
             });
         }
     });
-    
+
     app.get('/filterQuery', isLoggedIn, function (req, res) {
         var scoutingStat = "SELECT UserProfile.firstName, UserProfile.lastName, Request_Form.* FROM Request_Form INNER JOIN UserProfile ON UserProfile.username = Request_Form.UID";
         var myQueryObj = [
@@ -1552,7 +1552,7 @@ function QueryStat(myObj, scoutingStat, res) {
 
     let responseDataUuid = "",
         responseDataName = "",
-        // responseDataUuid2 = "",
+        responseDataUuid2 = "",
         responseDataName2 = "";
 
     function onSimpleUpload(fields, file, res) {
