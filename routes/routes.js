@@ -379,20 +379,20 @@ module.exports = function (app, passport) {
                 adj: req.query.lastName,
                 table: 1
             },
-            // {
-            //     fieldVal: req.query.startDate,
-            //     dbCol: "date",
-            //     op: " >= '",
-            //     adj: req.query.startDate,
-            //     table: 1
-            // },
-            // {
-            //     fieldVal: req.query.endDate,
-            //     dbCol: "date",
-            //     op: " <= '",
-            //     adj: req.query.endDate,
-            //     table: 1
-            // },
+            {
+                fieldVal: req.query.startDate,
+                dbCol: "date",
+                op: " >= '",
+                adj: req.query.startDate,
+                table: 1
+            },
+            {
+                fieldVal: req.query.endDate,
+                dbCol: "date",
+                op: " <= '",
+                adj: req.query.endDate,
+                table: 1
+            },
             {
                 fieldVal: req.query.content1,
                 dbCol: req.query.filter1,
@@ -1488,7 +1488,7 @@ function QueryStat(myObj, scoutingStat, res) {
 
     function dataList(sqlStatement, res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
-        // console.log(sqlStatement);
+        console.log(sqlStatement);
         con_CS.query(sqlStatement, function (err, results, fields) {
 
             errStatus = [{errMsg: ""}];
