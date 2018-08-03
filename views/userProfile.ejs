@@ -234,6 +234,7 @@
 </div>
 <script>
     var UserName = "<%= user.username %>";
+    var passwordC = "<% user.currentpassword %>"
     var newusername;
 
     $.ajax({
@@ -291,21 +292,26 @@
         var newP = document.getElementById("newPassword").value;
         var confirmP = document.getElementById("ConfirmPassword").value;
 
-        if (newP != "") {
-            if (oldP != "" && confirmP != "") {
-                if (oldP != newP) {
-                    if (newP == confirmP) {
-                        alert("You can submit now!");
+        if (oldP === passwordC) {
+            if (newP != "") {
+                if (oldP != "" && confirmP != "") {
+                    if (oldP != newP) {
+                        if (newP == confirmP) {
+                            alert("You can submit now!");
+                        } else {
+                            alert("New password do not match!");
+                        }
                     } else {
-                        alert("New password do not match!");
+                        alert("Please make sure your new password is different from old one.");
                     }
                 } else {
-                    alert("Please make sure your new password is different from old one.");
+                    alert("All password fields are required.");
                 }
-            } else {
-                alert("All password fields are required.");
-            }
-        } else {return true}
+            } else {return true}
+        } else if (oldP !== passwordC) {
+            alert("Please make sure you typed your current password correctly.");
+        }
+
     }
 
     var password = $("#password");

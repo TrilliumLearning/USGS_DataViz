@@ -311,7 +311,7 @@
                 dateFormat: "Y-m-d",
                 time_24hr: true
             });
-        if (UserRole === "Regular") {
+            if (UserRole === "Regular") {
                 document.getElementById('searchname').style.display = "none";
             }
 
@@ -389,25 +389,25 @@
         });
     });
 
-        function dropDown() {
-            console.log(UserRole);
-            if (UserRole === "Admin") {
-                document.getElementById("userMenuAdmin").classList.toggle("show");
-            } else if (UserRole === "Regular") {
-                document.getElementById("userMenuRegular").classList.toggle("show");
-            }
+    function dropDown() {
+        console.log(UserRole);
+        if (UserRole === "Admin") {
+            document.getElementById("userMenuAdmin").classList.toggle("show");
+        } else if (UserRole === "Regular") {
+            document.getElementById("userMenuRegular").classList.toggle("show");
         }
-        window.onclick = function(event) {
-            if (!event.target.matches('.dropbutton')) {
-                var dropdowns = document.getElementsByClassName("dropdown-content");
-                for (var i = 0; i < dropdowns.length; i++) {
-                    var openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('show')) {
-                        openDropdown.classList.remove('show');
-                    }
+    }
+    window.onclick = function(event) {
+        if (!event.target.matches('.dropbutton')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            for (var i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
                 }
             }
         }
+    }
 
     function query() {
         var firstName = document.getElementById("firstName").value;
@@ -426,115 +426,115 @@
 
 
     var queryAndDisplay = function (querystr) {
-            // $.ajax({
-            //     url: 'AddData',
-            //     dataType: 'json',
-            //     success: function (results) {
-            //         console.log(results);
-            //         for (var i = 0; i < results.length; i++) {
-            //                 if (UserRole === "Regular") {
-            //                     if (results[i].UID === username) {
-            //                         table.row.add([
-            //                             results[i].Date,
-            //                             results[i].UID,
-            //                             results[i].RID,
-            //                             results[i].LayerCategory,
-            //                             results[i].ContinentName,
-            //                             results[i].CountryName,
-            //                             results[i].StateName,
-            //                             results[i].FirstLayer,
-            //                             results[i].FirstOther,
-            //                             results[i].SecondLayer,
-            //                             results[i].SecondOther,
-            //                             results[i].LayerName,
-            //                             results[i].Layer_Description,
-            //                             results[i].LayerFormat,
-            //                             results[i].Layer_Uploader_name,
-            //                             results[i].Status
-            //                         ]).draw(false);
-            //                     }
-            //                 } else {
-            //                     if (results[i].Status === "Pending") {
-            //                         table.row.add([
-            //                             results[i].Date,
-            //                             results[i].UID,
-            //                             results[i].RID,
-            //                             results[i].LayerCategory,
-            //                             results[i].ContinentName,
-            //                             results[i].CountryName,
-            //                             results[i].StateName,
-            //                             results[i].FirstLayer,
-            //                             results[i].FirstOther,
-            //                             results[i].SecondLayer,
-            //                             results[i].SecondOther,
-            //                             results[i].LayerName,
-            //                             results[i].Layer_Description,
-            //                             results[i].LayerFormat,
-            //                             results[i].Layer_Uploader_name,
-            //                             results[i].Status
-            //                         ]).draw(false);
-            //                     }
-            //                 }
-            //         }
-            //     }
-            // });
+        // $.ajax({
+        //     url: 'AddData',
+        //     dataType: 'json',
+        //     success: function (results) {
+        //         console.log(results);
+        //         for (var i = 0; i < results.length; i++) {
+        //                 if (UserRole === "Regular") {
+        //                     if (results[i].UID === username) {
+        //                         table.row.add([
+        //                             results[i].Date,
+        //                             results[i].UID,
+        //                             results[i].RID,
+        //                             results[i].LayerCategory,
+        //                             results[i].ContinentName,
+        //                             results[i].CountryName,
+        //                             results[i].StateName,
+        //                             results[i].FirstLayer,
+        //                             results[i].FirstOther,
+        //                             results[i].SecondLayer,
+        //                             results[i].SecondOther,
+        //                             results[i].LayerName,
+        //                             results[i].Layer_Description,
+        //                             results[i].LayerFormat,
+        //                             results[i].Layer_Uploader_name,
+        //                             results[i].Status
+        //                         ]).draw(false);
+        //                     }
+        //                 } else {
+        //                     if (results[i].Status === "Pending") {
+        //                         table.row.add([
+        //                             results[i].Date,
+        //                             results[i].UID,
+        //                             results[i].RID,
+        //                             results[i].LayerCategory,
+        //                             results[i].ContinentName,
+        //                             results[i].CountryName,
+        //                             results[i].StateName,
+        //                             results[i].FirstLayer,
+        //                             results[i].FirstOther,
+        //                             results[i].SecondLayer,
+        //                             results[i].SecondOther,
+        //                             results[i].LayerName,
+        //                             results[i].Layer_Description,
+        //                             results[i].LayerFormat,
+        //                             results[i].Layer_Uploader_name,
+        //                             results[i].Status
+        //                         ]).draw(false);
+        //                     }
+        //                 }
+        //         }
+        //     }
+        // });
 
-            $.ajax({
-                url: '/filterQuery',
-                type: 'GET',
-                dataType: 'json',
-                async: false,
-                data: querystr,
-                success: function (results) {
-                    console.log(results);
-                    for (var i = 0; i < results.length; i++) {
-                        if (UserRole === "Regular") {
-                            if (results[i].UID === username) {
-                                table.row.add([
-                                    results[i].Date,
-                                    results[i].UID,
-                                    results[i].RID,
-                                    results[i].LayerCategory,
-                                    results[i].ContinentName,
-                                    results[i].CountryName,
-                                    results[i].StateName,
-                                    results[i].FirstLayer,
-                                    results[i].FirstOther,
-                                    results[i].SecondLayer,
-                                    results[i].SecondOther,
-                                    results[i].LayerName,
-                                    results[i].Layer_Description,
-                                    results[i].LayerFormat,
-                                    results[i].Layer_Uploader_name,
-                                    results[i].Status
-                                ]).draw(false);
-                            }
-                        } else {
-                            if (results[i].Status === "Pending") {
-                                table.row.add([
-                                    results[i].Date,
-                                    results[i].UID,
-                                    results[i].RID,
-                                    results[i].LayerCategory,
-                                    results[i].ContinentName,
-                                    results[i].CountryName,
-                                    results[i].StateName,
-                                    results[i].FirstLayer,
-                                    results[i].FirstOther,
-                                    results[i].SecondLayer,
-                                    results[i].SecondOther,
-                                    results[i].LayerName,
-                                    results[i].Layer_Description,
-                                    results[i].LayerFormat,
-                                    results[i].Layer_Uploader_name,
-                                    results[i].Status
-                                ]).draw(false);
-                            }
+        $.ajax({
+            url: '/filterQuery',
+            type: 'GET',
+            dataType: 'json',
+            async: false,
+            data: querystr,
+            success: function (results) {
+                console.log(results);
+                for (var i = 0; i < results.length; i++) {
+                    if (UserRole === "Regular") {
+                        if (results[i].UID === username) {
+                            table.row.add([
+                                results[i].Date,
+                                results[i].UID,
+                                results[i].RID,
+                                results[i].LayerCategory,
+                                results[i].ContinentName,
+                                results[i].CountryName,
+                                results[i].StateName,
+                                results[i].FirstLayer,
+                                results[i].FirstOther,
+                                results[i].SecondLayer,
+                                results[i].SecondOther,
+                                results[i].LayerName,
+                                results[i].Layer_Description,
+                                results[i].LayerFormat,
+                                results[i].Layer_Uploader_name,
+                                results[i].Status
+                            ]).draw(false);
+                        }
+                    } else {
+                        if (results[i].Status === "Pending") {
+                            table.row.add([
+                                results[i].Date,
+                                results[i].UID,
+                                results[i].RID,
+                                results[i].LayerCategory,
+                                results[i].ContinentName,
+                                results[i].CountryName,
+                                results[i].StateName,
+                                results[i].FirstLayer,
+                                results[i].FirstOther,
+                                results[i].SecondLayer,
+                                results[i].SecondOther,
+                                results[i].LayerName,
+                                results[i].Layer_Description,
+                                results[i].LayerFormat,
+                                results[i].Layer_Uploader_name,
+                                results[i].Status
+                            ]).draw(false);
                         }
                     }
                 }
-            });
-        }
+            }
+        });
+    }
 </script>
 </body>
 </html>
