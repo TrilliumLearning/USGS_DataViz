@@ -16,7 +16,8 @@
     <!--<script src="//unpkg.com/flatpickr"></script>-->
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/flatpickr"></script>
-    <style>.banner {
+    <style>
+        .banner {
             position: relative;
             left: 60px;
             top: -35px;
@@ -82,16 +83,17 @@
         <br>
         <form id="submit" onsubmit="return checkForm()" action="" method="post" >
             <br>
-            <h4><strong>Password Change</strong>:   </h4>
+            <h3><strong>Password Change</strong>:   </h3>
             <div>
-                <h5>New Password: <input type="password" id="newpassword" name="newpassword" maxlength="2000px" style="margin-left:74px;"> </h5>
+                <h4>New Password: <input type="password" id="newpassword" name="newpassword" maxlength="2000px" style="margin-left:74px;"> </h4>
             </div>
             <div>
-                <h5>Confirm New Password: <input type="password" id="Confirmpassword" name="Confirmpassword" maxlength="2000px" style="margin-left:19px;"> </h5>
+                <h4>Confirm New Password: <input type="password" id="Confirmpassword" name="Confirmpassword" maxlength="2000px" style="margin-left:19px;"> </h4>
             </div>
             <div>
-                <h5>Username (email): <input type="email" name="username" maxlength="2000px" style="margin-left:58px;"value="<%= user.username %>" disabled> </h5>
+                <h4>Username (email): <input type="email" name="username" maxlength="2000px" style="margin-left:58px; width:30%;"value="<%= user.username %>" disabled> </h4>
             </div>
+            <br>
             <button id="SS" type="submit" class="btn btn-warning btn-sm"> Submit </button>
             <a href="/login" class="btn btn-warning btn-sm">Cancel</a>
         </form>
