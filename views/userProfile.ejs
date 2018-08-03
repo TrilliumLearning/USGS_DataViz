@@ -90,7 +90,7 @@
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span><input id="username" name="username" class="form-control" value="<%= user.username %>" type="text" onchange="verifyemaila()">
                             </div>
-                            <p id="emailc"></p>
+                            <p style="margin-top:8px;color:#0088d8;" id="emailc"></p>
                         </div>
                     </div>
                     <div class="form-group">
@@ -234,12 +234,14 @@
 </div>
 <script>
     var UserName = "<%= user.username %>";
+    var newusername;
 
     $.ajax({
         url: "/profile",
         dataType: 'json',
         success: function (results) {
-            console.log(results);
+            // console.log(results);
+            newusername = results;
             for(var i =0; i< results.length; i++) {
                 // console.log(results[i].username);
                 if (results[i].username === UserName) {
@@ -377,7 +379,17 @@
     }
 
     function verifyemaila(){
-        document.getElementById("emailc").innerText = "The User Name will not change until you verify the new username in your email";
+        for (var i =0; i< newusername.length; i++){
+            console.log(document.getElementById("username").value);
+            console.log(newusername[i].username);
+            if(document.getElementById("username").value === newusername[i].username){
+                document.getElementById("emailc").innerHTML = "This user name does exist!";
+                break;
+            } else {
+                document.getElementById("emailc").innerHTML = "The User Name will not change until you verify the new username in your email.";
+            }
+        }
+        // document.getElementById("emailc").innerHTML = "The User Name will not change until you verify the new username in your email.";
     }
 </script>
 </body>
