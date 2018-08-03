@@ -399,17 +399,20 @@
                             tstring += "&" + thArray[i] + "=" + rowSelected[0][i];
                         }
                     }
+                    var getvalue = table.rows('.selected').data();
+                    localStorage.setItem("getvalue", JSON.stringify(getvalue[0]));
+                    window.location.replace('/editUser');
 //                    console.log("tstring for loop: " + tstring);
-                    $.ajax({
-                        url: '/editUserQuery',
-                        type: 'GET',
-                        dataType: 'json',
-                        async: false,
-                        data: tstring,
-                        success: function (result) {
-                            window.location.replace('/editUser')
-                        }
-                    })
+//                     $.ajax({
+//                         url: '/editUserQuery',
+//                         type: 'GET',
+//                         dataType: 'json',
+//                         async: false,
+//                         data: tstring,
+//                         success: function (result) {
+//                             window.location.replace('/editUser')
+//                         }
+//                     })
                 }
             });
 
