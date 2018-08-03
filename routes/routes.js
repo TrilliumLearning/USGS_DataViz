@@ -187,7 +187,10 @@ module.exports = function (app, passport) {
             if (!user || dateTime > user[0].resetPasswordExpires) {
                 res.send('Password reset token is invalid or has expired. Please contact Administrator.');
             } else {
-                res.render('reset.ejs', {user: user[0]});
+                res.render('reset.ejs', {
+                    user: user[0],
+                    username:req.user.username
+                });
             }
         });
     });
@@ -211,8 +214,7 @@ module.exports = function (app, passport) {
                             ConfirmPassword: bcrypt.hashSync(req.body.Confirmpassword, null, null)
                         };
 
-                        let passReset = "UPDATE UserLogin SET password = '" + newPass.Newpassword + "' WHERE username = '" + req.body.username + "'";
-
+                        let passReset = "UPDATE UserLogin SET password = '" + newPass.Newpassword + "' WHERE resetPasswordToken = '" + req.params.token + "'";
                         con_CS.query(passReset, function (err, rows) {
                             if (err) {
                                 console.log(err);
@@ -879,15 +881,60 @@ module.exports = function (app, passport) {
     //     res.json({"error": false, "message": "/editUser"});
     // });
 
+    app.post('/edituserform',function (req,res) {
+        res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
+
+        // new password (User Login)
+        let user = req.user;
+        let newPass = {
+            currentpassword: req.body.CurrentPassword,
+            Newpassword: bcrypt.hashSync(req.body.newpassword, null, null),
+            ConfirmPassword: bcrypt.hashSync(req.body.ConfirmNewPassword, null, null)
+        };
+
+        let passComp = bcrypt.compareSync(newPass.currentpassword, user.password);
+
+        if (!!req.body.newpassword && passComp) {
+            let passReset = "UPDATE UserLogin SET password = '" + newPass.Newpassword + "' WHERE username = '" + user.username + "'";
+
+            con_CS.query(passReset, function (err, rows) {
+                //console.log(result);
+                if (err) {
+                    console.log(err);
+                    res.json({"error": true, "message": "Fail !"});
+                } else {
+                    // res.json({"error": false, "message": "Success !"});
+                    basicInformation();
+                }
+            });
+        } else {
+            basicInformation();
+        }
+
+        function basicInformation() {
+            let result = Object.keys(req.body).map(function (key) {
+                return [String(key), req.body[key]];
+            });
+
+            // var update3 = " WHERE username = '" + req.user.username + "'";
+            let statement1 = "UPDATE USGS.UserLogin SET userrole = '" + result[3][1] + "',   Status = '" + result[4][1] + "' WHERE username = '" + result[0][1]+ "';";
+            let statement2 = "UPDATE USGS.UserProfile SET firstName = '" + result[1][1] + "', lastName = '" + result[2][1] + "' WHERE username = '" + result[0][1] + "';";
+            con_CS.query(statement1 + statement2, function (err, result) {
+                if (err) throw err;
+                res.json(result);
+            });
+        }
+    });
+
     // Show user edit form
     app.get('/editUser', isLoggedIn, function (req, res) {
         res.render('userEdit.ejs', {
             user: req.user, // get the user out of session and pass to template
-            userName: edit_User,
-            firstName: edit_firstName,
-            lastName: edit_lastName,
-            userrole: edit_userrole,
-            status: edit_status,
+            username: req.body.username,
+            // firstName: edit_firstName,
+            // lastName: edit_lastName,
+            // userrole: edit_userrole,
+            // status: edit_status,
             message: req.flash('Data Entry Message')
         });
     });

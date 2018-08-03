@@ -391,6 +391,7 @@
                             tstring += "&" + thArray[i] + "=" + rowSelected[0][i];
                         }
                     }
+
                     var getvalue = table.rows('.selected').data();
                     localStorage.setItem("getvalue", JSON.stringify(getvalue[0]));
                     window.location.replace('/editUser');
