@@ -866,18 +866,18 @@ module.exports = function (app, passport) {
     });
 
     // // Retrieve user data from user management page
-    // let edit_User, edit_firstName, edit_lastName, edit_userrole, edit_status, edit_city;
-    // app.get('/editUserQuery', isLoggedIn, function (req, res) {
-    //
-    //     edit_User = req.query.Username;
-    //     edit_firstName = req.query.First_Name;
-    //     edit_city = req.query.City;
-    //     edit_lastName = req.query.Last_Name;
-    //     edit_userrole = req.query.User_Role;
-    //     edit_status = req.query.Status;
-    //
-    //     res.json({"error": false, "message": "/editUser"});
-    // });
+    var edit_User, edit_firstName, edit_lastName, edit_userrole, edit_status, edit_city;
+    app.get('/editUserQuery', isLoggedIn, function (req, res) {
+
+         edit_User = req.query.Username;
+         edit_firstName = req.query.First_Name;
+         edit_city = req.query.City;
+         edit_lastName = req.query.Last_Name;
+         edit_userrole = req.query.User_Role;
+         edit_status = req.query.Status;
+
+         res.json({"error": false, "message": "/editUser"});
+     });
 
     // Show user edit form
     app.get('/editUser', isLoggedIn, function (req, res) {
@@ -907,7 +907,7 @@ module.exports = function (app, passport) {
             myStat = "UPDATE UserLogin SET password = ?, userrole = ?, status = ?, modifiedUser = '" + req.user.username + "', dateModified = '" + dateTime + "' WHERE username = ?";
 
             myVal = [updatedUserPass.firstName, updatedUserPass.lastName, updatedUserPass.newPassword, updatedUserPass.userrole, updatedUserPass.status, edit_User];
-            updateDBNres(mylogin + myStat, myVal, "Update failed!", "/userManagement", res);
+            updateDBNres(myStat + mylogin, myVal, "Update failed!", "/userManagement", res);
         } else {
             let updatedUser = {
                 firstName: req.body.First_Name,
