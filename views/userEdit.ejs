@@ -98,21 +98,33 @@
                 <label for="password" >Do you want to change your password?</label>
                 <input type="checkbox" id="password" name="password" onclick="myFunction()">
             </p>
-            <div id="passBox">
-                <h4 class="floating-Box" style="width: 150px;"><strong>Change Password</strong></h4>
-                <div>
-                    <label for="currentpassword">Current Password</label>
-                    <input type="password" id="currentpassword" class="form-control" name="currentPassword" maxlength="2000px" style="height: 50px;">
-                </div>
-                <div>
-                    <label for="newpassword">New Password:</label>
-                    <input type="password" id="newpassword" class="form-control" name="newPassword" maxlength="2000px" style="height: 50px;">
-                </div>
-                <div>
-                    <label for="Confirmpassword">Confirm New Password:</label>
-                    <input type="password" id="Confirmpassword" class="form-control" name="confirmPassword" maxlength="2000px" style="height: 50px;">
-                </div>
+            <div class="generalForm">
+                <form id="pswchange" style="display:none;" class="well form-horizontal">
+                    <fieldset>
+                        <div>
+                            <label style="font-size:18px;">Password Change</label>
 
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Current Password</label>
+                            <div class="col-md-8 inputGroupContainer">
+                                <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span><input id="currentPassword" name="CurrentPassword"  class="form-control"  value="" type="password"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">New Password</label>
+                            <div class="col-md-8 inputGroupContainer">
+                                <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span><input id="newPassword" name="newpassword" class="form-control" value="" type="password"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Confirm New Password</label>
+                            <div class="col-md-8 inputGroupContainer">
+                                <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span><input id="ConfirmPassword" name="ConfirmNewPassword" class="form-control"  value="" type="password"></div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
             </div>
             <br>
             <button type="submit" class="button1"> Update </button>

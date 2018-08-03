@@ -197,10 +197,8 @@
     </div>
 <!--<a href="/newEntry" class="btn btn-default btn-lg" id="class1">New Entry</a>-->
 <!--<a href="/query" class="btn btn-default btn-lg" id="class2">Data History</a>-->
-    <div id="userListForm" style="width: 900px;
-    padding: 0px 10px;">
-        <div class="floatingBox" style="width: 500px;
-    padding: 0px;">
+    <div id="userListForm" style="width: 900px;padding: 0px 10px;">
+        <div class="floatingBox" style="width: 500px;padding: 0px;">
             <h4 class="floatingBox" style="width: 500px;"><strong style="width: 365px;">Date Created:</strong></h4>
             <h5 class="floatingBox" style="width: 50px;">From:</h5>
             <input class="inputBoxDate datePicker date" type="text" id="dateCreated" placeholder="Select Date" style="width: 265px;
@@ -241,21 +239,21 @@
     padding: 0px;">
             <h4 class="floatingBox" style="width: 500px;"><strong>User Name:</strong></h4>
             <h5 class="floatingBox" style="width: 100px">First Name:</h5>
-            <input class="inputBoxDate" type="text" id="firstName" placeholder="Enter First Name" style="width: 210px;
+            <input class="inputBoxDate select" type="text" id="firstName" placeholder="Enter First Name" style="width: 210px;
     height: 40px;
     padding-left: 10px;
     margin: 5px 150px 5px 5px;
     border-radius: 5px;
     border: 1px solid #c8c8c8;">
             <h5 id="123" class="floatingBox" style="width: 100px">Last Name:</h5>
-            <input class="inputBoxDate" type="text" id="lastName" placeholder="Enter Last Name" style="width: 210px;
+            <input class="inputBoxDate select" type="text" id="lastName" placeholder="Enter Last Name" style="width: 210px;
     height: 40px;
     padding-left: 10px;
     margin: 5px 150px 5px 5px;
     border-radius: 5px;
     border: 1px solid #c8c8c8;">
             <h5 class="floatingBox">Phone Number:</h5>
-            <input class="inputBoxDate" type="text" id="Phone_Number" placeholder="Enter Phone Number" style="width: 210px;
+            <input class="inputBoxDate select" type="text" id="Phone_Number" placeholder="Enter Phone Number" style="width: 210px;
     height: 40px;
     padding-left: 10px;
     margin: 5px;
@@ -266,13 +264,7 @@
     padding: 0px;">
             <h4 class="floatingBox" style="width: 100px;
     margin-bottom: 10px;"><strong>Status:</strong></h4>
-            <select id="status" style="width: 335px;
-    height: 40px;
-    background-color: white;
-    margin-bottom: 20px;
-    padding-left: 10px;
-    border-radius: 5px;
-    border: 1px solid #c8c8c8;">
+            <select class="select" id="status" style="width: 335px;height: 40px;background-color: white;margin-bottom: 20px;padding-left: 10px;border-radius: 5px;border: 1px solid #c8c8c8;">
                 <option value=""> SELECT THE STATUS </option>
                 <option value="Active">Active</option>
                 <option value="Never Logged In">Never Logged In</option>
@@ -281,7 +273,7 @@
 
             <h4 class="floatingBox" style="width: 100px;
     margin-bottom: 10px;"><strong>User Role:</strong></h4>
-            <select id="userrole" style="width: 335px;
+            <select class="select" id="userrole" style="width: 335px;
     height: 40px;
     background-color: white;
     padding-left: 10px;
@@ -353,7 +345,7 @@
         var table = $('#dataDisplay').DataTable({ "lengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]]});
         var querystr = "";
         var userrole = "";
-        var UserRol = "<%= user.userrole %>";
+        var UserRole = "<%= user.userrole %>";
         var rowUserName = [];
 
         $(document).ready(function() {
@@ -443,6 +435,7 @@
                 $(".clearForm input[type='text']").val('');
                 $(".date").val('');
                 $(".select").val('');
+                // document.getElementById("userListForm").reset();
             });
         });
         function dropDown() {
