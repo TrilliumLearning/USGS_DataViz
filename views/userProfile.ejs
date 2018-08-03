@@ -89,7 +89,7 @@
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span><input id="username" name="username" class="form-control" value="<%= user.username %>" type="text" onchange="verifyemaila()">
                             </div>
-                            <p id="emailc"></p>
+                            <p style="margin-top:8px;color:#0088d8;" id="emailc"></p>
                         </div>
                     </div>
                     <div class="form-group">
@@ -151,7 +151,7 @@
                         <label class="col-md-4 control-label">Phone Number</label>
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
-                                <input id="phoneNumber" name="Phone_Number" placeholder="Phone Number" class="form-control" value="" type="text"></div>
+                                <input id="phoneNumber" name="Phone_Number" placeholder="Phone Number" class="form-control" value="" type="text" onkeypress="return numberPressed(event);"></div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -234,12 +234,14 @@
 <script>
     var UserName = "<%= user.username %>";
     var passwordC = "<% user.currentpassword %>"
+    var newusername;
 
     $.ajax({
         url: "/profile",
         dataType: 'json',
         success: function (results) {
-            console.log(results);
+            // console.log(results);
+            newusername = results;
             for(var i =0; i< results.length; i++) {
                 // console.log(results[i].username);
                 if (results[i].username === UserName) {
@@ -270,6 +272,7 @@
             document.getElementById('lastModification').style.display = 'none';
             document.getElementById('lastModified').style.display = 'none';
         }
+
     });
 
     function userHome() {
@@ -324,7 +327,7 @@
     function myFunction(){
         var checkbox = document.getElementById("password");
         var text = document.getElementById("pswchange");
-        if (checkbox.checked == true){
+        if (checkbox.checked === true){
             text.style.display = "block";
             document.getElementById("checkit").style.display = "block";
             document.getElementById("checkit").style.backgroundColor =  "#4183c4";
@@ -360,7 +363,7 @@
         //     }
         // });
         let currentPassword = document.getElementById("currentPassword").value;
-        console.log(currentPassword);
+
         $.ajax({
             url  : '/userProfile',
             method : "POST",
@@ -382,7 +385,58 @@
     }
 
     function verifyemaila(){
-        document.getElementById("emailc").innerText = "The User Name will not change until you verify the new username in your email";
+        for (var i =0; i< newusername.length; i++){
+            console.log(document.getElementById("username").value);
+            console.log(newusername[i].username);
+            if(document.getElementById("username").value === newusername[i].username){
+                document.getElementById("emailc").innerHTML = "This user name does exist!";
+                break;
+            } else {
+                document.getElementById("emailc").innerHTML = "The User Name will not change until you verify the new username in your email.";
+            }
+        }
+        // document.getElementById("emailc").innerHTML = "The User Name will not change until you verify the new username in your email.";
+    }
+
+    // Format the phone number as the user types it
+    document.getElementById('phoneNumber').addEventListener('keyup',function(evt){
+        var phoneNumber = document.getElementById('phoneNumber');
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        phoneNumber.value = phoneFormat(phoneNumber.value);
+    });
+
+    // We need to manually format the phone number on page load
+    document.getElementById('phoneNumber').value = phoneFormat(document.getElementById('phoneNumber').value);
+
+    // A function to determine if the pressed key is an integer
+    function numberPressed(evt){
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if(charCode > 31 && (charCode < 48 || charCode > 57) && (charCode < 36 || charCode > 40)){
+            return false;
+        }
+        return true;
+    }
+
+    // A function to format text to look like a phone number
+    function phoneFormat(input){
+        // Strip all characters from the input except digits
+        input = input.replace(/\D/g,'');
+
+        // Trim the remaining input to ten characters, to preserve phone number format
+        input = input.substring(0,10);
+
+        // Based upon the length of the string, we add formatting as necessary
+        var size = input.length;
+        if(size == 0){
+            input = input;
+        }else if(size < 4){
+            input = '('+input;
+        }else if(size < 7){
+            input = '('+input.substring(0,3)+') '+input.substring(3,6);
+        }else{
+            input = '('+input.substring(0,3)+') '+input.substring(3,6)+' - '+input.substring(6,10);
+        }
+        return input;
     }
 </script>
 </body>
