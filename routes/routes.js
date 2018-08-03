@@ -477,7 +477,7 @@ module.exports = function (app, passport) {
             var update1 = "UPDATE USGS.UserProfile SET ";
             let update2 = "";
             var update3 = " WHERE username = '" + req.user.username + "'";
-            for (let i = 0; i < result.length - 3; i++) {
+            for (let i = 1; i < result.length - 3; i++) {
                 if (i === result.length - 4) {
                     update2 += result[i][0] + " = '" + result[i][1] + "'";
                 } else {
@@ -490,7 +490,29 @@ module.exports = function (app, passport) {
                 if (err) {
                     res.json({"error": true, "message": "Fail !"});
                 } else {
-                    res.json({"error": false, "message": "Success !"})
+                    // res.json({"error": false, "message": "Success !"});
+                    let oldname = req.user.username;
+                    let newname = req.body.username;
+
+                    if (newname !== oldname) {
+                        let statement = "UPDATE USGS.UserLogin SET PendingUsername = '"+ newname + "' WHERE username = '" + oldname + "';";
+                        con_CS.query(statement, function (err,result) {
+                            if (err) {
+                                console.log(err);
+                                res.json({"error": true, "message": "An unexpected error occurred !"});
+                            } else if (result.length === 0) {
+                                res.json({"error": true, "message": "Please verify your email address !"});
+                            } else {
+                                var username = newname;
+                                var subject = "Email verify";
+                                var text = 'to verify the new username(email).';
+                                var url = "http://" + req.headers.host + "/verifyemail/";
+                                sendname(username, subject, text, url, res);
+                            }
+                        });
+                    } else {
+                        res.json({"error": false, "message": "Success !"});
+                    }
                 }
             });
         }
@@ -702,9 +724,10 @@ module.exports = function (app, passport) {
                     }
                 });
             }, function(PendingUsername, done) {
-                myStat = "UPDATE UserLogin SET username = '" + PendingUsername  + "' WHERE PendingUsername = '" + PendingUsername + "';";
-                mylogin = "UPDATE UserLogin SET PendingUsername = '' WHERE PendingUsername = username";
-                con_CS.query(myStat + mylogin, function(err, user) {
+                myStat = "UPDATE UserLogin SET username = '"+ PendingUsername  + "', PendingUsername = '' WHERE PendingUsername = '"+ PendingUsername + "';";
+                // mylogin = "UPDATE UserLogin SET PendingUsername = '' WHERE PendingUsername = '" + PendingUsername + "';";
+                var myProfile = "UPDATE UserProfile SET username = '" + PendingUsername + "' WHERE username = '" + req.user.username + "';";
+                con_CS.query(myStat + myProfile, function(err, user) {
                     if (err) {
                         console.log(err);
                         res.send("An unexpected error occurred !");
@@ -842,19 +865,19 @@ module.exports = function (app, passport) {
         // }
     });
 
-    // Retrieve user data from user management page
-    let edit_User, edit_firstName, edit_lastName, edit_userrole, edit_status, edit_city;
-    app.get('/editUserQuery', isLoggedIn, function (req, res) {
-
-        edit_User = req.query.Username;
-        edit_firstName = req.query.First_Name;
-        edit_city = req.query.City;
-        edit_lastName = req.query.Last_Name;
-        edit_userrole = req.query.User_Role;
-        edit_status = req.query.Status;
-
-        res.json({"error": false, "message": "/editUser"});
-    });
+    // // Retrieve user data from user management page
+    // let edit_User, edit_firstName, edit_lastName, edit_userrole, edit_status, edit_city;
+    // app.get('/editUserQuery', isLoggedIn, function (req, res) {
+    //
+    //     edit_User = req.query.Username;
+    //     edit_firstName = req.query.First_Name;
+    //     edit_city = req.query.City;
+    //     edit_lastName = req.query.Last_Name;
+    //     edit_userrole = req.query.User_Role;
+    //     edit_status = req.query.Status;
+    //
+    //     res.json({"error": false, "message": "/editUser"});
+    // });
 
     // Show user edit form
     app.get('/editUser', isLoggedIn, function (req, res) {
@@ -1546,7 +1569,7 @@ function QueryStat(myObj, scoutingStat, res) {
 
     function dataList(sqlStatement, res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
-        console.log(sqlStatement);
+        // console.log(sqlStatement);
         con_CS.query(sqlStatement, function (err, results, fields) {
 
             errStatus = [{errMsg: ""}];
@@ -1946,6 +1969,7 @@ function QueryStat(myObj, scoutingStat, res) {
                         // res.send('Message sent successfully! Please check your email inbox.');
                         // console.log('Message sent successfully!');
                         // res.redirect('/login');
+                        console.log("A");
                         res.json({"error": false, "message": "Message sent successfully !"});
                         // alert('An e-mail has been sent to ' + req.body.username + ' with further instructions.');
                     }
