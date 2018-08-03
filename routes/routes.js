@@ -1569,7 +1569,7 @@ function QueryStat(myObj, scoutingStat, res) {
 
     function dataList(sqlStatement, res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
-        console.log(sqlStatement);
+        // console.log(sqlStatement);
         con_CS.query(sqlStatement, function (err, results, fields) {
 
             errStatus = [{errMsg: ""}];
