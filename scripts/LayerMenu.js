@@ -43,7 +43,7 @@ requirejs(['./WorldWindShim',
         //Tell wouldwind to log only warnings and errors.
         WorldWind.Logger.setLoggingLevel(WorldWind.Logger.LEVEL_WARNING);
 
-        globe.goTo(new WorldWind.Position(37.0902, -95.7129));
+        globe.goTo(new WorldWind.Position(37.0902, -95.7129, 9000000));
 
         // Web Map Service information from NASA's Near Earth Observations WMS
         // var serviceAddress = "http://cs.aworldbridgelabs.com:8080/geoserver/ows?service=WMS&request=GetCapabilities&version=1.1.1";
@@ -69,23 +69,22 @@ requirejs(['./WorldWindShim',
             $('.wmsLayer').click(function () {
                 var layer1 = $(this).val();
                 currentCheckedArray = $(':checkbox:checked');
+
                 if (currentCheckedArray.length > 0 && alertVal){
                     confirm("Some layers may take awhile to load. Please be patient.")
                 }
-                // console.log(checkedArray);
+
                 if (currentCheckedArray.length > checkedCount){
                     checked.push(layer1); //insert current value to checked
-                    console.log(checked);
                     val = checked[checked.length - 1];
                     checkedCount = currentCheckedArray.length;
                     alertVal = false
                 } else {
                     for( var i = 0 ; i < checked.length; i++) {
                         if (checked[i] === layer1) {
-                            checked.splice(i,1); //remove current value from checked
+                            checked.splice(i,1); //remove current value from checked array
                         }
                     }
-                    console.log(checked);
                     val = checked[checked.length - 1];
                     checkedCount = currentCheckedArray.length;
                     alertVal = false
@@ -104,20 +103,21 @@ requirejs(['./WorldWindShim',
                         })
                 }
 
-                var layername = "layername=" + val;
-
-                $.ajax({
-                    url: 'position',
-                    type: 'GET',
-                    dataType: 'json',
-                    data:layername,
-                    success: function (results) {
-                        var Altitude = results.Altitude * 1000;
-                        globe.goTo(new WorldWind.Position(results.Latitude,results.Longitude,Altitude));
-                        // console.log(results)
-                    }
-                });
-
+                if (!val) {
+                    globe.goTo(new WorldWind.Position(37.0902, -95.7129, 9000000));
+                } else {
+                    var layername = "layername=" + val;
+                    $.ajax({
+                        url: 'position',
+                        type: 'GET',
+                        dataType: 'json',
+                        data:layername,
+                        success: function (results) {
+                            var Altitude = results.Altitude * 1000;
+                            globe.goTo(new WorldWind.Position(results.Latitude,results.Longitude,Altitude));
+                        }
+                    });
+                }
             });
 
             var createWMSLayer = function (xmlDom) {

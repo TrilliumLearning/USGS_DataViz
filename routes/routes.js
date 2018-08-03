@@ -438,6 +438,86 @@ module.exports = function (app, passport) {
         res.render('userProfile.ejs', {user: req.user});
     });
 
+    app.post('/userProfile', isLoggedIn, function (req, res) {
+        res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
+
+        // new password (User Login)
+        let user = req.user;
+        let newPass = {
+            currentpassword: req.body.CurrentPassword,
+            Newpassword: bcrypt.hashSync(req.body.newpassword, null, null),
+            ConfirmPassword: bcrypt.hashSync(req.body.ConfirmNewPassword, null, null)
+        };
+
+        let passComp = bcrypt.compareSync(newPass.currentpassword, user.password);
+
+        if (!!req.body.newpassword && passComp) {
+            let passReset = "UPDATE UserLogin SET password = '" + newPass.Newpassword + "' WHERE username = '" + user.username + "'";
+
+            con_CS.query(passReset, function (err, rows) {
+                //console.log(result);
+                if (err) {
+                    console.log(err);
+                    res.json({"error": true, "message": "Fail !"});
+                } else {
+                    // res.json({"error": false, "message": "Success !"});
+                    basicInformation();
+                }
+            });
+        } else {
+            basicInformation();
+        }
+
+        // User Profile
+        function basicInformation() {
+            let result = Object.keys(req.body).map(function (key) {
+                return [String(key), req.body[key]];
+            });
+
+            var update1 = "UPDATE USGS.UserProfile SET ";
+            let update2 = "";
+            var update3 = " WHERE username = '" + req.user.username + "'";
+            for (let i = 1; i < result.length - 3; i++) {
+                if (i === result.length - 4) {
+                    update2 += result[i][0] + " = '" + result[i][1] + "'";
+                } else {
+                    update2 += result[i][0] + " = '" + result[i][1] + "', ";
+                }
+            }
+            let statement1 = update1 + update2 + update3;
+
+            con_CS.query(statement1, function (err, result) {
+                if (err) {
+                    res.json({"error": true, "message": "Fail !"});
+                } else {
+                    // res.json({"error": false, "message": "Success !"});
+                    let oldname = req.user.username;
+                    let newname = req.body.username;
+
+                    if (newname !== oldname) {
+                        let statement = "UPDATE USGS.UserLogin SET PendingUsername = '"+ newname + "' WHERE username = '" + oldname + "';";
+                        con_CS.query(statement, function (err,result) {
+                            if (err) {
+                                console.log(err);
+                                res.json({"error": true, "message": "An unexpected error occurred !"});
+                            } else if (result.length === 0) {
+                                res.json({"error": true, "message": "Please verify your email address !"});
+                            } else {
+                                var username = newname;
+                                var subject = "Email verify";
+                                var text = 'to verify the new username(email).';
+                                var url = "http://" + req.headers.host + "/verifyemail/";
+                                sendname(username, subject, text, url, res);
+                            }
+                        });
+                    } else {
+                        res.json({"error": false, "message": "Success !"});
+                    }
+                }
+            });
+        }
+    });
+
     // Update user profile page
     app.post('/newPass', isLoggedIn, function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
@@ -644,9 +724,10 @@ module.exports = function (app, passport) {
                     }
                 });
             }, function(PendingUsername, done) {
-                myStat = "UPDATE UserLogin SET username = '" + PendingUsername  + "' WHERE PendingUsername = '" + PendingUsername + "';";
-                mylogin = "UPDATE UserLogin SET PendingUsername = '' WHERE PendingUsername = username";
-                con_CS.query(myStat + mylogin, function(err, user) {
+                myStat = "UPDATE UserLogin SET username = '"+ PendingUsername  + "', PendingUsername = '' WHERE PendingUsername = '"+ PendingUsername + "';";
+                // mylogin = "UPDATE UserLogin SET PendingUsername = '' WHERE PendingUsername = '" + PendingUsername + "';";
+                var myProfile = "UPDATE UserProfile SET username = '" + PendingUsername + "' WHERE username = '" + req.user.username + "';";
+                con_CS.query(myStat + myProfile, function(err, user) {
                     if (err) {
                         console.log(err);
                         res.send("An unexpected error occurred !");
@@ -1888,6 +1969,7 @@ function QueryStat(myObj, scoutingStat, res) {
                         // res.send('Message sent successfully! Please check your email inbox.');
                         // console.log('Message sent successfully!');
                         // res.redirect('/login');
+                        console.log("A");
                         res.json({"error": false, "message": "Message sent successfully !"});
                         // alert('An e-mail has been sent to ' + req.body.username + ' with further instructions.');
                     }
