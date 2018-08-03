@@ -46,7 +46,6 @@
             color: #f0ad4e;
             border: 1px solid #f0ad4e;
         }
-
         .button1:hover {
             background-color: #f0ad4e;
             color: white;
@@ -56,8 +55,7 @@
 </head>
 <body>
 <div class="container" style="width: 750px;">
-    <div class="container" style="width: 500px;
-    padding: 0px;">
+    <div class="container" style="width: 500px;padding: 0px;">
         <h1><span class="fa fa-sign-in"></span> Edit User</h1>
         <!-- show any messages that come back with authentication -->
         <% if (message.length > 0) { %>
@@ -68,15 +66,15 @@
         <form onsubmit="return checkForm()" id="editForm" action="/editUser" method="post">
             <div class="form-group">
                 <label for="username">Username:</label>
-                <input type="text" id="username" class="form-control" name="Username" value="<%= userName %>" readonly style="height: 50px;">
+                <input type="text" id="username" class="form-control" name="Username" value="<%= user.userName %>" readonly style="height: 50px;">
             </div>
             <div class="form-group">
                 <label for="firstName">First Name:</label>
-                <input type="text" id="firstName" class="form-control" name="First_Name" value="<%= firstName %>" style="height: 50px;">
+                <input type="text" id="firstName" class="form-control" name="First_Name" style="height: 50px;">
             </div>
             <div class="form-group">
                 <label for="lastName">Last Name:</label>
-                <input type="text" id="lastName" class="form-control" name="Last_Name" value="<%= lastName %>" style="height: 50px;">
+                <input type="text" id="lastName" class="form-control" name="Last_Name" style="height: 50px;">
             </div>
             <div class="form-group">
                 <label>User Role:</label>
@@ -94,16 +92,15 @@
                     <option class="never_logged_in" value="Never Logged In">Never Logged In</option>
                 </select>
             </div>
+        </form>
             <p style="font-size:15px">
                 <label for="password" >Do you want to change your password?</label>
                 <input type="checkbox" id="password" name="password" onclick="myFunction()">
             </p>
             <div class="generalForm">
                 <form id="pswchange" style="display:none;" class="well form-horizontal">
-                    <fieldset>
                         <div>
                             <label style="font-size:18px;">Password Change</label>
-
                         </div>
                         <div class="form-group">
                             <label class="col-md-4 control-label">Current Password</label>
@@ -123,24 +120,20 @@
                                 <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span><input id="ConfirmPassword" name="ConfirmNewPassword" class="form-control"  value="" type="password"></div>
                             </div>
                         </div>
-                    </fieldset>
                 </form>
             </div>
             <br>
-            <button type="submit" class="button1"> Update </button>
+            <button type="submit" class="button1" onclick="submitForm();"> Update </button>
             <hr>
             <a href="/userManagement" style="margin-left: 230px;">Cancel</a>
-        </form>
-
 
     </div>
 </div>
 <script>
-    var username = "<%= user.username %>";
+    <!--var username = "<%= user.username %>";-->
 
     var getvalue = JSON.parse(localStorage.getItem("getvalue"));
-    console.log(getvalue);
-    document.getElementById('username').value = username;
+    document.getElementById('username').value = getvalue[0];
     document.getElementById('firstName').value = getvalue[1];
     document.getElementById('lastName').value = getvalue[2];
     document.getElementById('UsErRoLe').value = getvalue[3];
@@ -176,7 +169,7 @@
                         if (oldP !== newP) {
                             if (newP === confirmP) {
                                 //alert("V");
-                                return true;z
+                                return true;
                             } else {
                                 alert("New passwords do not match!");
                                 return false;
@@ -195,26 +188,43 @@
             }
         }
 
-        $('#editForm').submit(function (e) {
-            e.preventDefault();
+    function submitForm () {
+            var data = $("#editForm").serialize() + "&" + $("#pswchange").serialize();
+
             $.ajax({
-                type: "POST",
+                url  : '/edituserform',
+                method : "POST",
+                data : data,
                 dataType: 'json',
-                url: $(this).attr('action'),
-                data: $(this).serialize(),
-                success: function (res) {
-                    console.log(res);
-                    if (!res.error) {
-                        window.location.replace(res.message)
+                success : function(d){
+                    if (d.error) {
+                        alert(d.message);
                     } else {
-                        confirm("Are you sure you want to make these changes?");
-                        window.location.replace('/userManagement')
+                        alert("Changes were updated!");
+                        window.location.replace('/userManagement');
                     }
                 }
             });
 
-            return false;
-        });
+            // e.preventDefault();
+            // $.ajax({
+            //     type: "POST",
+            //     dataType: 'json',
+            //     url: $(this).attr('action'),
+            //     data: $(this).serialize(),
+            //     success: function (res) {
+            //         console.log(res);
+            //         if (!res.error) {
+            //             window.location.replace(res.message)
+            //         } else {
+            //             confirm("Are you sure you want to make these changes?");
+            //             window.location.replace('/userManagement')
+            //         }
+            //     }
+            // });
+            //
+            // return false;
+        }
 
 
 </script>
