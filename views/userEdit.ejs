@@ -50,6 +50,15 @@
             background-color: #f0ad4e;
             color: white;
         }
+        #checkit{
+            width: 70px;
+            height: 30px;
+            border-radius:15px;
+            font-size:13px;
+            -webkit-transition-duration: 0.4s;
+            transition-duration: 0.4s;
+            color:white;
+        }
     </style>
 
 </head>
@@ -63,7 +72,7 @@
             <%= message %>
         </div>
         <% } %>
-        <form onsubmit="return checkForm()" id="editForm" action="/editUser" method="post">
+        <form id="editForm" action="/editUser" method="post">
             <div class="form-group">
                 <label for="username">Username:</label>
                 <input type="text" id="username" class="form-control" name="Username" value="<%= user.userName %>" readonly style="height: 50px;">
@@ -105,7 +114,7 @@
                         <div class="form-group">
                             <label class="col-md-4 control-label">Current Password</label>
                             <div class="col-md-8 inputGroupContainer">
-                                <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span><input id="currentPassword" name="CurrentPassword"  class="form-control"  value="" type="password"></div>
+                                <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span><input id="currentPassword" name="CurrentPassword" class="form-control"  value="" type="password"></div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -121,6 +130,7 @@
                             </div>
                         </div>
                 </form>
+                <button id="checkit" class="btn-primary" style="display:none; margin-top:-57px; margin-left: 410px;" onclick="checkForm()">Check</button>
             </div>
             <br>
             <button type="submit" class="button1" onclick="submitForm();"> Update </button>
@@ -154,39 +164,47 @@
         var text = document.getElementById("pswchange");
         if (checkbox.checked === true){
             text.style.display = "block";
+            document.getElementById("checkit").style.display = "block";
+            document.getElementById("checkit").style.backgroundColor =  "#4183c4";
         } else{
             text.style.display = "none";
+            document.getElementById("checkit").style.display = "none";
+            document.getElementById("checkit").style.backgroundColor =  "lightgray";
         }
+        // document.getElementById("submit").style.marginTop = "30px";
     }
 
-        function checkForm() {
-            var oldP = document.getElementById("currentpassword").value;
-            var newP = document.getElementById("newpassword").value;
-            var confirmP = document.getElementById("Confirmpassword").value;
-            if ($(".checkpass").prop('checked')) {
-                if (newP !== "") {
-                    if (oldP !== "" && confirmP !== "") {
+    function checkForm() {
+        let password = "pass=" + document.getElementById("currentPassword").value;
+        let oldP = document.getElementById("currentPassword").value;
+        var newP = document.getElementById("newPassword").value;
+        var confirmP = document.getElementById("ConfirmPassword").value;
+        $.ajax({
+            url  : '/checkpassword',
+            method : "POST",
+            data : password,
+            dataType: 'json',
+            success : function(d){
+                if (d === true) {
+                    alert("Please make sure you typed your current password correctly.");
+                }else if(d === false){
+                    if (oldP !== "" && confirmP !== "" && newP !== "") {
                         if (oldP !== newP) {
                             if (newP === confirmP) {
-                                //alert("V");
-                                return true;
+                                alert("You can submit now!");
                             } else {
-                                alert("New passwords do not match!");
-                                return false;
+                                alert("New password do not match!");
                             }
                         } else {
                             alert("Please make sure your new password is different from old one.");
-                            return false;
                         }
                     } else {
                         alert("All password fields are required.");
-                        return false;
                     }
-                } else {
-                    return true
                 }
             }
-        }
+        });
+    }
 
     function submitForm () {
             var data = $("#editForm").serialize() + "&" + $("#pswchange").serialize();
