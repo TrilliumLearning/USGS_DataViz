@@ -125,7 +125,7 @@ module.exports = function (app, passport) {
         // render the page and pass in any flash data if it exists
         res.render('login.ejs', {
             message: req.flash('loginMessage'),
-            error: "Your username and Password didn't match."
+            error: "Your username and password don't match."
         })
     });
 
