@@ -20,6 +20,8 @@ requirejs(['./worldwind.min',
                 var autoSuggestion = [];
                 var suggestedLayer;
                 var clickedLayer;
+                // var suggestedLayer = [];
+                // var clickedLayer = [];
 
                 // reading configGlobal from mainconf.js
                 var mainconfig = config;
@@ -384,13 +386,24 @@ requirejs(['./worldwind.min',
 
                     // console.log(clickedLayer + "   " + id);
                     if (clickedLayer && clickedLayer !== id) {
-                        var oldRenderables = wwd.layers[clickedLayer].renderables;
-                        var status = (clickedLayer === id);
-                        for (var z = 0; z < oldRenderables.length; z++) {
-                            // oldRenderables[z].highlighted = !oldRenderables[z].highlighted;
-                            oldRenderables[z].highlighted = status;
+                        // var oldRenderables = wwd.layers[clickedLayer].renderables;
+                        // var status = (clickedLayer === id);
+                        // for (var z = 0; z < oldRenderables.length; z++) {
+                        //     // oldRenderables[z].highlighted = !oldRenderables[z].highlighted;
+                        //     oldRenderables[z].highlighted = status;
+                        //
+                        //     if (z === oldRenderables.length - 1) {
+                        //         highlight();
+                        //     }
+                        // }
 
-                            if (z === oldRenderables.length - 1) {
+                        var oldLayerIndex = clickedLayer.toString().split('-');
+                        var status = (clickedLayer === id);
+                        for (var z = 0; z < oldLayerIndex.length; z++) {
+                            // oldRenderables[z].highlighted = !oldRenderables[z].highlighted;
+                            wwd.layers[oldLayerIndex[z]].renderables[0].highlighted = status;
+
+                            if (z === oldLayerIndex.length - 1) {
                                 highlight();
                             }
                         }
@@ -401,22 +414,48 @@ requirejs(['./worldwind.min',
 
                     function highlight() {
 
-                        var renderables = wwd.layers[id].renderables;
+                        // var renderables = wwd.layers[id].renderables;
+                        // // console.log("C");
+                        // for (var i = 0; i < renderables.length; i++) {
+                        //
+                        //     renderables[i].highlighted = !renderables[i].highlighted;
+                        //
+                        //     if (i === renderables.length - 1) {
+                        //         // console.log(renderables[0].position.latitude, renderables[0].position.longitude);
+                        //         // console.log(wwd.goToAnimator);
+                        //
+                        //         if (wwd.goToAnimator.targetPosition.latitude === renderables[0].position.latitude && wwd.goToAnimator.targetPosition.longitude === renderables[0].position.longitude) {
+                        //             layerMenu();
+                        //             // console.log("B");
+                        //             moveList(id);
+                        //         } else {
+                        //             wwd.goTo(new WorldWind.Position(renderables[0].position.latitude, renderables[0].position.longitude), function () {
+                        //                 layerMenu();
+                        //                 // console.log("A");
+                        //                 moveList(id);
+                        //             });
+                        //         }
+                        //     }
+                        // }
+
+                        var layerIndex = id.toString().split('-');
                         // console.log("C");
-                        for (var i = 0; i < renderables.length; i++) {
+                        for (var i = 0; i < layerIndex.length; i++) {
 
-                            renderables[i].highlighted = !renderables[i].highlighted;
+                            wwd.layers[layerIndex[i]].renderables[0].highlighted = !wwd.layers[layerIndex[i]].renderables[0].highlighted;
 
-                            if (i === renderables.length - 1) {
+                            if (i === layerIndex.length - 1) {
                                 // console.log(renderables[0].position.latitude, renderables[0].position.longitude);
                                 // console.log(wwd.goToAnimator);
 
-                                if (wwd.goToAnimator.targetPosition.latitude === renderables[0].position.latitude && wwd.goToAnimator.targetPosition.longitude === renderables[0].position.longitude) {
+                                if (wwd.goToAnimator.targetPosition.latitude === wwd.layers[layerIndex[0]].renderables[0].position.latitude && wwd.goToAnimator.targetPosition.longitude === wwd.layers[layerIndex[0]].renderables[0].position.longitude) {
+                                    totalWTCap();
                                     layerMenu();
                                     // console.log("B");
                                     moveList(id);
                                 } else {
-                                    wwd.goTo(new WorldWind.Position(renderables[0].position.latitude, renderables[0].position.longitude), function () {
+                                    wwd.goTo(new WorldWind.Position(wwd.layers[layerIndex[0]].renderables[0].position.latitude, wwd.layers[layerIndex[0]].renderables[0].position.longitude), function () {
+                                        totalWTCap();
                                         layerMenu();
                                         // console.log("A");
                                         moveList(id);
@@ -475,6 +514,7 @@ requirejs(['./worldwind.min',
                     this.wwd.redraw();
 
                     autoSwitch();
+                    totalWTCap();
                     layerMenu();
                     clearHighlight(true, true);
                 };
@@ -514,6 +554,7 @@ requirejs(['./worldwind.min',
                         this.applyLimits();
                         this.wwd.redraw();
 
+                        totalWTCap();
                         layerMenu();
                         clearHighlight(true, true);
                     }
@@ -542,7 +583,7 @@ requirejs(['./worldwind.min',
 
                                 // autoSwitch();
                                 // console.log(wwd.layers[0].eyeText.text);
-                                setTimeout(function() {autoSwitch(); layerMenu(); clearHighlight(true, true);}, 25);
+                                setTimeout(function() {autoSwitch(); totalWTCap(); layerMenu(); clearHighlight(true, true);}, 25);
 
                                 setTimeout(setRange, 50);
                             }
@@ -592,7 +633,7 @@ requirejs(['./worldwind.min',
                                 // console.log(wwd.navigator.lookAtLocation);
                                 // layerMenu();
                                 // clearHighlight(true, true);
-                                setTimeout(function() {layerMenu(); clearHighlight(true, true);}, 25);
+                                setTimeout(function() {totalWTCap(); layerMenu(); clearHighlight(true, true);}, 25);
 
                                 setTimeout(setLookAtLocation, 50);
                             }
@@ -641,36 +682,55 @@ requirejs(['./worldwind.min',
                 }
 
                 function totalWTCap() {
-                    if ($("#switchLayer").is(':checked')) {
-                        var clientRect = wwd.canvas.getBoundingClientRect();
-                        var region = new WorldWind.Rectangle(
-                            0,
-                            clientRect.height,
-                            clientRect.width,
-                            clientRect.height);
+                    // if ($("#switchLayer").is(':checked')) {
+                    //     var clientRect = wwd.canvas.getBoundingClientRect();
+                    //     var region = new WorldWind.Rectangle(
+                    //         0,
+                    //         clientRect.height,
+                    //         clientRect.width,
+                    //         clientRect.height);
+                    //
+                    //     var pickList = wwd.pickShapesInRegion(region);
+                    //
+                    //     var totalWT = 0;
+                    //     var totalCap = 0;
+                    //
+                    //     for (var q = 0; q < pickList.objects.length; q++) {
+                    //         var pickedPL = pickList.objects[q].userObject;
+                    //         if (pickedPL instanceof WorldWind.Placemark) {
+                    //             totalWT++;
+                    //             if (pickedPL.userProperties.p_avgcap !== "N/A") {
+                    //                 totalCap += pickedPL.userProperties.p_avgcap;
+                    //             }
+                    //         }
+                    //
+                    //         if (q === pickList.objects.length - 1) {
+                    //             // console.log(totalWT);
+                    //             // console.log(totalCap);
+                    //             $("#totalWTCap").html("Showing <strong>" + totalWT + "</strong> turbines on screen with a total rated capacity of <strong>" + Math.round(totalCap) + "</strong> MW");
+                    //         }
+                    //     }
+                    //
+                    //     pickList = [];
+                    // }
 
-                        var pickList = wwd.pickShapesInRegion(region);
+                    var totalWT = 0;
+                    var totalCap = 0;
 
-                        var totalWT = 0;
-                        var totalCap = 0;
+                    for (var i = layers.length; i < wwd.layers.length - 1; i++) {
 
-                        for (var q = 0; q < pickList.objects.length; q++) {
-                            var pickedPL = pickList.objects[q].userObject;
-                            if (pickedPL instanceof WorldWind.Placemark) {
-                                totalWT++;
-                                if (pickedPL.userProperties.p_avgcap !== "N/A") {
-                                    totalCap += pickedPL.userProperties.p_avgcap;
-                                }
-                            }
-
-                            if (q === pickList.objects.length - 1) {
-                                // console.log(totalWT);
-                                // console.log(totalCap);
-                                $("#totalWTCap").html("Showing <strong>" + totalWT + "</strong> turbines on screen with a total rated capacity of <strong>" + Math.round(totalCap) + "</strong> MW");
+                        if (wwd.layers[i].inCurrentFrame) {
+                            totalWT++;
+                            if (wwd.layers[i].renderables[0].userProperties.p_avgcap !== "N/A") {
+                                totalCap += wwd.layers[i].renderables[0].userProperties.p_avgcap;
                             }
                         }
 
-                        pickList = [];
+                        if (i === wwd.layers.length - 2) {
+                            // console.log(totalWT);
+                            // console.log(totalCap);
+                            $("#totalWTCap").html("Showing <strong>" + totalWT + "</strong> turbines on screen with a total rated capacity of <strong>" + Math.round(totalCap) + "</strong> MW");
+                        }
                     }
                 }
 
@@ -685,28 +745,39 @@ requirejs(['./worldwind.min',
 
                    $("#layerMenu").empty();
                    $("#layerMenuButton").hide();
-                   var projectNumber = 0;
 
                    if (altitude <= mainconfig.eyeDistance_PL) {
                        // console.log(wwd.layers);
+                       var projectNumber = 0;
+                       var id;
+                       var previousProject;
+
                        for (var i = layers.length; i < wwd.layers.length - 1; i++) {
 
                            if (wwd.layers[i].inCurrentFrame) {
-                               var projectName = wwd.layers[i].displayName,
+                               var projectName = wwd.layers[i].renderables[0].userProperties.p_name,
                                    state = wwd.layers[i].renderables[0].userProperties.t_state,
                                    year = wwd.layers[i].renderables[0].userProperties.p_year,
                                    number = wwd.layers[i].renderables[0].userProperties.p_tnum,
                                    cap = wwd.layers[i].renderables[0].userProperties.p_cap,
                                    avgcap = wwd.layers[i].renderables[0].userProperties.p_avgcap;
 
-                               $("#layerMenu").append($("<div id='" + i + "' data-name='" + projectName + "' data-year='" + year + "' data-capacity='" + avgcap + "' class='layers'>" +
-                                   "<p><strong>" + projectName + ", " + state + "</strong></p>" +
-                                   "<p>&nbsp;&nbsp;&nbsp;&nbsp;Year Online: " + year + "</p>" +
-                                   "<p>&nbsp;&nbsp;&nbsp;&nbsp;" + number + " Turbines</p>" +
-                                   "<p>&nbsp;&nbsp;&nbsp;&nbsp;Total Capacity: " + cap + ((cap === "N/A") ? "" : " MW") + "</p>" +
-                                   "<p>&nbsp;&nbsp;&nbsp;&nbsp;Rated Capacity: " + avgcap + ((avgcap === "N/A") ? "" : " MW") + "</p>" +
-                                   "</div>"));
-                               projectNumber++;
+                               if (i === layers.length || projectName !== previousProject) {
+                                   id = i;
+                                   $("#layerMenu").append($("<div id='" + i + "' data-name='" + projectName + "' data-year='" + year + "' data-capacity='" + avgcap + "' class='layers'>" +
+                                       "<p><strong>" + projectName + ", " + state + "</strong></p>" +
+                                       "<p>&nbsp;&nbsp;&nbsp;&nbsp;Year Online: " + year + "</p>" +
+                                       "<p>&nbsp;&nbsp;&nbsp;&nbsp;" + number + " Turbines</p>" +
+                                       "<p>&nbsp;&nbsp;&nbsp;&nbsp;Total Capacity: " + cap + ((cap === "N/A") ? "" : " MW") + "</p>" +
+                                       "<p>&nbsp;&nbsp;&nbsp;&nbsp;Rated Capacity: " + avgcap + ((avgcap === "N/A") ? "" : " MW") + "</p>" +
+                                       "</div>"));
+                                   projectNumber++;
+                               } else {
+                                   $("#" + id).attr('id', id + "-" + i);
+                                   id += ('-' + i);
+                               }
+
+                               previousProject = projectName;
                            }
 
                            if (i === wwd.layers.length - 2) {
@@ -722,23 +793,41 @@ requirejs(['./worldwind.min',
 
                 function clearHighlight(suggested, clicked) {
                     if (suggestedLayer && suggested) {
-                        var layer = wwd.layers[suggestedLayer];
-                        for (var i = 0; i < layer.renderables.length; i++) {
-                            layer.renderables[i].highlighted = false;
+                        // var layer = wwd.layers[suggestedLayer];
+                        // for (var i = 0; i < layer.renderables.length; i++) {
+                        //     layer.renderables[i].highlighted = false;
+                        //
+                        //     if (i === layer.renderables.length - 1) {
+                        //         suggestedLayer = "";
+                        //     }
+                        // }
 
-                            if (i === layer.renderables.length - 1) {
+                        var layerIndex = suggestedLayer.toString().split('-');
+                        for (var i = 0; i < layerIndex.length; i++) {
+                            wwd.layers[layerIndex[i]].renderables[0].highlighted = false;
+
+                            if (i === layerIndex.length - 1) {
                                 suggestedLayer = "";
                             }
                         }
                     }
 
                     if (clickedLayer && clicked) {
-                        var layer = wwd.layers[clickedLayer];
-                        for (var i = 0; i < layer.renderables.length; i++) {
-                            layer.renderables[i].highlighted = false;
+                        // var layer = wwd.layers[clickedLayer];
+                        // for (var i = 0; i < layer.renderables.length; i++) {
+                        //     layer.renderables[i].highlighted = false;
+                        //
+                        //     if (i === layer.renderables.length - 1) {
+                        //         moveList(clickedLayer);
+                        //     }
+                        // }
 
-                            if (i === layer.renderables.length - 1) {
-                                moveList(clickedLayer);
+                        var layerIndex = clickedLayer.toString().split('-');
+                        for (var i = 0; i < layerIndex.length; i++) {
+                            wwd.layers[layerIndex[i]].renderables[0].highlighted = false;
+
+                            if (i === layerIndex.length - 1) {
+                                clickedLayer = "";
                             }
                         }
                     }
@@ -774,7 +863,7 @@ requirejs(['./worldwind.min',
                             popover.style.left = (x + xOffset - 3) + 'px';
                             popover.style.top = (y + yOffset - 3) + 'px';
 
-                            var content = "<p><strong>Project Name:</strong> " + pickedPL.layer.displayName +
+                            var content = "<p><strong>Project Name:</strong> " + pickedPL.userProperties.p_name +
                                 "<br>" + "<strong>Year Online:</strong> " + pickedPL.userProperties.p_year +
                                 "<br>" + "<strong>Rated Capacity:</strong> " + pickedPL.userProperties.p_avgcap +
                                 "<br>" + "<strong>Total Height:</strong> " + pickedPL.userProperties.t_ttlh + "</p>";
@@ -839,6 +928,7 @@ requirejs(['./worldwind.min',
                                 placemark[i] = new WorldWind.Placemark(placemarkPosition, false, placemarkAttributes);
                                 placemark[i].altitudeMode = WorldWind.RELATIVE_TO_GROUND;
                                 placemark[i].highlightAttributes = highlightAttributes;
+                                placemark[i].userProperties.p_name = resp.data[i].p_name;
                                 placemark[i].userProperties.t_state = resp.data[i].t_state;
                                 placemark[i].userProperties.p_year = (resp.data[i].p_year === -9999) ? 'N/A' : resp.data[i].p_year;
                                 placemark[i].userProperties.p_tnum = resp.data[i].p_tnum;
@@ -860,14 +950,26 @@ requirejs(['./worldwind.min',
                                 //     placemarkLayers[index].addRenderable(placemark[i]);
                                 // }
 
+                                // if (i === 0 || resp.data[i].p_name !== resp.data[i - 1].p_name) {
+                                //     var placemarkLayer = new WorldWind.RenderableLayer(resp.data[i].p_name);
+                                //     // placemarkLayer.enabled = false;
+                                //     wwd.addLayer(placemarkLayer);
+                                //     wwd.layers[wwd.layers.length - 1].addRenderable(placemark[i]);
+                                //     autoSuggestion.push({"value": resp.data[i].p_name, "lati": resp.data[i].ylat, "long": resp.data[i].xlong, "i": wwd.layers.length - 1});
+                                // } else {
+                                //     wwd.layers[wwd.layers.length - 1].addRenderable(placemark[i]);
+                                // }
+
+                                var placemarkLayer = new WorldWind.RenderableLayer(resp.data[i].case_id);
+                                wwd.addLayer(placemarkLayer);
+                                wwd.layers[wwd.layers.length - 1].addRenderable(placemark[i]);
+
                                 if (i === 0 || resp.data[i].p_name !== resp.data[i - 1].p_name) {
-                                    var placemarkLayer = new WorldWind.RenderableLayer(resp.data[i].p_name);
-                                    // placemarkLayer.enabled = false;
-                                    wwd.addLayer(placemarkLayer);
-                                    wwd.layers[wwd.layers.length - 1].addRenderable(placemark[i]);
                                     autoSuggestion.push({"value": resp.data[i].p_name, "lati": resp.data[i].ylat, "long": resp.data[i].xlong, "i": wwd.layers.length - 1});
+                                    // autoSuggestion.push({"value": resp.data[i].p_name, "lati": resp.data[i].ylat, "long": resp.data[i].xlong, "i": [wwd.layers.length - 1]});
                                 } else {
-                                    wwd.layers[wwd.layers.length - 1].addRenderable(placemark[i]);
+                                    autoSuggestion[autoSuggestion.length - 1].i += ('-' + (wwd.layers.length - 1));
+                                    // autoSuggestion[autoSuggestion.length - 1].i.push(wwd.layers.length - 1);
                                 }
 
                                 if (i === resp.data.length - 1) {
@@ -935,11 +1037,14 @@ requirejs(['./worldwind.min',
                             setTimeout(function() {
                                 // console.log(wwd.layers[suggestion.i].inCurrentFrame);
                                 // console.log(wwd.layers[wwd.layers.length - 1].inCurrentFrame);
+                                totalWTCap();
                                 layerMenu();
 
-                                var layer = wwd.layers[suggestion.i];
-                                for (var i = 0; i < layer.renderables.length; i++) {
-                                    layer.renderables[i].highlighted = true;
+                                console.log(suggestedLayer);
+                                var layerIndex = suggestedLayer.toString().split('-');
+                                console.log(layerIndex);
+                                for (var i = 0; i < layerIndex.length; i++) {
+                                    wwd.layers[layerIndex[i]].renderables[0].highlighted = true;
                                 }
                             }, 1)
                         });
