@@ -104,7 +104,7 @@ module.exports = function(passport) {
                         // all is well, return successful user
                         return done(null, rows[0]);
                     } else {
-                        return done(null, false, req.flash('loginMessage', 'Please check with your Administrator.'));
+                        return done(null, false, req.flash('loginMessage', 'Your account may be suspended or still Pending. Please check with your Administrator or check your email box.'));
                     }
                 });
             })
