@@ -870,9 +870,6 @@ requirejs(['./worldwind.min',
                                     wwd.layers[wwd.layers.length - 1].addRenderable(placemark[i]);
                                 }
 
-                                wwd.drawContext.addOrderedRenderable(placemark[i]);
-                                // placemarkLayer.addRenderable(placemark[i]);
-
                                 if (i === resp.data.length - 1) {
                                     // wwd.addLayer(placemarkLayer);
                                     // console.log("A");
