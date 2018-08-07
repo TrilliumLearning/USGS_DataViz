@@ -56,13 +56,40 @@ requirejs(['./WorldWindShim',
         var val;
         var alertVal = true;
         var LayerSelected;
+        var ThirdLayer = [];
+        var j = 0;
 
 
 
         $(document).ready(function () {
+            document.getElementById("openedLayer").value = "No Layer Selected";
+
             $(".wmsLayer").each(function (i) {
                 preloadLayer[i] = $(this).val();
             });
+
+            $('#previousL').click(function(){
+                console.log(j);
+                if(j < 1){
+                    document.getElementById("previousL").disabled = true;
+                }else{
+                    j = j - 1;
+                    console.log(j);
+                    document.getElementById("openedLayer").value = ThirdLayer[j];
+                    if (j === 0){
+                        document.getElementById("previousL").disabled = true;
+                    }
+                }
+            });
+
+            // if (ThirdLayer.length < 1){
+            //     document.getElementById("openedLayer").value = "No Layer Selected";
+            //     // $('#previousL').disable();
+            //     // $('#nextL').disable();
+            // }else{
+            //
+            // }
+
 
             var strs = preloadLayer + '';
 
@@ -72,7 +99,6 @@ requirejs(['./WorldWindShim',
             $('.wmsLayer').click(function () {
                 var layer1 = $(this).val();
                 currentCheckedArray = $(':checkbox:checked');
-                console.log(currentCheckedArray);
 
                 if (currentCheckedArray.length > 0 && alertVal){
                     confirm("Some layers may take awhile to load. Please be patient.")
@@ -86,30 +112,33 @@ requirejs(['./WorldWindShim',
                     data:layername,
                     async: false,
                     success: function (results) {
-                        console.log(results);
                         LayerSelected = results;
                     }
                 });
 
                 if (currentCheckedArray.length > checkedCount){
                     checked.push(layer1); //insert current value to checked
-                    console.log(checked);
                     val = checked[checked.length - 1];
                     checkedCount = currentCheckedArray.length;
                     alertVal = false;
                     document.getElementById("openedLayer").value =  LayerSelected.ThirdLayer;
+                    ThirdLayer.push(LayerSelected.ThirdLayer);//insert current ThirdLayer value to ThirdLayer
+                    // console.log(ThirdLayer);
+                    j = ThirdLayer.length - 1;
                 } else {
                     for( var i = 0 ; i < checked.length; i++) {
                         if (checked[i] === layer1) {
                             checked.splice(i,1); //remove current value from checked array
+                            ThirdLayer.splice(i,1); //remove current ThirdLayer from the array
                         }
                     }
                     // val = checked[checked.length - 1];
                     checkedCount = currentCheckedArray.length;
                     alertVal = false;
-                    document.getElementById("openedLayer").value = checked[checked.length - 1];
+                    document.getElementById("openedLayer").value = ThirdLayer[ThirdLayer.length - 1];
 
                 }
+
 
                 for (var a = 0; a < layers.length; a++) {
                         $(':checkbox:checked').each(function () {
