@@ -95,7 +95,7 @@ module.exports = function(passport) {
                         return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
                     }
 
-                    if (rows[0].status !== "Suspended") {
+                    if (rows[0].status !== "Suspended" && rows[0].status !== "Pending") {
 
                         // if the user is found but the password is wrong
                         if (!bcrypt.compareSync(password, rows[0].password))
@@ -104,7 +104,7 @@ module.exports = function(passport) {
                         // all is well, return successful user
                         return done(null, rows[0]);
                     } else {
-                        return done(null, false, req.flash('loginMessage', 'Please check with your Administrator.'));
+                        return done(null, false, req.flash('loginMessage', 'Your account may be suspended or still Pending. Please check with your Administrator or check your email box.'));
                     }
                 });
             })

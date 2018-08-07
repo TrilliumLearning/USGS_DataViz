@@ -308,6 +308,9 @@
                                         checkboxdivG.className = "State " + Thirdreplace + " " + statenamestr + countrynamestr + continentnamestr;
                                         var checkboxh5G = document.createElement("h5");
                                         var checkboxaG = document.createElement("a");
+                                        //add url, and open in new window
+                                        // checkboxaG.href = "https://mail.google.com";
+                                        // checkboxaG.target = "_blank";
                                         var checkaboxatG = document.createTextNode(res[i].ThirdLayer + "   ");
                                         checkaboxatG.className = "menuwords";
                                         var checkboxlabelG = document.createElement("label");
@@ -335,7 +338,6 @@
                                         document.getElementsByClassName("input" + Thirdreplace)[0].removeAttribute("value");
                                         comparing3[c][1] += "," + res[i].LayerName;
                                         document.getElementsByClassName("input" + Thirdreplace)[0].setAttribute("value", comparing3[c][1]);
-
                                     }
                                     if (classname[c][0] !== Thirdreplace +" " + continentnamestr + countrynamestr + statenamestr) {
                                         classname[c][0] += " " + continentnamestr + countrynamestr + statenamestr;

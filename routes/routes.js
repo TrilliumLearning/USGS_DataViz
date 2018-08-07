@@ -129,7 +129,7 @@ module.exports = function (app, passport) {
         // render the page and pass in any flash data if it exists
         res.render('login.ejs', {
             message: req.flash('loginMessage'),
-            error: "Your username and Password didn't match."
+            error: "Your username and password don't match."
         })
     });
 
@@ -194,8 +194,7 @@ module.exports = function (app, passport) {
                 res.send('Password reset token is invalid or has expired. Please contact Administrator.');
             } else {
                 res.render('reset.ejs', {
-                    user: user[0],
-                    username:req.user.username
+                    user: user[0]
                 });
             }
         });
@@ -441,9 +440,19 @@ module.exports = function (app, passport) {
         })
     });
 
+    app.post('/checkpassword',function (req,res) {
+        res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
+        let password = req.body.pass;
+        let statement = "SELECT password FROM UserLogin WHERE username = '" + req.user.username + "';";
+        con_CS.query(statement,function (err,results) {
+            res.json((!bcrypt.compareSync(password, results[0].password)));
+        });
+    });
 
     app.get('/userProfile', isLoggedIn, function (req, res) {
-        res.render('userProfile.ejs', {user: req.user});
+        res.render('userProfile.ejs', {
+            user: req.user,
+        });
     });
 
     app.post('/userProfile', isLoggedIn, function (req, res) {
@@ -874,18 +883,18 @@ module.exports = function (app, passport) {
     });
 
     // // Retrieve user data from user management page
-    // let edit_User, edit_firstName, edit_lastName, edit_userrole, edit_status, edit_city;
-    // app.get('/editUserQuery', isLoggedIn, function (req, res) {
-    //
-    //     edit_User = req.query.Username;
-    //     edit_firstName = req.query.First_Name;
-    //     edit_city = req.query.City;
-    //     edit_lastName = req.query.Last_Name;
-    //     edit_userrole = req.query.User_Role;
-    //     edit_status = req.query.Status;
-    //
-    //     res.json({"error": false, "message": "/editUser"});
-    // });
+    var edit_User, edit_firstName, edit_lastName, edit_userrole, edit_status, edit_city;
+    app.get('/editUserQuery', isLoggedIn, function (req, res) {
+
+         edit_User = req.query.Username;
+         edit_firstName = req.query.First_Name;
+         edit_city = req.query.City;
+         edit_lastName = req.query.Last_Name;
+         edit_userrole = req.query.User_Role;
+         edit_status = req.query.Status;
+
+         res.json({"error": false, "message": "/editUser"});
+     });
 
     app.post('/edituserform',function (req,res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
@@ -960,7 +969,7 @@ module.exports = function (app, passport) {
             myStat = "UPDATE UserLogin SET password = ?, userrole = ?, status = ?, modifiedUser = '" + req.user.username + "', dateModified = '" + dateTime + "' WHERE username = ?";
 
             myVal = [updatedUserPass.firstName, updatedUserPass.lastName, updatedUserPass.newPassword, updatedUserPass.userrole, updatedUserPass.status, edit_User];
-            updateDBNres(mylogin + myStat, myVal, "Update failed!", "/userManagement", res);
+            updateDBNres(myStat + mylogin, myVal, "Update failed!", "/userManagement", res);
         } else {
             let updatedUser = {
                 firstName: req.body.First_Name,
@@ -1185,7 +1194,7 @@ module.exports = function (app, passport) {
     //check if the layer name is available
     app.get('/SearchLayerName', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*");
-        con_CS.query("SELECT ThirdLayer FROM MapLayerMenu", function (err, results) {
+        con_CS.query("SELECT ThirdLayer FROM Request_Form", function (err, results) {
             if (err) throw err;
             res.json(results);
 

@@ -48,8 +48,7 @@
             color:white;
         }
         #checkit{
-            background-color: #31a0ba;
-            width: 130px;
+            width: 250px;
             height: 50px;
             border-radius:15px;
             font-size:16px;
@@ -97,7 +96,7 @@
                         <label class="col-md-4 control-label">First Name</label>
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span><input id="firstName" name="firstName" placeholder="First Name" class="form-control" value="" type="text">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span><input id="firstName" name="firstName" class="form-control" value="" type="text">
                             </div>
                         </div>
                     </div>
@@ -105,7 +104,7 @@
                         <label class="col-md-4 control-label">Last Name</label>
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span><input id="lastName" name="lastName" placeholder="Last Name" class="form-control"  value="" type="text">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span><input id="lastName" name="lastName" class="form-control"  value="" type="text">
                             </div>
                         </div>
                     </div>
@@ -113,7 +112,7 @@
                         <label class="col-md-4 control-label">Address Line 1</label>
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span><input id="addressLine1" name="Address_Line1" placeholder="Address Line 1" class="form-control" value="" type="text">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span><input id="addressLine1" name="Address_Line1" placeholder="Street address, P.O. box, company name, c/o" class="form-control" value="" type="text">
                             </div>
                         </div>
                     </div>
@@ -121,38 +120,38 @@
                         <label class="col-md-4 control-label">Address Line 2</label>
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span><input id="addressLine2" name="Address_Line2" placeholder="Address Line 2" class="form-control" value="" type="text"></div>
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span><input id="addressLine2" name="Address_Line2" placeholder="Apartment, suite, unit, building, floor, etc." class="form-control" value="" type="text"></div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label">City</label>
                         <div class="col-md-8 inputGroupContainer">
-                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span><input id="city" name="City" placeholder="City" class="form-control" value="" type="text"></div>
+                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span><input id="city" name="City" class="form-control" value="" type="text"></div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label">State/Province/Region</label>
                         <div class="col-md-8 inputGroupContainer">
-                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span><input id="state" name="State_Province_Region" placeholder="State/Province/Region" class="form-control" value="" type="text"></div>
+                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span><input id="state" name="State_Province_Region" class="form-control" value="" type="text"></div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label">Postal Code/ZIP</label>
                         <div class="col-md-8 inputGroupContainer">
-                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span><input id="postcode" name="PostalCode_ZIP" placeholder="Postal Code/ZIP" class="form-control" value="" type="text"></div>
+                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span><input id="postcode" name="PostalCode_ZIP" class="form-control" value="" type="text" maxlength="5"></div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label">Country</label>
                         <div class="col-md-8 inputGroupContainer">
-                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span><input id="country" name="Country" placeholder="Country" class="form-control" value="" type="text"></div>
+                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span><input id="country" name="Country" class="form-control" value="" type="text"></div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label">Phone Number</label>
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
-                                <input id="phoneNumber" name="Phone_Number" placeholder="Phone Number" class="form-control" value="" type="text" onkeypress="return numberPressed(event);"></div>
+                                <input id="phoneNumber" name="Phone_Number" class="form-control" value="" type="text" onkeypress="return numberPressed(event);"></div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -222,7 +221,7 @@
                 <br>
             </fieldset>
             </form>
-            <button id="checkit" class="btn-primary" style="display:none; margin-top:-85px; margin-left:40px;" onclick="check()">Check</button>
+            <button id="checkit" class="btn-primary" style="display:none; margin-top:-85px; margin-left:550px;" onclick="check()">Check</button>
         </div>
 
         <div>
@@ -234,7 +233,7 @@
 </div>
 <script>
     var UserName = "<%= user.username %>";
-    var passwordC = "<% user.currentpassword %>"
+    var passwordC = "<%= user.password %>";
     var newusername;
 
     $.ajax({
@@ -289,30 +288,35 @@
     }
 
     function check() {
-        var oldP = document.getElementById("currentPassword").value;
+        let password = "pass=" + document.getElementById("currentPassword").value;
+        let oldP = document.getElementById("currentPassword").value;
         var newP = document.getElementById("newPassword").value;
         var confirmP = document.getElementById("ConfirmPassword").value;
-
-        if (oldP === passwordC) {
-            if (newP != "") {
-                if (oldP != "" && confirmP != "") {
-                    if (oldP != newP) {
-                        if (newP == confirmP) {
-                            alert("You can submit now!");
+        $.ajax({
+            url  : '/checkpassword',
+            method : "POST",
+            data : password,
+            dataType: 'json',
+            success : function(d){
+                if (d === true) {
+                    alert("Please make sure you typed your current password correctly.");
+                }else if(d === false){
+                    if (oldP !== "" && confirmP !== "" && newP !== "") {
+                        if (oldP !== newP) {
+                            if (newP === confirmP) {
+                                alert("You can submit now!");
+                            } else {
+                                alert("New password do not match!");
+                            }
                         } else {
-                            alert("New password do not match!");
+                            alert("Please make sure your new password is different from old one.");
                         }
                     } else {
-                        alert("Please make sure your new password is different from old one.");
+                        alert("All password fields are required.");
                     }
-                } else {
-                    alert("All password fields are required.");
                 }
-            } else {return true}
-        } else if (oldP !== passwordC) {
-            alert("Please make sure you typed your current password correctly.");
-        }
-
+            }
+        });
     }
 
     var password = $("#password");
@@ -389,10 +393,12 @@
         for (var i =0; i< newusername.length; i++){
             console.log(document.getElementById("username").value);
             console.log(newusername[i].username);
-            if(document.getElementById("username").value === newusername[i].username){
+            if(document.getElementById("username").value === newusername[i].username && document.getElementById("username").value !== UserName){
                 document.getElementById("emailc").innerHTML = "This user name does exist!";
                 break;
-            } else {
+            } else if(document.getElementById("username").value === UserName) {
+                document.getElementById("emailc").innerHTML = "";
+            }  else{
                 document.getElementById("emailc").innerHTML = "The User Name will not change until you verify the new username in your email.";
             }
         }

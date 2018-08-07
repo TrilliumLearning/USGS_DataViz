@@ -55,6 +55,9 @@
     padding: 0px;">
     <h1><span class="fa fa-sign-in"></span> Login</h1>
     <!--show any messages that come back with authentication -->
+    <% if (message.length > 0) { %>
+        <div class="alert alert-danger"><%= message %></div>
+    <% } %>
     <!-- LOGIN FORM -->
     <form action="/login" method="post">
         <div class="form-group">
@@ -73,10 +76,8 @@
             <label>Status:</label>
             <input type="text" id="status" class="form-control" name="status" value="Active" readonly>
         </div>
-        <button type="submit" class="button1" style="width: 500px;
-    height: 50px;"> Login </button>
-        <div class="form-group" style="margin-bottom: 0px;
-    margin-top: 10px;">
+        <button type="submit" class="button1" style="width: 500px;height: 50px;"> Login </button>
+        <div class="form-group" style="margin-bottom: 0px;margin-top: 10px;">
             <label style="font-weight: normal;">
                 <input type="checkbox" name="remember" value="yes"> Remember me
             </label>
@@ -91,7 +92,6 @@
     <p class="floating-Box" style="float: right">Or go back to <a href="/">Homepage >></a></p>
 </div>
 <script>
-
     $(function () {
         flatpickr(".date", {
             dateFormat: "Y-m-d",
