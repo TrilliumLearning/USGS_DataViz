@@ -59,6 +59,28 @@
             -webkit-appearance: none;
             width: 7px;
         }
+
+        .previous {
+            background-color: #0fbad6;
+            color: white;
+        }
+
+        .next {
+            background-color: #0fbad6;
+            color: white;
+        }
+
+        .arrow {
+            border-radius: 50%;
+            text-decoration: none;
+            display: inline-block;
+            padding: 8px 16px;
+        }
+
+        .arrow:hover {
+            background-color: #ddd;
+            color: black;
+        }
     </style>
 
 </head>
@@ -119,6 +141,11 @@
             <div style="margin-left: 15px;">
                 <h4><strong>Layer Menu*:</strong></h4>
                 <h5 class="note">*TBD stands for "To Be Developed"</h5><h5 class="note"> NOTE: Some layers may take a while to load, please be patient. Selecting a layer will direct the globe to its location.</h5>
+                <div style="margin-bottom:10px;">
+                    <button class="previous arrow" id="previousL">&#8249;</button>
+                    <input id="openedLayer" readonly>
+                    <button class="next arrow" id ="nextL">&#8250;</button>
+                </div>
                 <div class="panel-group" id="accordion" style="width: 310px; height: 575px;overflow: scroll"></div>
 
             </div><!-- /.panel-group -->
