@@ -58,38 +58,44 @@ requirejs(['./WorldWindShim',
         var LayerSelected;
         var ThirdLayer = [];
         var j = 0;
-
+        var LayerPosition = [];
 
 
         $(document).ready(function () {
             document.getElementById("openedLayer").value = "No Layer Selected";
+            document.getElementById("previousL").disabled = true;
+            document.getElementById("nextL").disabled = true;
 
             $(".wmsLayer").each(function (i) {
                 preloadLayer[i] = $(this).val();
             });
 
             $('#previousL').click(function(){
-                console.log(j);
+                document.getElementById("nextL").disabled = false;
                 if(j < 1){
                     document.getElementById("previousL").disabled = true;
                 }else{
                     j = j - 1;
-                    console.log(j);
                     document.getElementById("openedLayer").value = ThirdLayer[j];
                     if (j === 0){
                         document.getElementById("previousL").disabled = true;
+                        // document.getElementById("previousL").style.color = "#ddd"
                     }
                 }
             });
 
-            // if (ThirdLayer.length < 1){
-            //     document.getElementById("openedLayer").value = "No Layer Selected";
-            //     // $('#previousL').disable();
-            //     // $('#nextL').disable();
-            // }else{
-            //
-            // }
-
+            $('#nextL').click(function(){
+                if(j !== ThirdLayer.length - 1){
+                    if(j === ThirdLayer.length - 2){
+                        document.getElementById("nextL").disabled = true;
+                    }
+                    j = j + 1;
+                    document.getElementById("previousL").disabled = false;
+                    document.getElementById("openedLayer").value = ThirdLayer[j];
+                }else{
+                    document.getElementById("nextL").disabled = true;
+                }
+            });
 
             var strs = preloadLayer + '';
 
@@ -123,8 +129,16 @@ requirejs(['./WorldWindShim',
                     alertVal = false;
                     document.getElementById("openedLayer").value =  LayerSelected.ThirdLayer;
                     ThirdLayer.push(LayerSelected.ThirdLayer);//insert current ThirdLayer value to ThirdLayer
-                    // console.log(ThirdLayer);
                     j = ThirdLayer.length - 1;
+                    if(ThirdLayer.length === 1){
+                        document.getElementById("nextL").disabled = true;
+                        document.getElementById("previousL").disabled = true;
+                    }else{
+                        document.getElementById("previousL").disabled = false;
+                        document.getElementById("nextL").disabled = true;
+                    }
+                    LayerPosition.push(LayerSelected);
+                    console.log(LayerPosition);
                 } else {
                     for( var i = 0 ; i < checked.length; i++) {
                         if (checked[i] === layer1) {
@@ -136,7 +150,14 @@ requirejs(['./WorldWindShim',
                     checkedCount = currentCheckedArray.length;
                     alertVal = false;
                     document.getElementById("openedLayer").value = ThirdLayer[ThirdLayer.length - 1];
-
+                    j = ThirdLayer.length - 1;
+                    if(ThirdLayer.length === 1){
+                        document.getElementById("nextL").disabled = true;
+                        document.getElementById("previousL").disabled = true;
+                    }else{
+                        document.getElementById("previousL").disabled = false;
+                        document.getElementById("nextL").disabled = true;
+                    }
                 }
 
 
@@ -155,7 +176,17 @@ requirejs(['./WorldWindShim',
 
                 var Altitude = LayerSelected.Altitude * 1000;
                 globe.goTo(new WorldWind.Position(LayerSelected.Latitude,LayerSelected.Longitude,Altitude));
+                $('#openedLayer').click(function(){
+                    for(var p = 0; p < LayerPosition.length; p++){
+                        console.log(LayerPosition.ThirdLayer);
+                        if (ThirdLayer[j] === LayerPosition.ThirdLayer[p]){
+                            var Altitude = LayerSelected.Altitude * 1000;
+                            globe.goTo(new WorldWind.Position(LayerPosition.ThirdLayer[p].Latitude,LayerSelected.Longitude,Altitude));
+                        }
+                    }
+                });
             });
+
 
             var createWMSLayer = function (xmlDom) {
                 // Create a WmsCapabilities object from the XML DOM
