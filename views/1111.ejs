@@ -19,7 +19,7 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="../scripts/autocomplete.js"></script>
     <!--<script src="../config/mainconf.js"></script>-->
-    <script data-main="../scripts/usgswt.js" src="../scripts/require-2.3.5.min.js"></script>
+    <script data-main="../scripts/123.js" src="../scripts/require-2.3.5.min.js"></script>
     <style>
         body {padding-bottom: 80px;}
 
@@ -51,23 +51,6 @@
         .button1:hover {
             background-color: #337ab7;
             color: white;
-        }
-
-        #layerMenu {
-            padding: 15px;
-            background-color: #e5e5e5;
-        }
-
-        #layerMenu::-webkit-scrollbar-thumb {
-            border-radius: 30px;
-            width: 5px;
-            background-color: rgba(0, 0, 0, .5);
-            -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
-        }
-
-        #layerMenu::-webkit-scrollbar {
-            -webkit-appearance: none;
-            width: 7px;
         }
 
         .switch {
@@ -133,21 +116,46 @@
             display:inline-block;
         }
 
-        .sortButton {
-            background-color: rgb(128, 128, 128);
-            color: white;
-            border-radius: 25%;
-            float: right;
-            outline: none;
-            font-size: 12px;
-        }
-
-        .sortButton:hover {
-            background-color: rgb(0, 128, 255);
-        }
-
         #manualSwitch {
             display: none;
+        }
+
+        .my-legend .legend-title {
+            text-align: left;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 90%;
+        }
+        .my-legend .legend-scale ul {
+            margin: 0;
+            margin-bottom: 5px;
+            padding: 0;
+            float: left;
+            list-style: none;
+        }
+        .my-legend .legend-scale ul li {
+            font-size: 80%;
+            list-style: none;
+            margin-left: 0;
+            line-height: 18px;
+            margin-bottom: 2px;
+        }
+        .my-legend ul.legend-labels li span {
+            display: block;
+            float: left;
+            height: 16px;
+            width: 30px;
+            margin-right: 5px;
+            margin-left: 0;
+            border: 1px solid #999;
+        }
+        .my-legend .legend-source {
+            font-size: 70%;
+            color: #999;
+            clear: both;
+        }
+        .my-legend a {
+            color: #777;
         }
     </style>
 </head>
@@ -193,63 +201,60 @@
                 Point Locations
             </div>
             <br>
-            <div style="width: 300px; border-style: solid; padding: 25px;">
+            <div style="width: 300px; border-style: solid; padding: 25px; height:550px;">
                 <div id="buttons">
                     <div>
                         <p id="totalWTCap"></p>
                     </div>
-                    <div>
-                        <h4>Smart Search</h4>
-                        <input id="autoSuggestion" placeholder="Search by Project Name" style="font-size: 15px; width: 235px; height: 50px; border-radius: 5px; border: 1px solid lightgray; padding-left: 10px;">
-                    </div>
-                    <br>
 
                     <h5 class="note text-center" id="filterNote">NOTE: Placemark colors are determined by the filter chosen.</h5>
                     <div id="placemarkButton" style="pointer-events: none;">
                         <input type="radio" id="none" name="category"> None
-                        <input type="radio" id="p_year_color" name="category"> Year
-                        <input type="radio" id="p_avgcap_color" name="category" checked> Capacity
-                        <input type="radio" id="t_ttlh_color" name="category"> Height
+                        <input type="radio" id="dep_type" name="category"> Type
+                        <input type="radio" id="commodity" name="category" checked> Commodity
                         <br><br>
+                        <div>
 
-                        <div style="width: 240px; height: 15px; background: linear-gradient(to right, rgba(0, 0, 255, 0.75), rgba(0, 255, 0, 0.75), rgba(255, 255, 0, 0.75), rgba(255, 127.5, 0, 0.75), rgba(255, 0, 0, 0.75));"></div>
-                        <div style="width: 240px; height: 30px;">
-                            <p id="leftScale" style="float: left; font-size:13px;"></p>
-                            <p id="rightScale" style="float: right; font-size:13px;"></p>
                         </div>
-                        <h5 class="note text-center" id="menuNote">NOTE: Zoom in to an eye distance of less than 1,500 km to display a menu for wind turbines.</h5>
-
-                        <!--<div>-->
-                        <!--<h4>Smart Search</h4>-->
-                        <!--<input id="autoSuggestion" placeholder="Search by Project Name" style="font-size: 15px; width: 235px">-->
-                        <!--</div>-->
-                        <!--<br><br>-->
+                        <div class='my-legend'>
+                            <div class='legend-title'>The Title or Explanation of your Map</div>
+                            <div class='legend-scale'>
+                                <ul class='legend-labels'>
+                                    <li><span style='background:#2E4053;'></span>Hydrothermal</li>
+                                    <li><span style='background:#58D68D;'></span>Sedimentary</li>
+                                    <li><span style='background:#A93226;'></span>Igneous</li>
+                                    <li><span style='background:#CD6155;'></span>Metamorphic</li>
+                                    <li><span style='background:#2980B9;'></span>Surficial</li>
+                                    <li><span style='background:#A6ACAF;'></span>unclassified</li>
+                                    <li><span style='background:#626567;'></span>Nickel</li>
+                                    <li><span style='background:#CB4335;'></span>Iron</li>
+                                    <li><span style='background:#A6ACAF;'></span>Aluminum</li>
+                                    <li><span style='background:#E67E22;'></span>Copper</li>
+                                    <li><span style='background:#117864;'></span>Lead</li>
+                                    <li><span style='background:#1F618D;'></span>PGE</li>
+                                    <li><span style='background:#F7DC6F;'></span>Gold</li>
+                                    <li><span style='background:#FAD7A0;'></span>Diamond</li>
+                                    <li><span style='background:#AED6F1;'></span>Clay</li>
+                                    <li><span style='background:#D5F5E3;'></span>Potash</li>
+                                    <li><span style='background:#99A3A4;'></span>Zinc</li>
+                                    <li><span style='background:#48C9B0;'></span>Sliver</li>
+                                    <li><span style='background:#FFFFFF;'></span>Undefined</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-
-                    <!--<button type="button" id="test"></button>-->
-
-                    <div id="layerMenuButton" style="width: 240px; height: 50px; overflow: scroll;" hidden>
-                        <p style="float: left;"><strong><span id="projectNumber"></span></strong> Projects</p>
-                        <button data-status="false" id="capacity" class="sortButton">Cap.<span></span></button>
-                        <button data-status="false" id="year" class="sortButton">Year<span></span></button>
-                        <button data-status="true" id="name" class="sortButton" style="background-color: rgb(0, 128, 255)">Name<span> &#9650;</span></button>
-                    </div>
-                    <div id="layerMenu" style="width: 240px; height: 450px; overflow: scroll;">
-
-                    </div>
-
                 </div>
             </div>
         </div>
 
         <div class="container floating-Box" id="globe" style="width: 900px; height: 900px; margin-left: 450px; padding: 0px;">
-            <h4 class="note text-center" id="globeNote">NOTE: Zoom in to an eye distance of less than 4,500 km to view the point locations.</h4>
+            <!--<h4 class="note text-center" id="globeNote">NOTE: Zoom in to an eye distance of less than 4,500 km to view the point locations.</h4>-->
             <canvas id="canvasOne" style="width: 900px; height: 900px;">
                 Your browser does not support HTML5 Canvas.
             </canvas>
         </div>
-        <br><br>
-        <div id="popover" style="border-style: solid; opacity: 0;" hidden></div>
+        <br>
+        <!--<div id="popover" style="border-style: solid; opacity: 0;" hidden></div>-->
     </div>
 </div>
 <!--</div>-->

@@ -145,6 +145,10 @@
         .sortButton:hover {
             background-color: rgb(0, 128, 255);
         }
+
+        #manualSwitch {
+            display: none;
+        }
     </style>
 </head>
 <div class="navul" style="height: 150px;
@@ -172,7 +176,15 @@
     <!--<div class="row">-->
         <div class="box1 floating-Box">
             <h5 class="note text-center" id="switchNote">NOTE: Toggled switch to temporarily view point locations.</h5>
-            <div class="text-center">
+            <div class="text-center" style="margin-left: -25px">
+                Manual Layer Switch
+                <label class="switch">
+                    <input type="checkbox" id="switchMethod" checked>
+                    <span class="slider round"></span>
+                </label>
+                Auto Layer Switch
+            </div>
+            <div id="manualSwitch" class="text-center">
                 Density Heatmap
                 <label class="switch">
                     <input type="checkbox" id="switchLayer">
@@ -193,7 +205,7 @@
                     <div id="placemarkButton" style="pointer-events: none;">
                         <input type="radio" id="none" name="category"> None
                         <input type="radio" id="p_year_color" name="category"> Year
-                        <input type="radio" id="p_avgcap_color" name="category"> Capacity
+                        <input type="radio" id="p_avgcap_color" name="category" checked> Capacity
                         <input type="radio" id="t_ttlh_color" name="category"> Height
                         <br><br>
 
