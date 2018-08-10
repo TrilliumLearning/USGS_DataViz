@@ -352,14 +352,15 @@
                 <tr>
                     <th>UID</th>
                     <th>RID</th>
-                    <!--<th>Date</th>-->
+                    <th>Date</th>
                     <th>Layer Type</th>
-                    <th>Layer Continent</th>
-                    <th>Layer Country</th>
                     <th>Layer State</th>
+                    <th>Layer Country</th>
+                    <th>Layer Continent</th>
                     <th>Main Category</th>
                     <th>Sub Category</th>
                     <th>Layer Name</th>
+                    <th>Layer Format</th>
                     <th>Layer Description</th>
                     <th>Layer Uploader</th>
                     <th>Layer Uploader Name</th>
@@ -372,14 +373,15 @@
                 <tr>
                     <th>UID</th>
                     <th>RID</th>
-                    <!--<th>Date</th>-->
+                    <th>Date</th>
                     <th>Layer Type</th>
-                    <th>Layer Continent</th>
-                    <th>Layer Country</th>
                     <th>Layer State</th>
+                    <th>Layer Country</th>
+                    <th>Layer Continent</th>
                     <th>Main Category</th>
                     <th>Sub Category</th>
                     <th>Layer Name</th>
+                    <th>Layer Format</th>
                     <th>Layer Description</th>
                     <th>Layer Uploader</th>
                     <th>Layer Uploader Name</th>
@@ -528,6 +530,7 @@
                             table.row.add([
                                 resp[i].UID,
                                 resp[i].RID,
+                                resp[i].Date,
                                 resp[i].LayerCategory,
                                 resp[i].StateName,
                                 resp[i].CountryName,
@@ -535,6 +538,7 @@
                                 resp[i].FirstLayer,
                                 resp[i].SecondLayer,
                                 resp[i].ThirdLayer,
+                                resp[i].LayerFormat,
                                 resp[i].Layer_Description,
                                 resp[i].Layer_Uploader,
                                 resp[i].Layer_Uploader_name,
@@ -621,24 +625,24 @@
     }
 
 
-    function exportTableToCSV2(filename) {
-        var csv = [];
-//        var table = document.querySelector('#trapDisplay');
-        var rows = document.querySelector("#trapDisplay").querySelectorAll(".selected, thead");
-
-        for (var i = 0; i < rows.length; i++) {
-            var row = [], cols = rows[i].querySelectorAll("td, th");
-
-            for (var j = 0; j < cols.length; j++)
-                row.push(cols[j].innerText);
-
-            csv.push(row.join(","));
-        }
-
-        // Download CSV file
-        downloadCSV2(csv.join("\n"), filename);
-
-    }
+//     function exportTableToCSV2(filename) {
+//         var csv = [];
+// //        var table = document.querySelector('#trapDisplay');
+//         var rows = document.querySelector("#trapDisplay").querySelectorAll(".selected, thead");
+//
+//         for (var i = 0; i < rows.length; i++) {
+//             var row = [], cols = rows[i].querySelectorAll("td, th");
+//
+//             for (var j = 0; j < cols.length; j++)
+//                 row.push(cols[j].innerText);
+//
+//             csv.push(row.join(","));
+//         }
+//
+//         // Download CSV file
+//         downloadCSV2(csv.join("\n"), filename);
+//
+//     }
 
     // function changeColor() {
     //     var row = document.getElementsByClassName("change")[0].innerHTML.trim().split("</td>");

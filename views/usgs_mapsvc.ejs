@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,400italic,900' rel='stylesheet' type='text/css'>
     <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css">-->
     <link href="//www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
     <link href='//fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
@@ -59,6 +60,37 @@
             -webkit-appearance: none;
             width: 7px;
         }
+
+        .previous {
+            background-color: #0fbad6;
+            color: white;
+        }
+
+        .next {
+            background-color: #0fbad6;
+            color: white;
+        }
+
+        .arrow {
+            border-radius: 50%;
+            text-decoration: none;
+            display: inline-block;
+            padding: 8px 16px;
+        }
+
+        #openedLayer{
+            background-color: #66ccff;
+            color:white;
+            border-radius: 10px;
+            font-family: 'Lato';
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        /*.arrow:hover {*/
+            /*background-color: #ddd;*/
+            /*color: black;*/
+        /*}*/
     </style>
 
 </head>
@@ -119,6 +151,11 @@
             <div style="margin-left: 15px;">
                 <h4><strong>Layer Menu*:</strong></h4>
                 <h5 class="note">*TBD stands for "To Be Developed"</h5><h5 class="note"> NOTE: Some layers may take a while to load, please be patient. Selecting a layer will direct the globe to its location.</h5>
+                <div style="margin-bottom:10px;">
+                    <button class="previous arrow" id="previousL">&#8249;</button>
+                    <input id = "openedLayer" type="button">
+                    <button class="next arrow" id ="nextL">&#8250;</button>
+                </div>
                 <div class="panel-group" id="accordion" style="width: 310px; height: 575px;overflow: scroll"></div>
 
             </div><!-- /.panel-group -->
@@ -136,6 +173,7 @@
 </div>
 </body>
 <script>
+    //producer
     $(document).ready(function() {
 
         var parentmenu = document.getElementById("accordion");
@@ -281,6 +319,9 @@
                                         checkboxdivG.className = "State " + Thirdreplace + " " + statenamestr + countrynamestr + continentnamestr;
                                         var checkboxh5G = document.createElement("h5");
                                         var checkboxaG = document.createElement("a");
+                                        //add url, and open in new window
+                                        // checkboxaG.href = "https://mail.google.com";
+                                        // checkboxaG.target = "_blank";
                                         var checkaboxatG = document.createTextNode(res[i].ThirdLayer + "   ");
                                         checkaboxatG.className = "menuwords";
                                         var checkboxlabelG = document.createElement("label");
@@ -308,7 +349,6 @@
                                         document.getElementsByClassName("input" + Thirdreplace)[0].removeAttribute("value");
                                         comparing3[c][1] += "," + res[i].LayerName;
                                         document.getElementsByClassName("input" + Thirdreplace)[0].setAttribute("value", comparing3[c][1]);
-
                                     }
                                     if (classname[c][0] !== Thirdreplace +" " + continentnamestr + countrynamestr + statenamestr) {
                                         classname[c][0] += " " + continentnamestr + countrynamestr + statenamestr;

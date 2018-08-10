@@ -100,17 +100,45 @@ module.exports = function (app, passport) {
         });
     });
 
+    app.get('/test', function (req, res) {
+        res.render('1111.ejs');
+    });
+
+    app.get('/placemarkt', function (req, res) {
+        // console.log("A: " + new Date());
+
+        res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
+
+        // var statement = "SELECT p_name, xlong, ylat, p_year_color, p_avgcap_color, t_ttlh_color FROM USWTDB INNER JOIN USWTDB_COLOR ON USWTDB.case_id = USWTDB_COLOR.case_id ORDER BY p_name;";
+        var statement = "SELECT * FROM test;";
+
+        con_CS.query(statement, function (err, results, fields) {
+            if (err) {
+                console.log(err);
+                res.json({"error": true, "message": "An unexpected error occurred !"});
+            } else {
+                // console.log("success: " + new Date());
+                // console.log(results);
+                res.json({"error": false, "data": results});
+            }
+        });
+    });
+
     app.get('/position',function (req,res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
         var layername = req.query.layername;
-        con_CS.query('SELECT LayerName, Longitude, Latitude, Altitude FROM MapLayerMenu', function (err, results) {
+        con_CS.query('SELECT LayerName, Longitude, Latitude, Altitude, ThirdLayer FROM MapLayerMenu', function (err, results) {
+            // console.log(results);
            for(var i =0; i< results.length; i++) {
                if (layername === results[i].LayerName) {
-                   res.json({"Longitude": results[i].Longitude, "Latitude" : results[i].Latitude, "Altitude" : results[i].Altitude});
+                   res.json({"Longitude": results[i].Longitude, "Latitude" : results[i].Latitude, "Altitude" : results[i].Altitude, "ThirdLayer": results[i].ThirdLayer});
                }
            }
         });
     });
+
+
+
 
     app.get('/request',function (req,res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
@@ -122,9 +150,11 @@ module.exports = function (app, passport) {
     // =====================================
     // show the login form
     app.get('/login', function (req, res) {
-
         // render the page and pass in any flash data if it exists
-        res.render('login.ejs', {message: req.flash('loginMessage')});
+        res.render('login.ejs', {
+            message: req.flash('loginMessage'),
+            error: "Your username and password don't match."
+        })
     });
 
     // process the login form
@@ -187,7 +217,9 @@ module.exports = function (app, passport) {
             if (!user || dateTime > user[0].resetPasswordExpires) {
                 res.send('Password reset token is invalid or has expired. Please contact Administrator.');
             } else {
-                res.render('reset.ejs', {user: user[0]});
+                res.render('reset.ejs', {
+                    user: user[0]
+                });
             }
         });
     });
@@ -211,8 +243,7 @@ module.exports = function (app, passport) {
                             ConfirmPassword: bcrypt.hashSync(req.body.Confirmpassword, null, null)
                         };
 
-                        let passReset = "UPDATE UserLogin SET password = '" + newPass.Newpassword + "' WHERE username = '" + req.body.username + "'";
-
+                        let passReset = "UPDATE UserLogin SET password = '" + newPass.Newpassword + "' WHERE resetPasswordToken = '" + req.params.token + "'";
                         con_CS.query(passReset, function (err, rows) {
                             if (err) {
                                 console.log(err);
@@ -433,9 +464,19 @@ module.exports = function (app, passport) {
         })
     });
 
+    app.post('/checkpassword',function (req,res) {
+        res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
+        let password = req.body.pass;
+        let statement = "SELECT password FROM UserLogin WHERE username = '" + req.user.username + "';";
+        con_CS.query(statement,function (err,results) {
+            res.json((!bcrypt.compareSync(password, results[0].password)));
+        });
+    });
 
     app.get('/userProfile', isLoggedIn, function (req, res) {
-        res.render('userProfile.ejs', {user: req.user});
+        res.render('userProfile.ejs', {
+            user: req.user,
+        });
     });
 
     app.post('/userProfile', isLoggedIn, function (req, res) {
@@ -865,29 +906,74 @@ module.exports = function (app, passport) {
         // }
     });
 
-    // Retrieve user data from user management page
-    let edit_User, edit_firstName, edit_lastName, edit_userrole, edit_status, edit_city;
+    // // Retrieve user data from user management page
+    var edit_User, edit_firstName, edit_lastName, edit_userrole, edit_status, edit_city;
     app.get('/editUserQuery', isLoggedIn, function (req, res) {
 
-        edit_User = req.query.Username;
-        edit_firstName = req.query.First_Name;
-        edit_city = req.query.City;
-        edit_lastName = req.query.Last_Name;
-        edit_userrole = req.query.User_Role;
-        edit_status = req.query.Status;
+         edit_User = req.query.Username;
+         edit_firstName = req.query.First_Name;
+         edit_city = req.query.City;
+         edit_lastName = req.query.Last_Name;
+         edit_userrole = req.query.User_Role;
+         edit_status = req.query.Status;
 
-        res.json({"error": false, "message": "/editUser"});
+         res.json({"error": false, "message": "/editUser"});
+     });
+
+    app.post('/edituserform',function (req,res) {
+        res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
+
+        // new password (User Login)
+        let user = req.user;
+        let newPass = {
+            currentpassword: req.body.CurrentPassword,
+            Newpassword: bcrypt.hashSync(req.body.newpassword, null, null),
+            ConfirmPassword: bcrypt.hashSync(req.body.ConfirmNewPassword, null, null)
+        };
+
+        let passComp = bcrypt.compareSync(newPass.currentpassword, user.password);
+
+        if (!!req.body.newpassword && passComp) {
+            let passReset = "UPDATE UserLogin SET password = '" + newPass.Newpassword + "' WHERE username = '" + user.username + "'";
+
+            con_CS.query(passReset, function (err, rows) {
+                //console.log(result);
+                if (err) {
+                    console.log(err);
+                    res.json({"error": true, "message": "Fail !"});
+                } else {
+                    // res.json({"error": false, "message": "Success !"});
+                    basicInformation();
+                }
+            });
+        } else {
+            basicInformation();
+        }
+
+        function basicInformation() {
+            let result = Object.keys(req.body).map(function (key) {
+                return [String(key), req.body[key]];
+            });
+
+            // var update3 = " WHERE username = '" + req.user.username + "'";
+            let statement1 = "UPDATE USGS.UserLogin SET userrole = '" + result[3][1] + "',   Status = '" + result[4][1] + "' WHERE username = '" + result[0][1]+ "';";
+            let statement2 = "UPDATE USGS.UserProfile SET firstName = '" + result[1][1] + "', lastName = '" + result[2][1] + "' WHERE username = '" + result[0][1] + "';";
+            con_CS.query(statement1 + statement2, function (err, result) {
+                if (err) throw err;
+                res.json(result);
+            });
+        }
     });
 
     // Show user edit form
     app.get('/editUser', isLoggedIn, function (req, res) {
         res.render('userEdit.ejs', {
             user: req.user, // get the user out of session and pass to template
-            userName: edit_User,
-            firstName: edit_firstName,
-            lastName: edit_lastName,
-            userrole: edit_userrole,
-            status: edit_status,
+            username: req.body.username,
+            // firstName: edit_firstName,
+            // lastName: edit_lastName,
+            // userrole: edit_userrole,
+            // status: edit_status,
             message: req.flash('Data Entry Message')
         });
     });
@@ -907,7 +993,7 @@ module.exports = function (app, passport) {
             myStat = "UPDATE UserLogin SET password = ?, userrole = ?, status = ?, modifiedUser = '" + req.user.username + "', dateModified = '" + dateTime + "' WHERE username = ?";
 
             myVal = [updatedUserPass.firstName, updatedUserPass.lastName, updatedUserPass.newPassword, updatedUserPass.userrole, updatedUserPass.status, edit_User];
-            updateDBNres(mylogin + myStat, myVal, "Update failed!", "/userManagement", res);
+            updateDBNres(myStat + mylogin, myVal, "Update failed!", "/userManagement", res);
         } else {
             let updatedUser = {
                 firstName: req.body.First_Name,
@@ -1132,7 +1218,7 @@ module.exports = function (app, passport) {
     //check if the layer name is available
     app.get('/SearchLayerName', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*");
-        con_CS.query("SELECT ThirdLayer FROM MapLayerMenu", function (err, results) {
+        con_CS.query("SELECT ThirdLayer FROM Request_Form", function (err, results) {
             if (err) throw err;
             res.json(results);
 
@@ -1569,7 +1655,7 @@ function QueryStat(myObj, scoutingStat, res) {
 
     function dataList(sqlStatement, res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
-        console.log(sqlStatement);
+        // console.log(sqlStatement);
         con_CS.query(sqlStatement, function (err, results, fields) {
 
             errStatus = [{errMsg: ""}];

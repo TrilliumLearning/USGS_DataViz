@@ -140,7 +140,7 @@ function ChangeLayerList(statelevel) {
             continentObj3 = getObjects(continentObj2, 'StateName', statelevel);
             myFunction(i);
         }else if(Continentlevel === "All Continents" && Countrylevel !== "All Countries" && statelevel !== "All States"){
-            continentObj3 = continentObj2;
+            continentObj3 = getObjects(continentObj2, 'StateName', statelevel);
             myFunction(i);
         }else if(Continentlevel !== "All Continents" && Countrylevel === "All Countries" && statelevel === "All States"){
             continentObj3 = continentObj1;
