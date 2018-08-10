@@ -103,11 +103,11 @@ module.exports = function (app, passport) {
     app.get('/position',function (req,res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
         var layername = req.query.layername;
-        con_CS.query('SELECT LayerName, Longitude, Latitude, Altitude, ThirdLayer FROM MapLayerMenu', function (err, results) {
+        con_CS.query('SELECT LayerName, Longitude, Latitude, Altitude, FirstLayer, ThirdLayer FROM MapLayerMenu', function (err, results) {
             // console.log(results);
            for(var i =0; i< results.length; i++) {
                if (layername === results[i].LayerName) {
-                   res.json({"Longitude": results[i].Longitude, "Latitude" : results[i].Latitude, "Altitude" : results[i].Altitude, "ThirdLayer": results[i].ThirdLayer});
+                   res.json({"Longitude": results[i].Longitude, "Latitude" : results[i].Latitude, "Altitude" : results[i].Altitude, "ThirdLayer": results[i].ThirdLayer, "LayerName":results[i].LayerName, "FirstLayer":results[i].FirstLayer});
                }
            }
         });
