@@ -917,49 +917,48 @@ requirejs(['./worldwind.min',
                 //         }
                 //     }
                 // }
-                //
-                // function handleMouseMove(o) {
-                //
-                //     if ($("#popover").is(":visible")) {
-                //         $("#popover").hide();
-                //     }
-                //
-                //     // The input argument is either an Event or a TapRecognizer. Both have the same properties for determining
-                //     // the mouse or tap location.
-                //     var x = o.clientX,
-                //         y = o.clientY;
-                //
-                //     // Perform the pick. Must first convert from window coordinates to canvas coordinates, which are
-                //     // relative to the upper left corner of the canvas rather than the upper left corner of the page.
-                //
-                //     var pickList = wwd.pick(wwd.canvasCoordinates(x, y));
-                //     // console.log(pickList.objects);
-                //     for (var q = 0; q < pickList.objects.length; q++) {
-                //         var pickedPL = pickList.objects[q].userObject;
-                //         // console.log(pickedPL);
-                //         if (pickedPL instanceof WorldWind.Placemark) {
-                //             // console.log("A");
-                //
-                //             var xOffset = Math.max(document.documentElement.scrollLeft, document.body.scrollLeft);
-                //             var yOffset = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
-                //
-                //             var popover = document.getElementById('popover');
-                //             popover.style.position = "absolute";
-                //             popover.style.left = (x + xOffset - 3) + 'px';
-                //             popover.style.top = (y + yOffset - 3) + 'px';
-                //
-                //             var content = "<p><strong>Project Name:</strong> " + pickedPL.userProperties.p_name +
-                //                 "<br>" + "<strong>Year Online:</strong> " + pickedPL.userProperties.p_year +
-                //                 "<br>" + "<strong>Rated Capacity:</strong> " + pickedPL.userProperties.p_avgcap +
-                //                 "<br>" + "<strong>Total Height:</strong> " + pickedPL.userProperties.t_ttlh + "</p>";
-                //
-                //             $("#popover").attr('data-content', content);
-                //             $("#popover").show();
-                //         }
-                //     }
-                //
-                //     pickList = [];
-                // }
+
+                function handleMouseMove(o) {
+
+                    if ($("#popover").is(":visible")) {
+                        $("#popover").hide();
+                    }
+
+                    // The input argument is either an Event or a TapRecognizer. Both have the same properties for determining
+                    // the mouse or tap location.
+                    var x = o.clientX,
+                        y = o.clientY;
+
+                    // Perform the pick. Must first convert from window coordinates to canvas coordinates, which are
+                    // relative to the upper left corner of the canvas rather than the upper left corner of the page.
+
+                    var pickList = wwd.pick(wwd.canvasCoordinates(x, y));
+                    // console.log(pickList.objects);
+                    for (var q = 0; q < pickList.objects.length; q++) {
+                        var pickedPL = pickList.objects[q].userObject;
+                        // console.log(pickedPL);
+                        if (pickedPL instanceof WorldWind.Placemark) {
+                            // console.log("A");
+
+                            var xOffset = Math.max(document.documentElement.scrollLeft, document.body.scrollLeft);
+                            var yOffset = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
+
+                            var popover = document.getElementById('popover');
+                            popover.style.position = "absolute";
+                            popover.style.left = (x + xOffset - 3) + 'px';
+                            popover.style.top = (y + yOffset - 3) + 'px';
+
+                            var content = "<p><strong>Site Name:</strong> " + pickedPL.userProperties.site_name +
+                                "<br>" + "<strong>Commodity:</strong> " + pickedPL.userProperties.commodity +
+                                "<br>" + "<strong>Development Status:</strong> " + pickedPL.userProperties.dev_stat + "</p>";
+
+                            $("#popover").attr('data-content', content);
+                            $("#popover").show();
+                        }
+                    }
+
+                    pickList = [];
+                }
 
                 $.ajax({
                     url: '/mrdsData',
@@ -1014,6 +1013,7 @@ requirejs(['./worldwind.min',
                                 placemark[i].altitudeMode = WorldWind.RELATIVE_TO_GROUND;
                                 placemark[i].highlightAttributes = highlightAttributes;
 
+                                placemark[i].userProperties.site_name = resp.data[i].site_name;
                                 placemark[i].userProperties.dev_stat = resp.data[i].dev_stat;
                                 placemark[i].userProperties.commodity = resp.data[i].commod1.split(",")[0];
 
@@ -1124,8 +1124,8 @@ requirejs(['./worldwind.min',
                 // $("#p_avgcap_color").click();
 
                 // Listen for mouse moves and highlight the placemarks that the cursor rolls over.
-                // wwd.addEventListener("mousemove", handleMouseMove);
-                // $("#popover").popover({html: true, placement: "top", trigger: "hover"});
+                wwd.addEventListener("mousemove", handleMouseMove);
+                $("#popover").popover({html: true, placement: "top", trigger: "hover"});
             })
         });
     });
