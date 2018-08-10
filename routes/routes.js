@@ -100,8 +100,8 @@ module.exports = function (app, passport) {
         });
     });
 
-    app.get('/test', function (req, res) {
-        res.render('1111.ejs');
+    app.get('/mdw', function (req, res) {
+        res.render('Mineral_Deposits.ejs');
     });
 
     app.get('/placemarkt', function (req, res) {
@@ -110,7 +110,7 @@ module.exports = function (app, passport) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
 
         // var statement = "SELECT p_name, xlong, ylat, p_year_color, p_avgcap_color, t_ttlh_color FROM USWTDB INNER JOIN USWTDB_COLOR ON USWTDB.case_id = USWTDB_COLOR.case_id ORDER BY p_name;";
-        var statement = "SELECT * FROM test;";
+        var statement = "SELECT * FROM Mineral_Deposits;";
 
         con_CS.query(statement, function (err, results, fields) {
             if (err) {
