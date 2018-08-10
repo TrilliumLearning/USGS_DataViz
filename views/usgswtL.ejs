@@ -196,6 +196,9 @@
             <div style="width: 300px; border-style: solid; padding: 25px;">
                 <div id="buttons">
                     <div>
+                        <p id="totalWTCap"></p>
+                    </div>
+                    <div>
                         <h4>Smart Search</h4>
                         <input id="autoSuggestion" placeholder="Search by Project Name" style="font-size: 15px; width: 235px; height: 50px; border-radius: 5px; border: 1px solid lightgray; padding-left: 10px;">
                     </div>
@@ -226,7 +229,7 @@
                     <!--<button type="button" id="test"></button>-->
 
                     <div id="layerMenuButton" style="width: 240px; height: 50px; overflow: scroll;" hidden>
-                        <p style="float: left;"><span id="projectNumber"></span> Projects</p>
+                        <p style="float: left;"><strong><span id="projectNumber"></span></strong> Projects</p>
                         <button data-status="false" id="capacity" class="sortButton">Cap.<span></span></button>
                         <button data-status="false" id="year" class="sortButton">Year<span></span></button>
                         <button data-status="true" id="name" class="sortButton" style="background-color: rgb(0, 128, 255)">Name<span> &#9650;</span></button>
