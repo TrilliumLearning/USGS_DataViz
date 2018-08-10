@@ -194,30 +194,30 @@ requirejs(['./WorldWindShim',
                             globe.goTo(new WorldWind.Position(LayerPosition[p].Latitude,LayerPosition[p].Longitude,Altitude));
                         }
                     }
-                    var a = document.getElementById("accordion").children; //eight layer menus
+                    // var a = document.getElementById("accordion").children; //eight layer menus
 
                     // console.log(a);
 
-                    for(var i = 0;i < a.length; i++){
-                        console.log(a[i].id);
-                        // var c = a[i].className.split(' ');
-                        // console.log(c[c.length - 1]);
-                        if(LayerSelected.FirstLayer === a[i].id){
-
-                            // var b = a[i].children;
-                            // console.log(b);
-                            // b[1].classList.add("in");
-                            // b[1].setAttribute("aria-expanded","true");
-                        }
-                        // var b = document.getElementsByClassName(LayerSelected.LayerName);
-                        // console.log(b);
-                        var LAYER = document.getElementById(LayerSelected.ThirdLayer)
-                        // console.log(LAYER.id);
-                        // if(LayerSelected.ThirdLayer === LAYER.id){
-                        //     b.classList.add("in");
-                        //     b.setAttribute("aria-expanded","true");
-                        // }
-                    }
+                    // for(var i = 0;i < a.length; i++){
+                    //     console.log(a[i].id);
+                    //     // var c = a[i].className.split(' ');
+                    //     // console.log(c[c.length - 1]);
+                    //     if(LayerSelected.FirstLayer === a[i].id){
+                    //
+                    //         // var b = a[i].children;
+                    //         // console.log(b);
+                    //         // b[1].classList.add("in");
+                    //         // b[1].setAttribute("aria-expanded","true");
+                    //     }
+                    //     // var b = document.getElementsByClassName(LayerSelected.LayerName);
+                    //     // console.log(b);
+                    //     var LAYER = document.getElementById(LayerSelected.ThirdLayer)
+                    //     // console.log(LAYER.id);
+                    //     // if(LayerSelected.ThirdLayer === LAYER.id){
+                    //     //     b.classList.add("in");
+                    //     //     b.setAttribute("aria-expanded","true");
+                    //     // }
+                    // }
 
                     // $('.ColorShadedRelief').click();
 
