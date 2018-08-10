@@ -229,6 +229,7 @@
 
                         var paneldefault1 = document.createElement("div");
                         paneldefault1.className = "Menu panel panel-info " + firstlayer[i] ;
+                        paneldefault1.id = firstlayer[i];
                         var panelheading1 = document.createElement("div");
                         panelheading1.className = "panel-heading";
                         var paneltitle1 = document.createElement("h4");
@@ -272,11 +273,12 @@
                                     paneldefault2.id = res[i].SecondLayer;
                                     paneldefault2.className = "Menu panel panel-info "+ res[i].SecondLayer;
                                     var panelheading2 = document.createElement("div");
-                                    panelheading2.className = "panel-heading";
+                                    panelheading2.className = "panel-heading " + res[i].FirstLayer + "-" + res[i].SecondLayer;
                                     var paneltitle2 = document.createElement("h4");
-                                    paneltitle2.className = "panel-title";
+                                    paneltitle2.className = "panel-title " + res[i].FirstLayer + "-" + res[i].SecondLayer;
                                     var collapsed2 = document.createElement("a");
                                     collapsed2.className = "collapsed";
+                                    // collapsed2.id = res[i].FirstLayer + "-" + res[i].SecondLayer;
                                     collapsed2.setAttribute("data-toggle", "collapse");
                                     collapsed2.setAttribute("data-parent", "#nested");
                                     collapsed2.href = "#" + res[i].FirstLayer + "-" + res[i].SecondLayer;
@@ -317,6 +319,7 @@
                                     if (c === comparing3.length - 1) {
                                         var checkboxdivG = document.createElement("div");
                                         checkboxdivG.className = "State " + Thirdreplace + " " + statenamestr + countrynamestr + continentnamestr;
+                                        checkboxdivG.id = res[i].ThirdLayer;
                                         var checkboxh5G = document.createElement("h5");
                                         var checkboxaG = document.createElement("a");
                                         //add url, and open in new window
