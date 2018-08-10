@@ -124,6 +124,30 @@ module.exports = function (app, passport) {
         });
     });
 
+    app.get('/mrds', function (req, res) {
+        res.render('mrds.ejs');
+    });
+
+    app.get('/mrdsData', function (req, res) {
+        // console.log("A: " + new Date());
+
+        res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
+
+        // var statement = "SELECT p_name, xlong, ylat, p_year_color, p_avgcap_color, t_ttlh_color FROM USWTDB INNER JOIN USWTDB_COLOR ON USWTDB.case_id = USWTDB_COLOR.case_id ORDER BY p_name;";
+        var statement = "SELECT * FROM mrds_sample;";
+
+        con_CS.query(statement, function (err, results, fields) {
+            if (err) {
+                console.log(err);
+                res.json({"error": true, "message": "An unexpected error occurred !"});
+            } else {
+                // console.log("success: " + new Date());
+                // console.log(results);
+                res.json({"error": false, "data": results});
+            }
+        });
+    });
+
     app.get('/position',function (req,res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
         var layername = req.query.layername;
