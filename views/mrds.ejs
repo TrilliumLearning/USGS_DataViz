@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>USGS Data Visualization - US Wind Turbines</title>
+    <title>USGS Data Visualization - Mineral Resources</title>
     <!--NOTE: Most Web WorldWind home use jquery, Bootstrap and requirejs but those technologies are NOT-->
     <!--required by Web WorldWind. See SimplestExample.html for an example of using Web WorldWind without them.-->
     <meta charset="utf-8"/>
@@ -19,7 +19,7 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="../scripts/autocomplete.js"></script>
     <!--<script src="../config/mainconf.js"></script>-->
-    <script data-main="../scripts/123.js" src="../scripts/require-2.3.5.min.js"></script>
+    <script data-main="../scripts/mrds.js" src="../scripts/require-2.3.5.min.js"></script>
     <style>
         body {padding-bottom: 80px;}
 
@@ -173,7 +173,7 @@
 <div class="container" style="width: 1400px;">
     <div class="container" style="width: 850px;">
         <div class="page-header text-center header">
-            <h1><span class="fa fa-globe"></span> USGS Data Visualization - US Wind Turbines </h1>
+            <h1><span class="fa fa-globe"></span> USGS Data Visualization - Mineral Resources </h1>
             <a href="/" id="homepage">
                 <button class="button1"><< Go back to Homepage</button>
             </a>
@@ -210,35 +210,17 @@
                     <h5 class="note text-center" id="filterNote">NOTE: Placemark colors are determined by the filter chosen.</h5>
                     <div id="placemarkButton" style="pointer-events: none;">
                         <input type="radio" id="none" name="category"> None
-                        <input type="radio" id="dep_type" name="category"> Type
+                        <input type="radio" id="dev_stat" name="category"> Status
                         <input type="radio" id="commodity" name="category" checked> Commodity
                         <br><br>
                         <div>
 
                         </div>
                         <div class='my-legend'>
-                            <div class='legend-title'>The Title or Explanation of your Map</div>
+                            <div id="legendTitle" class='legend-title'>The Title or Explanation of your Map</div>
                             <div class='legend-scale'>
-                                <ul class='legend-labels'>
-                                    <li><span style='background:#2E4053;'></span>Hydrothermal</li>
-                                    <li><span style='background:#58D68D;'></span>Sedimentary</li>
-                                    <li><span style='background:#A93226;'></span>Igneous</li>
-                                    <li><span style='background:#CD6155;'></span>Metamorphic</li>
-                                    <li><span style='background:#2980B9;'></span>Surficial</li>
-                                    <li><span style='background:#A6ACAF;'></span>unclassified</li>
-                                    <li><span style='background:#626567;'></span>Nickel</li>
-                                    <li><span style='background:#CB4335;'></span>Iron</li>
-                                    <li><span style='background:#A6ACAF;'></span>Aluminum</li>
-                                    <li><span style='background:#E67E22;'></span>Copper</li>
-                                    <li><span style='background:#117864;'></span>Lead</li>
-                                    <li><span style='background:#1F618D;'></span>PGE</li>
-                                    <li><span style='background:#F7DC6F;'></span>Gold</li>
-                                    <li><span style='background:#FAD7A0;'></span>Diamond</li>
-                                    <li><span style='background:#AED6F1;'></span>Clay</li>
-                                    <li><span style='background:#D5F5E3;'></span>Potash</li>
-                                    <li><span style='background:#99A3A4;'></span>Zinc</li>
-                                    <li><span style='background:#48C9B0;'></span>Sliver</li>
-                                    <li><span style='background:#FFFFFF;'></span>Undefined</li>
+                                <ul id="legend" class='legend-labels'>
+
                                 </ul>
                             </div>
                         </div>
@@ -254,7 +236,7 @@
             </canvas>
         </div>
         <br>
-        <!--<div id="popover" style="border-style: solid; opacity: 0;" hidden></div>-->
+        <div id="popover" style="border-style: solid; opacity: 0;" hidden></div>
     </div>
 </div>
 <!--</div>-->
