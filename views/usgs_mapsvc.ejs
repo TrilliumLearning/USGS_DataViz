@@ -229,7 +229,7 @@
 
                         var paneldefault1 = document.createElement("div");
                         paneldefault1.className = "Menu panel panel-info " + firstlayer[i] ;
-                        paneldefault1.id = firstlayer[i];
+                        // paneldefault1.id = firstlayer[i];
                         var panelheading1 = document.createElement("div");
                         panelheading1.className = "panel-heading";
                         var paneltitle1 = document.createElement("h4");
@@ -238,12 +238,14 @@
                         collapsed1.className = "collapsed";
                         collapsed1.setAttribute("data-toggle", "collapse");
                         collapsed1.setAttribute("data-parent", "#accordion");
-                        collapsed1.href = "#collapse" + i;
+                        // collapsed1.href = "#collapse" + i;
+                        collapsed1.href = "#" + firstlayer[i];
                         var firstlayername = document.createTextNode(firstlayer[i] + "  ");
                         firstlayername.className = "menuwords";
                         var collapseone = document.createElement("div");
                         collapseone.className = "panel-collapse collapse";
-                        collapseone.id = "collapse" + i;
+                        // collapseone.id = "collapse" + i;
+                        collapseone.id = firstlayer[i];
                         var panelbody1 = document.createElement("div");
                         panelbody1.className = "panel-body";
                         var panelgroup1 = document.createElement("div");

@@ -62,8 +62,10 @@ requirejs(['./WorldWindShim',
         var Altitude;
 
 
+
         $(document).ready(function () {
             document.getElementById("openedLayer").value = "No Layer Selected";
+            document.getElementById("openedLayer").disabled = true;
             document.getElementById("previousL").disabled = true;
             document.getElementById("nextL").disabled = true;
 
@@ -80,7 +82,6 @@ requirejs(['./WorldWindShim',
                     document.getElementById("openedLayer").value = ThirdLayer[j];
                     if (j === 0){
                         document.getElementById("previousL").disabled = true;
-                        // document.getElementById("previousL").style.color = "#ddd"
                     }
                 }
             });
@@ -120,14 +121,15 @@ requirejs(['./WorldWindShim',
                     async: false,
                     success: function (results) {
                         LayerSelected = results;
-                        console.log(LayerSelected.FirstLayer);
+                        Altitude = LayerSelected.Altitude * 1000;
+                        globe.goTo(new WorldWind.Position(LayerSelected.Latitude,LayerSelected.Longitude,Altitude));
                     }
                 });
 
 
                 if (currentCheckedArray.length > checkedCount){
                     checked.push(layer1); //insert current value to checked
-                    val = checked[checked.length - 1];
+                    // val = checked[checked.length - 1];
                     checkedCount = currentCheckedArray.length;
                     alertVal = false;
                     document.getElementById("openedLayer").value =  LayerSelected.ThirdLayer;
@@ -136,17 +138,18 @@ requirejs(['./WorldWindShim',
                     if(ThirdLayer.length === 1){
                         document.getElementById("nextL").disabled = true;
                         document.getElementById("previousL").disabled = true;
+                        document.getElementById("openedLayer").disabled = false;
                     }else{
                         document.getElementById("previousL").disabled = false;
                         document.getElementById("nextL").disabled = true;
                     }
                     LayerPosition.push(LayerSelected);
-                    console.log(LayerPosition);
                 } else {
                     for( var i = 0 ; i < checked.length; i++) {
                         if (checked[i] === layer1) {
                             checked.splice(i,1); //remove current value from checked array
                             ThirdLayer.splice(i,1); //remove current ThirdLayer from the array
+                            LayerPosition.splice(i,1); //remove current Latlong from the array
                         }
                     }
                     // val = checked[checked.length - 1];
@@ -158,17 +161,19 @@ requirejs(['./WorldWindShim',
                         document.getElementById("nextL").disabled = true;
                         document.getElementById("previousL").disabled = true;
                     }else{
-                        document.getElementById("previousL").disabled = false;
-                        document.getElementById("nextL").disabled = true;
+                        if(ThirdLayer.length === 0){
+                            document.getElementById("openedLayer").value = "No Layer Selected";
+                            document.getElementById("previousL").disabled = true;
+                            document.getElementById("nextL").disabled = true;
+                            document.getElementById("openedLayer").disabled = true;
+                            globe.goTo(new WorldWind.Position(37.0902, -95.7129, 9000000));
+                        } else{
+                            document.getElementById("previousL").disabled = false;
+                            document.getElementById("nextL").disabled = true;
+                        }
                     }
-                    if(ThirdLayer.length === 0){
-                        document.getElementById("openedLayer").value = "No Layer Selected";
-                        document.getElementById("previousL").disabled = true;
-                        document.getElementById("nextL").disabled = true;
-                        globe.goTo(new WorldWind.Position(37.0902, -95.7129, 10000));
-                    }
-                }
 
+                }
 
                 for (var a = 0; a < layers.length; a++) {
                         $(':checkbox:checked').each(function () {
@@ -183,62 +188,33 @@ requirejs(['./WorldWindShim',
                         })
                 }
 
-                Altitude = LayerSelected.Altitude * 1000;
-                globe.goTo(new WorldWind.Position(LayerSelected.Latitude,LayerSelected.Longitude,Altitude));
+            });
 
+            $('#openedLayer').click(function(){
 
-                $('#openedLayer').click(function(){
-                    for(var p = 0; p < LayerPosition.length; p++){
-                        if (ThirdLayer[j] === LayerPosition[p].ThirdLayer){
-                            Altitude = LayerPosition[p].Altitude * 1000;
-                            globe.goTo(new WorldWind.Position(LayerPosition[p].Latitude,LayerPosition[p].Longitude,Altitude));
-                        }
+                // $('.collapse').collapse('hide');
+                var a = document.getElementById("accordion").children; //eight layer menus
+
+                var thirdlayer = "thirdlayer=" + ThirdLayer[j];
+                $.ajax({
+                    url: 'thirdL',
+                    type: 'GET',
+                    dataType: 'json',
+                    data:thirdlayer,
+                    async: false,
+                    success: function (results) {
+                        var FirstLayerId = '#' + results[0].FirstLayer;
+                        var SecondLayerId = '#' + results[0].FirstLayer + '-' + results[0].SecondLayer;
+
+                        globe.goTo(new WorldWind.Position(results[0].Latitude, results[0].Longitude, results[0].Altitude * 1000));
+
+                        $(FirstLayerId).collapse('show');
+                        $(SecondLayerId).collapse('show');
+
                     }
-                    // var a = document.getElementById("accordion").children; //eight layer menus
-
-                    // console.log(a);
-
-                    // for(var i = 0;i < a.length; i++){
-                    //     console.log(a[i].id);
-                    //     // var c = a[i].className.split(' ');
-                    //     // console.log(c[c.length - 1]);
-                    //     if(LayerSelected.FirstLayer === a[i].id){
-                    //
-                    //         // var b = a[i].children;
-                    //         // console.log(b);
-                    //         // b[1].classList.add("in");
-                    //         // b[1].setAttribute("aria-expanded","true");
-                    //     }
-                    //     // var b = document.getElementsByClassName(LayerSelected.LayerName);
-                    //     // console.log(b);
-                    //     var LAYER = document.getElementById(LayerSelected.ThirdLayer)
-                    //     // console.log(LAYER.id);
-                    //     // if(LayerSelected.ThirdLayer === LAYER.id){
-                    //     //     b.classList.add("in");
-                    //     //     b.setAttribute("aria-expanded","true");
-                    //     // }
-                    // }
-
-                    // $('.ColorShadedRelief').click();
-
-                    // var b = a[1].children; //second layer menu small-scale's children
-                    // var c = b[1].children; //class = panel-body
-                    // var d = c[0].children; //id = nested1
-                    // var e = d[0].children; //nine categories
-                    // var f = e[0].children; //two divs
-                    // var b = document.getElementById("collapse2");
-
-                    // b.classList.add("in");
-                    // b.setAttribute("aria-expanded","true");
-                    // f[1].classList.add("in");
-                    // f[1].setAttribute("aria-expanded","true");
                 });
 
-                // $('.Small_Scale-ColorShadedRelief h4').click(function() {
-                //     console.log("123");
-                //     $('#Small_Scale-ColorShadedRelief').collapse('toggle');
-                //
-                // })
+
             });
 
 

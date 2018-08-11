@@ -151,17 +151,29 @@ module.exports = function (app, passport) {
     app.get('/position',function (req,res) {
         res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
         var layername = req.query.layername;
-        con_CS.query('SELECT LayerName, Longitude, Latitude, Altitude, FirstLayer, ThirdLayer FROM MapLayerMenu', function (err, results) {
-            // console.log(results);
+        con_CS.query('SELECT LayerName, Longitude, Latitude, Altitude, ThirdLayer FROM MapLayerMenu', function (err, results) {
            for(var i =0; i< results.length; i++) {
                if (layername === results[i].LayerName) {
-                   res.json({"Longitude": results[i].Longitude, "Latitude" : results[i].Latitude, "Altitude" : results[i].Altitude, "ThirdLayer": results[i].ThirdLayer, "LayerName":results[i].LayerName, "FirstLayer":results[i].FirstLayer});
+                   res.json({"Longitude": results[i].Longitude, "Latitude" : results[i].Latitude, "Altitude" : results[i].Altitude, "ThirdLayer": results[i].ThirdLayer, "LayerName":results[i].LayerName});
                }
            }
         });
     });
 
-
+    app.get('/thirdL',function (req,res) {
+        res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
+        var thirdlayer = req.query.thirdlayer;
+        var queryState = 'SELECT FirstLayer, SecondLayer, ThirdLayer, Longitude, Latitude, Altitude FROM MapLayerMenu WHERE ThirdLayer = ?';
+        con_CS.query(queryState, thirdlayer, function (err, results) {
+            if (err) {
+                console.log(err);
+                res.json({"error": true, "message": "An unexpected error occurred !"});
+            } else {
+                console.log(results);
+                res.json(results);
+            }
+        });
+    });
 
 
     app.get('/request',function (req,res) {
