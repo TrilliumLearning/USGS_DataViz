@@ -943,6 +943,11 @@ requirejs(['./worldwind.min',
                                 placemark[i].userProperties.p_avgcap_color = resp.data[i].p_avgcap_color;
                                 placemark[i].userProperties.t_ttlh_color = resp.data[i].t_ttlh_color;
 
+
+                                table.row.add([
+
+
+                                ]).draw(false);
                                 // if ($.inArray(resp.data[i].p_name, layerNames) === -1) {
                                 //     layerNames.push(resp.data[i].p_name);
                                 //     placemarkLayers.push(new WorldWind.RenderableLayer(resp.data[i].p_name));
