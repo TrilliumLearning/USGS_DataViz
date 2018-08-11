@@ -13,6 +13,10 @@ requirejs(['./worldwind.min',
               Location) {
         "use strict";
 
+        var table = $("#dataDisplay").DataTable();
+        table.columns([0, 1]).visible(false);
+        table.order(2, 'asc');
+
         $(document).ready(function() {
             $(function () {
 
