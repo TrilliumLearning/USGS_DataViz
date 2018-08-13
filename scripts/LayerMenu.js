@@ -166,7 +166,7 @@ requirejs(['./WorldWindShim',
                             document.getElementById("previousL").disabled = true;
                             document.getElementById("nextL").disabled = true;
                             document.getElementById("openedLayer").disabled = true;
-                            globe.goTo(new WorldWind.Position(37.0902, -95.7129, 9000000));
+                            // globe.goTo(new WorldWind.Position(37.0902, -95.7129, 9000000));
                         } else{
                             document.getElementById("previousL").disabled = false;
                             document.getElementById("nextL").disabled = true;
@@ -215,6 +215,10 @@ requirejs(['./WorldWindShim',
                 });
 
 
+            });
+
+            $('#globeOrigin').click(function(){
+                globe.goTo(new WorldWind.Position(37.0902, -95.7129, 9000000));
             });
 
 

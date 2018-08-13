@@ -87,6 +87,12 @@
             font-weight: 500;
         }
 
+        #globeOrigin{
+            font-size:20px;
+            border:none;
+            color:#007ab3;
+        }
+
         /*.arrow:hover {*/
             /*background-color: #ddd;*/
             /*color: black;*/
@@ -118,13 +124,13 @@
     <div class="container" style="width: 100%; height: 1000px; overflow: hidden">
         <!--<div class="row">-->
         <div class="box1 floating-Box">
-            <div style="border-style: solid; padding: 20px">
+            <div style="padding-top: 20px; border-top:solid #008bcc; border-bottom:solid #b3e7ff; border-right:solid #b3e7ff; border-left:solid #008bcc;margin-bottom:20px;">
                 <div style="margin-left: 15px">
                     <h4><strong>Select Location:</strong></h4>
                 <h5 class="note"> NOTE: Default is set to ALL LAYERS. Select the continent, country, and state/city. </h5>
                 <div>
                     <p>
-                        <select id="myListContinent"  style="width:300px; height:50px; background:white; padding-left: 15px" onchange="ChangeSelectList(this.value)">
+                        <select id="myListContinent"  style="width:320px; height:50px; background:white; padding-left: 15px" onchange="ChangeSelectList(this.value)">
                             <option selected="selected" value="AL">All Layers</option>
                             <!--<option>United States of America</option>-->
                             <!--<option value="AL" selected="selected" class="a">All Layer</option>-->
@@ -133,7 +139,7 @@
                 </div>
                 <div>
                     <p>
-                        <select id="myListCountry"  style="width:300px; height:50px; background:lightgray; padding-left: 15px" onchange="ChangeStateList(this.value)" disabled>
+                        <select id="myListCountry"  style="width:320px; height:50px; background:lightgray; padding-left: 15px" onchange="ChangeStateList(this.value)" disabled>
                             <option selected="selected" value="AL">All Layers</option>
                             <!--<option>-Select a State-</option>-->
                         </select>
@@ -141,7 +147,7 @@
                 </div>
                 <div>
                     <p>
-                        <select id="myListState"  style="width:300px; height:50px; background:lightgray; padding-left: 15px" onchange="ChangeLayerList(this.value)" disabled>
+                        <select id="myListState"  style="width:320px; height:50px; background:lightgray; padding-left: 15px" onchange="ChangeLayerList(this.value)" disabled>
                             <option selected="selected" value="AL">All Layers</option>
                         </select>
                     </p>
@@ -150,13 +156,18 @@
             <br>
             <div style="margin-left: 15px;">
                 <h4><strong>Layer Menu*:</strong></h4>
-                <h5 class="note">*TBD stands for "To Be Developed"</h5><h5 class="note"> NOTE: Some layers may take a while to load, please be patient. Selecting a layer will direct the globe to its location.</h5>
+                <h5 class="note">*TBD stands for "To Be Developed"</h5>
+                <h5 class="note" style="width:320px;"> NOTE: Some layers may take a while to load, please be patient. Selecting a layer will direct the globe to its location.</h5>
+                <div style="margin-bottom:10px;">
+                    <button id="globeOrigin"><i class="fa fa-globe"></i></button>
+                    <h5 style="display:inline-block;color:#0077b3;"> &#8668; Click me to back to start position!</h5>
+                </div>
                 <div style="margin-bottom:10px;">
                     <button class="previous arrow" id="previousL">&#8249;</button>
                     <input id = "openedLayer" type="button">
                     <button class="next arrow" id ="nextL">&#8250;</button>
                 </div>
-                <div class="panel-group" id="accordion" style="width: 310px; height: 575px;overflow: scroll"></div>
+                <div class="panel-group" id="accordion" style="width: 340px; height: 575px;overflow: scroll"></div>
 
             </div><!-- /.panel-group -->
             </div>
