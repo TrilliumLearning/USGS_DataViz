@@ -259,11 +259,12 @@
                     <th>Other Main Category</th>
                     <th>Sub Category</th>
                     <th>Other Sub Category</th>
-                    <th>Layer Name</th>
+                    <th>Layer Display Name</th>
                     <th>Layer Description</th>
                     <th>Layer Format</th>
                     <th>Layer Uploader Name</th>
                     <th>Status</th>
+                    <th>Comments</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -282,11 +283,12 @@
                     <th>Other Main Category</th>
                     <th>Sub Category</th>
                     <th>Other Sub Category</th>
-                    <th>Layer Name</th>
+                    <th>Layer Display Name</th>
                     <th>Layer Description</th>
                     <th>Layer Format</th>
                     <th>Layer Uploader Name</th>
                     <th>Status</th>
+                    <th>Comments</th>
                 </tr>
                 </tfoot>
             </table>
@@ -506,7 +508,8 @@
                                 results[i].Layer_Description,
                                 results[i].LayerFormat,
                                 results[i].Layer_Uploader_name,
-                                results[i].Status
+                                results[i].Status,
+                                results[i].Comments
                             ]).draw(false);
                         }
                     } else {
@@ -527,7 +530,8 @@
                                 results[i].Layer_Description,
                                 results[i].LayerFormat,
                                 results[i].Layer_Uploader_name,
-                                results[i].Status
+                                results[i].Status,
+                                results[i].Comments
                             ]).draw(false);
                         }
                     }

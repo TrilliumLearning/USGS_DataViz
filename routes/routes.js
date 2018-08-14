@@ -1168,10 +1168,10 @@ module.exports = function (app, passport) {
         valueSubmit += ", '" + newImage.Layer_Uploader + "','" + newImage.Layer_Uploader_name + "'";
         let filepathname = uploadPath + "/" + responseDataUuid;
 
-
         let statement2 = "INSERT INTO USGS.Request_Form (" + name + ") VALUES (" + valueSubmit + ");";
+        let statement = "UPDATE USGS.Request_Form SET ThirdLayer = '" + result[7][1] + "' WHERE RID = '" + result[1][1] + "';";
 
-        con_CS.query(statement2, function (err, result) {
+        con_CS.query(statement2 + statement, function (err, result) {
             if (err) {
                 throw err;
             } else {
@@ -1224,6 +1224,8 @@ module.exports = function (app, passport) {
         let result = Object.keys(req.body).map(function (key) {
             return [String(key), req.body[key]];
         });
+
+        let status = req.query.status;
         res.setHeader("Access-Control-Allow-Origin", "*");
 
         let update1 = "UPDATE USGS.Request_Form SET " ;
@@ -1242,17 +1244,38 @@ module.exports = function (app, passport) {
         let filepathname = uploadPath + "/" + responseDataUuid;
         let statement1 = update1+update2+update3;
         let statement2 = "UPDATE USGS.Request_Form SET Layer_Uploader = '" + Layer_Uploader + "', Layer_Uploader_name = '" + Layer_Uploader_name + "';";
-        con_CS.query(statement1 + statement2, function (err, result) {
-            if (err) {
-                throw err;
-            } else {
-                res.json("Connected!")
-            }
-        });
+        let statement3 = "UPDATE USGS.Request_Form SET ThirdLayer = '" + result[7][1] + "' WHERE RID = '" + result[1][1] + "';";
+        let statement4 = "UPDATE USGS.Request_Form SET Status = 'Pending' WHERE RID = '" + result[1][1] + "'";
+        if(status === "Reject"){
+            con_CS.query(statement1 + statement2 + statement3 + statement4, function (err, result) {
+                if (err) {
+                    throw err;
+                } else {
+                    res.json("Connected!")
+                }
+            });
+        }else{
+            con_CS.query(statement1 + statement2 + statement3, function (err, result) {
+                if (err) {
+                    throw err;
+                } else {
+                    res.json("Connected!")
+                }
+            });
+        }
+
     });
 
     //check if the layer name is available
     app.get('/SearchLayerName', function (req, res) {
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        con_CS.query("SELECT LayerName FROM Request_Form", function (err, results) {
+            if (err) throw err;
+            res.json(results);
+        });
+    });
+
+    app.get('/SearchThirdLayer',function (req,res) {
         res.setHeader("Access-Control-Allow-Origin", "*");
         con_CS.query("SELECT ThirdLayer FROM Request_Form", function (err, results) {
             if (err) throw err;
@@ -1311,9 +1334,10 @@ module.exports = function (app, passport) {
         let filepathname = uploadPath + "/" + responseDataUuid;
         let statement1 = update1+update2+update3;
         let statement2 = "UPDATE USGS.Request_Form SET Layer_Uploader = '" + Layer_Uploader + "', Layer_Uploader_name = '" + Layer_Uploader_name + "' WHERE RID = '" + result[1][1] + "';";
+        let statement3 = "UPDATE USGS.Request_Form SET ThirdLayer = '" + result[8][1] + "' WHERE RID = '" + result[1][1] + "';";
         if(result[3][1] === "other"){
-            let statement = "INSERT INTO USGS.MapLayerMenu (LayerName, LayerType, FirstLayer, SecondLayer, ThirdLayer, ContinentName, CountryName, StateName, Status) VALUES ('" + result[7][1] + "', 'Wmslayer', '" + result[4][1] + "','" + result[6][1] + "','" + result[7][1] + "','" + result[10][1] + "','" + result[8][1] + "','" + result[9][1] + "', 'Approved');";
-            con_CS.query(statement1 + statement + statement2, function (err, result) {
+            let statement = "INSERT INTO USGS.MapLayerMenu (LayerName, LayerType, FirstLayer, SecondLayer, ThirdLayer, ContinentName, CountryName, StateName, Status) VALUES ('" + result[7][1] + "', 'Wmslayer', '" + result[4][1] + "','" + result[6][1] + "','" + result[8][1] + "','" + result[10][1] + "','" + result[8][1] + "','" + result[9][1] + "', 'Approved');";
+            con_CS.query(statement1 + statement + statement2 + statement3, function (err, result) {
                 if (err) {
                     throw err;
                 } else {
@@ -1321,8 +1345,8 @@ module.exports = function (app, passport) {
                 }
             });
         }else{
-            let statement = "INSERT INTO USGS.MapLayerMenu (LayerName, LayerType, FirstLayer, SecondLayer, ThirdLayer, ContinentName, CountryName, StateName, Status) VALUES ('" + result[7][1] + "', 'Wmslayer', '" + result[3][1] + "','" + result[5][1] + "','" + result[7][1] + "','" + result[10][1] + "','" + result[8][1] + "','" + result[9][1] + "', 'Approved');";
-           con_CS.query(statement1 + statement + statement2, function (err, result) {
+            let statement = "INSERT INTO USGS.MapLayerMenu (LayerName, LayerType, FirstLayer, SecondLayer, ThirdLayer, ContinentName, CountryName, StateName, Status) VALUES ('" + result[7][1] + "', 'Wmslayer', '" + result[3][1] + "','" + result[5][1] + "','" + result[8][1] + "','" + result[10][1] + "','" + result[8][1] + "','" + result[9][1] + "', 'Approved');";
+           con_CS.query(statement1 + statement + statement2 + statement3, function (err, result) {
                 if (err) {
                     throw err;
                 } else {
@@ -1330,6 +1354,17 @@ module.exports = function (app, passport) {
                 }
             });
         }
+    });
+
+    app.get('/reject',function (req,res) {
+        res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
+        let rejectID = req.query.reject;
+        let comment = req.query.comment;
+        let statement = "UPDATE USGS.Request_Form SET Status = 'Reject', Comments = '" + comment + "' WHERE RID = '" + rejectID + "'";
+        con_CS.query(statement,function (err,results) {
+            if (err) throw err;
+            res.json(results);
+        })
     });
 
     let olduuid;

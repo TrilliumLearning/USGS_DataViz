@@ -4,11 +4,11 @@ function SearchLayerName(value){
         dataType:"json",
         success: function (results) {
             for(var i = 0; i < results.length; i++) {
-                if (value === results[i].ThirdLayer) {
+                if (value === results[i].LayerName) {
                     document.getElementById("LayerName1").innerHTML = "The Layer Name has already been used";
                     document.addEventListener("keyup", function (e) {
                         if (event.keyCode === 8) {
-                            document.getElementById("LayerName1").innerHTML = "Please Enter the Layer Name, the Layer Name length at least 6 characters";
+                            document.getElementById("LayerName1").innerHTML = "Please enter the layer name. NOTE: Do not include spaces.";
                             }
                         }, false);
                     break;
@@ -17,27 +17,8 @@ function SearchLayerName(value){
                 }
             }
                if(value.length === 0){
-                   document.getElementById("LayerName1").innerHTML = "Please Enter the Layer Name, the Layer Name length at least 6 characters";
+                   document.getElementById("LayerName1").innerHTML = "Please enter the layer name. NOTE: Do not include spaces.";
             }
-        },
-        error: function (jqXHR, exception) {
-            var msg = '';
-            if (jqXHR.status === 0) {
-                msg = 'Not connect.\n Verify Network.';
-            } else if (jqXHR.status == 404) {
-                msg = 'Requested page not found. [404]';
-            } else if (jqXHR.status == 500) {
-                msg = 'Internal Server Error [500].';
-            } else if (exception === 'parsererror') {
-                msg = 'Requested JSON parse failed.';
-            } else if (exception === 'timeout') {
-                msg = 'Time out error.';
-            } else if (exception === 'abort') {
-                msg = 'Ajax request aborted.';
-            } else {
-                msg = 'Uncaught Error.\n' + jqXHR.responseText;
-            }
-            console.log(msg);
         }
     })
 
@@ -45,6 +26,29 @@ function SearchLayerName(value){
     //false replace the <p> to the Layer Name is duplicated
     //ture --> nothing
 
+}
 
-
+function SearchThirdLayer(thisvalue){
+    $.ajax({
+        url: "SearchThirdLayer",
+        dataType:"json",
+        success: function (results) {
+            for(var i = 0; i < results.length; i++) {
+                if (thisvalue === results[i].ThirdLayer) {
+                    document.getElementById("LayerName2").innerHTML = "The ThirdLayer Name has already been used";
+                    document.addEventListener("keyup", function (e) {
+                        if (event.keyCode === 8) {
+                            document.getElementById("LayerName2").innerHTML = "Please enter the ThirdLayer name. NOTE: Do not include spaces.";
+                        }
+                    }, false);
+                    break;
+                } else{
+                    document.getElementById("LayerName2").innerHTML = "This ThirdLayer Name is available";
+                }
+            }
+            if(value.length === 0){
+                document.getElementById("LayerName2").innerHTML = "Please enter the ThirdLayer name. NOTE: Do not include spaces.";
+            }
+        }
+    })
 }
