@@ -359,7 +359,7 @@
                                 <select required class="selectpicker form-control" name="LayerFormat" id="LayerFormat">
                                     <option value="">SELECT LAYER FORMAT</option>
                                     <option>GeoTIFF - Tagged Image File Format with Geographic information (.tif)</option>
-                                    <option>Shapefile - ESRI(tm) Shaprfiles (.shp)</option>
+                                    <option>Shapefile - ESRI(tm) Shapefiles (.shp)</option>
                                     <option>JP2ECW - JP2K (.jp2/.j2k)</option>
                                     <option>AIG - Arc/Info Binary Grid (.adf)</option>
                                 </select>
@@ -376,7 +376,7 @@
                     <hr class="style3">
                     <br>
                     <div class="form-group">
-                        <label class="col-md-4 control-label">Reject Comments<p>(official use only)</p></label>
+                        <label class="col-md-4 control-label">Reject Comments <p>(official use only)</p></label>
                         <div class="col-md-8 inputGroupContainer">
                             <div>
                                 <textarea class="form-control" id="comment" name="Comments" disabled type="text" rows="8" maxlength="500" ></textarea>
@@ -711,7 +711,6 @@
         if (confirm("Are you sure to reject the data?") === true) {
             var tID = "reject=" + document.getElementById('RID').value;
             var Comment = "comment=" + document.getElementById('comment').value;
-            console.log(Comment);
             $.ajax({
                 url: 'reject',
                 type: "GET",

@@ -1224,9 +1224,8 @@ module.exports = function (app, passport) {
         let result = Object.keys(req.body).map(function (key) {
             return [String(key), req.body[key]];
         });
-
-        let status = req.query.status;
         res.setHeader("Access-Control-Allow-Origin", "*");
+        let status = req.body.status;
 
         let update1 = "UPDATE USGS.Request_Form SET " ;
         let update3 = " WHERE RID = '" + result[1][1] + "';";
