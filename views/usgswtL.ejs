@@ -149,6 +149,10 @@
         #manualSwitch {
             display: none;
         }
+
+        #layerMenu::-webkit-scrollbar-corner  {
+            display: block;
+        }
     </style>
 </head>
 <div class="navul" style="height: 150px;
@@ -244,7 +248,7 @@
 
         <div class="container floating-Box" id="globe" style="width: 900px; height: 900px; margin-left: 450px; padding: 0px;">
             <h4 class="note text-center" id="globeNote">NOTE: Zoom in to an eye distance of less than 4,500 km to view the point locations.</h4>
-            <canvas id="canvasOne" style="width: 900px; height: 900px;">
+            <canvas id="canvasOne" width= "900px;" height="900px;" style="width: 100%; height: auto;">
                 Your browser does not support HTML5 Canvas.
             </canvas>
         </div>
