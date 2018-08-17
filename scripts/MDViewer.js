@@ -125,7 +125,7 @@ requirejs(['./worldwind.min',
                         'Diamond':"#FAD7A0",
                         'Clay':"#AED6F1",
                         'Potash':"#D5F5E3",
-                        'undefined':"linear-gradient(to bottom right,#eeaeca,#94bbe9)",
+                        'undefined':"#F8F5FE",
                         'Silver':"#48C9B0",
                         'Zinc':"#99A3A4",
                     };
@@ -154,7 +154,7 @@ requirejs(['./worldwind.min',
                                 "<li><span style='background:#D5F5E3;'></span>Potash</li>\n" +
                                 "<li><span style='background:#99A3A4;'></span>Rare Earths</li>\n" +
                                 "<li><span style='background:#48C9B0;'></span>Sliver</li>\n" +
-                                "<li><span style='background:linear-gradient(to bottom right,#eeaeca,#94bbe9);'></span>Multiple Commodities</li>"));
+                                "<li><span style='background:#F8F5FE;'></span>Multiple Commodities</li>"));
                     } else if (category === 'dep_type') {
                         $("#legend").append($(
                             "<li><span style='background:#2E4053;'></span>Hydrothermal</li>\n" +
