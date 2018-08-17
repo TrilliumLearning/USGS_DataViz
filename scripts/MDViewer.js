@@ -107,7 +107,6 @@ requirejs(['./worldwind.min',
 
                 $("#none, #dep_type, #commodity").on("click", function () {
                     var category = this.id;
-                    console.log(category);
                     var color = {
                         "Hydrothermal": "#2E4053",
                         "Sedimentary": "#58D68D  ",
@@ -126,7 +125,7 @@ requirejs(['./worldwind.min',
                         'Diamond':"#FAD7A0",
                         'Clay':"#AED6F1",
                         'Potash':"#D5F5E3",
-                        'undefined':"rgba(255, 255, 255, 1)",
+                        'undefined':"linear-gradient(to bottom right,#eeaeca,#94bbe9)",
                         'Silver':"#48C9B0",
                         'Zinc':"#99A3A4",
                     };
@@ -136,6 +135,36 @@ requirejs(['./worldwind.min',
                     //     "type_color": ["1980", "2017"],
                     //     "commodity_color": ["<1MW", ">3 MW"],
                     // };
+                //
+
+
+                    $("#legend").empty();
+
+                    if (category === 'commodity') {
+                        $("#legend").append($(
+                                "<li><span style='background:#626567;'></span>Nickel</li>\n" +
+                                "<li><span style='background:#CB4335;'></span>Iron</li>\n" +
+                                "<li><span style='background:#A6ACAF;'></span>Aluminum</li>\n" +
+                                "<li><span style='background:#E67E22;'></span>Copper</li>\n" +
+                                "<li><span style='background:#117864;'></span>Lead-Zinc</li>\n" +
+                                "<li><span style='background:#1F618D;'></span>PGE</li>\n" +
+                                "<li><span style='background:#F7DC6F;'></span>Gold</li>\n" +
+                                "<li><span style='background:#FAD7A0;'></span>Diamond</li>\n" +
+                                "<li><span style='background:#AED6F1;'></span>Clay</li>\n" +
+                                "<li><span style='background:#D5F5E3;'></span>Potash</li>\n" +
+                                "<li><span style='background:#99A3A4;'></span>Rare Earths</li>\n" +
+                                "<li><span style='background:#48C9B0;'></span>Sliver</li>\n" +
+                                "<li><span style='background:linear-gradient(to bottom right,#eeaeca,#94bbe9);'></span>Multiple Commodities</li>"));
+                    } else if (category === 'dep_type') {
+                        $("#legend").append($(
+                            "<li><span style='background:#2E4053;'></span>Hydrothermal</li>\n" +
+                            "<li><span style='background:#58D68D;'></span>Sedimentary</li>\n" +
+                            "<li><span style='background:#A93226;'></span>Igneous</li>\n" +
+                            "<li><span style='background:#CD6155;'></span>Metamorphic</li>\n" +
+                            "<li><span style='background:#2980B9;'></span>Surficial</li>\n" +
+                            "<li><span style='background:#A6ACAF;'></span>unclassified</li>"));
+                    }
+
 
                     // $("#leftScale").html(scale[category][0]);
                     // $("#rightScale").html(scale[category][1]);
@@ -884,8 +913,8 @@ requirejs(['./worldwind.min',
                             popover.style.top = (y + yOffset - 3) + 'px';
 
                             var content = "<p><strong>Site Name:</strong> " + pickedPL.userProperties.dep_name +
-                                "<br>" + "<strong>Commodity:</strong> " + pickedPL.userProperties.commodity +
-                                "<br>" + "<strong>Development Status:</strong> " + pickedPL.userProperties.dep_type + "</p>";
+                                "<br>" + "<strong>Major Commodity:</strong> " + pickedPL.userProperties.commodity +
+                                "<br>" + "<strong>Major Type:</strong> " + pickedPL.userProperties.dep_type + "</p>";
 
                             $("#popover").attr('data-content', content);
                             $("#popover").show();
